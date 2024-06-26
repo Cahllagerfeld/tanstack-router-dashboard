@@ -1,3 +1,9 @@
+import { Link } from "@remix-run/react";
+
 export default function IndexPage() {
-	return <p>Index Page</p>;
+	return (
+		<p>
+			<Link to="/login">Login</Link>
+		</p>
+	);
 }

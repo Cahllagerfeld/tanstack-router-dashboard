@@ -1,6 +1,10 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
-import "./tailwind.css";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Zenml from "~/assets/icons/zenml-icon.svg";
+import { queryClient } from "~/lib/query-client";
+import { serverQueries } from "./data/server";
+import "./tailwind.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -20,11 +24,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	);
 }
 
+export const clientLoader = async () => {
+	const data = await queryClient.ensureQueryData(serverQueries.serverInfo());
+	return data;
+};
+
 export default function App() {
 	return (
-		<div className="bg-theme-surface-secondary font-sans font-medium text-theme-text-primary antialiased">
-			<Outlet />
-		</div>
+		<QueryClientProvider client={queryClient}>
+			<div className="bg-theme-surface-secondary font-sans font-medium text-theme-text-primary antialiased">
+				<Outlet />
+			</div>
+			<ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+		</QueryClientProvider>
 	);
 }
 
