@@ -21,7 +21,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-	return <Outlet />;
+	return (
+		<div className="bg-theme-surface-secondary font-sans font-medium text-theme-text-primary antialiased">
+			<Outlet />
+		</div>
+	);
 }
 
 export function HydrateFallback() {
