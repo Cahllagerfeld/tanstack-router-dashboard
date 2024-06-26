@@ -9,6 +9,9 @@ function updateConfig(init?: RequestInit): RequestInit {
 	};
 }
 
-export function fetcher(input: RequestInfo | URL, init?: RequestInit | undefined) {
+export function fetcher(
+	input: RequestInfo | URL,
+	init?: RequestInit | undefined
+) {
 	return fetch(input, updateConfig(init));
 }

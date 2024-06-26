@@ -10,7 +10,8 @@ export const apiPaths = {
 	},
 	artifactVersions: {
 		detail: (versionId: string) => `/artifact_versions/${versionId}`,
-		visualize: (versionId: string) => `/artifact_versions/${versionId}/visualize`
+		visualize: (versionId: string) =>
+			`/artifact_versions/${versionId}/visualize`
 	},
 	components: {
 		detail: (componentId: string) => `/components/${componentId}`
@@ -30,7 +31,8 @@ export const apiPaths = {
 	},
 	code_repositories: {
 		all: "/code_repositories",
-		detail: (codeRepositoryId: string) => `/code_repositories/${codeRepositoryId}`
+		detail: (codeRepositoryId: string) =>
+			`/code_repositories/${codeRepositoryId}`
 	},
 	stacks: {
 		detail: (stackId: string) => `/stacks/${stackId}`
