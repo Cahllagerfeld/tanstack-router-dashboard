@@ -11,6 +11,7 @@ import Zenml from "~/assets/icons/zenml-icon.svg";
 import { queryClient } from "~/lib/query-client";
 import { serverQueries } from "./data/server";
 import "./tailwind.css";
+import { Toaster } from "@zenml-io/react-component-library";
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -38,6 +39,7 @@ export const clientLoader = async () => {
 export default function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
+			<Toaster />
 			<div className="bg-theme-surface-secondary font-sans font-medium text-theme-text-primary antialiased">
 				<Outlet />
 			</div>
