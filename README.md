@@ -8,6 +8,6 @@
 
 ## Prerequisites
 
-- Nodejs lts
-- Docker
-- pnpm
+- [Nodejs lts](https://nodejs.org/en)
+- [Docker](https://www.docker.com/)
+- [pnpm](https://pnpm.io/)
