@@ -1,0 +1,15 @@
+version: "0.5"
+is_strict: true
+disable_env_expansion: true
+processes:
+  init_dependencies:
+    namespace: init
+    command: |
+      bun install
+  dev:
+    namespace: dev
+    command: |
+      SHELL=/bin/bash bun run dev
+    depends_on:
+      init_dependencies:
+        condition: process_completed_successfully

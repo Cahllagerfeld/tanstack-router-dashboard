@@ -1,0 +1,53 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "bun@latest": {
+      "last_modified": "2024-11-16T04:25:12Z",
+      "resolved": "github:NixOS/nixpkgs/34a626458d686f1b58139620a8b2793e9e123bba#bun",
+      "source": "devbox-search",
+      "version": "1.1.31",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/k969fdhk78r9p2zm0mrgakq7pnvjscsl-bun-1.1.31",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/k969fdhk78r9p2zm0mrgakq7pnvjscsl-bun-1.1.31"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/vbgm5kj91dq78j5bja931qydlwjv6qz1-bun-1.1.31",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/vbgm5kj91dq78j5bja931qydlwjv6qz1-bun-1.1.31"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/3ppw4nq9qcc06c5mnk2lrdnp85nm778a-bun-1.1.31",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/3ppw4nq9qcc06c5mnk2lrdnp85nm778a-bun-1.1.31"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/xy5raazymalxya0wjqwh5r63gxmxnv65-bun-1.1.31",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/xy5raazymalxya0wjqwh5r63gxmxnv65-bun-1.1.31"
+        }
+      }
+    }
+  }
+}
