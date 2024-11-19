@@ -7,9 +7,17 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useServerActivation } from "@/data/server/activate-server";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+	adjectives,
+	animals,
+	colors,
+	uniqueNamesGenerator,
+} from "unique-names-generator";
 import { z } from "zod";
 
 const passwordStepSchema = z
@@ -30,6 +38,7 @@ const passwordStepSchema = z
 type PasswordForm = z.infer<typeof passwordStepSchema>;
 
 export function PasswordStep() {
+	const navigate = useNavigate();
 	const form = useForm<PasswordForm>({
 		resolver: zodResolver(passwordStepSchema),
 		defaultValues: {
@@ -39,9 +48,23 @@ export function PasswordStep() {
 		},
 	});
 
-	function handlePasswordStep(values: PasswordForm) {
-		toast.success("Server activated!");
-		console.log(values);
+	const { mutateAsync } = useServerActivation();
+
+	async function handlePasswordStep(values: PasswordForm) {
+		try {
+			await mutateAsync({
+				admin_username: values.username,
+				admin_password: values.password,
+				server_name: uniqueNamesGenerator({
+					dictionaries: [adjectives, colors, animals],
+					separator: "-",
+				}),
+			});
+			toast.success("Server activated!");
+			navigate({ to: "/" });
+		} catch (e) {
+			toast.error("Failed to activate server");
+		}
 	}
 
 	return (
