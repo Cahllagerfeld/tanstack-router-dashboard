@@ -13,25 +13,44 @@ import { createFileRoute } from "@tanstack/react-router";
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
+import { Route as IndexImport } from "./routes/index";
+import { Route as publicGridLayoutImport } from "./routes/(public)/_grid-layout";
+import { Route as publicGridLayoutServerActivationImport } from "./routes/(public)/_grid-layout/server-activation";
 
 // Create Virtual Routes
 
-const AboutLazyImport = createFileRoute("/about")();
-const IndexLazyImport = createFileRoute("/")();
+const publicImport = createFileRoute("/(public)")();
 
 // Create/Update Routes
 
-const AboutLazyRoute = AboutLazyImport.update({
-	id: "/about",
-	path: "/about",
+const publicRoute = publicImport.update({
+	id: "/(public)",
 	getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/about.lazy").then((d) => d.Route));
+} as any);
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRoute = IndexImport.update({
 	id: "/",
 	path: "/",
 	getParentRoute: () => rootRoute,
 } as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+
+const publicGridLayoutRoute = publicGridLayoutImport.update({
+	id: "/_grid-layout",
+	getParentRoute: () => publicRoute,
+} as any);
+
+const publicGridLayoutServerActivationRoute =
+	publicGridLayoutServerActivationImport
+		.update({
+			id: "/server-activation",
+			path: "/server-activation",
+			getParentRoute: () => publicGridLayoutRoute,
+		} as any)
+		.lazy(() =>
+			import("./routes/(public)/_grid-layout/server-activation.lazy").then(
+				(d) => d.Route
+			)
+		);
 
 // Populate the FileRoutesByPath interface
 
@@ -41,54 +60,97 @@ declare module "@tanstack/react-router" {
 			id: "/";
 			path: "/";
 			fullPath: "/";
-			preLoaderRoute: typeof IndexLazyImport;
+			preLoaderRoute: typeof IndexImport;
 			parentRoute: typeof rootRoute;
 		};
-		"/about": {
-			id: "/about";
-			path: "/about";
-			fullPath: "/about";
-			preLoaderRoute: typeof AboutLazyImport;
+		"/(public)": {
+			id: "/(public)";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof publicImport;
 			parentRoute: typeof rootRoute;
+		};
+		"/(public)/_grid-layout": {
+			id: "/(public)/_grid-layout";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof publicGridLayoutImport;
+			parentRoute: typeof publicRoute;
+		};
+		"/(public)/_grid-layout/server-activation": {
+			id: "/(public)/_grid-layout/server-activation";
+			path: "/server-activation";
+			fullPath: "/server-activation";
+			preLoaderRoute: typeof publicGridLayoutServerActivationImport;
+			parentRoute: typeof publicGridLayoutImport;
 		};
 	}
 }
 
 // Create and export the route tree
 
+interface publicGridLayoutRouteChildren {
+	publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute;
+}
+
+const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
+	publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
+};
+
+const publicGridLayoutRouteWithChildren =
+	publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren);
+
+interface publicRouteChildren {
+	publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren;
+}
+
+const publicRouteChildren: publicRouteChildren = {
+	publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
+};
+
+const publicRouteWithChildren =
+	publicRoute._addFileChildren(publicRouteChildren);
+
 export interface FileRoutesByFullPath {
-	"/": typeof IndexLazyRoute;
-	"/about": typeof AboutLazyRoute;
+	"/": typeof publicGridLayoutRouteWithChildren;
+	"/server-activation": typeof publicGridLayoutServerActivationRoute;
 }
 
 export interface FileRoutesByTo {
-	"/": typeof IndexLazyRoute;
-	"/about": typeof AboutLazyRoute;
+	"/": typeof publicGridLayoutRouteWithChildren;
+	"/server-activation": typeof publicGridLayoutServerActivationRoute;
 }
 
 export interface FileRoutesById {
 	__root__: typeof rootRoute;
-	"/": typeof IndexLazyRoute;
-	"/about": typeof AboutLazyRoute;
+	"/": typeof IndexRoute;
+	"/(public)": typeof publicRouteWithChildren;
+	"/(public)/_grid-layout": typeof publicGridLayoutRouteWithChildren;
+	"/(public)/_grid-layout/server-activation": typeof publicGridLayoutServerActivationRoute;
 }
 
 export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/" | "/about";
+	fullPaths: "/" | "/server-activation";
 	fileRoutesByTo: FileRoutesByTo;
-	to: "/" | "/about";
-	id: "__root__" | "/" | "/about";
+	to: "/" | "/server-activation";
+	id:
+		| "__root__"
+		| "/"
+		| "/(public)"
+		| "/(public)/_grid-layout"
+		| "/(public)/_grid-layout/server-activation";
 	fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-	IndexLazyRoute: typeof IndexLazyRoute;
-	AboutLazyRoute: typeof AboutLazyRoute;
+	IndexRoute: typeof IndexRoute;
+	publicRoute: typeof publicRouteWithChildren;
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexLazyRoute: IndexLazyRoute,
-	AboutLazyRoute: AboutLazyRoute,
+	IndexRoute: IndexRoute,
+	publicRoute: publicRouteWithChildren,
 };
 
 export const routeTree = rootRoute
@@ -102,14 +164,28 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/(public)"
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.lazy.tsx"
+    "/(public)": {
+      "filePath": "(public)",
+      "children": [
+        "/(public)/_grid-layout"
+      ]
+    },
+    "/(public)/_grid-layout": {
+      "filePath": "(public)/_grid-layout.tsx",
+      "parent": "/(public)",
+      "children": [
+        "/(public)/_grid-layout/server-activation"
+      ]
+    },
+    "/(public)/_grid-layout/server-activation": {
+      "filePath": "(public)/_grid-layout/server-activation.tsx",
+      "parent": "/(public)/_grid-layout"
     }
   }
 }

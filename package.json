@@ -12,17 +12,23 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@hookform/resolvers": "^3.9.1",
+		"@radix-ui/react-label": "^2.1.0",
 		"@radix-ui/react-slot": "^1.1.0",
 		"@tanstack/react-query": "^5.60.5",
 		"@tanstack/react-router": "^1.82.1",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
 		"lucide-react": "^0.460.0",
+		"next-themes": "^0.4.3",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
+		"react-hook-form": "^7.53.2",
 		"redaxios": "^0.5.1",
+		"sonner": "^1.7.0",
 		"tailwind-merge": "^2.5.4",
-		"tailwindcss-animate": "^1.0.7"
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"@tanstack/router-devtools": "^1.82.1",
