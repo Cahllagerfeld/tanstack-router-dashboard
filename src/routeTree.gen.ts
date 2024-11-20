@@ -16,13 +16,11 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as publicGridLayoutImport } from './routes/(public)/_grid-layout'
 import { Route as publicGridLayoutServerActivationImport } from './routes/(public)/_grid-layout/server-activation'
+import { Route as publicGridLayoutLoginImport } from './routes/(public)/_grid-layout/login'
 
 // Create Virtual Routes
 
 const publicImport = createFileRoute('/(public)')()
-const publicGridLayoutLoginLazyImport = createFileRoute(
-  '/(public)/_grid-layout/login',
-)()
 
 // Create/Update Routes
 
@@ -42,16 +40,6 @@ const publicGridLayoutRoute = publicGridLayoutImport.update({
   getParentRoute: () => publicRoute,
 } as any)
 
-const publicGridLayoutLoginLazyRoute = publicGridLayoutLoginLazyImport
-  .update({
-    id: '/login',
-    path: '/login',
-    getParentRoute: () => publicGridLayoutRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
-  )
-
 const publicGridLayoutServerActivationRoute =
   publicGridLayoutServerActivationImport
     .update({
@@ -64,6 +52,16 @@ const publicGridLayoutServerActivationRoute =
         (d) => d.Route,
       ),
     )
+
+const publicGridLayoutLoginRoute = publicGridLayoutLoginImport
+  .update({
+    id: '/login',
+    path: '/login',
+    getParentRoute: () => publicGridLayoutRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -90,18 +88,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicGridLayoutImport
       parentRoute: typeof publicRoute
     }
+    '/(public)/_grid-layout/login': {
+      id: '/(public)/_grid-layout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicGridLayoutLoginImport
+      parentRoute: typeof publicGridLayoutImport
+    }
     '/(public)/_grid-layout/server-activation': {
       id: '/(public)/_grid-layout/server-activation'
       path: '/server-activation'
       fullPath: '/server-activation'
       preLoaderRoute: typeof publicGridLayoutServerActivationImport
-      parentRoute: typeof publicGridLayoutImport
-    }
-    '/(public)/_grid-layout/login': {
-      id: '/(public)/_grid-layout/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof publicGridLayoutLoginLazyImport
       parentRoute: typeof publicGridLayoutImport
     }
   }
@@ -110,13 +108,13 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface publicGridLayoutRouteChildren {
+  publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
   publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
-  publicGridLayoutLoginLazyRoute: typeof publicGridLayoutLoginLazyRoute
 }
 
 const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
+  publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
   publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
-  publicGridLayoutLoginLazyRoute: publicGridLayoutLoginLazyRoute,
 }
 
 const publicGridLayoutRouteWithChildren =
@@ -135,14 +133,14 @@ const publicRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof publicGridLayoutRouteWithChildren
+  '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/login': typeof publicGridLayoutLoginLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof publicGridLayoutRouteWithChildren
+  '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/login': typeof publicGridLayoutLoginLazyRoute
 }
 
 export interface FileRoutesById {
@@ -150,22 +148,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(public)': typeof publicRouteWithChildren
   '/(public)/_grid-layout': typeof publicGridLayoutRouteWithChildren
+  '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/(public)/_grid-layout/login': typeof publicGridLayoutLoginLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/server-activation' | '/login'
+  fullPaths: '/' | '/login' | '/server-activation'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/server-activation' | '/login'
+  to: '/' | '/login' | '/server-activation'
   id:
     | '__root__'
     | '/'
     | '/(public)'
     | '/(public)/_grid-layout'
-    | '/(public)/_grid-layout/server-activation'
     | '/(public)/_grid-layout/login'
+    | '/(public)/_grid-layout/server-activation'
   fileRoutesById: FileRoutesById
 }
 
@@ -206,16 +204,16 @@ export const routeTree = rootRoute
       "filePath": "(public)/_grid-layout.tsx",
       "parent": "/(public)",
       "children": [
-        "/(public)/_grid-layout/server-activation",
-        "/(public)/_grid-layout/login"
+        "/(public)/_grid-layout/login",
+        "/(public)/_grid-layout/server-activation"
       ]
+    },
+    "/(public)/_grid-layout/login": {
+      "filePath": "(public)/_grid-layout/login.tsx",
+      "parent": "/(public)/_grid-layout"
     },
     "/(public)/_grid-layout/server-activation": {
       "filePath": "(public)/_grid-layout/server-activation.tsx",
-      "parent": "/(public)/_grid-layout"
-    },
-    "/(public)/_grid-layout/login": {
-      "filePath": "(public)/_grid-layout/login.lazy.tsx",
       "parent": "/(public)/_grid-layout"
     }
   }
