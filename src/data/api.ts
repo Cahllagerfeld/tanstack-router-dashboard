@@ -1,5 +1,6 @@
 import redaxios from "redaxios";
 export const apiPaths = {
+	login: "/login",
 	info: "/info",
 	activate: "/activate",
 	settings: "/settings",

@@ -8,7 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PasswordStep } from "@/features/server-activation/PasswordStep";
+import { PasswordStep } from "@/features/server-activation/password-step";
 
 export const Route = createLazyFileRoute(
 	"/(public)/_grid-layout/server-activation"

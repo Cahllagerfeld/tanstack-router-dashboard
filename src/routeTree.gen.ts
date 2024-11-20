@@ -8,154 +8,178 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router'
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as IndexImport } from "./routes/index";
-import { Route as publicGridLayoutImport } from "./routes/(public)/_grid-layout";
-import { Route as publicGridLayoutServerActivationImport } from "./routes/(public)/_grid-layout/server-activation";
+import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
+import { Route as publicGridLayoutImport } from './routes/(public)/_grid-layout'
+import { Route as publicGridLayoutServerActivationImport } from './routes/(public)/_grid-layout/server-activation'
+import { Route as publicGridLayoutLoginImport } from './routes/(public)/_grid-layout/login'
 
 // Create Virtual Routes
 
-const publicImport = createFileRoute("/(public)")();
+const publicImport = createFileRoute('/(public)')()
 
 // Create/Update Routes
 
 const publicRoute = publicImport.update({
-	id: "/(public)",
-	getParentRoute: () => rootRoute,
-} as any);
+  id: '/(public)',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const publicGridLayoutRoute = publicGridLayoutImport.update({
-	id: "/_grid-layout",
-	getParentRoute: () => publicRoute,
-} as any);
+  id: '/_grid-layout',
+  getParentRoute: () => publicRoute,
+} as any)
 
 const publicGridLayoutServerActivationRoute =
-	publicGridLayoutServerActivationImport
-		.update({
-			id: "/server-activation",
-			path: "/server-activation",
-			getParentRoute: () => publicGridLayoutRoute,
-		} as any)
-		.lazy(() =>
-			import("./routes/(public)/_grid-layout/server-activation.lazy").then(
-				(d) => d.Route
-			)
-		);
+  publicGridLayoutServerActivationImport
+    .update({
+      id: '/server-activation',
+      path: '/server-activation',
+      getParentRoute: () => publicGridLayoutRoute,
+    } as any)
+    .lazy(() =>
+      import('./routes/(public)/_grid-layout/server-activation.lazy').then(
+        (d) => d.Route,
+      ),
+    )
+
+const publicGridLayoutLoginRoute = publicGridLayoutLoginImport
+  .update({
+    id: '/login',
+    path: '/login',
+    getParentRoute: () => publicGridLayoutRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/(public)": {
-			id: "/(public)";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof publicImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/(public)/_grid-layout": {
-			id: "/(public)/_grid-layout";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof publicGridLayoutImport;
-			parentRoute: typeof publicRoute;
-		};
-		"/(public)/_grid-layout/server-activation": {
-			id: "/(public)/_grid-layout/server-activation";
-			path: "/server-activation";
-			fullPath: "/server-activation";
-			preLoaderRoute: typeof publicGridLayoutServerActivationImport;
-			parentRoute: typeof publicGridLayoutImport;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/(public)': {
+      id: '/(public)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicImport
+      parentRoute: typeof rootRoute
+    }
+    '/(public)/_grid-layout': {
+      id: '/(public)/_grid-layout'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof publicGridLayoutImport
+      parentRoute: typeof publicRoute
+    }
+    '/(public)/_grid-layout/login': {
+      id: '/(public)/_grid-layout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicGridLayoutLoginImport
+      parentRoute: typeof publicGridLayoutImport
+    }
+    '/(public)/_grid-layout/server-activation': {
+      id: '/(public)/_grid-layout/server-activation'
+      path: '/server-activation'
+      fullPath: '/server-activation'
+      preLoaderRoute: typeof publicGridLayoutServerActivationImport
+      parentRoute: typeof publicGridLayoutImport
+    }
+  }
 }
 
 // Create and export the route tree
 
 interface publicGridLayoutRouteChildren {
-	publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute;
+  publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
+  publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
 }
 
 const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
-	publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
-};
+  publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
+  publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
+}
 
 const publicGridLayoutRouteWithChildren =
-	publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren);
+  publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren)
 
 interface publicRouteChildren {
-	publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren;
+  publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren
 }
 
 const publicRouteChildren: publicRouteChildren = {
-	publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
-};
+  publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
+}
 
 const publicRouteWithChildren =
-	publicRoute._addFileChildren(publicRouteChildren);
+  publicRoute._addFileChildren(publicRouteChildren)
 
 export interface FileRoutesByFullPath {
-	"/": typeof publicGridLayoutRouteWithChildren;
-	"/server-activation": typeof publicGridLayoutServerActivationRoute;
+  '/': typeof publicGridLayoutRouteWithChildren
+  '/login': typeof publicGridLayoutLoginRoute
+  '/server-activation': typeof publicGridLayoutServerActivationRoute
 }
 
 export interface FileRoutesByTo {
-	"/": typeof publicGridLayoutRouteWithChildren;
-	"/server-activation": typeof publicGridLayoutServerActivationRoute;
+  '/': typeof publicGridLayoutRouteWithChildren
+  '/login': typeof publicGridLayoutLoginRoute
+  '/server-activation': typeof publicGridLayoutServerActivationRoute
 }
 
 export interface FileRoutesById {
-	__root__: typeof rootRoute;
-	"/": typeof IndexRoute;
-	"/(public)": typeof publicRouteWithChildren;
-	"/(public)/_grid-layout": typeof publicGridLayoutRouteWithChildren;
-	"/(public)/_grid-layout/server-activation": typeof publicGridLayoutServerActivationRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/(public)': typeof publicRouteWithChildren
+  '/(public)/_grid-layout': typeof publicGridLayoutRouteWithChildren
+  '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
+  '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
 }
 
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/" | "/server-activation";
-	fileRoutesByTo: FileRoutesByTo;
-	to: "/" | "/server-activation";
-	id:
-		| "__root__"
-		| "/"
-		| "/(public)"
-		| "/(public)/_grid-layout"
-		| "/(public)/_grid-layout/server-activation";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login' | '/server-activation'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/login' | '/server-activation'
+  id:
+    | '__root__'
+    | '/'
+    | '/(public)'
+    | '/(public)/_grid-layout'
+    | '/(public)/_grid-layout/login'
+    | '/(public)/_grid-layout/server-activation'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	publicRoute: typeof publicRouteWithChildren;
+  IndexRoute: typeof IndexRoute
+  publicRoute: typeof publicRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	publicRoute: publicRouteWithChildren,
-};
+  IndexRoute: IndexRoute,
+  publicRoute: publicRouteWithChildren,
+}
 
 export const routeTree = rootRoute
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -180,8 +204,13 @@ export const routeTree = rootRoute
       "filePath": "(public)/_grid-layout.tsx",
       "parent": "/(public)",
       "children": [
+        "/(public)/_grid-layout/login",
         "/(public)/_grid-layout/server-activation"
       ]
+    },
+    "/(public)/_grid-layout/login": {
+      "filePath": "(public)/_grid-layout/login.tsx",
+      "parent": "/(public)/_grid-layout"
     },
     "/(public)/_grid-layout/server-activation": {
       "filePath": "(public)/_grid-layout/server-activation.tsx",
