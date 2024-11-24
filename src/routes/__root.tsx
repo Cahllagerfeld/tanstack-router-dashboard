@@ -3,7 +3,6 @@ import { AuthContext } from "@/context/auth";
 import { serverQueries } from "@/data/server";
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -20,7 +19,7 @@ function RootLayout() {
 		<div className="font-medium antialiased">
 			<Outlet />
 			<Toaster position="top-center" />
-			<TanStackRouterDevtools />
+			{/* <TanStackRouterDevtools /> */}
 		</div>
 	);
 }

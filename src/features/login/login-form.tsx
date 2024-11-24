@@ -39,7 +39,6 @@ export function LoginForm() {
 	const { mutate } = useLoginUser({
 		onSuccess: async (_, { username }) => {
 			auth.login(username);
-			await router.invalidate();
 			// this is a hack to wait for the auth state to update
 			await sleep(50);
 			router.navigate({ to: "/" });

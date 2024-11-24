@@ -1,7 +1,8 @@
 import { ServerInfo } from "@/types/server";
-import { apiPaths, axios } from "../api";
+import { apiPaths } from "../api";
+import { apiClient } from "../api-client";
 
 export async function fetchServerInfo(): Promise<ServerInfo> {
-	const res = await axios.get<ServerInfo>(apiPaths.info);
-	return res.data;
+	const data = await apiClient<ServerInfo>(apiPaths.info);
+	return data;
 }
