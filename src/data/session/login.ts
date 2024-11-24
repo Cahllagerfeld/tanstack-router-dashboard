@@ -1,15 +1,17 @@
-import { apiPaths, axios } from "@/data/api";
+import { apiPaths } from "@/data/api";
 import { Login, LoginTokenResponse } from "@/types/session";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { apiClient } from "../api-client";
 
 export async function loginUser(body: Login) {
-	const url = apiPaths.login;
-	const response = await axios.post<LoginTokenResponse>(
-		url,
-		new URLSearchParams(body)
-	);
-
-	return response.data;
+	const response = await apiClient<LoginTokenResponse>(apiPaths.login, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+		body: new URLSearchParams(body),
+	});
+	return response;
 }
 
 export function useLoginUser(

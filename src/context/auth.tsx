@@ -22,7 +22,7 @@ function getStoredUser() {
 	return localStorage.getItem(key);
 }
 
-function setStoredUser(user: string | null) {
+export function setStoredUser(user: string | null) {
 	if (user) {
 		localStorage.setItem(key, user);
 	} else {
