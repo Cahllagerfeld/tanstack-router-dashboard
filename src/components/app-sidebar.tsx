@@ -1,8 +1,6 @@
-import * as React from "react";
 import {
 	BookOpen,
 	Bot,
-	Command,
 	Frame,
 	LifeBuoy,
 	Map,
@@ -11,6 +9,7 @@ import {
 	Settings2,
 	SquareTerminal,
 } from "lucide-react";
+import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
@@ -21,14 +20,9 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { serverQueries } from "@/data/server";
-import { useParams } from "@tanstack/react-router";
-import { workspaceQueries } from "@/data/workspaces";
+
+import { WorkspaceSwitcher } from "./workspace-switcher";
 
 const data = {
 	user: {
@@ -155,38 +149,10 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
-	const { data: workspaceData } = useSuspenseQuery(
-		workspaceQueries.workspaceList()
-	);
-	const { workspace_id } = useParams({
-		from: "/(private)/$workspace_id",
-	});
-
-	const workspaceName = workspaceData.items.find(
-		(workspace) => workspace.id === workspace_id
-	)?.name;
-
 	return (
 		<Sidebar variant="inset" {...props}>
 			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton size="lg" asChild>
-							<a href="#">
-								<div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-									<Command className="size-4" />
-								</div>
-								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold">
-										{serverData.name}
-									</span>
-									<span className="truncate text-xs">{workspaceName}</span>
-								</div>
-							</a>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
+				<WorkspaceSwitcher />
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />
