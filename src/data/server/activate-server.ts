@@ -1,12 +1,19 @@
 import { ServerActivation } from "@/types/server";
-import { apiPaths, axios } from "../api";
+import { apiPaths } from "../api";
 import { User } from "@/types/user";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { apiClient } from "../api-client";
 
-async function activateServer(body: ServerActivation) {
-	const url = apiPaths.activate;
-	const response = await axios.put<User | null>(url, body);
-	return response.data;
+async function activateServer(bodyData: ServerActivation) {
+	const response = await apiClient<User>(apiPaths.activate, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(bodyData),
+	});
+
+	return response;
 }
 
 export function useServerActivation(
