@@ -6,5 +6,9 @@ export const Route = createLazyFileRoute("/(private)/$workspace_id/")({
 
 function RouteComponent() {
 	const { workspace_id } = Route.useParams();
-	return <div>Hello {workspace_id}</div>;
+	return (
+		<div>
+			<div>Hello {workspace_id}</div>
+		</div>
+	);
 }
