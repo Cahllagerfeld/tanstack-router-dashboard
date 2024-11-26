@@ -1,5 +1,3 @@
-import { ChevronsUpDown, Plus } from "lucide-react";
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -17,12 +15,14 @@ import {
 } from "@/components/ui/sidebar";
 import { serverQueries } from "@/data/server";
 import { workspaceQueries } from "@/data/workspaces";
+import { CreateWorkspaceDialog } from "@/features/create-workspace/CreateWorkspaceDialog";
 import { getAvatarUrl } from "@/lib/avatar";
+import { setWorkspaceToLocalStorage } from "@/lib/workspaces";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import { CreateWorkspaceDialog } from "@/features/create-workspace/CreateWorkspaceDialog";
+import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 export function WorkspaceSwitcher({}) {
 	const [workspaceDialogOpen, setWorkspaceDialogOpen] = useState(false);
@@ -83,12 +83,13 @@ export function WorkspaceSwitcher({}) {
 							{workspaceData.items.map((ws, index) => (
 								<DropdownMenuItem
 									key={ws.id}
-									onClick={() =>
+									onClick={() => {
+										setWorkspaceToLocalStorage(ws.id);
 										navigate({
 											to: "/$workspace_id",
 											params: { workspace_id: ws.id },
-										})
-									}
+										});
+									}}
 									className="gap-2 p-2"
 								>
 									<Avatar className="size-6 shrink-0 rounded-md">
