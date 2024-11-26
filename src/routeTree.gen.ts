@@ -44,11 +44,15 @@ const publicGridLayoutRoute = publicGridLayoutImport.update({
   getParentRoute: () => publicRoute,
 } as any)
 
-const privateWorkspaceidRoute = privateWorkspaceidImport.update({
-  id: '/(private)/$workspace_id',
-  path: '/$workspace_id',
-  getParentRoute: () => rootRoute,
-} as any)
+const privateWorkspaceidRoute = privateWorkspaceidImport
+  .update({
+    id: '/(private)/$workspace_id',
+    path: '/$workspace_id',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(private)/$workspace_id.lazy').then((d) => d.Route),
+  )
 
 const privateWorkspaceidIndexLazyRoute = privateWorkspaceidIndexLazyImport
   .update({
