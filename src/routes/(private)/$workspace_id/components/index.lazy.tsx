@@ -14,9 +14,11 @@ export const Route = createLazyFileRoute(
 
 function RouteComponent() {
 	const columns = useComponentColumns();
+	const { workspace_id } = Route.useParams();
+	const { size, page, type } = Route.useSearch();
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	const data = useSuspenseQuery(
-		componentQueries.workspaceComponentList(Route.useParams().workspace_id)
+		componentQueries.workspaceComponentList(workspace_id, { size, page, type })
 	);
 
 	return (

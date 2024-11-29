@@ -9,6 +9,6 @@ export const componentQueries = {
 	) =>
 		queryOptions({
 			queryFn: () => fetchWorkspaceComponentsList(workspaceId, options),
-			queryKey: ["workspaces", workspaceId, "components"],
+			queryKey: ["workspaces", workspaceId, "components", options],
 		}),
 };

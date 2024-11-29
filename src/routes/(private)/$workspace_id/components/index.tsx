@@ -7,7 +7,13 @@ const querySchema = z.object({
 	type: z.enum(COMPONENT_TYPES).optional().catch(undefined),
 	page: z.number().int().positive().optional().catch(undefined),
 	size: z
-		.union([z.literal(5), z.literal(10), z.literal(20), z.literal(50)])
+		.union([
+			z.literal(5),
+			z.literal(10),
+			z.literal(20),
+			z.literal(50),
+			z.undefined(),
+		])
 		.catch(20),
 });
 
