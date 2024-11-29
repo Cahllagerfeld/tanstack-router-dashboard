@@ -7,6 +7,7 @@ export const apiPaths = {
 	workspaces: {
 		base: "/workspaces",
 		detail: (id: string) => `/workspaces/${id}`,
+		components: (id: string) => `/workspaces/${id}/components`,
 	},
 	users: {
 		currentUser: "/current-user",
