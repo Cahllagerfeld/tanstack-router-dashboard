@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
+import { TypeFilter } from "@/features/filters/type-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { RowSelectionState } from "@tanstack/react-table";
@@ -22,7 +23,8 @@ function RouteComponent() {
 	);
 
 	return (
-		<div>
+		<div className="space-y-4">
+			<TypeFilter queryName="type" filter={type} />
 			<DataTable
 				getRowId={(row) => row.id}
 				data={data.data.items}

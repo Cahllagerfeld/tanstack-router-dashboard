@@ -1,10 +1,10 @@
 import { componentQueries } from "@/data/components";
-import { COMPONENT_TYPES } from "@/lib/constants/component-types";
+import { typeFilterSchema } from "@/features/filters/filter";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 const querySchema = z.object({
-	type: z.enum(COMPONENT_TYPES).optional().catch(undefined),
+	type: typeFilterSchema.catch(undefined),
 	page: z.number().int().positive().optional().catch(undefined),
 	size: z
 		.union([

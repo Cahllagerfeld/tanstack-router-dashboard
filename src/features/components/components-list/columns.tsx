@@ -1,4 +1,4 @@
-import DisplayDate from "@/components/DisplayDate";
+import DisplayDate from "@/components/display-date";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Component } from "@/types/components";
 import { ColumnDef } from "@tanstack/react-table";
