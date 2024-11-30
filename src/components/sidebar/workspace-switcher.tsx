@@ -22,7 +22,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 export function WorkspaceSwitcher({}) {
 	const [workspaceDialogOpen, setWorkspaceDialogOpen] = useState(false);
