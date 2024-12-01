@@ -24,6 +24,12 @@ function RouteComponent() {
 
 	return (
 		<div className="space-y-4">
+			<div>
+				<h1 className="text-2xl font-bold">Components</h1>
+				<p className="text-sm text-muted-foreground">
+					Components are the building blocks of your stacks.
+				</p>
+			</div>
 			<TypeFilter queryName="type" filter={type} />
 			<DataTable
 				getRowId={(row) => row.id}
