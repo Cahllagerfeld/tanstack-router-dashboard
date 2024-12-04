@@ -1,5 +1,5 @@
 import { componentQueries } from "@/data/components";
-import { typeFilterSchema } from "@/features/filters/filter";
+import { typeFilterSchema } from "@/features/filters/type";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
