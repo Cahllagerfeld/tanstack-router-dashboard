@@ -4,6 +4,10 @@ export const apiPaths = {
 	info: "/info",
 	activate: "/activate",
 	settings: "/settings",
+	flavors: {
+		base: "/flavors",
+		detail: (id: string) => `/flavors/${id}`,
+	},
 	workspaces: {
 		base: "/workspaces",
 		detail: (id: string) => `/workspaces/${id}`,

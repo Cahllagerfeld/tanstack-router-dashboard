@@ -1,10 +1,13 @@
+import { PageHeader } from "@/components/page-header";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { TypeFilter } from "@/features/filters/type-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { RowSelectionState } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createLazyFileRoute(
@@ -24,13 +27,19 @@ function RouteComponent() {
 
 	return (
 		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">Components</h1>
-				<p className="text-sm text-muted-foreground">
-					Components are the building blocks of your stacks.
-				</p>
+			<PageHeader
+				headline="Components"
+				subHeadline="Components are the building blocks of your stacks"
+			/>
+			<div className="flex items-center justify-between">
+				<TypeFilter queryName="type" filter={type} />
+				<Button asChild>
+					<Link params={{ workspace_id }} to="/$workspace_id/components/create">
+						<Plus />
+						Create
+					</Link>
+				</Button>
 			</div>
-			<TypeFilter queryName="type" filter={type} />
 			<DataTable
 				getRowId={(row) => row.id}
 				data={data.data.items}
