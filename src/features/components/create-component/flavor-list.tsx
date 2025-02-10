@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { flavorQueries } from "@/data/flavors";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Dispatch, SetStateAction } from "react";
 
 type Props = {
 	type: string;
-	setFlavor: Dispatch<SetStateAction<string>>;
+	setFlavor: (val: string) => void;
 };
 
 export function FlavorList({ type, setFlavor }: Props) {

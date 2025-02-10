@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { snakeCaseToTitleCase } from "@/lib/strings";
-import { Dispatch, SetStateAction } from "react";
 
 type Props = {
-	setSelectedType: Dispatch<SetStateAction<string>>;
+	setSelectedType: (val: string) => void;
 };
 
 export function TypeList({ setSelectedType }: Props) {

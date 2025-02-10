@@ -4,9 +4,10 @@ import {
 	FlavorList,
 	FlavorListSkeleton,
 } from "@/features/components/create-component/flavor-list";
+import { StepIndicator } from "@/features/components/create-component/step-indicator";
 import { TypeList } from "@/features/components/create-component/type-list";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 
 export const Route = createLazyFileRoute(
 	"/(private)/$workspace_id/components/create"
@@ -14,13 +15,16 @@ export const Route = createLazyFileRoute(
 	component: RouteComponent,
 });
 
+const steps = ["Component Type", "Flavor", "Configuration"];
+
 function RouteComponent() {
+	const [currentStep, setCurrentStep] = useState(1);
 	const [selectedType, setSelectedType] = useState("");
 	const [selectedFlavor, setSelectedFlavor] = useState("");
 
-	useEffect(() => {
-		console.log({ selectedFlavor, selectedType });
-	}, [selectedFlavor, selectedType]);
+	function goToNextStep() {
+		setCurrentStep((prev) => prev + 1);
+	}
 
 	return (
 		<div className="space-y-8">
@@ -28,10 +32,24 @@ function RouteComponent() {
 				headline="Create Component"
 				subHeadline="Use the form to register new Stack Components"
 			/>
-			{!selectedType && <TypeList setSelectedType={setSelectedType} />}
+			<StepIndicator steps={steps} currentStep={currentStep} />
+			{!selectedType && (
+				<TypeList
+					setSelectedType={(string) => {
+						setSelectedType(string);
+						goToNextStep();
+					}}
+				/>
+			)}
 			{!!selectedType && !selectedFlavor && (
 				<Suspense fallback={<FlavorListSkeleton />}>
-					<FlavorList setFlavor={setSelectedFlavor} type={selectedType} />
+					<FlavorList
+						setFlavor={(string) => {
+							setSelectedFlavor(string);
+							goToNextStep();
+						}}
+						type={selectedType}
+					/>
 				</Suspense>
 			)}
 			{!!selectedType && selectedFlavor && (
