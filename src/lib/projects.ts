@@ -1,13 +1,15 @@
-const localStorageKey = "zenml.selected-workspace";
+import { getLocalStorageKey } from "./localstorage";
+
+const activeProjectKey = getLocalStorageKey("SELECTED_PROJECT");
 
 export function setProjectToLocalStorage(project: string | null) {
 	if (project === null) {
-		localStorage.removeItem(localStorageKey);
+		localStorage.removeItem(activeProjectKey);
 	} else {
-		localStorage.setItem(localStorageKey, project);
+		localStorage.setItem(activeProjectKey, project);
 	}
 }
 
 export function getProjectFromLocalStorage() {
-	return localStorage.getItem(localStorageKey);
+	return localStorage.getItem(activeProjectKey);
 }

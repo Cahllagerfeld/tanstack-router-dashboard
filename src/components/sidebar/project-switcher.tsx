@@ -13,9 +13,9 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { serverQueries } from "@/data/server";
 import { projectQueries } from "@/data/projects";
-import { CreateWorkspaceDialog } from "@/features/create-workspace/CreateWorkspaceDialog";
+import { serverQueries } from "@/data/server";
+import { CreateProjectDialog } from "@/features/create-project/create-project-dialog";
 import { getAvatarUrl } from "@/lib/avatar";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -24,8 +24,8 @@ import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
-export function WorkspaceSwitcher() {
-	const [workspaceDialogOpen, setWorkspaceDialogOpen] = useState(false);
+export function ProjectSwitcher() {
+	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
 	const navigate = useNavigate();
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
 	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
@@ -41,9 +41,9 @@ export function WorkspaceSwitcher() {
 
 	return (
 		<>
-			<CreateWorkspaceDialog
-				open={workspaceDialogOpen}
-				setOpen={setWorkspaceDialogOpen}
+			<CreateProjectDialog
+				open={projectDialogOpen}
+				setOpen={setProjectDialogOpen}
 			/>
 			<SidebarMenu>
 				<SidebarMenuItem>
@@ -102,7 +102,7 @@ export function WorkspaceSwitcher() {
 							))}
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								onClick={() => setWorkspaceDialogOpen(true)}
+								onClick={() => setProjectDialogOpen(true)}
 								className="gap-2 p-2"
 							>
 								<div className="flex size-6 items-center justify-center rounded-md border bg-background">

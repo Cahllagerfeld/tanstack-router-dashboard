@@ -30,13 +30,13 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { CreateWorkspaceForm, createWorkspaceSchema } from "./schema";
+import { CreateProjectForm, createProjectSchema } from "./schema";
 
 type Props = {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 };
-export function CreateWorkspaceDialog({ open, setOpen }: Props) {
+export function CreateProjectDialog({ open, setOpen }: Props) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	if (isDesktop) {
@@ -44,9 +44,9 @@ export function CreateWorkspaceDialog({ open, setOpen }: Props) {
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Create Workspace</DialogTitle>
+						<DialogTitle>Create Project</DialogTitle>
 						<DialogDescription>
-							Create a new workspace to start collaborating with your team.
+							Create a new project to start collaborating with your team.
 						</DialogDescription>
 					</DialogHeader>
 					<ProfileForm setOpen={setOpen} />
@@ -59,9 +59,9 @@ export function CreateWorkspaceDialog({ open, setOpen }: Props) {
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerContent>
 				<DrawerHeader className="text-left">
-					<DrawerTitle>Create Workspace</DrawerTitle>
+					<DrawerTitle>Create Project</DrawerTitle>
 					<DrawerDescription>
-						Create a new workspace to start collaborating with your team.
+						Create a new project to start collaborating with your team.
 					</DrawerDescription>
 				</DrawerHeader>
 				<ProfileForm setOpen={setOpen} className="px-4" />
@@ -82,8 +82,8 @@ function ProfileForm({
 }: HTMLAttributes<HTMLFormElement> & {
 	setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-	const form = useForm<CreateWorkspaceForm>({
-		resolver: zodResolver(createWorkspaceSchema),
+	const form = useForm<CreateProjectForm>({
+		resolver: zodResolver(createProjectSchema),
 		defaultValues: {
 			name: "",
 			description: "",
@@ -96,7 +96,7 @@ function ProfileForm({
 		},
 	});
 
-	function handleCreateWorkspace(vals: CreateWorkspaceForm) {
+	function handleCreateProject(vals: CreateProjectForm) {
 		mutate({
 			name: vals.name,
 			description: vals.description,
@@ -107,7 +107,7 @@ function ProfileForm({
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(handleCreateWorkspace)}
+				onSubmit={form.handleSubmit(handleCreateProject)}
 				className={cn("space-y-4", className)}
 				id="password"
 				{...rest}
@@ -117,7 +117,7 @@ function ProfileForm({
 					name="name"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Workspace Name</FormLabel>
+							<FormLabel>Project Name</FormLabel>
 							<FormControl>
 								<Input {...field} />
 							</FormControl>
@@ -139,7 +139,7 @@ function ProfileForm({
 					)}
 				></FormField>
 				<Button className="w-full" type="submit">
-					Create Workspace
+					Create Project
 				</Button>
 			</form>
 		</Form>
