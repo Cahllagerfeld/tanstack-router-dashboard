@@ -1,4 +1,4 @@
-import { CreateWorkspace, Workspace } from "@/types/workspaces";
+import { CreateProject, Project } from "@/types/projects";
 import { apiPaths } from "../../api";
 import { apiClient } from "../../api-client";
 import {
@@ -9,28 +9,28 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "@tanstack/react-router";
 
-async function createWorkspace(payload: CreateWorkspace) {
-	const workspace: Workspace = await apiClient(apiPaths.workspaces.base, {
+async function createProject(payload: CreateProject) {
+	const project: Project = await apiClient(apiPaths.projects.base, {
 		method: "POST",
 		body: JSON.stringify(payload),
 	});
 
-	return workspace;
+	return project;
 }
 
-export function useCreateWorkspace(
-	options?: UseMutationOptions<Workspace, unknown, CreateWorkspace>
+export function useCreateProject(
+	options?: UseMutationOptions<Project, unknown, CreateProject>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, ...rest } = options || {};
 	return useMutation({
 		...rest,
-		mutationFn: createWorkspace,
+		mutationFn: createProject,
 		onSuccess: (data, vars, ctx) => {
-			queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-			toast.success(`Workspace ${data.name} created`);
-			navigate({ to: "/$workspace_id", params: { workspace_id: data.id } });
+			queryClient.invalidateQueries({ queryKey: ["projects"] });
+			toast.success(`Project ${data.name} created`);
+			navigate({ to: "/$project_id", params: { project_id: data.id } });
 			onSuccess?.(data, vars, ctx);
 		},
 	});

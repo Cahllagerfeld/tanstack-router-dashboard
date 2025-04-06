@@ -1,14 +1,11 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchWorkspaceComponentsList } from "./queries/workspace-list";
+import { fetchComponentList } from "./queries/component-list";
 import { ComponentsListQueryParams } from "@/types/components";
 
 export const componentQueries = {
-	workspaceComponentList: (
-		workspaceId: string,
-		options?: ComponentsListQueryParams
-	) =>
+	componentList: (options?: ComponentsListQueryParams) =>
 		queryOptions({
-			queryFn: () => fetchWorkspaceComponentsList(workspaceId, options),
-			queryKey: ["workspaces", workspaceId, "components", options],
+			queryFn: () => fetchComponentList(options),
+			queryKey: ["components", options],
 		}),
 };

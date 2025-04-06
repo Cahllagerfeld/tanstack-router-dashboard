@@ -1,14 +1,14 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 
-export const Route = createLazyFileRoute("/(private)/$workspace_id/")({
+export const Route = createLazyFileRoute("/(private)/$project_id/")({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { workspace_id } = Route.useParams();
+	const { project_id } = Route.useParams();
 	return (
 		<div>
-			<div>Hello {workspace_id}</div>
+			<div>Hello {project_id}</div>
 		</div>
 	);
 }

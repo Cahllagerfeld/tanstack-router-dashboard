@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc -b && vite build",
+		"check:types": "tsc --noEmit",
 		"dev": "vite",
 		"format": "prettier --write .",
 		"generate:types": "bun scripts/types.js",

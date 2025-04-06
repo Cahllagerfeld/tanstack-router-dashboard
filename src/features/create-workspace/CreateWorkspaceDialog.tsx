@@ -24,7 +24,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateWorkspace } from "@/data/workspaces/mutations/create-workspace";
+import { useCreateProject } from "@/data/projects/mutations/create-project";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -90,14 +90,18 @@ function ProfileForm({
 		},
 	});
 
-	const { mutate } = useCreateWorkspace({
+	const { mutate } = useCreateProject({
 		onSuccess: () => {
 			setOpen(false);
 		},
 	});
 
 	function handleCreateWorkspace(vals: CreateWorkspaceForm) {
-		mutate({ name: vals.name, description: vals.description });
+		mutate({
+			name: vals.name,
+			description: vals.description,
+			display_name: vals.name,
+		});
 	}
 
 	return (

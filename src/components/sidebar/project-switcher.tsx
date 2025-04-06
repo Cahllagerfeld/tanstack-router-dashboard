@@ -14,29 +14,27 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { serverQueries } from "@/data/server";
-import { workspaceQueries } from "@/data/workspaces";
+import { projectQueries } from "@/data/projects";
 import { CreateWorkspaceDialog } from "@/features/create-workspace/CreateWorkspaceDialog";
 import { getAvatarUrl } from "@/lib/avatar";
-import { setWorkspaceToLocalStorage } from "@/lib/workspaces";
+import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 
-export function WorkspaceSwitcher({}) {
+export function WorkspaceSwitcher() {
 	const [workspaceDialogOpen, setWorkspaceDialogOpen] = useState(false);
 	const navigate = useNavigate();
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
-	const { data: workspaceData } = useSuspenseQuery(
-		workspaceQueries.workspaceList()
-	);
-	const { workspace_id } = useParams({
-		from: "/(private)/$workspace_id",
+	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
+	const { project_id } = useParams({
+		from: "/(private)/$project_id",
 	});
 
-	const activeWorkspace = workspaceData.items.find(
-		(workspace) => workspace.id === workspace_id
+	const activeProject = projectData.items.find(
+		(project) => project.id === project_id
 	)?.name;
 
 	const { isMobile } = useSidebar();
@@ -57,7 +55,7 @@ export function WorkspaceSwitcher({}) {
 							>
 								<Avatar className="size-8 shrink-0 rounded-md">
 									<AvatarImage
-										src={getAvatarUrl(activeWorkspace || "", {
+										src={getAvatarUrl(activeProject || "", {
 											size: 32,
 										})}
 									/>
@@ -66,7 +64,7 @@ export function WorkspaceSwitcher({}) {
 									<span className="truncate font-semibold">
 										{serverData.name}
 									</span>
-									<span className="truncate text-xs">{activeWorkspace}</span>
+									<span className="truncate text-xs">{activeProject}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto" />
 							</SidebarMenuButton>
@@ -78,25 +76,27 @@ export function WorkspaceSwitcher({}) {
 							sideOffset={4}
 						>
 							<DropdownMenuLabel className="text-xs text-muted-foreground">
-								Workspaces
+								Projects
 							</DropdownMenuLabel>
-							{workspaceData.items.map((ws, index) => (
+							{projectData.items.map((project, index) => (
 								<DropdownMenuItem
-									key={ws.id}
+									key={project.id}
 									onClick={() => {
-										setWorkspaceToLocalStorage(ws.id);
+										setProjectToLocalStorage(project.id);
 										navigate({
-											to: "/$workspace_id",
-											params: { workspace_id: ws.id },
+											to: "/$project_id",
+											params: { project_id: project.id },
 										});
 									}}
 									className="gap-2 p-2"
 								>
 									<Avatar className="size-6 shrink-0 rounded-md">
-										<AvatarImage src={getAvatarUrl(ws.name, { size: 24 })} />
+										<AvatarImage
+											src={getAvatarUrl(project.name, { size: 24 })}
+										/>
 									</Avatar>
 
-									<span className="truncate">{ws.name}</span>
+									<span className="truncate">{project.name}</span>
 									<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
 								</DropdownMenuItem>
 							))}
@@ -109,7 +109,7 @@ export function WorkspaceSwitcher({}) {
 									<Plus className="size-4" />
 								</div>
 								<div className="font-medium text-muted-foreground">
-									Create Workspace
+									Create Project
 								</div>
 							</DropdownMenuItem>
 						</DropdownMenuContent>

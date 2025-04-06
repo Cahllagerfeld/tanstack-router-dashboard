@@ -244,6 +244,8 @@ export type paths = {
 		 * @description Prunes unused artifact versions and their artifacts.
 		 *
 		 *     Args:
+		 *         project_name_or_id: The project name or ID to prune artifact
+		 *             versions for.
 		 *         only_versions: Only delete artifact versions, keeping artifacts
 		 */
 		delete: operations["prune_artifact_versions_api_v1_artifact_versions_delete"];
@@ -434,6 +436,9 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The device authorization response.
+		 *
+		 *     Raises:
+		 *         HTTPException: If the device authorization is not supported.
 		 */
 		post: operations["device_authorization_api_v1_device_authorization_post"];
 		delete?: never;
@@ -451,22 +456,41 @@ export type paths = {
 		};
 		/**
 		 * Api Token
-		 * @description Get a workload API token for the current user.
+		 * @description Generate an API token for the current user.
+		 *
+		 *     Use this endpoint to generate an API token for the current user. Two types
+		 *     of API tokens are supported:
+		 *
+		 *     * Generic API token: This token is short-lived and can be used for
+		 *     generic automation tasks. The expiration can be set by the user, but the
+		 *     server will impose a maximum expiration time.
+		 *     * Workload API token: This token is scoped to a specific pipeline run, step
+		 *     run or schedule and is used by pipeline workloads to authenticate with the
+		 *     server. A pipeline run ID, step run ID or schedule ID must be provided and
+		 *     the generated token will only be valid for the indicated pipeline run, step
+		 *     run or schedule. No time limit is imposed on the validity of the token.
+		 *     A workload API token can be used to authenticate and generate another
+		 *     workload API token, but only for the same schedule, pipeline run ID or step
+		 *     run ID, in that order.
 		 *
 		 *     Args:
-		 *         pipeline_id: The ID of the pipeline to get the API token for.
-		 *         schedule_id: The ID of the schedule to get the API token for.
-		 *         expires_minutes: The number of minutes for which the API token should
-		 *             be valid. If not provided, the API token will be valid indefinitely.
+		 *         token_type: The type of API token to generate.
+		 *         expires_in: The expiration time of the generic API token in seconds.
+		 *             If not set, the server will use the default expiration time for
+		 *             generic API tokens. The server also imposes a maximum expiration
+		 *             time.
+		 *         schedule_id: The ID of the schedule to scope the workload API token to.
+		 *         pipeline_run_id: The ID of the pipeline run to scope the workload API
+		 *             token to.
+		 *         step_run_id: The ID of the step run to scope the workload API token to.
 		 *         auth_context: The authentication context.
 		 *
 		 *     Returns:
 		 *         The API token.
 		 *
 		 *     Raises:
-		 *         HTTPException: If the user is not authenticated.
-		 *         AuthorizationException: If trying to scope the API token to a different
-		 *             pipeline/schedule than the token used to authorize this request.
+		 *         AuthorizationException: If not authorized to generate the API token.
+		 *         ValueError: If the request is invalid.
 		 */
 		get: operations["api_token_api_v1_api_token_get"];
 		put?: never;
@@ -624,6 +648,7 @@ export type paths = {
 		 *     Args:
 		 *         filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
@@ -632,7 +657,18 @@ export type paths = {
 		 */
 		get: operations["list_code_repositories_api_v1_code_repositories_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Code Repository
+		 * @description Creates a code repository.
+		 *
+		 *     Args:
+		 *         code_repository: Code repository to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created code repository.
+		 */
+		post: operations["create_code_repository_api_v1_code_repositories_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1005,43 +1041,19 @@ export type paths = {
 		 */
 		get: operations["list_models_api_v1_models_get"];
 		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/models/{model_name_or_id}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
 		/**
-		 * Get Model
-		 * @description Get a model by name or ID.
+		 * Create Model
+		 * @description Creates a model.
 		 *
 		 *     Args:
-		 *         model_name_or_id: The name or ID of the model to get.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
+		 *         model: Model to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
-		 *         The model with the given name or ID.
+		 *         The created model.
 		 */
-		get: operations["get_model_api_v1_models__model_name_or_id__get"];
-		put?: never;
-		post?: never;
-		/**
-		 * Delete Model
-		 * @description Delete a model by name or ID.
-		 *
-		 *     Args:
-		 *         model_name_or_id: The name or ID of the model to delete.
-		 */
-		delete: operations["delete_model_api_v1_models__model_name_or_id__delete"];
+		post: operations["create_model_api_v1_models_post"];
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -1054,7 +1066,19 @@ export type paths = {
 			path?: never;
 			cookie?: never;
 		};
-		get?: never;
+		/**
+		 * Get Model
+		 * @description Get a model by name or ID.
+		 *
+		 *     Args:
+		 *         model_id: The ID of the model to get.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         The model with the given name or ID.
+		 */
+		get: operations["get_model_api_v1_models__model_id__get"];
 		/**
 		 * Update Model
 		 * @description Updates a model.
@@ -1068,7 +1092,14 @@ export type paths = {
 		 */
 		put: operations["update_model_api_v1_models__model_id__put"];
 		post?: never;
-		delete?: never;
+		/**
+		 * Delete Model
+		 * @description Delete a model by ID.
+		 *
+		 *     Args:
+		 *         model_id: The ID of the model to delete.
+		 */
+		delete: operations["delete_model_api_v1_models__model_id__delete"];
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -1085,18 +1116,19 @@ export type paths = {
 		 * List Model Versions
 		 * @description Get model versions according to query filters.
 		 *
-		 *     This endpoint serves the purpose of allowing scoped filtering by model_id.
-		 *
 		 *     Args:
-		 *         model_name_or_id: The name or ID of the model to list in.
 		 *         model_version_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         model_name_or_id: Optional name or ID of the model.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *         auth_context: The authentication context.
 		 *
 		 *     Returns:
 		 *         The model versions according to query filters.
+		 *
+		 *     Raises:
+		 *         ValueError: If the model is missing from the filter.
 		 */
 		get: operations["list_model_versions_api_v1_models__model_name_or_id__model_versions_get"];
 		put?: never;
@@ -1121,16 +1153,32 @@ export type paths = {
 		 *     Args:
 		 *         model_version_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         model_name_or_id: Optional name or ID of the model.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *         auth_context: The authentication context.
 		 *
 		 *     Returns:
 		 *         The model versions according to query filters.
+		 *
+		 *     Raises:
+		 *         ValueError: If the model is missing from the filter.
 		 */
 		get: operations["list_model_versions_api_v1_model_versions_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Model Version
+		 * @description Creates a model version.
+		 *
+		 *     Args:
+		 *         model_version: Model version to create.
+		 *         model_id: Optional ID of the model.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created model version.
+		 */
+		post: operations["create_model_version_api_v1_model_versions_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1279,7 +1327,17 @@ export type paths = {
 		 */
 		get: operations["list_model_version_artifact_links_api_v1_model_version_artifacts_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Model Version Artifact Link
+		 * @description Create a new model version to artifact link.
+		 *
+		 *     Args:
+		 *         model_version_artifact_link: The model version to artifact link to create.
+		 *
+		 *     Returns:
+		 *         The created model version to artifact link.
+		 */
+		post: operations["create_model_version_artifact_link_api_v1_model_version_artifacts_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1308,7 +1366,18 @@ export type paths = {
 		 */
 		get: operations["list_model_version_pipeline_run_links_api_v1_model_version_pipeline_runs_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Model Version Pipeline Run Link
+		 * @description Create a new model version to pipeline run link.
+		 *
+		 *     Args:
+		 *         model_version_pipeline_run_link: The model version to pipeline run link to create.
+		 *
+		 *     Returns:
+		 *         - If Model Version to Pipeline Run Link already exists - returns the existing link.
+		 *         - Otherwise, returns the newly created model version to pipeline run link.
+		 */
+		post: operations["create_model_version_pipeline_run_link_api_v1_model_version_pipeline_runs_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1329,15 +1398,27 @@ export type paths = {
 		 *     Args:
 		 *         pipeline_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         List of pipeline objects.
+		 *         List of pipeline objects matching the filter criteria.
 		 */
 		get: operations["list_pipelines_api_v1_pipelines_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Pipeline
+		 * @description Creates a pipeline.
+		 *
+		 *     Args:
+		 *         pipeline: Pipeline to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created pipeline.
+		 */
+		post: operations["create_pipeline_api_v1_pipelines_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1433,15 +1514,27 @@ export type paths = {
 		 *     Args:
 		 *         build_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         List of build objects.
+		 *         List of build objects matching the filter criteria.
 		 */
 		get: operations["list_builds_api_v1_pipeline_builds_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Build
+		 * @description Creates a build, optionally in a specific project.
+		 *
+		 *     Args:
+		 *         build: Build to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created build.
+		 */
+		post: operations["create_build_api_v1_pipeline_builds_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1492,20 +1585,32 @@ export type paths = {
 		};
 		/**
 		 * List Deployments
-		 * @description Gets a list of deployment.
+		 * @description Gets a list of deployments.
 		 *
 		 *     Args:
 		 *         deployment_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         List of deployment objects.
+		 *         List of deployment objects matching the filter criteria.
 		 */
 		get: operations["list_deployments_api_v1_pipeline_deployments_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Deployment
+		 * @description Creates a deployment.
+		 *
+		 *     Args:
+		 *         deployment: Deployment to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created deployment.
+		 */
+		post: operations["create_deployment_api_v1_pipeline_deployments_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1560,6 +1665,7 @@ export type paths = {
 		 *
 		 *     Args:
 		 *         runs_filter_model: Filter model used for pagination, sorting, filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
@@ -1568,7 +1674,19 @@ export type paths = {
 		 */
 		get: operations["list_runs_api_v1_runs_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Get Or Create Pipeline Run
+		 * @description Get or create a pipeline run.
+		 *
+		 *     Args:
+		 *         pipeline_run: Pipeline run to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The pipeline run and a boolean indicating whether the run was created
+		 *         or not.
+		 */
+		post: operations["get_or_create_pipeline_run_api_v1_runs_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1732,6 +1850,34 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/run-metadata": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create Run Metadata
+		 * @description Creates run metadata.
+		 *
+		 *     Args:
+		 *         run_metadata: The run metadata to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Raises:
+		 *         RuntimeError: If the resource type is not supported.
+		 */
+		post: operations["create_run_metadata_api_v1_run_metadata_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/run_templates": {
 		parameters: {
 			query?: never;
@@ -1746,6 +1892,7 @@ export type paths = {
 		 *     Args:
 		 *         filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
@@ -1754,7 +1901,18 @@ export type paths = {
 		 */
 		get: operations["list_run_templates_api_v1_run_templates_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Run Template
+		 * @description Create a run template.
+		 *
+		 *     Args:
+		 *         run_template: Run template to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created run template.
+		 */
+		post: operations["create_run_template_api_v1_run_templates_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1821,6 +1979,7 @@ export type paths = {
 		 *     Args:
 		 *         schedule_filter_model: Filter model used for pagination, sorting,
 		 *             filtering
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
@@ -1829,7 +1988,19 @@ export type paths = {
 		 */
 		get: operations["list_schedules_api_v1_schedules_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Schedule
+		 * @description Creates a schedule.
+		 *
+		 *     Args:
+		 *         schedule: Schedule to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The created schedule.
+		 */
+		post: operations["create_schedule_api_v1_schedules_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -1904,7 +2075,18 @@ export type paths = {
 		 */
 		get: operations["list_secrets_api_v1_secrets_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Secret
+		 * @description Creates a secret.
+		 *
+		 *     Args:
+		 *         secret: Secret to create.
+		 *         workspace_name_or_id: Optional name or ID of the workspace.
+		 *
+		 *     Returns:
+		 *         The created secret.
+		 */
+		post: operations["create_secret_api_v1_secrets_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -2062,6 +2244,29 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/load-info": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Server Load Info
+		 * @description Get information about the server load.
+		 *
+		 *     Returns:
+		 *         Information about the server load.
+		 */
+		get: operations["server_load_info_api_v1_load_info_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/onboarding_state": {
 		parameters: {
 			query?: never;
@@ -2145,6 +2350,32 @@ export type paths = {
 		 *         The default admin user that was created during activation, if any.
 		 */
 		put: operations["activate_server_api_v1_activate_put"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/statistics": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Server Statistics
+		 * @description Gets server statistics.
+		 *
+		 *     Args:
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         Statistics of the server.
+		 */
+		get: operations["get_server_statistics_api_v1_statistics_get"];
+		put?: never;
 		post?: never;
 		delete?: never;
 		options?: never;
@@ -2371,21 +2602,33 @@ export type paths = {
 		};
 		/**
 		 * List Service Connectors
-		 * @description Get a list of all service connectors for a specific type.
+		 * @description Get a list of all service connectors.
 		 *
 		 *     Args:
 		 *         connector_filter_model: Filter model used for pagination, sorting,
 		 *             filtering
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         expand_secrets: Whether to expand secrets or not.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         Page with list of service connectors for a specific type.
+		 *         Page with list of service connectors matching the filter criteria.
 		 */
 		get: operations["list_service_connectors_api_v1_service_connectors_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Service Connector
+		 * @description Creates a service connector.
+		 *
+		 *     Args:
+		 *         connector: Service connector to register.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created service connector.
+		 */
+		post: operations["create_service_connector_api_v1_service_connectors_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -2466,6 +2709,36 @@ export type paths = {
 		 *         access to.
 		 */
 		post: operations["validate_and_verify_service_connector_config_api_v1_service_connectors_verify_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/service_connectors/resources": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Service Connector Resources
+		 * @description List resources that can be accessed by service connectors.
+		 *
+		 *     Args:
+		 *         filter_model: The filter model to use when fetching service
+		 *             connectors.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The matching list of resources that available service
+		 *         connectors have access to.
+		 */
+		get: operations["list_service_connector_resources_api_v1_service_connectors_resources_get"];
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -2654,10 +2927,11 @@ export type paths = {
 		 * @description Creates a new service.
 		 *
 		 *     Args:
-		 *         service: The model containing the attributes of the new service.
+		 *         service: The service to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
-		 *         The created service object.
+		 *         The created service.
 		 */
 		post: operations["create_service_api_v1_services_post"];
 		delete?: never;
@@ -2813,17 +3087,30 @@ export type paths = {
 		 * @description Returns all stacks.
 		 *
 		 *     Args:
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         stack_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         All stacks.
+		 *         All stacks matching the filter criteria.
 		 */
 		get: operations["list_stacks_api_v1_stacks_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Stack
+		 * @description Creates a stack.
+		 *
+		 *     Args:
+		 *         stack: Stack to register.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The created stack.
+		 */
+		post: operations["create_stack_api_v1_stacks_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -2885,20 +3172,32 @@ export type paths = {
 		};
 		/**
 		 * List Stack Components
-		 * @description Get a list of all stack components for a specific type.
+		 * @description Get a list of all stack components.
 		 *
 		 *     Args:
 		 *         component_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         List of stack components for a specific type.
+		 *         List of stack components matching the filter criteria.
 		 */
 		get: operations["list_stack_components_api_v1_components_get"];
 		put?: never;
-		post?: never;
+		/**
+		 * Create Stack Component
+		 * @description Creates a stack component.
+		 *
+		 *     Args:
+		 *         component: Stack component to register.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created stack component.
+		 */
+		post: operations["create_stack_component_api_v1_components_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -3003,6 +3302,7 @@ export type paths = {
 		 *
 		 *     Args:
 		 *         step: The run step to create.
+		 *         _: Authentication context.
 		 *
 		 *     Returns:
 		 *         The created run step.
@@ -3232,6 +3532,72 @@ export type paths = {
 		put: operations["update_tag_api_v1_tags__tag_id__put"];
 		post?: never;
 		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/tag_resources": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create Tag Resource
+		 * @description Attach different tags to different resources.
+		 *
+		 *     Args:
+		 *         tag_resource: A tag resource request.
+		 *
+		 *     Returns:
+		 *         A tag resource response.
+		 */
+		post: operations["create_tag_resource_api_v1_tag_resources_post"];
+		/**
+		 * Delete Tag Resource
+		 * @description Detach a tag from a resource.
+		 *
+		 *     Args:
+		 *         tag_resource: The tag resource relationship to delete.
+		 */
+		delete: operations["delete_tag_resource_api_v1_tag_resources_delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/tag_resources/batch": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Batch Create Tag Resource
+		 * @description Attach different tags to different resources.
+		 *
+		 *     Args:
+		 *         tag_resources: A list of tag resource requests.
+		 *
+		 *     Returns:
+		 *         A list of tag resource responses.
+		 */
+		post: operations["batch_create_tag_resource_api_v1_tag_resources_batch_post"];
+		/**
+		 * Batch Delete Tag Resource
+		 * @description Detach different tags from different resources.
+		 *
+		 *     Args:
+		 *         tag_resources: A list of tag resource requests.
+		 */
+		delete: operations["batch_delete_tag_resource_api_v1_tag_resources_batch_delete"];
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -3579,40 +3945,42 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspaces
-		 * @description Lists all workspaces in the organization.
+		 * List Projects
+		 * @deprecated
+		 * @description Lists all projects in the organization.
 		 *
 		 *     Args:
-		 *         workspace_filter_model: Filter model used for pagination, sorting,
+		 *         project_filter_model: Filter model used for pagination, sorting,
 		 *             filtering,
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         A list of workspaces.
+		 *         A list of projects.
 		 */
-		get: operations["list_workspaces_api_v1_workspaces_get"];
+		get: operations["list_projects_api_v1_workspaces_get"];
 		put?: never;
 		/**
-		 * Create Workspace
-		 * @description Creates a workspace based on the requestBody.
+		 * Create Project
+		 * @deprecated
+		 * @description Creates a project based on the requestBody.
 		 *
 		 *     # noqa: DAR401
 		 *
 		 *     Args:
-		 *         workspace: Workspace to create.
+		 *         project_request: Project to create.
 		 *
 		 *     Returns:
-		 *         The created workspace.
+		 *         The created project.
 		 */
-		post: operations["create_workspace_api_v1_workspaces_post"];
+		post: operations["create_project_api_v1_workspaces_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}": {
+	"/api/v1/workspaces/{project_name_or_id}": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3620,49 +3988,52 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * Get Workspace
-		 * @description Get a workspace for given name.
+		 * Get Project
+		 * @deprecated
+		 * @description Get a project for given name.
 		 *
 		 *     # noqa: DAR401
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
+		 *         project_name_or_id: Name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         The requested workspace.
+		 *         The requested project.
 		 */
-		get: operations["get_workspace_api_v1_workspaces__workspace_name_or_id__get"];
+		get: operations["get_project_api_v1_workspaces__project_name_or_id__get"];
 		/**
-		 * Update Workspace
-		 * @description Get a workspace for given name.
+		 * Update Project
+		 * @deprecated
+		 * @description Get a project for given name.
 		 *
 		 *     # noqa: DAR401
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace to update.
-		 *         workspace_update: the workspace to use to update
+		 *         project_name_or_id: Name or ID of the project to update.
+		 *         project_update: the project to use to update
 		 *
 		 *     Returns:
-		 *         The updated workspace.
+		 *         The updated project.
 		 */
-		put: operations["update_workspace_api_v1_workspaces__workspace_name_or_id__put"];
+		put: operations["update_project_api_v1_workspaces__project_name_or_id__put"];
 		post?: never;
 		/**
-		 * Delete Workspace
-		 * @description Deletes a workspace.
+		 * Delete Project
+		 * @deprecated
+		 * @description Deletes a project.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
+		 *         project_name_or_id: Name or ID of the project.
 		 */
-		delete: operations["delete_workspace_api_v1_workspaces__workspace_name_or_id__delete"];
+		delete: operations["delete_project_api_v1_workspaces__project_name_or_id__delete"];
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/stacks": {
+	"/api/v1/workspaces/{project_name_or_id}/statistics": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3670,43 +4041,29 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Stacks
-		 * @description Get stacks that are part of a specific workspace for the user.
+		 * Get Project Statistics
+		 * @deprecated
+		 * @description Gets statistics of a project.
 		 *
 		 *     # noqa: DAR401
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         stack_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         All stacks part of the specified workspace.
-		 */
-		get: operations["list_workspace_stacks_api_v1_workspaces__workspace_name_or_id__stacks_get"];
-		put?: never;
-		/**
-		 * Create Stack
-		 * @description Creates a stack for a particular workspace.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         stack: Stack to register.
+		 *         project_name_or_id: Name or ID of the project to get statistics for.
 		 *         auth_context: Authentication context.
 		 *
 		 *     Returns:
-		 *         The created stack.
+		 *         Project statistics.
 		 */
-		post: operations["create_stack_api_v1_workspaces__workspace_name_or_id__stacks_post"];
+		get: operations["get_project_statistics_api_v1_workspaces__project_name_or_id__statistics_get"];
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/components": {
+	"/api/v1/workspaces/{project_name_or_id}/code_repositories": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3714,46 +4071,99 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Stack Components
-		 * @description List stack components that are part of a specific workspace.
-		 *
-		 *     # noqa: DAR401
+		 * List Code Repositories
+		 * @deprecated
+		 * @description Gets a page of code repositories.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         component_filter_model: Filter model used for pagination, sorting,
+		 *         filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         All stack components part of the specified workspace.
+		 *         Page of code repository objects.
 		 */
-		get: operations["list_workspace_stack_components_api_v1_workspaces__workspace_name_or_id__components_get"];
+		get: operations["list_code_repositories_api_v1_workspaces__project_name_or_id__code_repositories_get"];
 		put?: never;
 		/**
-		 * Create Stack Component
-		 * @description Creates a stack component.
+		 * Create Code Repository
+		 * @deprecated
+		 * @description Creates a code repository.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         component: Stack component to register.
+		 *         code_repository: Code repository to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
-		 *         The created stack component.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the stack
-		 *             component does not match the current workspace.
+		 *         The created code repository.
 		 */
-		post: operations["create_stack_component_api_v1_workspaces__workspace_name_or_id__components_post"];
+		post: operations["create_code_repository_api_v1_workspaces__project_name_or_id__code_repositories_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/pipelines": {
+	"/api/v1/workspaces/{project_name_or_id}/models": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create Model
+		 * @deprecated
+		 * @description Creates a model.
+		 *
+		 *     Args:
+		 *         model: Model to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created model.
+		 */
+		post: operations["create_model_api_v1_workspaces__project_name_or_id__models_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/models/{model_id}/model_versions": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create Model Version
+		 * @deprecated
+		 * @description Creates a model version.
+		 *
+		 *     Args:
+		 *         model_version: Model version to create.
+		 *         model_id: Optional ID of the model.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created model version.
+		 */
+		post: operations["create_model_version_api_v1_workspaces__project_name_or_id__models__model_id__model_versions_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/pipeline_builds": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3761,94 +4171,42 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Pipelines
-		 * @description Gets pipelines defined for a specific workspace.
-		 *
-		 *     # noqa: DAR401
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         pipeline_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         All pipelines within the workspace.
-		 */
-		get: operations["list_workspace_pipelines_api_v1_workspaces__workspace_name_or_id__pipelines_get"];
-		put?: never;
-		/**
-		 * Create Pipeline
-		 * @description Creates a pipeline.
+		 * List Builds
+		 * @deprecated
+		 * @description Gets a list of builds.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         pipeline: Pipeline to create.
-		 *
-		 *     Returns:
-		 *         The created pipeline.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the pipeline
-		 *             does not match the current workspace or authenticated user.
-		 */
-		post: operations["create_pipeline_api_v1_workspaces__workspace_name_or_id__pipelines_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/pipeline_builds": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Workspace Builds
-		 * @description Gets builds defined for a specific workspace.
-		 *
-		 *     # noqa: DAR401
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         build_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         All builds within the workspace.
+		 *         List of build objects matching the filter criteria.
 		 */
-		get: operations["list_workspace_builds_api_v1_workspaces__workspace_name_or_id__pipeline_builds_get"];
+		get: operations["list_builds_api_v1_workspaces__project_name_or_id__pipeline_builds_get"];
 		put?: never;
 		/**
 		 * Create Build
-		 * @description Creates a build.
+		 * @deprecated
+		 * @description Creates a build, optionally in a specific project.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         build: Build to create.
-		 *         auth_context: Authentication context.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
 		 *         The created build.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the build
-		 *             does not match the current workspace.
 		 */
-		post: operations["create_build_api_v1_workspaces__workspace_name_or_id__pipeline_builds_post"];
+		post: operations["create_build_api_v1_workspaces__project_name_or_id__pipeline_builds_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/pipeline_deployments": {
+	"/api/v1/workspaces/{project_name_or_id}/pipeline_deployments": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3856,47 +4214,42 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Deployments
-		 * @description Gets deployments defined for a specific workspace.
-		 *
-		 *     # noqa: DAR401
+		 * List Deployments
+		 * @deprecated
+		 * @description Gets a list of deployments.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         deployment_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         All deployments within the workspace.
+		 *         List of deployment objects matching the filter criteria.
 		 */
-		get: operations["list_workspace_deployments_api_v1_workspaces__workspace_name_or_id__pipeline_deployments_get"];
+		get: operations["list_deployments_api_v1_workspaces__project_name_or_id__pipeline_deployments_get"];
 		put?: never;
 		/**
 		 * Create Deployment
+		 * @deprecated
 		 * @description Creates a deployment.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         deployment: Deployment to create.
-		 *         auth_context: Authentication context.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
 		 *         The created deployment.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the
-		 *             deployment does not match the current workspace.
 		 */
-		post: operations["create_deployment_api_v1_workspaces__workspace_name_or_id__pipeline_deployments_post"];
+		post: operations["create_deployment_api_v1_workspaces__project_name_or_id__pipeline_deployments_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/run_templates": {
+	"/api/v1/workspaces/{project_name_or_id}/pipelines": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -3904,155 +4257,42 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Run Templates
-		 * @description Get a page of run templates.
+		 * List Pipelines
+		 * @deprecated
+		 * @description Gets a list of pipelines.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         filter_model: Filter model used for pagination, sorting,
+		 *         pipeline_filter_model: Filter model used for pagination, sorting,
 		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         Page of run templates.
+		 *         List of pipeline objects matching the filter criteria.
 		 */
-		get: operations["list_workspace_run_templates_api_v1_workspaces__workspace_name_or_id__run_templates_get"];
+		get: operations["list_pipelines_api_v1_workspaces__project_name_or_id__pipelines_get"];
 		put?: never;
 		/**
-		 * Create Run Template
-		 * @description Create a run template.
+		 * Create Pipeline
+		 * @deprecated
+		 * @description Creates a pipeline.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         run_template: Run template to create.
+		 *         pipeline: Pipeline to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
-		 *         The created run template.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the
-		 *             run template does not match the current workspace.
+		 *         The created pipeline.
 		 */
-		post: operations["create_run_template_api_v1_workspaces__workspace_name_or_id__run_templates_post"];
+		post: operations["create_pipeline_api_v1_workspaces__project_name_or_id__pipelines_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/runs": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Runs
-		 * @description Get pipeline runs according to query filters.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         runs_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         The pipeline runs according to query filters.
-		 */
-		get: operations["list_runs_api_v1_workspaces__workspace_name_or_id__runs_get"];
-		put?: never;
-		/**
-		 * Create Pipeline Run
-		 * @description Creates a pipeline run.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         pipeline_run: Pipeline run to create.
-		 *
-		 *     Returns:
-		 *         The created pipeline run.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the
-		 *             pipeline run does not match the current workspace.
-		 */
-		post: operations["create_pipeline_run_api_v1_workspaces__workspace_name_or_id__runs_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/schedules": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create Schedule
-		 * @description Creates a schedule.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         schedule: Schedule to create.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         The created schedule.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             schedule does not match the current workspace or authenticated user.
-		 */
-		post: operations["create_schedule_api_v1_workspaces__workspace_name_or_id__schedules_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/runs/get-or-create": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Get Or Create Pipeline Run
-		 * @description Get or create a pipeline run.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         pipeline_run: Pipeline run to create.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         The pipeline run and a boolean indicating whether the run was created
-		 *         or not.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             pipeline run does not match the current workspace or authenticated
-		 *             user.
-		 */
-		post: operations["get_or_create_pipeline_run_api_v1_workspaces__workspace_name_or_id__runs_get_or_create_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/run-metadata": {
+	"/api/v1/workspaces/{project_name_or_id}/run-metadata": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4063,22 +4303,148 @@ export type paths = {
 		put?: never;
 		/**
 		 * Create Run Metadata
+		 * @deprecated
 		 * @description Creates run metadata.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         run_metadata: The run metadata to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Raises:
+		 *         RuntimeError: If the resource type is not supported.
+		 */
+		post: operations["create_run_metadata_api_v1_workspaces__project_name_or_id__run_metadata_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/run_templates": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Run Templates
+		 * @deprecated
+		 * @description Get a page of run templates.
+		 *
+		 *     Args:
+		 *         filter_model: Filter model used for pagination, sorting,
+		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         Page of run templates.
+		 */
+		get: operations["list_run_templates_api_v1_workspaces__project_name_or_id__run_templates_get"];
+		put?: never;
+		/**
+		 * Create Run Template
+		 * @deprecated
+		 * @description Create a run template.
+		 *
+		 *     Args:
+		 *         run_template: Run template to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created run template.
+		 */
+		post: operations["create_run_template_api_v1_workspaces__project_name_or_id__run_templates_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/runs": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Runs
+		 * @deprecated
+		 * @description Get pipeline runs according to query filters.
+		 *
+		 *     Args:
+		 *         runs_filter_model: Filter model used for pagination, sorting, filtering.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         The pipeline runs according to query filters.
+		 */
+		get: operations["list_runs_api_v1_workspaces__project_name_or_id__runs_get"];
+		put?: never;
+		/**
+		 * Get Or Create Pipeline Run
+		 * @deprecated
+		 * @description Get or create a pipeline run.
+		 *
+		 *     Args:
+		 *         pipeline_run: Pipeline run to create.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The pipeline run and a boolean indicating whether the run was created
+		 *         or not.
+		 */
+		post: operations["get_or_create_pipeline_run_api_v1_workspaces__project_name_or_id__runs_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/schedules": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Schedules
+		 * @deprecated
+		 * @description Gets a list of schedules.
+		 *
+		 *     Args:
+		 *         schedule_filter_model: Filter model used for pagination, sorting,
+		 *             filtering
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         List of schedule objects.
+		 */
+		get: operations["list_schedules_api_v1_workspaces__project_name_or_id__schedules_get"];
+		put?: never;
+		/**
+		 * Create Schedule
+		 * @deprecated
+		 * @description Creates a schedule.
+		 *
+		 *     Args:
+		 *         schedule: Schedule to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         auth_context: Authentication context.
 		 *
 		 *     Returns:
-		 *         The created run metadata.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the run
-		 *             metadata does not match the current workspace or authenticated user.
-		 *         RuntimeError: If the resource type is not supported.
+		 *         The created schedule.
 		 */
-		post: operations["create_run_metadata_api_v1_workspaces__workspace_name_or_id__run_metadata_post"];
+		post: operations["create_schedule_api_v1_workspaces__project_name_or_id__schedules_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -4096,18 +4462,15 @@ export type paths = {
 		put?: never;
 		/**
 		 * Create Secret
+		 * @deprecated
 		 * @description Creates a secret.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         secret: Secret to create.
+		 *         workspace_name_or_id: Optional name or ID of the workspace.
 		 *
 		 *     Returns:
 		 *         The created secret.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the
-		 *             secret does not match the current workspace.
 		 */
 		post: operations["create_secret_api_v1_workspaces__workspace_name_or_id__secrets_post"];
 		delete?: never;
@@ -4116,7 +4479,7 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/code_repositories": {
+	"/api/v1/workspaces/{project_name_or_id}/service_connectors": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4124,124 +4487,43 @@ export type paths = {
 			cookie?: never;
 		};
 		/**
-		 * List Workspace Code Repositories
-		 * @description Gets code repositories defined for a specific workspace.
-		 *
-		 *     # noqa: DAR401
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         All code repositories within the workspace.
-		 */
-		get: operations["list_workspace_code_repositories_api_v1_workspaces__workspace_name_or_id__code_repositories_get"];
-		put?: never;
-		/**
-		 * Create Code Repository
-		 * @description Creates a code repository.
+		 * List Service Connectors
+		 * @deprecated
+		 * @description Get a list of all service connectors.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         code_repository: Code repository to create.
-		 *
-		 *     Returns:
-		 *         The created code repository.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             code repository does not match the current workspace or
-		 *             authenticated user.
-		 */
-		post: operations["create_code_repository_api_v1_workspaces__workspace_name_or_id__code_repositories_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/statistics": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * Get Workspace Statistics
-		 * @description Gets statistics of a workspace.
-		 *
-		 *     # noqa: DAR401
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace to get statistics for.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         All pipelines within the workspace.
-		 */
-		get: operations["get_workspace_statistics_api_v1_workspaces__workspace_name_or_id__statistics_get"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/service_connectors": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Workspace Service Connectors
-		 * @description List service connectors that are part of a specific workspace.
-		 *
-		 *     # noqa: DAR401
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         connector_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
+		 *             filtering
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
+		 *         expand_secrets: Whether to expand secrets or not.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         All service connectors part of the specified workspace.
+		 *         Page with list of service connectors matching the filter criteria.
 		 */
-		get: operations["list_workspace_service_connectors_api_v1_workspaces__workspace_name_or_id__service_connectors_get"];
+		get: operations["list_service_connectors_api_v1_workspaces__project_name_or_id__service_connectors_get"];
 		put?: never;
 		/**
 		 * Create Service Connector
+		 * @deprecated
 		 * @description Creates a service connector.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         connector: Service connector to register.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
 		 *         The created service connector.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the service
-		 *             connector does not match the current workspace or authenticated
-		 *             user.
 		 */
-		post: operations["create_service_connector_api_v1_workspaces__workspace_name_or_id__service_connectors_post"];
+		post: operations["create_service_connector_api_v1_workspaces__project_name_or_id__service_connectors_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/service_connectors/resources": {
+	"/api/v1/workspaces/{project_name_or_id}/resources": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4250,20 +4532,20 @@ export type paths = {
 		};
 		/**
 		 * List Service Connector Resources
+		 * @deprecated
 		 * @description List resources that can be accessed by service connectors.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         connector_type: the service connector type identifier to filter by.
-		 *         resource_type: the resource type identifier to filter by.
-		 *         resource_id: the resource identifier to filter by.
+		 *         filter_model: The filter model to use when fetching service
+		 *             connectors.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *         auth_context: Authentication context.
 		 *
 		 *     Returns:
 		 *         The matching list of resources that available service
 		 *         connectors have access to.
 		 */
-		get: operations["list_service_connector_resources_api_v1_workspaces__workspace_name_or_id__service_connectors_resources_get"];
+		get: operations["list_service_connector_resources_api_v1_workspaces__project_name_or_id__resources_get"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -4272,141 +4554,7 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/workspaces/{workspace_name_or_id}/models": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create Model
-		 * @description Create a new model.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         model: The model to create.
-		 *
-		 *     Returns:
-		 *         The created model.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             model does not match the current workspace or authenticated
-		 *             user.
-		 */
-		post: operations["create_model_api_v1_workspaces__workspace_name_or_id__models_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/models/{model_name_or_id}/model_versions": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create Model Version
-		 * @description Create a new model version.
-		 *
-		 *     Args:
-		 *         model_name_or_id: Name or ID of the model.
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         model_version: The model version to create.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         The created model version.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace specified in the
-		 *             model version does not match the current workspace.
-		 */
-		post: operations["create_model_version_api_v1_workspaces__workspace_name_or_id__models__model_name_or_id__model_versions_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/model_versions/{model_version_id}/artifacts": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create Model Version Artifact Link
-		 * @description Create a new model version to artifact link.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         model_version_id: ID of the model version.
-		 *         model_version_artifact_link: The model version to artifact link to create.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         The created model version to artifact link.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             model version does not match the current workspace or authenticated
-		 *             user.
-		 */
-		post: operations["create_model_version_artifact_link_api_v1_workspaces__workspace_name_or_id__model_versions__model_version_id__artifacts_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/model_versions/{model_version_id}/runs": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		/**
-		 * Create Model Version Pipeline Run Link
-		 * @description Create a new model version to pipeline run link.
-		 *
-		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
-		 *         model_version_id: ID of the model version.
-		 *         model_version_pipeline_run_link: The model version to pipeline run link to create.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         - If Model Version to Pipeline Run Link already exists - returns the existing link.
-		 *         - Otherwise, returns the newly created model version to pipeline run link.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             model version does not match the current workspace or authenticated
-		 *             user.
-		 */
-		post: operations["create_model_version_pipeline_run_link_api_v1_workspaces__workspace_name_or_id__model_versions__model_version_id__runs_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/workspaces/{workspace_name_or_id}/services": {
+	"/api/v1/workspaces/{project_name_or_id}/services": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -4417,21 +4565,224 @@ export type paths = {
 		put?: never;
 		/**
 		 * Create Service
-		 * @description Create a new service.
+		 * @deprecated
+		 * @description Creates a new service.
 		 *
 		 *     Args:
-		 *         workspace_name_or_id: Name or ID of the workspace.
 		 *         service: The service to create.
+		 *         project_name_or_id: Optional name or ID of the project.
 		 *
 		 *     Returns:
 		 *         The created service.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the workspace or user specified in the
-		 *             model does not match the current workspace or authenticated
-		 *             user.
 		 */
-		post: operations["create_service_api_v1_workspaces__workspace_name_or_id__services_post"];
+		post: operations["create_service_api_v1_workspaces__project_name_or_id__services_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/components": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Stack Components
+		 * @deprecated
+		 * @description Get a list of all stack components.
+		 *
+		 *     Args:
+		 *         component_filter_model: Filter model used for pagination, sorting,
+		 *             filtering.
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         List of stack components matching the filter criteria.
+		 */
+		get: operations["list_stack_components_api_v1_workspaces__project_name_or_id__components_get"];
+		put?: never;
+		/**
+		 * Create Stack Component
+		 * @deprecated
+		 * @description Creates a stack component.
+		 *
+		 *     Args:
+		 *         component: Stack component to register.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *
+		 *     Returns:
+		 *         The created stack component.
+		 */
+		post: operations["create_stack_component_api_v1_workspaces__project_name_or_id__components_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/workspaces/{project_name_or_id}/stacks": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Stacks
+		 * @deprecated
+		 * @description Returns all stacks.
+		 *
+		 *     Args:
+		 *         project_name_or_id: Optional name or ID of the project to filter by.
+		 *         stack_filter_model: Filter model used for pagination, sorting,
+		 *             filtering.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         All stacks matching the filter criteria.
+		 */
+		get: operations["list_stacks_api_v1_workspaces__project_name_or_id__stacks_get"];
+		put?: never;
+		/**
+		 * Create Stack
+		 * @deprecated
+		 * @description Creates a stack.
+		 *
+		 *     Args:
+		 *         stack: Stack to register.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The created stack.
+		 */
+		post: operations["create_stack_api_v1_workspaces__project_name_or_id__stacks_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/projects": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Projects
+		 * @description Lists all projects in the organization.
+		 *
+		 *     Args:
+		 *         project_filter_model: Filter model used for pagination, sorting,
+		 *             filtering,
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         A list of projects.
+		 */
+		get: operations["list_projects_api_v1_projects_get"];
+		put?: never;
+		/**
+		 * Create Project
+		 * @description Creates a project based on the requestBody.
+		 *
+		 *     # noqa: DAR401
+		 *
+		 *     Args:
+		 *         project_request: Project to create.
+		 *
+		 *     Returns:
+		 *         The created project.
+		 */
+		post: operations["create_project_api_v1_projects_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/projects/{project_name_or_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Project
+		 * @description Get a project for given name.
+		 *
+		 *     # noqa: DAR401
+		 *
+		 *     Args:
+		 *         project_name_or_id: Name or ID of the project.
+		 *         hydrate: Flag deciding whether to hydrate the output model(s)
+		 *             by including metadata fields in the response.
+		 *
+		 *     Returns:
+		 *         The requested project.
+		 */
+		get: operations["get_project_api_v1_projects__project_name_or_id__get"];
+		/**
+		 * Update Project
+		 * @description Get a project for given name.
+		 *
+		 *     # noqa: DAR401
+		 *
+		 *     Args:
+		 *         project_name_or_id: Name or ID of the project to update.
+		 *         project_update: the project to use to update
+		 *
+		 *     Returns:
+		 *         The updated project.
+		 */
+		put: operations["update_project_api_v1_projects__project_name_or_id__put"];
+		post?: never;
+		/**
+		 * Delete Project
+		 * @description Deletes a project.
+		 *
+		 *     Args:
+		 *         project_name_or_id: Name or ID of the project.
+		 */
+		delete: operations["delete_project_api_v1_projects__project_name_or_id__delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/projects/{project_name_or_id}/statistics": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Project Statistics
+		 * @description Gets statistics of a project.
+		 *
+		 *     # noqa: DAR401
+		 *
+		 *     Args:
+		 *         project_name_or_id: Name or ID of the project to get statistics for.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         Project statistics.
+		 */
+		get: operations["get_project_statistics_api_v1_projects__project_name_or_id__statistics_get"];
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -4576,20 +4927,23 @@ export type components = {
 			active?: boolean | null;
 		};
 		/**
+		 * APITokenType
+		 * @description The API token type.
+		 * @enum {string}
+		 */
+		APITokenType: "generic" | "workload";
+		/**
 		 * ActionRequest
 		 * @description Model for creating a new action.
 		 */
 		ActionRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the action. */
 			name: string;
 			/**
@@ -4672,8 +5026,8 @@ export type components = {
 		 * @description Response metadata for actions.
 		 */
 		ActionResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * The description of the action.
 			 * @default
@@ -4727,6 +5081,7 @@ export type components = {
 		 *         int, ArtifactConfig(
 		 *             name="my_artifact",  # override the default artifact name
 		 *             version=42,  # set a custom version
+		 *             artifact_type=ArtifactType.MODEL,  # Specify the artifact type
 		 *             tags=["tag1", "tag2"],  # set custom tags
 		 *         )
 		 *     ]:
@@ -4734,34 +5089,32 @@ export type components = {
 		 *     ```
 		 *
 		 *     Attributes:
-		 *         name: The name of the artifact.
+		 *         name: The name of the artifact:
+		 *             - static string e.g. "name"
+		 *             - dynamic string e.g. "name_{date}_{time}_{custom_placeholder}"
+		 *             If you use any placeholders besides `date` and `time`,
+		 *             you need to provide the values for them in the `substitutions`
+		 *             argument of the step decorator or the `substitutions` argument
+		 *             of `with_options` of the step.
 		 *         version: The version of the artifact.
 		 *         tags: The tags of the artifact.
 		 *         run_metadata: Metadata to add to the artifact.
-		 *         is_model_artifact: Whether the artifact is a model artifact.
-		 *         is_deployment_artifact: Whether the artifact is a deployment artifact.
+		 *         artifact_type: Optional type of the artifact. If not given, the type
+		 *             specified by the materializer that is used to save this artifact
+		 *             is used.
 		 */
 		ArtifactConfig: {
 			/** Name */
 			name?: string | null;
 			/** Version */
-			version?: string | number | null;
+			version?: number | string | null;
 			/** Tags */
 			tags?: string[] | null;
 			/** Run Metadata */
 			run_metadata?: {
 				[key: string]: unknown;
 			} | null;
-			/**
-			 * Is Model Artifact
-			 * @default false
-			 */
-			is_model_artifact: boolean;
-			/**
-			 * Is Deployment Artifact
-			 * @default false
-			 */
-			is_deployment_artifact: boolean;
+			artifact_type?: components["schemas"]["ArtifactType"] | null;
 		};
 		/**
 		 * ArtifactConfiguration
@@ -4788,6 +5141,13 @@ export type components = {
 		 * @description Artifact request model.
 		 */
 		ArtifactRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
+			/**
+			 * The project to which this resource belongs.
+			 * Format: uuid
+			 */
+			project: string;
 			/** Name of the artifact. */
 			name: string;
 			/**
@@ -4840,6 +5200,8 @@ export type components = {
 			 * Format: date-time
 			 */
 			updated: string;
+			/** The user who created this resource. */
+			user?: components["schemas"]["UserResponse"] | null;
 			/** Tags associated with the model */
 			tags: components["schemas"]["TagResponse"][];
 			/** Latest Version Name */
@@ -4852,6 +5214,8 @@ export type components = {
 		 * @description Response metadata for artifacts.
 		 */
 		ArtifactResponseMetadata: {
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * Whether the name is custom (True) or auto-generated (False).
 			 * @default false
@@ -4903,16 +5267,13 @@ export type components = {
 		 * @description Request model for artifact versions.
 		 */
 		ArtifactVersionRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** ID of the artifact to which this version belongs. */
 			artifact_id?: string | null;
 			/** Name of the artifact to which this version belongs. */
@@ -5019,8 +5380,8 @@ export type components = {
 		 * @description Response metadata for artifact versions.
 		 */
 		ArtifactVersionResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** ID of the step run that produced this artifact. */
 			producer_step_run_id?: string | null;
 			/** Visualizations of the artifact. */
@@ -5380,16 +5741,13 @@ export type components = {
 		 * @description Request model for code repositories.
 		 */
 		CodeRepositoryRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the code repository. */
 			name: string;
 			/**
@@ -5468,8 +5826,8 @@ export type components = {
 		 * @description Response metadata for code repositories.
 		 */
 		CodeRepositoryResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * Config
 			 * @description Configuration for the code repository.
@@ -5558,19 +5916,11 @@ export type components = {
 		};
 		/**
 		 * ComponentRequest
-		 * @description Request model for components.
+		 * @description Request model for stack components.
 		 */
 		ComponentRequest: {
-			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/** The name of the stack component. */
 			name: string;
 			/** The type of the stack component. */
@@ -5590,14 +5940,12 @@ export type components = {
 			labels?: {
 				[key: string]: unknown;
 			} | null;
-			/** The path to the component spec used for mlstacks deployments. */
-			component_spec_path?: string | null;
 			/** The service connector linked to this stack component. */
 			connector?: string | null;
 		};
 		/**
 		 * ComponentResponse
-		 * @description Response model for components.
+		 * @description Response model for stack components.
 		 */
 		ComponentResponse: {
 			/** The body of the resource. */
@@ -5621,7 +5969,7 @@ export type components = {
 		};
 		/**
 		 * ComponentResponseBody
-		 * @description Response body for components.
+		 * @description Response body for stack components.
 		 */
 		ComponentResponseBody: {
 			/**
@@ -5647,11 +5995,9 @@ export type components = {
 		};
 		/**
 		 * ComponentResponseMetadata
-		 * @description Response metadata for components.
+		 * @description Response metadata for stack components.
 		 */
 		ComponentResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
 			/** The stack component configuration. */
 			configuration: {
 				[key: string]: unknown;
@@ -5660,8 +6006,6 @@ export type components = {
 			labels?: {
 				[key: string]: unknown;
 			} | null;
-			/** The path to the component spec used for mlstacks deployments. */
-			component_spec_path?: string | null;
 			/**
 			 * Connector Resource Id
 			 * @description The ID of a specific resource instance to gain access to through the connector
@@ -5672,7 +6016,7 @@ export type components = {
 		};
 		/**
 		 * ComponentResponseResources
-		 * @description Class for all resource models associated with the component entity.
+		 * @description Response resources for stack components.
 		 */
 		ComponentResponseResources: {
 			/** The flavor of this stack component. */
@@ -5700,8 +6044,6 @@ export type components = {
 			labels?: {
 				[key: string]: unknown;
 			} | null;
-			/** The path to the component spec used for mlstacks deployments. */
-			component_spec_path?: string | null;
 			/** The service connector linked to this stack component. */
 			connector?: string | null;
 		};
@@ -5736,16 +6078,13 @@ export type components = {
 		 * @description BaseModel for all event sources.
 		 */
 		EventSourceRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the event source. */
 			name: string;
 			/** The flavor of event source. */
@@ -5815,8 +6154,8 @@ export type components = {
 		 * @description Response metadata for event sources.
 		 */
 		EventSourceResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * The description of the event source.
 			 * @default
@@ -5876,14 +6215,11 @@ export type components = {
 		};
 		/**
 		 * FlavorRequest
-		 * @description Request model for flavors.
+		 * @description Request model for stack component flavors.
 		 */
 		FlavorRequest: {
-			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/** The name of the Flavor. */
 			name: string;
 			/** The type of the Flavor. */
@@ -5913,12 +6249,10 @@ export type components = {
 			 * @default true
 			 */
 			is_custom: boolean;
-			/** The workspace to which this resource belongs. */
-			workspace?: string | null;
 		};
 		/**
 		 * FlavorResponse
-		 * @description Response model for flavors.
+		 * @description Response model for stack component flavors.
 		 */
 		FlavorResponse: {
 			/** The body of the resource. */
@@ -5942,7 +6276,7 @@ export type components = {
 		};
 		/**
 		 * FlavorResponseBody
-		 * @description Response body for flavor.
+		 * @description Response body for stack component flavors.
 		 */
 		FlavorResponseBody: {
 			/**
@@ -5965,14 +6299,17 @@ export type components = {
 			source: string;
 			/** Optionally, a url pointing to a png,svg or jpg can be attached. */
 			logo_url?: string | null;
+			/**
+			 * Whether or not this flavor is a custom, user created flavor.
+			 * @default true
+			 */
+			is_custom: boolean;
 		};
 		/**
 		 * FlavorResponseMetadata
-		 * @description Response metadata for flavors.
+		 * @description Response metadata for stack component flavors.
 		 */
 		FlavorResponseMetadata: {
-			/** The project of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"] | null;
 			/** The JSON schema of this flavor's corresponding configuration. */
 			config_schema: {
 				[key: string]: unknown;
@@ -5987,22 +6324,17 @@ export type components = {
 			docs_url?: string | null;
 			/** Optionally, a url pointing to SDK docs,within sdkdocs.zenml.io. */
 			sdk_docs_url?: string | null;
-			/**
-			 * Whether or not this flavor is a custom, user created flavor.
-			 * @default true
-			 */
-			is_custom: boolean;
 		};
 		/**
 		 * FlavorResponseResources
-		 * @description Class for all resource models associated with the flavor entity.
+		 * @description Response resources for stack component flavors.
 		 */
 		FlavorResponseResources: {
 			[key: string]: unknown;
 		};
 		/**
 		 * FlavorUpdate
-		 * @description Update model for flavors.
+		 * @description Update model for stack component flavors.
 		 */
 		FlavorUpdate: {
 			/** The name of the Flavor. */
@@ -6031,8 +6363,6 @@ export type components = {
 			sdk_docs_url?: string | null;
 			/** Whether or not this flavor is a custom, user created flavor. */
 			is_custom?: boolean | null;
-			/** The workspace to which this resource belongs. */
-			workspace?: string | null;
 		};
 		/** HTTPValidationError */
 		HTTPValidationError: {
@@ -6071,7 +6401,10 @@ export type components = {
 		LogsRequest: {
 			/** The uri of the logs file */
 			uri: string;
-			/** The artifact store ID to associate the logs with. */
+			/**
+			 * The artifact store ID to associate the logs with.
+			 * Format: uuid
+			 */
 			artifact_store_id: string;
 		};
 		/**
@@ -6148,7 +6481,8 @@ export type components = {
 			| "pipeline_run"
 			| "step_run"
 			| "artifact_version"
-			| "model_version";
+			| "model_version"
+			| "schedule";
 		/**
 		 * MetadataTypeEnum
 		 * @description String Enum of all possible types that metadata can have.
@@ -6181,7 +6515,9 @@ export type components = {
 		 *     ethics: The ethical implications of the model.
 		 *     tags: Tags associated with the model.
 		 *     version: The version name, version number or stage is optional and points model context
-		 *         to a specific version/stage. If skipped new version will be created.
+		 *         to a specific version/stage. If skipped new version will be created. `version`
+		 *         also supports placeholders: standard `{date}` and `{time}` and any custom placeholders
+		 *         that are passed as substitutions in the pipeline or step decorators.
 		 *     save_models_to_registry: Whether to save all ModelArtifacts to Model Registry,
 		 *         if available in active stack.
 		 */
@@ -6224,16 +6560,13 @@ export type components = {
 		 * @description Request model for models.
 		 */
 		ModelRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the model */
 			name: string;
 			/** The license model created under */
@@ -6311,8 +6644,8 @@ export type components = {
 		 * @description Response metadata for models.
 		 */
 		ModelResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The license model created under */
 			license?: string | null;
 			/** The description of the model */
@@ -6380,21 +6713,6 @@ export type components = {
 		 */
 		ModelVersionArtifactRequest: {
 			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
-			/**
-			 * Model
-			 * Format: uuid
-			 */
-			model: string;
-			/**
 			 * Model Version
 			 * Format: uuid
 			 */
@@ -6404,16 +6722,6 @@ export type components = {
 			 * Format: uuid
 			 */
 			artifact_version: string;
-			/**
-			 * Is Model Artifact
-			 * @default false
-			 */
-			is_model_artifact: boolean;
-			/**
-			 * Is Deployment Artifact
-			 * @default false
-			 */
-			is_deployment_artifact: boolean;
 		};
 		/**
 		 * ModelVersionArtifactResponse
@@ -6455,26 +6763,11 @@ export type components = {
 			 */
 			updated: string;
 			/**
-			 * Model
-			 * Format: uuid
-			 */
-			model: string;
-			/**
 			 * Model Version
 			 * Format: uuid
 			 */
 			model_version: string;
 			artifact_version: components["schemas"]["ArtifactVersionResponse"];
-			/**
-			 * Is Model Artifact
-			 * @default false
-			 */
-			is_model_artifact: boolean;
-			/**
-			 * Is Deployment Artifact
-			 * @default false
-			 */
-			is_deployment_artifact: boolean;
 		};
 		/**
 		 * ModelVersionArtifactResponseResources
@@ -6508,21 +6801,6 @@ export type components = {
 		 * @description Request model for links between model versions and pipeline runs.
 		 */
 		ModelVersionPipelineRunRequest: {
-			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
-			/**
-			 * Model
-			 * Format: uuid
-			 */
-			model: string;
 			/**
 			 * Model Version
 			 * Format: uuid
@@ -6576,11 +6854,6 @@ export type components = {
 			 */
 			updated: string;
 			/**
-			 * Model
-			 * Format: uuid
-			 */
-			model: string;
-			/**
 			 * Model Version
 			 * Format: uuid
 			 */
@@ -6599,16 +6872,13 @@ export type components = {
 		 * @description Request model for model versions.
 		 */
 		ModelVersionRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/**
 			 * Name
 			 * @description The name of the model version
@@ -6624,11 +6894,6 @@ export type components = {
 			 * @description The stage of the model version
 			 */
 			stage?: string | null;
-			/**
-			 * Number
-			 * @description The number of the model version
-			 */
-			number?: number | null;
 			/**
 			 * Model
 			 * Format: uuid
@@ -6737,8 +7002,8 @@ export type components = {
 		 * @description Response metadata for model versions.
 		 */
 		ModelVersionResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * Description
 			 * @description The description of the model version
@@ -6768,12 +7033,6 @@ export type components = {
 		 * @description Update model for model versions.
 		 */
 		ModelVersionUpdate: {
-			/**
-			 * Model
-			 * Format: uuid
-			 * @description The ID of the model containing version
-			 */
-			model: string;
 			/**
 			 * Stage
 			 * @description Target model version stage to be set
@@ -6996,10 +7255,10 @@ export type components = {
 			expires_in?: number | null;
 			/** Refresh Token */
 			refresh_token?: string | null;
+			/** Csrf Token */
+			csrf_token?: string | null;
 			/** Scope */
 			scope?: string | null;
-			/** Cookie Name */
-			cookie_name?: string | null;
 			/** Device Id */
 			device_id?: string | null;
 			/** Device Metadata */
@@ -7243,6 +7502,19 @@ export type components = {
 			/** Items */
 			items: components["schemas"]["PipelineRunResponse"][];
 		};
+		/** Page[ProjectResponse] */
+		Page_ProjectResponse_: {
+			/** Index */
+			index: number;
+			/** Max Size */
+			max_size: number;
+			/** Total Pages */
+			total_pages: number;
+			/** Total */
+			total: number;
+			/** Items */
+			items: components["schemas"]["ProjectResponse"][];
+		};
 		/** Page[RunTemplateResponse] */
 		Page_RunTemplateResponse_: {
 			/** Index */
@@ -7399,34 +7671,18 @@ export type components = {
 			/** Items */
 			items: components["schemas"]["UserResponse"][];
 		};
-		/** Page[WorkspaceResponse] */
-		Page_WorkspaceResponse_: {
-			/** Index */
-			index: number;
-			/** Max Size */
-			max_size: number;
-			/** Total Pages */
-			total_pages: number;
-			/** Total */
-			total: number;
-			/** Items */
-			items: components["schemas"]["WorkspaceResponse"][];
-		};
 		/**
 		 * PipelineBuildRequest
 		 * @description Request model for pipelines builds.
 		 */
 		PipelineBuildRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/**
 			 * The images of this build.
 			 * @default {}
@@ -7442,6 +7698,8 @@ export type components = {
 			zenml_version?: string | null;
 			/** The Python version used for this build. */
 			python_version?: string | null;
+			/** The duration of the build in seconds. */
+			duration?: number | null;
 			/** The build checksum. */
 			checksum?: string | null;
 			/** The stack checksum. */
@@ -7498,8 +7756,8 @@ export type components = {
 		 * @description Response metadata for pipeline builds.
 		 */
 		PipelineBuildResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The pipeline that was used for this build. */
 			pipeline?: components["schemas"]["PipelineResponse"] | null;
 			/** The stack that was used for this build. */
@@ -7523,6 +7781,8 @@ export type components = {
 			is_local: boolean;
 			/** Whether any image of the build contains user code. */
 			contains_code: boolean;
+			/** The duration of the build in seconds. */
+			duration?: number | null;
 		};
 		/**
 		 * PipelineBuildResponseResources
@@ -7552,7 +7812,7 @@ export type components = {
 				[key: string]: unknown;
 			};
 			/** Tags */
-			tags?: string[] | null;
+			tags?: (string | components["schemas"]["Tag"])[] | null;
 			/**
 			 * Extra
 			 * @default {}
@@ -7568,6 +7828,13 @@ export type components = {
 				[key: string]: unknown;
 			} | null;
 			retry?: components["schemas"]["StepRetryConfig"] | null;
+			/**
+			 * Substitutions
+			 * @default {}
+			 */
+			substitutions: {
+				[key: string]: unknown;
+			};
 			/** Name */
 			name: string;
 		};
@@ -7592,7 +7859,7 @@ export type components = {
 				[key: string]: unknown;
 			};
 			/** Tags */
-			tags?: string[] | null;
+			tags?: (string | components["schemas"]["Tag"])[] | null;
 			/**
 			 * Extra
 			 * @default {}
@@ -7608,6 +7875,13 @@ export type components = {
 				[key: string]: unknown;
 			} | null;
 			retry?: components["schemas"]["StepRetryConfig"] | null;
+			/**
+			 * Substitutions
+			 * @default {}
+			 */
+			substitutions: {
+				[key: string]: unknown;
+			};
 			/** Name */
 			name: string;
 		};
@@ -7616,16 +7890,13 @@ export type components = {
 		 * @description Request model for pipeline deployments.
 		 */
 		PipelineDeploymentRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The run name template for runs created using this deployment. */
 			run_name_template: string;
 			/** The pipeline configuration for this deployment. */
@@ -7722,8 +7993,8 @@ export type components = {
 		 * @description Response metadata for pipeline deployments.
 		 */
 		PipelineDeploymentResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The run name template for runs created using this deployment. */
 			run_name_template: string;
 			/** The pipeline configuration for this deployment. */
@@ -7783,16 +8054,13 @@ export type components = {
 		 * @description Request model for pipelines.
 		 */
 		PipelineRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the pipeline. */
 			name: string;
 			/** The description of the pipeline. */
@@ -7851,8 +8119,8 @@ export type components = {
 		 * @description Response metadata for pipelines.
 		 */
 		PipelineResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The description of the pipeline. */
 			description?: string | null;
 		};
@@ -7861,6 +8129,8 @@ export type components = {
 		 * @description Class for all resource models associated with the pipeline entity.
 		 */
 		PipelineResponseResources: {
+			/** The user that created the latest run of this pipeline. */
+			latest_run_user?: components["schemas"]["UserResponse"] | null;
 			/** Tags associated with the pipeline. */
 			tags: components["schemas"]["TagResponse"][];
 		} & {
@@ -7871,16 +8141,13 @@ export type components = {
 		 * @description Request model for pipeline runs.
 		 */
 		PipelineRunRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the pipeline run. */
 			name: string;
 			/**
@@ -7915,9 +8182,7 @@ export type components = {
 			/** ID of the trigger execution that triggered this run. */
 			trigger_execution_id?: string | null;
 			/** Tags of the pipeline run. */
-			tags?: string[] | null;
-			/** The ID of the model version that was configured by this pipeline run explicitly. */
-			model_version_id?: string | null;
+			tags?: (string | components["schemas"]["Tag"])[] | null;
 		};
 		/**
 		 * PipelineRunResponse
@@ -7986,8 +8251,8 @@ export type components = {
 		 * @description Response metadata for pipeline runs.
 		 */
 		PipelineRunResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * Metadata associated with this pipeline run.
 			 * @default {}
@@ -8037,6 +8302,10 @@ export type components = {
 			 * @default false
 			 */
 			is_templatable: boolean;
+			/** Substitutions used in the step runs of this pipeline run. */
+			step_substitutions?: {
+				[key: string]: unknown;
+			};
 		};
 		/**
 		 * PipelineRunResponseResources
@@ -8057,8 +8326,6 @@ export type components = {
 			status?: components["schemas"]["ExecutionStatus"] | null;
 			/** End Time */
 			end_time?: string | null;
-			/** The ID of the model version that was configured by this pipeline run explicitly. */
-			model_version_id?: string | null;
 			/** New tags to add to the pipeline run. */
 			add_tags?: string[] | null;
 			/** Tags to remove from the pipeline run. */
@@ -8125,6 +8392,106 @@ export type components = {
 		 */
 		PluginType: "event_source" | "action";
 		/**
+		 * ProjectRequest
+		 * @description Request model for projects.
+		 */
+		ProjectRequest: {
+			/** The unique name of the project. The project name must only contain only lowercase letters, numbers, underscores, and hyphens and be at most 50 characters long. */
+			name: string;
+			/**
+			 * The display name of the project.
+			 * @default
+			 */
+			display_name: string;
+			/**
+			 * The description of the project.
+			 * @default
+			 */
+			description: string;
+		};
+		/**
+		 * ProjectResponse
+		 * @description Response model for projects.
+		 */
+		ProjectResponse: {
+			/** The body of the resource. */
+			body?: components["schemas"]["ProjectResponseBody"] | null;
+			/** The metadata related to this resource. */
+			metadata?: components["schemas"]["ProjectResponseMetadata"] | null;
+			/** The resources related to this resource. */
+			resources?: components["schemas"]["ProjectResponseResources"] | null;
+			/**
+			 * The unique resource id.
+			 * Format: uuid
+			 */
+			id: string;
+			/**
+			 * Permission Denied
+			 * @default false
+			 */
+			permission_denied: boolean;
+			/** The unique name of the project. */
+			name: string;
+		};
+		/**
+		 * ProjectResponseBody
+		 * @description Response body for projects.
+		 */
+		ProjectResponseBody: {
+			/**
+			 * The timestamp when this resource was created.
+			 * Format: date-time
+			 */
+			created: string;
+			/**
+			 * The timestamp when this resource was last updated.
+			 * Format: date-time
+			 */
+			updated: string;
+			/** The display name of the project. */
+			display_name: string;
+		};
+		/**
+		 * ProjectResponseMetadata
+		 * @description Response metadata for projects.
+		 */
+		ProjectResponseMetadata: {
+			/**
+			 * The description of the project.
+			 * @default
+			 */
+			description: string;
+		};
+		/**
+		 * ProjectResponseResources
+		 * @description Class for all resource models associated with the project entity.
+		 */
+		ProjectResponseResources: {
+			[key: string]: unknown;
+		};
+		/**
+		 * ProjectStatistics
+		 * @description Project statistics.
+		 */
+		ProjectStatistics: {
+			/** The number of pipelines. */
+			pipelines: number;
+			/** The number of pipeline runs. */
+			runs: number;
+		};
+		/**
+		 * ProjectUpdate
+		 * @description Update model for projects.
+		 */
+		ProjectUpdate: {
+			/** The unique name of the project. The project name must only contain only lowercase letters, numbers, underscores, and hyphens and be at most 50 characters long. */
+			name?: string | null;
+			/** The display name of the project. */
+			display_name?: string | null;
+			/** The description of the project. */
+			description?: string | null;
+		};
+		/**
 		 * ResourceTypeModel
 		 * @description Resource type specification.
 		 *
@@ -8184,25 +8551,17 @@ export type components = {
 		 * @description Request model for run metadata.
 		 */
 		RunMetadataRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
-			/**
-			 * The ID of the resource that this metadata belongs to.
-			 * Format: uuid
-			 */
-			resource_id: string;
-			/** The type of the resource that this metadata belongs to. */
-			resource_type: components["schemas"]["MetadataResourceTypes"];
+			project: string;
+			/** The list of resources that this metadata belongs to. */
+			resources: components["schemas"]["RunMetadataResource"][];
 			/** The ID of the stack component that this metadata belongs to. */
-			stack_component_id: string | null;
+			stack_component_id?: string | null;
 			/** The metadata to be created. */
 			values: {
 				[key: string]: unknown;
@@ -8211,22 +8570,34 @@ export type components = {
 			types: {
 				[key: string]: unknown;
 			};
+			/** The ID of the step execution that published this metadata. */
+			publisher_step_id?: string | null;
+		};
+		/**
+		 * RunMetadataResource
+		 * @description Utility class to help identify resources to tag metadata to.
+		 */
+		RunMetadataResource: {
+			/**
+			 * The ID of the resource.
+			 * Format: uuid
+			 */
+			id: string;
+			/** The type of the resource. */
+			type: components["schemas"]["MetadataResourceTypes"];
 		};
 		/**
 		 * RunTemplateRequest
 		 * @description Request model for run templates.
 		 */
 		RunTemplateRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the run template. */
 			name: string;
 			/** The description of the run template. */
@@ -8292,8 +8663,8 @@ export type components = {
 		 * @description Response metadata for run templates.
 		 */
 		RunTemplateResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The description of the run template. */
 			description?: string | null;
 			/** The spec of the pipeline. */
@@ -8351,8 +8722,12 @@ export type components = {
 		 *             and time.
 		 *         cron_expression: Cron expression for the pipeline schedule. If a value
 		 *             for this is set it takes precedence over the start time + interval.
-		 *         start_time: datetime object to indicate when to start the schedule.
-		 *         end_time: datetime object to indicate when to end the schedule.
+		 *         start_time: When the schedule should start. If this is a datetime object
+		 *             without any timezone, it is treated as a datetime in the local
+		 *             timezone.
+		 *         end_time: When the schedule should end. If this is a datetime object
+		 *             without any timezone, it is treated as a datetime in the local
+		 *             timezone.
 		 *         interval_second: datetime timedelta indicating the seconds between two
 		 *             recurring runs for a periodic schedule.
 		 *         catchup: Whether the recurring run should catch up if behind schedule.
@@ -8362,8 +8737,9 @@ export type components = {
 		 *             schedules the latest interval if more than one interval is ready to
 		 *             be scheduled. Usually, if your pipeline handles backfill
 		 *             internally, you should turn catchup off to avoid duplicate backfill.
-		 *         run_once_start_time: datetime object to indicate when to run the
-		 *             pipeline once. This is useful for one-off runs.
+		 *         run_once_start_time: When to run the pipeline once. If this is a
+		 *             datetime object without any timezone, it is treated as a datetime
+		 *             in the local timezone.
 		 */
 		Schedule: {
 			/** Name */
@@ -8389,16 +8765,13 @@ export type components = {
 		 * @description Request model for schedules.
 		 */
 		ScheduleRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** Name */
 			name: string;
 			/** Active */
@@ -8487,12 +8860,19 @@ export type components = {
 		 * @description Response metadata for schedules.
 		 */
 		ScheduleResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** Orchestrator Id */
 			orchestrator_id: string | null;
 			/** Pipeline Id */
 			pipeline_id: string | null;
+			/**
+			 * Metadata associated with this schedule.
+			 * @default {}
+			 */
+			run_metadata: {
+				[key: string]: unknown;
+			};
 		};
 		/**
 		 * ScheduleResponseResources
@@ -8508,47 +8888,21 @@ export type components = {
 		ScheduleUpdate: {
 			/** Name */
 			name?: string | null;
-			/** Active */
-			active?: boolean | null;
-			/** Cron Expression */
-			cron_expression?: string | null;
-			/** Start Time */
-			start_time?: string | null;
-			/** End Time */
-			end_time?: string | null;
-			/** Interval Second */
-			interval_second?: string | null;
-			/** Catchup */
-			catchup?: boolean | null;
-			/** Run Once Start Time */
-			run_once_start_time?: string | null;
-			/** Orchestrator Id */
-			orchestrator_id?: string | null;
-			/** Pipeline Id */
-			pipeline_id?: string | null;
 		};
 		/**
 		 * SecretRequest
-		 * @description Request models for secrets.
+		 * @description Request model for secrets.
 		 */
 		SecretRequest: {
-			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/** The name of the secret. */
 			name: string;
 			/**
-			 * The scope of the secret.
-			 * @default workspace
+			 * Whether the secret is private. A private secret is only accessible to the user who created it.
+			 * @default false
 			 */
-			scope: components["schemas"]["SecretScope"];
+			private: boolean;
 			/** The values stored in this secret. */
 			values?: {
 				[key: string]: unknown;
@@ -8596,10 +8950,10 @@ export type components = {
 			/** The user who created this resource. */
 			user?: components["schemas"]["UserResponse"] | null;
 			/**
-			 * The scope of the secret.
-			 * @default workspace
+			 * Whether the secret is private. A private secret is only accessible to the user who created it.
+			 * @default false
 			 */
-			scope: components["schemas"]["SecretScope"];
+			private: boolean;
 			/** The values stored in this secret. */
 			values?: {
 				[key: string]: unknown;
@@ -8609,32 +8963,23 @@ export type components = {
 		 * SecretResponseMetadata
 		 * @description Response metadata for secrets.
 		 */
-		SecretResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
-		};
+		SecretResponseMetadata: Record<string, never>;
 		/**
 		 * SecretResponseResources
-		 * @description Class for all resource models associated with the secret entity.
+		 * @description Response resources for secrets.
 		 */
 		SecretResponseResources: {
 			[key: string]: unknown;
 		};
 		/**
-		 * SecretScope
-		 * @description Enum for the scope of a secret.
-		 * @enum {string}
-		 */
-		SecretScope: "workspace" | "user";
-		/**
 		 * SecretUpdate
-		 * @description Secret update model.
+		 * @description Update model for secrets.
 		 */
 		SecretUpdate: {
 			/** The name of the secret. */
 			name?: string | null;
-			/** The scope of the secret. */
-			scope?: components["schemas"]["SecretScope"] | null;
+			/** Whether the secret is private. A private secret is only accessible to the user who created it. */
+			private?: boolean | null;
 			/** The values stored in this secret. */
 			values?: {
 				[key: string]: unknown;
@@ -8696,6 +9041,20 @@ export type components = {
 			| "hf_spaces"
 			| "sandbox"
 			| "cloud";
+		/**
+		 * ServerLoadInfo
+		 * @description Domain model for ZenML server load information.
+		 */
+		ServerLoadInfo: {
+			/** Number of threads that the server is currently using. */
+			threads: number;
+			/** Total number of database connections (active and idle) that the server currently has established. */
+			db_connections_total: number;
+			/** Number of database connections that the server is currently actively using to make queries or transactions. */
+			db_connections_active: number;
+			/** Number of overflow database connections that the server is currently actively using to make queries or transactions. */
+			db_connections_overflow: number;
+		};
 		/**
 		 * ServerModel
 		 * @description Domain model for ZenML servers.
@@ -8761,6 +9120,18 @@ export type components = {
 			};
 			/** Timestamp of latest user activity traced on the server. */
 			last_user_activity?: string | null;
+			/** The base URL of the ZenML Pro dashboard to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_dashboard_url?: string | null;
+			/** The base URL of the ZenML Pro API to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_api_url?: string | null;
+			/** The ID of the ZenML Pro organization to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_organization_id?: string | null;
+			/** The name of the ZenML Pro organization to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_organization_name?: string | null;
+			/** The ID of the ZenML Pro workspace to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_workspace_id?: string | null;
+			/** The name of the ZenML Pro workspace to which the server is connected. Only set if the server is a ZenML Pro server. */
+			pro_workspace_name?: string | null;
 		};
 		/**
 		 * ServerSettingsResponse
@@ -8836,6 +9207,18 @@ export type components = {
 			display_announcements?: boolean | null;
 			/** Whether to display notifications about ZenML updates in the dashboard. */
 			display_updates?: boolean | null;
+		};
+		/**
+		 * ServerStatistics
+		 * @description Server statistics.
+		 */
+		ServerStatistics: {
+			/** The number of stacks. */
+			stacks: number;
+			/** The number of components. */
+			components: number;
+			/** The number of projects. */
+			projects: number;
 		};
 		/**
 		 * ServiceAccountRequest
@@ -8948,16 +9331,8 @@ export type components = {
 		 * @description Request model for service connectors.
 		 */
 		ServiceConnectorRequest: {
-			/**
-			 * The id of the user that created this resource.
-			 * Format: uuid
-			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/** The service connector name. */
 			name: string;
 			/** The type of service connector. */
@@ -9107,8 +9482,6 @@ export type components = {
 		 * @description Response metadata for service connectors.
 		 */
 		ServiceConnectorResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
 			/** The service connector configuration, not including secrets. */
 			configuration?: {
 				[key: string]: unknown;
@@ -9217,8 +9590,6 @@ export type components = {
 		 *     valid configuration update, not just a partial update. If either is
 		 *     set (i.e. not None) in the update, their values are merged together and
 		 *     will replace the existing configuration and secrets values.
-		 *     * the `secret_id` field value in the update is ignored, given that
-		 *     secrets are managed internally by the ZenML store.
 		 *     * the `labels` field is also a full labels update: if set (i.e. not
 		 *     `None`), all existing labels are removed and replaced by the new labels
 		 *     in the update.
@@ -9268,16 +9639,13 @@ export type components = {
 		 * @description Request model for services.
 		 */
 		ServiceRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the service. */
 			name: string;
 			/** The type of the service. */
@@ -9317,10 +9685,7 @@ export type components = {
 			health_check_url?: string | null;
 			/** The model version id linked to the service. */
 			model_version_id?: string | null;
-			/**
-			 * Pipeline Run Id
-			 * @description By the event source this trigger is attached to.
-			 */
+			/** The pipeline run id linked to the service. */
 			pipeline_run_id?: string | null;
 		};
 		/**
@@ -9378,8 +9743,8 @@ export type components = {
 		 * @description Response metadata for services.
 		 */
 		ServiceResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The class of the service. */
 			service_source: string | null;
 			/** The admin state of the service. */
@@ -9406,6 +9771,11 @@ export type components = {
 		 * @description Class for all resource models associated with the service entity.
 		 */
 		ServiceResponseResources: {
+			/** The pipeline run associated with the service. */
+			pipeline_run?: components["schemas"]["PipelineRunResponse"] | null;
+			/** The model version associated with the service. */
+			model_version?: components["schemas"]["ModelVersionResponse"] | null;
+		} & {
 			[key: string]: unknown;
 		};
 		/**
@@ -9618,13 +9988,11 @@ export type components = {
 		StackDeploymentProvider: "aws" | "gcp" | "azure";
 		/**
 		 * StackRequest
-		 * @description Request model for a stack.
+		 * @description Request model for stack creation.
 		 */
 		StackRequest: {
-			/** User */
+			/** The id of the user that created this resource. Set automatically by the server. */
 			user?: string | null;
-			/** Workspace */
-			workspace?: string | null;
 			/** The name of the stack. */
 			name: string;
 			/**
@@ -9702,8 +10070,6 @@ export type components = {
 		 * @description Response metadata for stacks.
 		 */
 		StackResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
 			/** A mapping of stack component types to the actualinstances of components of this type. */
 			components: {
 				[key: string]: unknown;
@@ -9722,7 +10088,7 @@ export type components = {
 		};
 		/**
 		 * StackResponseResources
-		 * @description Class for all resource models associated with the stack entity.
+		 * @description Response resources for stacks.
 		 */
 		StackResponseResources: {
 			[key: string]: unknown;
@@ -9806,6 +10172,13 @@ export type components = {
 			model?: components["schemas"]["Model"] | null;
 			retry?: components["schemas"]["StepRetryConfig"] | null;
 			/**
+			 * Substitutions
+			 * @default {}
+			 */
+			substitutions: {
+				[key: string]: unknown;
+			};
+			/**
 			 * Outputs
 			 * @default {}
 			 */
@@ -9885,6 +10258,13 @@ export type components = {
 			success_hook_source?: components["schemas"]["Source"] | null;
 			model?: components["schemas"]["Model"] | null;
 			retry?: components["schemas"]["StepRetryConfig"] | null;
+			/**
+			 * Substitutions
+			 * @default {}
+			 */
+			substitutions: {
+				[key: string]: unknown;
+			};
 			/**
 			 * Outputs
 			 * @default {}
@@ -9984,16 +10364,13 @@ export type components = {
 		 * @description Request model for step runs.
 		 */
 		StepRunRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the pipeline run step. */
 			name: string;
 			/** The start time of the step run. */
@@ -10029,13 +10406,6 @@ export type components = {
 			};
 			/** Logs associated with this step run. */
 			logs?: components["schemas"]["LogsRequest"] | null;
-			/**
-			 * The deployment associated with the step run.
-			 * Format: uuid
-			 */
-			deployment: string;
-			/** The ID of the model version that was configured by this step run explicitly. */
-			model_version_id?: string | null;
 		};
 		/**
 		 * StepRunResponse
@@ -10100,8 +10470,8 @@ export type components = {
 		 * @description Response metadata for step runs.
 		 */
 		StepRunResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/** The configuration of the step. */
 			config: components["schemas"]["StepConfiguration-Output"];
 			/** The spec of the step. */
@@ -10170,8 +10540,6 @@ export type components = {
 			status?: components["schemas"]["ExecutionStatus"] | null;
 			/** The end time of the step run. */
 			end_time?: string | null;
-			/** The ID of the model version that was configured by this step run explicitly. */
-			model_version_id?: string | null;
 		};
 		/**
 		 * StepSpec
@@ -10216,17 +10584,111 @@ export type components = {
 			pipeline_parameter_name: string;
 		};
 		/**
+		 * Tag
+		 * @description A model representing a tag.
+		 */
+		Tag: {
+			/** Name */
+			name: string;
+			color?: components["schemas"]["ColorVariants"] | null;
+			/** Exclusive */
+			exclusive?: boolean | null;
+			/** Cascade */
+			cascade?: boolean | null;
+		};
+		/**
 		 * TagRequest
 		 * @description Request model for tags.
 		 */
 		TagRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
 			 * Name
 			 * @description The unique title of the tag.
 			 */
 			name: string;
+			/**
+			 * Exclusive
+			 * @description The flag signifying whether the tag is an exclusive tag.
+			 * @default false
+			 */
+			exclusive: boolean;
 			/** @description The color variant assigned to the tag. */
 			color?: components["schemas"]["ColorVariants"];
+		};
+		/**
+		 * TagResourceRequest
+		 * @description Request model for links between tags and resources.
+		 */
+		TagResourceRequest: {
+			/**
+			 * Tag Id
+			 * Format: uuid
+			 */
+			tag_id: string;
+			/**
+			 * Resource Id
+			 * Format: uuid
+			 */
+			resource_id: string;
+			resource_type: components["schemas"]["TaggableResourceTypes"];
+		};
+		/**
+		 * TagResourceResponse
+		 * @description Response model for the links between tags and resources.
+		 */
+		TagResourceResponse: {
+			/** The body of the resource. */
+			body?: components["schemas"]["TagResourceResponseBody"] | null;
+			/** The metadata related to this resource. */
+			metadata?: components["schemas"]["BaseResponseMetadata"] | null;
+			/** The resources related to this resource. */
+			resources?: components["schemas"]["TagResourceResponseResources"] | null;
+			/**
+			 * The unique resource id.
+			 * Format: uuid
+			 */
+			id: string;
+			/**
+			 * Permission Denied
+			 * @default false
+			 */
+			permission_denied: boolean;
+		};
+		/**
+		 * TagResourceResponseBody
+		 * @description Response body for the links between tags and resources.
+		 */
+		TagResourceResponseBody: {
+			/**
+			 * The timestamp when this resource was created.
+			 * Format: date-time
+			 */
+			created: string;
+			/**
+			 * The timestamp when this resource was last updated.
+			 * Format: date-time
+			 */
+			updated: string;
+			/**
+			 * Tag Id
+			 * Format: uuid
+			 */
+			tag_id: string;
+			/**
+			 * Resource Id
+			 * Format: uuid
+			 */
+			resource_id: string;
+			resource_type: components["schemas"]["TaggableResourceTypes"];
+		};
+		/**
+		 * TagResourceResponseResources
+		 * @description Class for all resource models associated with the tag resource entity.
+		 */
+		TagResourceResponseResources: {
+			[key: string]: unknown;
 		};
 		/**
 		 * TagResponse
@@ -10236,7 +10698,7 @@ export type components = {
 			/** The body of the resource. */
 			body?: components["schemas"]["TagResponseBody"] | null;
 			/** The metadata related to this resource. */
-			metadata?: components["schemas"]["BaseResponseMetadata"] | null;
+			metadata?: components["schemas"]["TagResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?: components["schemas"]["TagResponseResources"] | null;
 			/**
@@ -10270,14 +10732,26 @@ export type components = {
 			 * Format: date-time
 			 */
 			updated: string;
+			/** The user who created this resource. */
+			user?: components["schemas"]["UserResponse"] | null;
 			/** @description The color variant assigned to the tag. */
 			color?: components["schemas"]["ColorVariants"];
+			/**
+			 * Exclusive
+			 * @description The flag signifying whether the tag is an exclusive tag.
+			 */
+			exclusive: boolean;
 			/**
 			 * Tagged Count
 			 * @description The count of resources tagged with this tag.
 			 */
 			tagged_count: number;
 		};
+		/**
+		 * TagResponseMetadata
+		 * @description Response metadata for tags.
+		 */
+		TagResponseMetadata: Record<string, never>;
 		/**
 		 * TagResponseResources
 		 * @description Class for all resource models associated with the tag entity.
@@ -10292,8 +10766,23 @@ export type components = {
 		TagUpdate: {
 			/** Name */
 			name?: string | null;
+			/** Exclusive */
+			exclusive?: boolean | null;
 			color?: components["schemas"]["ColorVariants"] | null;
 		};
+		/**
+		 * TaggableResourceTypes
+		 * @description All possible resource types for tagging.
+		 * @enum {string}
+		 */
+		TaggableResourceTypes:
+			| "artifact"
+			| "artifact_version"
+			| "model"
+			| "model_version"
+			| "pipeline"
+			| "pipeline_run"
+			| "run_template";
 		/**
 		 * TriggerExecutionResponse
 		 * @description Response model for trigger executions.
@@ -10364,16 +10853,13 @@ export type components = {
 		 * @description Model for creating a new trigger.
 		 */
 		TriggerRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
 			/**
-			 * The id of the user that created this resource.
+			 * The project to which this resource belongs.
 			 * Format: uuid
 			 */
-			user: string;
-			/**
-			 * The workspace to which this resource belongs.
-			 * Format: uuid
-			 */
-			workspace: string;
+			project: string;
 			/** The name of the trigger. */
 			name: string;
 			/**
@@ -10452,8 +10938,8 @@ export type components = {
 		 * @description Response metadata for triggers.
 		 */
 		TriggerResponseMetadata: {
-			/** The workspace of this resource. */
-			workspace: components["schemas"]["WorkspaceResponse"];
+			/** The project of this resource. */
+			project: components["schemas"]["ProjectResponse"];
 			/**
 			 * The description of the trigger.
 			 * @default
@@ -10599,6 +11085,8 @@ export type components = {
 			is_service_account: boolean;
 			/** Whether the account is an administrator. */
 			is_admin: boolean;
+			/** The default project ID for the user. */
+			default_project_id?: string | null;
 		};
 		/**
 		 * UserResponseMetadata
@@ -10659,6 +11147,8 @@ export type components = {
 			active?: boolean | null;
 			/** The previous password for the user. Only relevant for user accounts. Required when updating the password. */
 			old_password?: string | null;
+			/** The default project ID for the user. */
+			default_project_id?: string | null;
 		};
 		/** ValidationError */
 		ValidationError: {
@@ -10674,88 +11164,7 @@ export type components = {
 		 * @description All currently available visualization types.
 		 * @enum {string}
 		 */
-		VisualizationType: "csv" | "html" | "image" | "markdown";
-		/**
-		 * WorkspaceRequest
-		 * @description Request model for workspaces.
-		 */
-		WorkspaceRequest: {
-			/** The unique name of the workspace. */
-			name: string;
-			/**
-			 * The description of the workspace.
-			 * @default
-			 */
-			description: string;
-		};
-		/**
-		 * WorkspaceResponse
-		 * @description Response model for workspaces.
-		 */
-		WorkspaceResponse: {
-			/** The body of the resource. */
-			body?: components["schemas"]["WorkspaceResponseBody"] | null;
-			/** The metadata related to this resource. */
-			metadata?: components["schemas"]["WorkspaceResponseMetadata"] | null;
-			/** The resources related to this resource. */
-			resources?: components["schemas"]["WorkspaceResponseResources"] | null;
-			/**
-			 * The unique resource id.
-			 * Format: uuid
-			 */
-			id: string;
-			/**
-			 * Permission Denied
-			 * @default false
-			 */
-			permission_denied: boolean;
-			/** The unique name of the workspace. */
-			name: string;
-		};
-		/**
-		 * WorkspaceResponseBody
-		 * @description Response body for workspaces.
-		 */
-		WorkspaceResponseBody: {
-			/**
-			 * The timestamp when this resource was created.
-			 * Format: date-time
-			 */
-			created: string;
-			/**
-			 * The timestamp when this resource was last updated.
-			 * Format: date-time
-			 */
-			updated: string;
-		};
-		/**
-		 * WorkspaceResponseMetadata
-		 * @description Response metadata for workspaces.
-		 */
-		WorkspaceResponseMetadata: {
-			/**
-			 * The description of the workspace.
-			 * @default
-			 */
-			description: string;
-		};
-		/**
-		 * WorkspaceResponseResources
-		 * @description Class for all resource models associated with the workspace entity.
-		 */
-		WorkspaceResponseResources: {
-			[key: string]: unknown;
-		};
-		/**
-		 * WorkspaceUpdate
-		 * @description Update model for workspaces.
-		 */
-		WorkspaceUpdate: {
-			/** The unique name of the workspace. */
-			name?: string | null;
-			/** The description of the workspace. */
-			description?: string | null;
-		};
+		VisualizationType: "csv" | "html" | "image" | "markdown" | "json";
 		/** _CallStep */
 		_CallStep: {
 			/** Attribute Name */
@@ -10826,7 +11235,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				flavor?: string | null;
 				plugin_subtype?: string | null;
@@ -11137,8 +11548,11 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				has_custom_name?: boolean | null;
 			};
@@ -11446,10 +11860,14 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
+				artifact?: string | null;
 				artifact_id?: string | null;
-				name?: string | null;
 				version?: string | null;
 				version_number?: number | string | null;
 				uri?: string | null;
@@ -11457,11 +11875,9 @@ export interface operations {
 				type?: string | null;
 				data_type?: string | null;
 				artifact_store_id?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				model_version_id?: string | null;
 				only_unused?: boolean | null;
 				has_custom_name?: boolean | null;
-				user?: string | null;
 				model?: string | null;
 				pipeline_run?: string | null;
 			};
@@ -11469,13 +11885,7 @@ export interface operations {
 			path?: never;
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -11586,7 +11996,8 @@ export interface operations {
 	};
 	prune_artifact_versions_api_v1_artifact_versions_delete: {
 		parameters: {
-			query?: {
+			query: {
+				project_name_or_id: string;
 				only_versions?: boolean;
 			};
 			header?: never;
@@ -12060,9 +12471,11 @@ export interface operations {
 	api_token_api_v1_api_token_get: {
 		parameters: {
 			query?: {
-				pipeline_id?: string | null;
+				token_type?: components["schemas"]["APITokenType"];
+				expires_in?: number | null;
 				schedule_id?: string | null;
-				expires_minutes?: number | null;
+				pipeline_run_id?: string | null;
+				step_run_id?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -12111,6 +12524,7 @@ export interface operations {
 				created?: string | null;
 				updated?: string | null;
 				scope_user?: string | null;
+				user?: string | null;
 				expires?: string | null;
 				client_id?: string | null;
 				status?: components["schemas"]["OAuthDeviceStatus"] | string | null;
@@ -12372,6 +12786,7 @@ export interface operations {
 	list_code_repositories_api_v1_code_repositories_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -12380,10 +12795,10 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -12420,6 +12835,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_code_repository_api_v1_code_repositories_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["CodeRepositoryRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["CodeRepositoryResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -12752,7 +13229,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				flavor?: string | null;
 				plugin_subtype?: string | null;
@@ -13063,12 +13542,11 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				name?: string | null;
 				type?: string | null;
 				integration?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -13490,12 +13968,12 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
 				tag?: string | null;
-				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
 				user?: string | null;
+				project?: string | null;
+				name?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -13550,18 +14028,20 @@ export interface operations {
 			};
 		};
 	};
-	get_model_api_v1_models__model_name_or_id__get: {
+	create_model_api_v1_models_post: {
 		parameters: {
 			query?: {
-				hydrate?: boolean;
+				project_name_or_id?: string | null;
 			};
 			header?: never;
-			path: {
-				model_name_or_id: string;
-			};
+			path?: never;
 			cookie?: never;
 		};
-		requestBody?: never;
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelRequest"];
+			};
+		};
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -13590,8 +14070,8 @@ export interface operations {
 					"application/json": components["schemas"]["ErrorModel"];
 				};
 			};
-			/** @description Not Found */
-			404: {
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -13610,12 +14090,14 @@ export interface operations {
 			};
 		};
 	};
-	delete_model_api_v1_models__model_name_or_id__delete: {
+	get_model_api_v1_models__model_id__get: {
 		parameters: {
-			query?: never;
+			query?: {
+				hydrate?: boolean;
+			};
 			header?: never;
 			path: {
-				model_name_or_id: string;
+				model_id: string;
 			};
 			cookie?: never;
 		};
@@ -13627,7 +14109,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": unknown;
+					"application/json": components["schemas"]["ModelResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -13730,6 +14212,64 @@ export interface operations {
 			};
 		};
 	};
+	delete_model_api_v1_models__model_id__delete: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				model_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_model_versions_api_v1_models__model_name_or_id__model_versions_get: {
 		parameters: {
 			query?: {
@@ -13741,28 +14281,24 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				number?: number | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				stage?: string | components["schemas"]["ModelStages"] | null;
-				user?: string | null;
+				model?: string | null;
 			};
 			header?: never;
 			path: {
-				model_name_or_id: string;
+				model_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -13814,6 +14350,7 @@ export interface operations {
 	list_model_versions_api_v1_model_versions_get: {
 		parameters: {
 			query?: {
+				model_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -13822,26 +14359,22 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				number?: number | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				stage?: string | components["schemas"]["ModelStages"] | null;
-				user?: string | null;
+				model?: string | null;
 			};
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -13872,6 +14405,69 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_model_version_api_v1_model_versions_post: {
+		parameters: {
+			query?: {
+				model_id?: string | null;
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelVersionRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ModelVersionResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -14259,10 +14855,6 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-				model_id?: string | null;
 				model_version_id?: string | null;
 				artifact_version_id?: string | null;
 				artifact_name?: string | null;
@@ -14316,6 +14908,57 @@ export interface operations {
 			};
 		};
 	};
+	create_model_version_artifact_link_api_v1_model_version_artifacts_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelVersionArtifactRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ModelVersionArtifactResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_model_version_pipeline_run_links_api_v1_model_version_pipeline_runs_get: {
 		parameters: {
 			query?: {
@@ -14327,10 +14970,6 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-				model_id?: string | null;
 				model_version_id?: string | null;
 				pipeline_run_id?: string | null;
 				pipeline_run_name?: string | null;
@@ -14380,9 +15019,61 @@ export interface operations {
 			};
 		};
 	};
+	create_model_version_pipeline_run_link_api_v1_model_version_pipeline_runs_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelVersionPipelineRunRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ModelVersionPipelineRunResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_pipelines_api_v1_pipelines_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -14391,13 +15082,13 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				latest_run_status?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-				user?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -14434,6 +15125,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_pipeline_api_v1_pipelines_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PipelineResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -14643,12 +15396,14 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				orchestrator_run_id?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				stack_id?: string | null;
 				schedule_id?: string | null;
 				build_id?: string | null;
@@ -14660,7 +15415,6 @@ export interface operations {
 				start_time?: string | null;
 				end_time?: string | null;
 				unlisted?: boolean | null;
-				user?: string | null;
 				pipeline_name?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
@@ -14675,13 +15429,7 @@ export interface operations {
 			};
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -14733,6 +15481,7 @@ export interface operations {
 	list_builds_api_v1_pipeline_builds_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -14741,16 +15490,19 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
+				container_registry_id?: string | null;
 				is_local?: boolean | null;
 				contains_code?: boolean | null;
 				zenml_version?: string | null;
 				python_version?: string | null;
 				checksum?: string | null;
+				stack_checksum?: string | null;
+				duration?: number | string | null;
 			};
 			header?: never;
 			path?: never;
@@ -14787,6 +15539,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_build_api_v1_pipeline_builds_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineBuildRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PipelineBuildResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -14926,6 +15740,7 @@ export interface operations {
 	list_deployments_api_v1_pipeline_deployments_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -14934,9 +15749,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
 				build_id?: string | null;
@@ -14978,6 +15793,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_deployment_api_v1_pipeline_deployments_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineDeploymentRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PipelineDeploymentResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -15117,6 +15994,7 @@ export interface operations {
 	list_runs_api_v1_runs_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -15125,13 +16003,15 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				orchestrator_run_id?: string | null;
 				pipeline_id?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				stack_id?: string | null;
 				schedule_id?: string | null;
 				build_id?: string | null;
@@ -15143,7 +16023,6 @@ export interface operations {
 				start_time?: string | null;
 				end_time?: string | null;
 				unlisted?: boolean | null;
-				user?: string | null;
 				pipeline_name?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
@@ -15156,13 +16035,7 @@ export interface operations {
 			path?: never;
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -15193,6 +16066,71 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	get_or_create_pipeline_run_api_v1_runs_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineRunRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": [
+						components["schemas"]["PipelineRunResponse"],
+						boolean,
+					];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -15402,7 +16340,10 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				code_hash?: string | null;
 				cache_key?: string | null;
@@ -15412,8 +16353,6 @@ export interface operations {
 				pipeline_run_id?: string | null;
 				deployment_id?: string | null;
 				original_step_run_id?: string | null;
-				user_id?: string | null;
-				workspace_id?: string | null;
 				model_version_id?: string | null;
 				model?: string | null;
 			};
@@ -15423,13 +16362,7 @@ export interface operations {
 			};
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -15654,9 +16587,72 @@ export interface operations {
 			};
 		};
 	};
+	create_run_metadata_api_v1_run_metadata_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["RunMetadataRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_run_templates_api_v1_run_templates_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -15665,16 +16661,16 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				pipeline_id?: string | null;
 				build_id?: string | null;
 				stack_id?: string | null;
 				code_repository_id?: string | null;
-				user?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
 			};
@@ -15713,6 +16709,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_run_template_api_v1_run_templates_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["RunTemplateRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["RunTemplateResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -15914,6 +16972,7 @@ export interface operations {
 	list_schedules_api_v1_schedules_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -15922,9 +16981,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				pipeline_id?: string | null;
 				orchestrator_id?: string | null;
 				active?: boolean | null;
@@ -15971,6 +17030,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_schedule_api_v1_schedules_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ScheduleRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ScheduleResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -16180,11 +17301,10 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				name?: string | null;
-				scope?: components["schemas"]["SecretScope"] | string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				private?: boolean | null;
 			};
 			header?: never;
 			path?: never;
@@ -16221,6 +17341,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_secret_api_v1_secrets_post: {
+		parameters: {
+			query?: {
+				workspace_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["SecretRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["SecretResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -16615,6 +17797,35 @@ export interface operations {
 			};
 		};
 	};
+	server_load_info_api_v1_load_info_get: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServerLoadInfo"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	get_onboarding_state_api_v1_onboarding_state_get: {
 		parameters: {
 			query?: never;
@@ -16782,6 +17993,53 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["UserResponse"] | null;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	get_server_statistics_api_v1_statistics_get: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServerStatistics"];
 				};
 			};
 			/** @description Unauthorized */
@@ -17406,6 +18664,7 @@ export interface operations {
 	list_service_connectors_api_v1_service_connectors_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				expand_secrets?: boolean;
 				hydrate?: boolean;
 				sort_by?: string;
@@ -17415,12 +18674,11 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				scope_type?: string | null;
 				name?: string | null;
 				connector_type?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				auth_method?: string | null;
 				resource_type?: string | null;
 				resource_id?: string | null;
@@ -17468,6 +18726,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_service_connector_api_v1_service_connectors_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ServiceConnectorRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServiceConnectorResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -17711,6 +19031,87 @@ export interface operations {
 			};
 			/** @description Conflict */
 			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_service_connector_resources_api_v1_service_connectors_resources_get: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				scope_type?: string | null;
+				name?: string | null;
+				connector_type?: string | null;
+				auth_method?: string | null;
+				resource_type?: string | null;
+				resource_id?: string | null;
+				labels_str?: string | null;
+				secret_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				"application/json": {
+					[key: string]: unknown;
+				} | null;
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServiceConnectorResourcesModel"][];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -18045,10 +19446,10 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				type?: string | null;
 				flavor?: string | null;
 				config?: string | null;
@@ -18113,7 +19514,9 @@ export interface operations {
 	};
 	create_service_api_v1_services_post: {
 		parameters: {
-			query?: never;
+			query?: {
+				project_name_or_id?: string | null;
+			};
 			header?: never;
 			path?: never;
 			cookie?: never;
@@ -18499,6 +19902,7 @@ export interface operations {
 	list_stacks_api_v1_stacks_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -18507,13 +19911,11 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				name?: string | null;
 				description?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				component_id?: string | null;
-				user?: string | null;
 				component?: string | null;
 			};
 			header?: never;
@@ -18551,6 +19953,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_stack_api_v1_stacks_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["StackRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["StackResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -18752,6 +20216,7 @@ export interface operations {
 	list_stack_components_api_v1_components_get: {
 		parameters: {
 			query?: {
+				project_name_or_id?: string | null;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -18760,16 +20225,14 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				scope_type?: string | null;
 				name?: string | null;
 				flavor?: string | null;
 				type?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				connector_id?: string | null;
 				stack_id?: string | null;
-				user?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -18806,6 +20269,68 @@ export interface operations {
 			};
 			/** @description Not Found */
 			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_stack_component_api_v1_components_post: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ComponentRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ComponentResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -19071,7 +20596,10 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				code_hash?: string | null;
 				cache_key?: string | null;
@@ -19081,8 +20609,6 @@ export interface operations {
 				pipeline_run_id?: string | null;
 				deployment_id?: string | null;
 				original_step_run_id?: string | null;
-				user_id?: string | null;
-				workspace_id?: string | null;
 				model_version_id?: string | null;
 				model?: string | null;
 			};
@@ -19090,13 +20616,7 @@ export interface operations {
 			path?: never;
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -19517,8 +21037,12 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				name?: string | null;
 				color?: components["schemas"]["ColorVariants"] | null;
+				exclusive?: boolean | null;
+				resource_type?: components["schemas"]["TaggableResourceTypes"] | null;
 			};
 			header?: never;
 			path?: never;
@@ -19813,6 +21337,246 @@ export interface operations {
 			};
 		};
 	};
+	create_tag_resource_api_v1_tag_resources_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["TagResourceRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["TagResourceResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	delete_tag_resource_api_v1_tag_resources_delete: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["TagResourceRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	batch_create_tag_resource_api_v1_tag_resources_batch_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["TagResourceRequest"][];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["TagResourceResponse"][];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	batch_delete_tag_resource_api_v1_tag_resources_batch_delete: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["TagResourceRequest"][];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_triggers_api_v1_triggers_get: {
 		parameters: {
 			query?: {
@@ -19824,7 +21588,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				event_source_id?: string | null;
 				action_id?: string | null;
@@ -20626,7 +22392,7 @@ export interface operations {
 			};
 		};
 	};
-	list_workspaces_api_v1_workspaces_get: {
+	list_projects_api_v1_workspaces_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -20638,6 +22404,7 @@ export interface operations {
 				created?: string | null;
 				updated?: string | null;
 				name?: string | null;
+				display_name?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -20651,7 +22418,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["Page_WorkspaceResponse_"];
+					"application/json": components["schemas"]["Page_ProjectResponse_"];
 				};
 			};
 			/** @description Unauthorized */
@@ -20683,7 +22450,7 @@ export interface operations {
 			};
 		};
 	};
-	create_workspace_api_v1_workspaces_post: {
+	create_project_api_v1_workspaces_post: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -20692,7 +22459,7 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["WorkspaceRequest"];
+				"application/json": components["schemas"]["ProjectRequest"];
 			};
 		};
 		responses: {
@@ -20702,7 +22469,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["WorkspaceResponse"];
+					"application/json": components["schemas"]["ProjectResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -20734,14 +22501,14 @@ export interface operations {
 			};
 		};
 	};
-	get_workspace_api_v1_workspaces__workspace_name_or_id__get: {
+	get_project_api_v1_workspaces__project_name_or_id__get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string;
 			};
 			cookie?: never;
 		};
@@ -20753,7 +22520,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["WorkspaceResponse"];
+					"application/json": components["schemas"]["ProjectResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -20785,18 +22552,18 @@ export interface operations {
 			};
 		};
 	};
-	update_workspace_api_v1_workspaces__workspace_name_or_id__put: {
+	update_project_api_v1_workspaces__project_name_or_id__put: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string;
 			};
 			cookie?: never;
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["WorkspaceUpdate"];
+				"application/json": components["schemas"]["ProjectUpdate"];
 			};
 		};
 		responses: {
@@ -20806,7 +22573,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["WorkspaceResponse"];
+					"application/json": components["schemas"]["ProjectResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -20838,12 +22605,12 @@ export interface operations {
 			};
 		};
 	};
-	delete_workspace_api_v1_workspaces__workspace_name_or_id__delete: {
+	delete_project_api_v1_workspaces__project_name_or_id__delete: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string;
 			};
 			cookie?: never;
 		};
@@ -20887,29 +22654,12 @@ export interface operations {
 			};
 		};
 	};
-	list_workspace_stacks_api_v1_workspaces__workspace_name_or_id__stacks_get: {
+	get_project_statistics_api_v1_workspaces__project_name_or_id__statistics_get: {
 		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | null;
-				created?: string | null;
-				updated?: string | null;
-				scope_workspace?: string | null;
-				name?: string | null;
-				description?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-				component_id?: string | null;
-				user?: string | null;
-				component?: string | null;
-			};
+			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string;
 			};
 			cookie?: never;
 		};
@@ -20921,7 +22671,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["Page_StackResponse_"];
+					"application/json": components["schemas"]["ProjectStatistics"];
 				};
 			};
 			/** @description Unauthorized */
@@ -20953,60 +22703,7 @@ export interface operations {
 			};
 		};
 	};
-	create_stack_api_v1_workspaces__workspace_name_or_id__stacks_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["StackRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["StackResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	list_workspace_stack_components_api_v1_workspaces__workspace_name_or_id__components_get: {
+	list_code_repositories_api_v1_workspaces__project_name_or_id__code_repositories_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -21017,20 +22714,14 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				scope_type?: string | null;
-				name?: string | null;
-				flavor?: string | null;
-				type?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-				connector_id?: string | null;
-				stack_id?: string | null;
+				scope_user?: string | null;
 				user?: string | null;
+				project?: string | null;
+				name?: string | null;
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21042,7 +22733,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["Page_ComponentResponse_"];
+					"application/json": components["schemas"]["Page_CodeRepositoryResponse_"];
 				};
 			};
 			/** @description Unauthorized */
@@ -21074,18 +22765,18 @@ export interface operations {
 			};
 		};
 	};
-	create_stack_component_api_v1_workspaces__workspace_name_or_id__components_post: {
+	create_code_repository_api_v1_workspaces__project_name_or_id__code_repositories_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["ComponentRequest"];
+				"application/json": components["schemas"]["CodeRepositoryRequest"];
 			};
 		};
 		responses: {
@@ -21095,7 +22786,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["ComponentResponse"];
+					"application/json": components["schemas"]["CodeRepositoryResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -21127,7 +22818,114 @@ export interface operations {
 			};
 		};
 	};
-	list_workspace_pipelines_api_v1_workspaces__workspace_name_or_id__pipelines_get: {
+	create_model_api_v1_workspaces__project_name_or_id__models_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ModelResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_model_version_api_v1_workspaces__project_name_or_id__models__model_id__model_versions_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				model_id: string | null;
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ModelVersionRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ModelVersionResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_builds_api_v1_workspaces__project_name_or_id__pipeline_builds_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -21138,138 +22936,23 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				tag?: string | null;
-				name?: string | null;
-				latest_run_status?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				scope_user?: string | null;
 				user?: string | null;
-			};
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["Page_PipelineResponse_"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_pipeline_api_v1_workspaces__workspace_name_or_id__pipelines_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PipelineRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["PipelineResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	list_workspace_builds_api_v1_workspaces__workspace_name_or_id__pipeline_builds_get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | null;
-				created?: string | null;
-				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				project?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
+				container_registry_id?: string | null;
 				is_local?: boolean | null;
 				contains_code?: boolean | null;
 				zenml_version?: string | null;
 				python_version?: string | null;
 				checksum?: string | null;
+				stack_checksum?: string | null;
+				duration?: number | string | null;
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21313,12 +22996,12 @@ export interface operations {
 			};
 		};
 	};
-	create_build_api_v1_workspaces__workspace_name_or_id__pipeline_builds_post: {
+	create_build_api_v1_workspaces__project_name_or_id__pipeline_builds_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21366,7 +23049,7 @@ export interface operations {
 			};
 		};
 	};
-	list_workspace_deployments_api_v1_workspaces__workspace_name_or_id__pipeline_deployments_get: {
+	list_deployments_api_v1_workspaces__project_name_or_id__pipeline_deployments_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -21377,9 +23060,9 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
 				build_id?: string | null;
@@ -21388,7 +23071,7 @@ export interface operations {
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21432,12 +23115,12 @@ export interface operations {
 			};
 		};
 	};
-	create_deployment_api_v1_workspaces__workspace_name_or_id__pipeline_deployments_post: {
+	create_deployment_api_v1_workspaces__project_name_or_id__pipeline_deployments_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21485,7 +23168,7 @@ export interface operations {
 			};
 		};
 	};
-	list_workspace_run_templates_api_v1_workspaces__workspace_name_or_id__run_templates_get: {
+	list_pipelines_api_v1_workspaces__project_name_or_id__pipelines_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -21496,22 +23179,193 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
+				latest_run_status?: string | null;
+			};
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_PipelineResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_pipeline_api_v1_workspaces__project_name_or_id__pipelines_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PipelineResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_run_metadata_api_v1_workspaces__project_name_or_id__run_metadata_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["RunMetadataRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_run_templates_api_v1_workspaces__project_name_or_id__run_templates_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
+				name?: string | null;
 				pipeline_id?: string | null;
 				build_id?: string | null;
 				stack_id?: string | null;
 				code_repository_id?: string | null;
-				user?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21555,12 +23409,12 @@ export interface operations {
 			};
 		};
 	};
-	create_run_template_api_v1_workspaces__workspace_name_or_id__run_templates_post: {
+	create_run_template_api_v1_workspaces__project_name_or_id__run_templates_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21608,7 +23462,7 @@ export interface operations {
 			};
 		};
 	};
-	list_runs_api_v1_workspaces__workspace_name_or_id__runs_get: {
+	list_runs_api_v1_workspaces__project_name_or_id__runs_get: {
 		parameters: {
 			query?: {
 				hydrate?: boolean;
@@ -21619,13 +23473,15 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
+				run_metadata?: string[] | null;
 				tag?: string | null;
+				tags?: string[] | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
 				name?: string | null;
 				orchestrator_run_id?: string | null;
 				pipeline_id?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				stack_id?: string | null;
 				schedule_id?: string | null;
 				build_id?: string | null;
@@ -21637,7 +23493,6 @@ export interface operations {
 				start_time?: string | null;
 				end_time?: string | null;
 				unlisted?: boolean | null;
-				user?: string | null;
 				pipeline_name?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
@@ -21648,17 +23503,11 @@ export interface operations {
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
+		requestBody?: never;
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -21698,118 +23547,12 @@ export interface operations {
 			};
 		};
 	};
-	create_pipeline_run_api_v1_workspaces__workspace_name_or_id__runs_post: {
+	get_or_create_pipeline_run_api_v1_workspaces__project_name_or_id__runs_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PipelineRunRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["PipelineRunResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_schedule_api_v1_workspaces__workspace_name_or_id__schedules_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ScheduleRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ScheduleResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	get_or_create_pipeline_run_api_v1_workspaces__workspace_name_or_id__runs_get_or_create_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21860,18 +23603,89 @@ export interface operations {
 			};
 		};
 	};
-	create_run_metadata_api_v1_workspaces__workspace_name_or_id__run_metadata_post: {
+	list_schedules_api_v1_workspaces__project_name_or_id__schedules_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				project?: string | null;
+				pipeline_id?: string | null;
+				orchestrator_id?: string | null;
+				active?: boolean | null;
+				cron_expression?: string | null;
+				start_time?: string | null;
+				end_time?: string | null;
+				interval_second?: number | null;
+				catchup?: boolean | null;
+				name?: string | null;
+				run_once_start_time?: string | null;
+			};
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_ScheduleResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_schedule_api_v1_workspaces__project_name_or_id__schedules_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["RunMetadataRequest"];
+				"application/json": components["schemas"]["ScheduleRequest"];
 			};
 		};
 		responses: {
@@ -21881,7 +23695,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": unknown;
+					"application/json": components["schemas"]["ScheduleResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -21918,7 +23732,7 @@ export interface operations {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				workspace_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -21966,9 +23780,10 @@ export interface operations {
 			};
 		};
 	};
-	list_workspace_code_repositories_api_v1_workspaces__workspace_name_or_id__code_repositories_get: {
+	list_service_connectors_api_v1_workspaces__project_name_or_id__service_connectors_get: {
 		parameters: {
 			query?: {
+				expand_secrets?: boolean;
 				hydrate?: boolean;
 				sort_by?: string;
 				logical_operator?: components["schemas"]["LogicalOperators"];
@@ -21977,178 +23792,11 @@ export interface operations {
 				id?: string | null;
 				created?: string | null;
 				updated?: string | null;
-				scope_workspace?: string | null;
-				name?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
-			};
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["Page_CodeRepositoryResponse_"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_code_repository_api_v1_workspaces__workspace_name_or_id__code_repositories_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["CodeRepositoryRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["CodeRepositoryResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	get_workspace_statistics_api_v1_workspaces__workspace_name_or_id__statistics_get: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						[key: string]: unknown;
-					};
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	list_workspace_service_connectors_api_v1_workspaces__workspace_name_or_id__service_connectors_get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | null;
-				created?: string | null;
-				updated?: string | null;
-				scope_workspace?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
 				scope_type?: string | null;
 				name?: string | null;
 				connector_type?: string | null;
-				workspace_id?: string | null;
-				user_id?: string | null;
 				auth_method?: string | null;
 				resource_type?: string | null;
 				resource_id?: string | null;
@@ -22157,7 +23805,7 @@ export interface operations {
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -22207,12 +23855,12 @@ export interface operations {
 			};
 		};
 	};
-	create_service_connector_api_v1_workspaces__workspace_name_or_id__service_connectors_post: {
+	create_service_connector_api_v1_workspaces__project_name_or_id__service_connectors_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -22260,20 +23908,40 @@ export interface operations {
 			};
 		};
 	};
-	list_service_connector_resources_api_v1_workspaces__workspace_name_or_id__service_connectors_resources_get: {
+	list_service_connector_resources_api_v1_workspaces__project_name_or_id__resources_get: {
 		parameters: {
 			query?: {
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				scope_type?: string | null;
+				name?: string | null;
 				connector_type?: string | null;
+				auth_method?: string | null;
 				resource_type?: string | null;
 				resource_id?: string | null;
+				labels_str?: string | null;
+				secret_id?: string | null;
 			};
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
-		requestBody?: never;
+		requestBody?: {
+			content: {
+				"application/json": {
+					[key: string]: unknown;
+				} | null;
+			};
+		};
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -22313,227 +23981,12 @@ export interface operations {
 			};
 		};
 	};
-	create_model_api_v1_workspaces__workspace_name_or_id__models_post: {
+	create_service_api_v1_workspaces__project_name_or_id__services_post: {
 		parameters: {
 			query?: never;
 			header?: never;
 			path: {
-				workspace_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ModelRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ModelResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_model_version_api_v1_workspaces__workspace_name_or_id__models__model_name_or_id__model_versions_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-				model_name_or_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ModelVersionRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ModelVersionResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_model_version_artifact_link_api_v1_workspaces__workspace_name_or_id__model_versions__model_version_id__artifacts_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-				model_version_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ModelVersionArtifactRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ModelVersionArtifactResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_model_version_pipeline_run_link_api_v1_workspaces__workspace_name_or_id__model_versions__model_version_id__runs_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
-				model_version_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ModelVersionPipelineRunRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ModelVersionPipelineRunResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_service_api_v1_workspaces__workspace_name_or_id__services_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				workspace_name_or_id: string;
+				project_name_or_id: string | null;
 			};
 			cookie?: never;
 		};
@@ -22563,6 +24016,553 @@ export interface operations {
 			};
 			/** @description Conflict */
 			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_stack_components_api_v1_workspaces__project_name_or_id__components_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				scope_type?: string | null;
+				name?: string | null;
+				flavor?: string | null;
+				type?: string | null;
+				connector_id?: string | null;
+				stack_id?: string | null;
+			};
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_ComponentResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_stack_component_api_v1_workspaces__project_name_or_id__components_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ComponentRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ComponentResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_stacks_api_v1_workspaces__project_name_or_id__stacks_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				name?: string | null;
+				description?: string | null;
+				component_id?: string | null;
+				component?: string | null;
+			};
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_StackResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_stack_api_v1_workspaces__project_name_or_id__stacks_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string | null;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["StackRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["StackResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_projects_api_v1_projects_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				name?: string | null;
+				display_name?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_ProjectResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	create_project_api_v1_projects_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ProjectRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ProjectResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	get_project_api_v1_projects__project_name_or_id__get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+			};
+			header?: never;
+			path: {
+				project_name_or_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ProjectResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	update_project_api_v1_projects__project_name_or_id__put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ProjectUpdate"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ProjectResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	delete_project_api_v1_projects__project_name_or_id__delete: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	get_project_statistics_api_v1_projects__project_name_or_id__statistics_get: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				project_name_or_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ProjectStatistics"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
 				headers: {
 					[name: string]: unknown;
 				};

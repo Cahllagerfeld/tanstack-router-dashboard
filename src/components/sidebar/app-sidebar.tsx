@@ -21,7 +21,7 @@ import {
 	SidebarFooter,
 	SidebarHeader,
 } from "@/components/ui/sidebar";
-import { WorkspaceSwitcher } from "./workspace-switcher";
+import { WorkspaceSwitcher } from "./project-switcher";
 
 const data = {
 	navMain: [
