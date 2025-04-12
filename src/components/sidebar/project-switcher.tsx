@@ -16,13 +16,13 @@ import {
 import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
 import { CreateProjectDialog } from "@/features/create-project/create-project-dialog";
-import { getAvatarUrl } from "@/lib/avatar";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { getIllustrationUrl } from "@/lib/images";
 
 export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
@@ -55,16 +55,15 @@ export function ProjectSwitcher() {
 							>
 								<Avatar className="size-8 shrink-0 rounded-md">
 									<AvatarImage
-										src={getAvatarUrl(activeProject || "", {
-											size: 32,
-										})}
+										className="object-cover"
+										src={getIllustrationUrl(activeProject || "")}
 									/>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{serverData.name}
+										{activeProject}
 									</span>
-									<span className="truncate text-xs">{activeProject}</span>
+									<span className="truncate text-xs">{serverData.name}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto" />
 							</SidebarMenuButton>
@@ -92,7 +91,8 @@ export function ProjectSwitcher() {
 								>
 									<Avatar className="size-6 shrink-0 rounded-md">
 										<AvatarImage
-											src={getAvatarUrl(project.name, { size: 24 })}
+											className="object-cover"
+											src={getIllustrationUrl(project.name)}
 										/>
 									</Avatar>
 

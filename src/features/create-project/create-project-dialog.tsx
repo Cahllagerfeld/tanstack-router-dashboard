@@ -30,7 +30,9 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { CreateProjectForm, createProjectSchema } from "./schema";
+import { type CreateProjectForm, createProjectSchema } from "./schema";
+import { isFetchError } from "@/lib/fetch-error";
+import { toast } from "sonner";
 
 type Props = {
 	open: boolean;
@@ -49,7 +51,7 @@ export function CreateProjectDialog({ open, setOpen }: Props) {
 							Create a new project to start collaborating with your team.
 						</DialogDescription>
 					</DialogHeader>
-					<ProfileForm setOpen={setOpen} />
+					<CreateProjectForm setOpen={setOpen} />
 				</DialogContent>
 			</Dialog>
 		);
@@ -64,7 +66,7 @@ export function CreateProjectDialog({ open, setOpen }: Props) {
 						Create a new project to start collaborating with your team.
 					</DrawerDescription>
 				</DrawerHeader>
-				<ProfileForm setOpen={setOpen} className="px-4" />
+				<CreateProjectForm setOpen={setOpen} className="px-4" />
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancel</Button>
@@ -75,7 +77,7 @@ export function CreateProjectDialog({ open, setOpen }: Props) {
 	);
 }
 
-function ProfileForm({
+function CreateProjectForm({
 	className,
 	setOpen,
 	...rest
@@ -86,6 +88,7 @@ function ProfileForm({
 		resolver: zodResolver(createProjectSchema),
 		defaultValues: {
 			name: "",
+			displayName: "",
 			description: "",
 		},
 	});
@@ -94,13 +97,18 @@ function ProfileForm({
 		onSuccess: () => {
 			setOpen(false);
 		},
+		onError: (error) => {
+			if (isFetchError(error)) {
+				toast.error(error.message);
+			}
+		},
 	});
 
 	function handleCreateProject(vals: CreateProjectForm) {
 		mutate({
 			name: vals.name,
 			description: vals.description,
-			display_name: vals.name,
+			display_name: vals.displayName,
 		});
 	}
 
@@ -109,9 +117,21 @@ function ProfileForm({
 			<form
 				onSubmit={form.handleSubmit(handleCreateProject)}
 				className={cn("space-y-4", className)}
-				id="password"
 				{...rest}
 			>
+				<FormField
+					control={form.control}
+					name="displayName"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Display Name</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				></FormField>
 				<FormField
 					control={form.control}
 					name="name"
