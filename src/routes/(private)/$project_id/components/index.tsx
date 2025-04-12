@@ -17,16 +17,12 @@ const querySchema = z.object({
 		.catch(20),
 });
 
-export const Route = createFileRoute("/(private)/$workspace_id/components/")({
+export const Route = createFileRoute("/(private)/$project_id/components/")({
 	validateSearch: (search) => querySchema.parse(search),
 	loaderDeps: ({ search: { type, page, size } }) => ({ type, page, size }),
-	loader: ({
-		context: { queryClient },
-		params: { workspace_id },
-		deps: { type, page, size },
-	}) => {
+	loader: ({ context: { queryClient }, deps: { type, page, size } }) => {
 		return queryClient.ensureQueryData(
-			componentQueries.workspaceComponentList(workspace_id, {
+			componentQueries.componentList({
 				type,
 				page,
 				size,

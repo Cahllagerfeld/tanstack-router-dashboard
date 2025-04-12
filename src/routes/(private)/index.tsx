@@ -1,32 +1,32 @@
-import { workspaceQueries } from "@/data/workspaces";
-import { getWorkspaceFromLocalStorage } from "@/lib/workspaces";
+import { projectQueries } from "@/data/projects";
+import { getProjectFromLocalStorage } from "@/lib/projects";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/")({
 	loader: async ({ context }) => {
-		const workspaces = await context.queryClient.ensureQueryData(
-			workspaceQueries.workspaceList()
+		const projects = await context.queryClient.ensureQueryData(
+			projectQueries.projectList()
 		);
-		const { items: workspaceItems } = workspaces;
-		const localWorkspaceId = getWorkspaceFromLocalStorage();
-		const selectedWorkspace = workspaceItems.find(
-			(workspace) => workspace.id === localWorkspaceId
+		const { items: projectItems } = projects;
+		const localProjectId = getProjectFromLocalStorage();
+		const selectedProject = projectItems.find(
+			(project) => project.id === localProjectId
 		);
-		if (selectedWorkspace) {
+		if (selectedProject) {
 			throw redirect({
-				to: "/$workspace_id",
-				params: { workspace_id: selectedWorkspace.id },
+				to: "/$project_id",
+				params: { project_id: selectedProject.id },
 			});
 		}
-		const defaultWorkspace = workspaceItems.find(
-			(workspace) => workspace.name === "default"
+		const defaultProject = projectItems.find(
+			(project) => project.name === "default"
 		);
-		if (!defaultWorkspace) {
+		if (!defaultProject) {
 			throw redirect({ to: "/login" });
 		}
 		throw redirect({
-			to: "/$workspace_id",
-			params: { workspace_id: defaultWorkspace.id },
+			to: "/$project_id",
+			params: { project_id: defaultProject.id },
 		});
 	},
 });

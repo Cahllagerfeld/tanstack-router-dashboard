@@ -4,10 +4,12 @@ export const apiPaths = {
 	info: "/info",
 	activate: "/activate",
 	settings: "/settings",
-	workspaces: {
-		base: "/workspaces",
-		detail: (id: string) => `/workspaces/${id}`,
-		components: (id: string) => `/workspaces/${id}/components`,
+	projects: {
+		base: "/projects",
+		detail: (id: string) => `/projects/${id}`,
+	},
+	components: {
+		base: "/components",
 	},
 	users: {
 		currentUser: "/current-user",

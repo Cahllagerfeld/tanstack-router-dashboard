@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.6/.schema/devbox.schema.json",
-	"packages": ["bun@latest"],
+	"packages": ["bun@latest", "git@latest"],
 	"shell": {
 		"scripts": {
 			"preview": ["bun run build && bun run preview"]

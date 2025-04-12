@@ -21,7 +21,7 @@ import {
 	SidebarFooter,
 	SidebarHeader,
 } from "@/components/ui/sidebar";
-import { WorkspaceSwitcher } from "./workspace-switcher";
+import { ProjectSwitcher } from "./project-switcher";
 
 const data = {
 	navMain: [
@@ -146,7 +146,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar variant="inset" {...props}>
 			<SidebarHeader>
-				<WorkspaceSwitcher />
+				<ProjectSwitcher />
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.navMain} />

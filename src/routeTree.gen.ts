@@ -15,16 +15,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as privateIndexImport } from './routes/(private)/index'
 import { Route as publicGridLayoutImport } from './routes/(public)/_grid-layout'
-import { Route as privateWorkspaceidImport } from './routes/(private)/$workspace_id'
+import { Route as privateProjectidImport } from './routes/(private)/$project_id'
 import { Route as publicGridLayoutServerActivationImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as publicGridLayoutLoginImport } from './routes/(public)/_grid-layout/login'
-import { Route as privateWorkspaceidComponentsIndexImport } from './routes/(private)/$workspace_id/components/index'
+import { Route as privateProjectidComponentsIndexImport } from './routes/(private)/$project_id/components/index'
 
 // Create Virtual Routes
 
 const publicImport = createFileRoute('/(public)')()
-const privateWorkspaceidIndexLazyImport = createFileRoute(
-  '/(private)/$workspace_id/',
+const privateProjectidIndexLazyImport = createFileRoute(
+  '/(private)/$project_id/',
 )()
 
 // Create/Update Routes
@@ -45,24 +45,24 @@ const publicGridLayoutRoute = publicGridLayoutImport.update({
   getParentRoute: () => publicRoute,
 } as any)
 
-const privateWorkspaceidRoute = privateWorkspaceidImport
+const privateProjectidRoute = privateProjectidImport
   .update({
-    id: '/(private)/$workspace_id',
-    path: '/$workspace_id',
+    id: '/(private)/$project_id',
+    path: '/$project_id',
     getParentRoute: () => rootRoute,
   } as any)
   .lazy(() =>
-    import('./routes/(private)/$workspace_id.lazy').then((d) => d.Route),
+    import('./routes/(private)/$project_id.lazy').then((d) => d.Route),
   )
 
-const privateWorkspaceidIndexLazyRoute = privateWorkspaceidIndexLazyImport
+const privateProjectidIndexLazyRoute = privateProjectidIndexLazyImport
   .update({
     id: '/',
     path: '/',
-    getParentRoute: () => privateWorkspaceidRoute,
+    getParentRoute: () => privateProjectidRoute,
   } as any)
   .lazy(() =>
-    import('./routes/(private)/$workspace_id/index.lazy').then((d) => d.Route),
+    import('./routes/(private)/$project_id/index.lazy').then((d) => d.Route),
   )
 
 const publicGridLayoutServerActivationRoute =
@@ -88,15 +88,15 @@ const publicGridLayoutLoginRoute = publicGridLayoutLoginImport
     import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
   )
 
-const privateWorkspaceidComponentsIndexRoute =
-  privateWorkspaceidComponentsIndexImport
+const privateProjectidComponentsIndexRoute =
+  privateProjectidComponentsIndexImport
     .update({
       id: '/components/',
       path: '/components/',
-      getParentRoute: () => privateWorkspaceidRoute,
+      getParentRoute: () => privateProjectidRoute,
     } as any)
     .lazy(() =>
-      import('./routes/(private)/$workspace_id/components/index.lazy').then(
+      import('./routes/(private)/$project_id/components/index.lazy').then(
         (d) => d.Route,
       ),
     )
@@ -105,11 +105,11 @@ const privateWorkspaceidComponentsIndexRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(private)/$workspace_id': {
-      id: '/(private)/$workspace_id'
-      path: '/$workspace_id'
-      fullPath: '/$workspace_id'
-      preLoaderRoute: typeof privateWorkspaceidImport
+    '/(private)/$project_id': {
+      id: '/(private)/$project_id'
+      path: '/$project_id'
+      fullPath: '/$project_id'
+      preLoaderRoute: typeof privateProjectidImport
       parentRoute: typeof rootRoute
     }
     '/(public)': {
@@ -147,38 +147,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicGridLayoutServerActivationImport
       parentRoute: typeof publicGridLayoutImport
     }
-    '/(private)/$workspace_id/': {
-      id: '/(private)/$workspace_id/'
+    '/(private)/$project_id/': {
+      id: '/(private)/$project_id/'
       path: '/'
-      fullPath: '/$workspace_id/'
-      preLoaderRoute: typeof privateWorkspaceidIndexLazyImport
-      parentRoute: typeof privateWorkspaceidImport
+      fullPath: '/$project_id/'
+      preLoaderRoute: typeof privateProjectidIndexLazyImport
+      parentRoute: typeof privateProjectidImport
     }
-    '/(private)/$workspace_id/components/': {
-      id: '/(private)/$workspace_id/components/'
+    '/(private)/$project_id/components/': {
+      id: '/(private)/$project_id/components/'
       path: '/components'
-      fullPath: '/$workspace_id/components'
-      preLoaderRoute: typeof privateWorkspaceidComponentsIndexImport
-      parentRoute: typeof privateWorkspaceidImport
+      fullPath: '/$project_id/components'
+      preLoaderRoute: typeof privateProjectidComponentsIndexImport
+      parentRoute: typeof privateProjectidImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface privateWorkspaceidRouteChildren {
-  privateWorkspaceidIndexLazyRoute: typeof privateWorkspaceidIndexLazyRoute
-  privateWorkspaceidComponentsIndexRoute: typeof privateWorkspaceidComponentsIndexRoute
+interface privateProjectidRouteChildren {
+  privateProjectidIndexLazyRoute: typeof privateProjectidIndexLazyRoute
+  privateProjectidComponentsIndexRoute: typeof privateProjectidComponentsIndexRoute
 }
 
-const privateWorkspaceidRouteChildren: privateWorkspaceidRouteChildren = {
-  privateWorkspaceidIndexLazyRoute: privateWorkspaceidIndexLazyRoute,
-  privateWorkspaceidComponentsIndexRoute:
-    privateWorkspaceidComponentsIndexRoute,
+const privateProjectidRouteChildren: privateProjectidRouteChildren = {
+  privateProjectidIndexLazyRoute: privateProjectidIndexLazyRoute,
+  privateProjectidComponentsIndexRoute: privateProjectidComponentsIndexRoute,
 }
 
-const privateWorkspaceidRouteWithChildren =
-  privateWorkspaceidRoute._addFileChildren(privateWorkspaceidRouteChildren)
+const privateProjectidRouteWithChildren =
+  privateProjectidRoute._addFileChildren(privateProjectidRouteChildren)
 
 interface publicGridLayoutRouteChildren {
   publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
@@ -205,71 +204,71 @@ const publicRouteWithChildren =
   publicRoute._addFileChildren(publicRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/$workspace_id': typeof privateWorkspaceidRouteWithChildren
+  '/$project_id': typeof privateProjectidRouteWithChildren
   '/': typeof privateIndexRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/$workspace_id/': typeof privateWorkspaceidIndexLazyRoute
-  '/$workspace_id/components': typeof privateWorkspaceidComponentsIndexRoute
+  '/$project_id/': typeof privateProjectidIndexLazyRoute
+  '/$project_id/components': typeof privateProjectidComponentsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof privateIndexRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/$workspace_id': typeof privateWorkspaceidIndexLazyRoute
-  '/$workspace_id/components': typeof privateWorkspaceidComponentsIndexRoute
+  '/$project_id': typeof privateProjectidIndexLazyRoute
+  '/$project_id/components': typeof privateProjectidComponentsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/(private)/$workspace_id': typeof privateWorkspaceidRouteWithChildren
+  '/(private)/$project_id': typeof privateProjectidRouteWithChildren
   '/(public)': typeof publicRouteWithChildren
   '/(public)/_grid-layout': typeof publicGridLayoutRouteWithChildren
   '/(private)/': typeof privateIndexRoute
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/(private)/$workspace_id/': typeof privateWorkspaceidIndexLazyRoute
-  '/(private)/$workspace_id/components/': typeof privateWorkspaceidComponentsIndexRoute
+  '/(private)/$project_id/': typeof privateProjectidIndexLazyRoute
+  '/(private)/$project_id/components/': typeof privateProjectidComponentsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/$workspace_id'
+    | '/$project_id'
     | '/'
     | '/login'
     | '/server-activation'
-    | '/$workspace_id/'
-    | '/$workspace_id/components'
+    | '/$project_id/'
+    | '/$project_id/components'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/server-activation'
-    | '/$workspace_id'
-    | '/$workspace_id/components'
+    | '/$project_id'
+    | '/$project_id/components'
   id:
     | '__root__'
-    | '/(private)/$workspace_id'
+    | '/(private)/$project_id'
     | '/(public)'
     | '/(public)/_grid-layout'
     | '/(private)/'
     | '/(public)/_grid-layout/login'
     | '/(public)/_grid-layout/server-activation'
-    | '/(private)/$workspace_id/'
-    | '/(private)/$workspace_id/components/'
+    | '/(private)/$project_id/'
+    | '/(private)/$project_id/components/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  privateWorkspaceidRoute: typeof privateWorkspaceidRouteWithChildren
+  privateProjectidRoute: typeof privateProjectidRouteWithChildren
   publicRoute: typeof publicRouteWithChildren
   privateIndexRoute: typeof privateIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  privateWorkspaceidRoute: privateWorkspaceidRouteWithChildren,
+  privateProjectidRoute: privateProjectidRouteWithChildren,
   publicRoute: publicRouteWithChildren,
   privateIndexRoute: privateIndexRoute,
 }
@@ -284,16 +283,16 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/(private)/$workspace_id",
+        "/(private)/$project_id",
         "/(public)",
         "/(private)/"
       ]
     },
-    "/(private)/$workspace_id": {
-      "filePath": "(private)/$workspace_id.tsx",
+    "/(private)/$project_id": {
+      "filePath": "(private)/$project_id.tsx",
       "children": [
-        "/(private)/$workspace_id/",
-        "/(private)/$workspace_id/components/"
+        "/(private)/$project_id/",
+        "/(private)/$project_id/components/"
       ]
     },
     "/(public)": {
@@ -321,13 +320,13 @@ export const routeTree = rootRoute
       "filePath": "(public)/_grid-layout/server-activation.tsx",
       "parent": "/(public)/_grid-layout"
     },
-    "/(private)/$workspace_id/": {
-      "filePath": "(private)/$workspace_id/index.lazy.tsx",
-      "parent": "/(private)/$workspace_id"
+    "/(private)/$project_id/": {
+      "filePath": "(private)/$project_id/index.lazy.tsx",
+      "parent": "/(private)/$project_id"
     },
-    "/(private)/$workspace_id/components/": {
-      "filePath": "(private)/$workspace_id/components/index.tsx",
-      "parent": "/(private)/$workspace_id"
+    "/(private)/$project_id/components/": {
+      "filePath": "(private)/$project_id/components/index.tsx",
+      "parent": "/(private)/$project_id"
     }
   }
 }

@@ -13,39 +13,37 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
-import { workspaceQueries } from "@/data/workspaces";
-import { CreateWorkspaceDialog } from "@/features/create-workspace/CreateWorkspaceDialog";
-import { getAvatarUrl } from "@/lib/avatar";
-import { setWorkspaceToLocalStorage } from "@/lib/workspaces";
+import { CreateProjectDialog } from "@/features/create-project/create-project-dialog";
+import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { getIllustrationUrl } from "@/lib/images";
 
-export function WorkspaceSwitcher({}) {
-	const [workspaceDialogOpen, setWorkspaceDialogOpen] = useState(false);
+export function ProjectSwitcher() {
+	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
 	const navigate = useNavigate();
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
-	const { data: workspaceData } = useSuspenseQuery(
-		workspaceQueries.workspaceList()
-	);
-	const { workspace_id } = useParams({
-		from: "/(private)/$workspace_id",
+	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
+	const { project_id } = useParams({
+		from: "/(private)/$project_id",
 	});
 
-	const activeWorkspace = workspaceData.items.find(
-		(workspace) => workspace.id === workspace_id
+	const activeProject = projectData.items.find(
+		(project) => project.id === project_id
 	)?.name;
 
 	const { isMobile } = useSidebar();
 
 	return (
 		<>
-			<CreateWorkspaceDialog
-				open={workspaceDialogOpen}
-				setOpen={setWorkspaceDialogOpen}
+			<CreateProjectDialog
+				open={projectDialogOpen}
+				setOpen={setProjectDialogOpen}
 			/>
 			<SidebarMenu>
 				<SidebarMenuItem>
@@ -57,16 +55,15 @@ export function WorkspaceSwitcher({}) {
 							>
 								<Avatar className="size-8 shrink-0 rounded-md">
 									<AvatarImage
-										src={getAvatarUrl(activeWorkspace || "", {
-											size: 32,
-										})}
+										className="object-cover"
+										src={getIllustrationUrl(activeProject || "")}
 									/>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">
-										{serverData.name}
+										{activeProject}
 									</span>
-									<span className="truncate text-xs">{activeWorkspace}</span>
+									<span className="truncate text-xs">{serverData.name}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto" />
 							</SidebarMenuButton>
@@ -78,38 +75,41 @@ export function WorkspaceSwitcher({}) {
 							sideOffset={4}
 						>
 							<DropdownMenuLabel className="text-xs text-muted-foreground">
-								Workspaces
+								Projects
 							</DropdownMenuLabel>
-							{workspaceData.items.map((ws, index) => (
+							{projectData.items.map((project, index) => (
 								<DropdownMenuItem
-									key={ws.id}
+									key={project.id}
 									onClick={() => {
-										setWorkspaceToLocalStorage(ws.id);
+										setProjectToLocalStorage(project.id);
 										navigate({
-											to: "/$workspace_id",
-											params: { workspace_id: ws.id },
+											to: "/$project_id",
+											params: { project_id: project.id },
 										});
 									}}
 									className="gap-2 p-2"
 								>
 									<Avatar className="size-6 shrink-0 rounded-md">
-										<AvatarImage src={getAvatarUrl(ws.name, { size: 24 })} />
+										<AvatarImage
+											className="object-cover"
+											src={getIllustrationUrl(project.name)}
+										/>
 									</Avatar>
 
-									<span className="truncate">{ws.name}</span>
+									<span className="truncate">{project.name}</span>
 									<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
 								</DropdownMenuItem>
 							))}
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								onClick={() => setWorkspaceDialogOpen(true)}
+								onClick={() => setProjectDialogOpen(true)}
 								className="gap-2 p-2"
 							>
 								<div className="flex size-6 items-center justify-center rounded-md border bg-background">
 									<Plus className="size-4" />
 								</div>
 								<div className="font-medium text-muted-foreground">
-									Create Workspace
+									Create Project
 								</div>
 							</DropdownMenuItem>
 						</DropdownMenuContent>

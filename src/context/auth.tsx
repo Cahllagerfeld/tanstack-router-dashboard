@@ -1,3 +1,4 @@
+import { getLocalStorageKey } from "@/lib/localstorage";
 import { ReactNode } from "@tanstack/react-router";
 import {
 	createContext,
@@ -16,7 +17,7 @@ export type AuthContext = {
 
 const AuthContext = createContext<AuthContext | null>(null);
 
-const key = "zenml.auth.user";
+const key = getLocalStorageKey("AUTH_USER");
 
 function getStoredUser() {
 	return localStorage.getItem(key);

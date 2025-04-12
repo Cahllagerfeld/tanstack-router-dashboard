@@ -24,19 +24,21 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateWorkspace } from "@/data/workspaces/mutations/create-workspace";
+import { useCreateProject } from "@/data/projects/mutations/create-project";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { CreateWorkspaceForm, createWorkspaceSchema } from "./schema";
+import { type CreateProjectForm, createProjectSchema } from "./schema";
+import { isFetchError } from "@/lib/fetch-error";
+import { toast } from "sonner";
 
 type Props = {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 };
-export function CreateWorkspaceDialog({ open, setOpen }: Props) {
+export function CreateProjectDialog({ open, setOpen }: Props) {
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	if (isDesktop) {
@@ -44,12 +46,12 @@ export function CreateWorkspaceDialog({ open, setOpen }: Props) {
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>Create Workspace</DialogTitle>
+						<DialogTitle>Create Project</DialogTitle>
 						<DialogDescription>
-							Create a new workspace to start collaborating with your team.
+							Create a new project to start collaborating with your team.
 						</DialogDescription>
 					</DialogHeader>
-					<ProfileForm setOpen={setOpen} />
+					<CreateProjectForm setOpen={setOpen} />
 				</DialogContent>
 			</Dialog>
 		);
@@ -59,12 +61,12 @@ export function CreateWorkspaceDialog({ open, setOpen }: Props) {
 		<Drawer open={open} onOpenChange={setOpen}>
 			<DrawerContent>
 				<DrawerHeader className="text-left">
-					<DrawerTitle>Create Workspace</DrawerTitle>
+					<DrawerTitle>Create Project</DrawerTitle>
 					<DrawerDescription>
-						Create a new workspace to start collaborating with your team.
+						Create a new project to start collaborating with your team.
 					</DrawerDescription>
 				</DrawerHeader>
-				<ProfileForm setOpen={setOpen} className="px-4" />
+				<CreateProjectForm setOpen={setOpen} className="px-4" />
 				<DrawerFooter className="pt-2">
 					<DrawerClose asChild>
 						<Button variant="outline">Cancel</Button>
@@ -75,45 +77,67 @@ export function CreateWorkspaceDialog({ open, setOpen }: Props) {
 	);
 }
 
-function ProfileForm({
+function CreateProjectForm({
 	className,
 	setOpen,
 	...rest
 }: HTMLAttributes<HTMLFormElement> & {
 	setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-	const form = useForm<CreateWorkspaceForm>({
-		resolver: zodResolver(createWorkspaceSchema),
+	const form = useForm<CreateProjectForm>({
+		resolver: zodResolver(createProjectSchema),
 		defaultValues: {
 			name: "",
+			displayName: "",
 			description: "",
 		},
 	});
 
-	const { mutate } = useCreateWorkspace({
+	const { mutate } = useCreateProject({
 		onSuccess: () => {
 			setOpen(false);
 		},
+		onError: (error) => {
+			if (isFetchError(error)) {
+				toast.error(error.message);
+			}
+		},
 	});
 
-	function handleCreateWorkspace(vals: CreateWorkspaceForm) {
-		mutate({ name: vals.name, description: vals.description });
+	function handleCreateProject(vals: CreateProjectForm) {
+		mutate({
+			name: vals.name,
+			description: vals.description,
+			display_name: vals.displayName,
+		});
 	}
 
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(handleCreateWorkspace)}
+				onSubmit={form.handleSubmit(handleCreateProject)}
 				className={cn("space-y-4", className)}
-				id="password"
 				{...rest}
 			>
+				<FormField
+					control={form.control}
+					name="displayName"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Display Name</FormLabel>
+							<FormControl>
+								<Input {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				></FormField>
 				<FormField
 					control={form.control}
 					name="name"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Workspace Name</FormLabel>
+							<FormLabel>Project Name</FormLabel>
 							<FormControl>
 								<Input {...field} />
 							</FormControl>
@@ -135,7 +159,7 @@ function ProfileForm({
 					)}
 				></FormField>
 				<Button className="w-full" type="submit">
-					Create Workspace
+					Create Project
 				</Button>
 			</form>
 		</Form>
