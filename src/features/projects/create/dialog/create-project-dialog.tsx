@@ -26,13 +26,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useCreateProject } from "@/data/projects/mutations/create-project";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { isFetchError } from "@/lib/fetch-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { type CreateProjectForm, createProjectSchema } from "./schema";
-import { isFetchError } from "@/lib/fetch-error";
 import { toast } from "sonner";
+import { type CreateProjectForm, createProjectSchema } from "./schema";
 
 type Props = {
 	open: boolean;

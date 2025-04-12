@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
-import { CreateProjectDialog } from "@/features/create-project/create-project-dialog";
+import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
