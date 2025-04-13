@@ -10,23 +10,24 @@ export const Route = createFileRoute("/(private)/")({
 		const { items: projectItems } = projects;
 		const localProjectId = getProjectFromLocalStorage();
 		const selectedProject = projectItems.find(
-			(project) => project.id === localProjectId
+			(project) =>
+				project.id === localProjectId || project.name === localProjectId
 		);
 		if (selectedProject) {
 			throw redirect({
-				to: "/$project_id",
-				params: { project_id: selectedProject.id },
+				to: "/projects/$project_id",
+				params: { project_id: selectedProject.name },
 			});
 		}
 		const defaultProject = projectItems.find(
 			(project) => project.name === "default"
 		);
 		if (!defaultProject) {
-			throw redirect({ to: "/login" });
+			throw redirect({ to: "/projects" });
 		}
 		throw redirect({
-			to: "/$project_id",
-			params: { project_id: defaultProject.id },
+			to: "/projects/$project_id",
+			params: { project_id: defaultProject.name },
 		});
 	},
 });

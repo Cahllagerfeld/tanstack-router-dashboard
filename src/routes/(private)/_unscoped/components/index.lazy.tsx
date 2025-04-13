@@ -7,7 +7,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { RowSelectionState } from "@tanstack/react-table";
 import { useState } from "react";
 
-export const Route = createLazyFileRoute("/(private)/$project_id/components/")({
+export const Route = createLazyFileRoute("/(private)/_unscoped/components/")({
 	component: RouteComponent,
 });
 
