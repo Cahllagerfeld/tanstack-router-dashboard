@@ -1,27 +1,45 @@
-import { projectQueries } from "@/data/projects";
-import { CreateProjectDialogWithTrigger } from "@/features/projects/create/dialog/create-project-dialog";
-import { ProjectItem } from "@/features/projects/overview/project-item";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createFilter, getFilterValue } from "@/features/filters/filter";
+import { ProjectList } from "@/features/projects/overview/project-list";
+import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
+import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { Suspense } from "react";
 
 export const Route = createLazyFileRoute("/(private)/_unscoped/projects")({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
+	const navigate = useNavigate({
+		from: "/projects",
+	});
+	const { name } = Route.useSearch();
+
+	function setQuery(name: string) {
+		navigate({
+			replace: true,
+			params: true,
+			search: {
+				name: !!name ? createFilter("contains", name) : undefined,
+			},
+		});
+	}
+
 	return (
-		<div className="space-y-4">
-			<div className="flex justify-end">
-				<CreateProjectDialogWithTrigger />
+		<div className="flex h-full flex-col space-y-4">
+			<div>
+				<h1 className="text-2xl font-bold">Projects</h1>
+				<p className="text-sm text-muted-foreground">
+					Projects allow you to organize your MLOps resources.
+				</p>
 			</div>
-			<ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-				{projectData.items.map((project) => (
-					<li key={project.id}>
-						<ProjectItem project={project} />
-					</li>
-				))}
-			</ul>
+			<ProjectSearchbar
+				value={getFilterValue(name ?? "")}
+				onChange={setQuery}
+			/>
+			<Suspense fallback={<ProjectListSkeleton />}>
+				<ProjectList queries={{ name }} />
+			</Suspense>
 		</div>
 	);
 }

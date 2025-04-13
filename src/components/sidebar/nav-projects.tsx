@@ -1,5 +1,3 @@
-import { MoreHorizontal, Trash2, type LucideIcon } from "lucide-react";
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,8 +13,9 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { Link } from "@tanstack/react-router";
 import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
+import { Link } from "@tanstack/react-router";
+import { MoreHorizontal, Trash2, type LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 export function NavProjects({
