@@ -68,7 +68,7 @@ export function TypeFilter({ filter }: Props) {
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					data-state={!!filter ? "active" : "inactive"}
+					data-state={filter ? "active" : "inactive"}
 					variant="outline"
 					className="data-[state=active]:border-primary"
 				>

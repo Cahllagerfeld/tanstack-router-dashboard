@@ -20,7 +20,7 @@ function RouteComponent() {
 			replace: true,
 			params: true,
 			search: {
-				name: !!name ? createFilter("contains", name) : undefined,
+				name: name ? createFilter("contains", name) : undefined,
 			},
 		});
 	}
