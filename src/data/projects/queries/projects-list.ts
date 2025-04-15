@@ -10,6 +10,7 @@ type Args = {
 export async function fetchProjectList({ queries }: Args) {
 	const defaultQueries: ProjectListQueries = {
 		sort_by: "desc:created",
+		size: 10,
 	};
 
 	const url = buildUrlWithQueries(apiPaths.projects.base, {

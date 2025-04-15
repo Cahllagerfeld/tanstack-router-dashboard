@@ -2,6 +2,7 @@ import { createFilter, getFilterValue } from "@/features/filters/filter";
 import { ProjectList } from "@/features/projects/overview/project-list";
 import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
+import { ProjectListQueries } from "@/types/projects";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
 
@@ -13,7 +14,7 @@ function RouteComponent() {
 	const navigate = useNavigate({
 		from: "/projects",
 	});
-	const { name } = Route.useSearch();
+	const { name, page } = Route.useSearch();
 
 	function setQuery(name: string) {
 		navigate({
@@ -24,6 +25,11 @@ function RouteComponent() {
 			},
 		});
 	}
+
+	const queries: ProjectListQueries = {
+		name,
+		page,
+	};
 
 	return (
 		<div className="flex h-full flex-col space-y-4">
@@ -38,7 +44,7 @@ function RouteComponent() {
 				onChange={setQuery}
 			/>
 			<Suspense fallback={<ProjectListSkeleton />}>
-				<ProjectList queries={{ name }} />
+				<ProjectList queries={queries} />
 			</Suspense>
 		</div>
 	);
