@@ -11,7 +11,7 @@
 		"generate:types": "bun scripts/types.js",
 		"lint": "oxlint --fix .",
 		"preview": "vite preview",
-		"test:unit": "vitest"
+		"test:unit": "vitest run"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.0.1",
