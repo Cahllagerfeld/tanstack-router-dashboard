@@ -40,9 +40,7 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = "PaginationItem";
 
-const PaginationPrevious: LinkComponent<typeof PaginationLinkComponent> = (
-	props
-) => (
+const PaginationPrevious: PaginationLinkProps = (props) => (
 	<PaginationLink
 		aria-label="Go to previous page"
 		size="default"
@@ -54,9 +52,7 @@ const PaginationPrevious: LinkComponent<typeof PaginationLinkComponent> = (
 	</PaginationLink>
 );
 
-const PaginationNext: LinkComponent<typeof PaginationLinkComponent> = (
-	props
-) => (
+const PaginationNext: PaginationLinkProps = (props) => (
 	<PaginationLink
 		aria-label="Go to next page"
 		size="default"
@@ -83,9 +79,7 @@ const PaginationEllipsis = ({
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";
 
-const PaginationLast: LinkComponent<typeof PaginationLinkComponent> = (
-	props
-) => (
+const PaginationLast: PaginationLinkProps = (props) => (
 	<PaginationLink
 		aria-label="Go to last page"
 		size="default"
@@ -97,9 +91,7 @@ const PaginationLast: LinkComponent<typeof PaginationLinkComponent> = (
 	</PaginationLink>
 );
 
-const PaginationFirst: LinkComponent<typeof PaginationLinkComponent> = (
-	props
-) => (
+const PaginationFirst: PaginationLinkProps = (props) => (
 	<PaginationLink
 		aria-label="Go to first page"
 		size="default"
@@ -139,9 +131,9 @@ BasicPaginationLink.displayName = "BasicPaginationLink";
 
 const PaginationLinkComponent = createLink(BasicPaginationLink);
 
-const PaginationLink: LinkComponent<typeof PaginationLinkComponent> = (
-	props
-) => {
+type PaginationLinkProps = LinkComponent<typeof PaginationLinkComponent>;
+
+const PaginationLink: PaginationLinkProps = (props) => {
 	return <PaginationLinkComponent {...props} />;
 };
 
