@@ -1,21 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-} from "@/components/ui/drawer";
-import {
 	Form,
 	FormControl,
 	FormField,
@@ -25,59 +9,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCreateProject } from "@/data/projects/mutations/create-project";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { isFetchError } from "@/lib/fetch-error";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { type CreateProjectForm, createProjectSchema } from "./schema";
-import { isFetchError } from "@/lib/fetch-error";
 import { toast } from "sonner";
+import { type CreateProjectForm, createProjectSchema } from "./schema";
 
-type Props = {
-	open: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
-};
-export function CreateProjectDialog({ open, setOpen }: Props) {
-	const isDesktop = useMediaQuery("(min-width: 768px)");
-
-	if (isDesktop) {
-		return (
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogContent className="sm:max-w-[425px]">
-					<DialogHeader>
-						<DialogTitle>Create Project</DialogTitle>
-						<DialogDescription>
-							Create a new project to start collaborating with your team.
-						</DialogDescription>
-					</DialogHeader>
-					<CreateProjectForm setOpen={setOpen} />
-				</DialogContent>
-			</Dialog>
-		);
-	}
-
-	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerContent>
-				<DrawerHeader className="text-left">
-					<DrawerTitle>Create Project</DrawerTitle>
-					<DrawerDescription>
-						Create a new project to start collaborating with your team.
-					</DrawerDescription>
-				</DrawerHeader>
-				<CreateProjectForm setOpen={setOpen} className="px-4" />
-				<DrawerFooter className="pt-2">
-					<DrawerClose asChild>
-						<Button variant="outline">Cancel</Button>
-					</DrawerClose>
-				</DrawerFooter>
-			</DrawerContent>
-		</Drawer>
-	);
-}
-
-function CreateProjectForm({
+export function CreateProjectForm({
 	className,
 	setOpen,
 	...rest

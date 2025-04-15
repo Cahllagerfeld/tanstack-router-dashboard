@@ -1,4 +1,4 @@
-import { S3_BASE_URL } from "./constants";
+import { S3_BASE_URL } from "./constants/storage";
 
 function generateNumberFromSalt(salt: string): number {
 	function hashString(str: string): number {

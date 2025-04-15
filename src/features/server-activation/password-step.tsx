@@ -63,6 +63,7 @@ export function PasswordStep() {
 			toast.success("Server activated!");
 			navigate({ to: "/" });
 		} catch (e) {
+			console.error(e);
 			toast.error("Failed to activate server");
 		}
 	}

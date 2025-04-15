@@ -1,8 +1,22 @@
+import { buildUrlWithQueries } from "@/lib/url";
+import { ProjectList, ProjectListQueries } from "@/types/projects";
 import { apiPaths } from "../../api";
-import { ProjectList } from "@/types/projects";
 import { apiClient } from "../../api-client";
 
-export async function fetchProjectList() {
-	const data = await apiClient<ProjectList>(apiPaths.projects.base);
+type Args = {
+	queries: ProjectListQueries;
+};
+
+export async function fetchProjectList({ queries }: Args) {
+	const defaultQueries: ProjectListQueries = {
+		sort_by: "desc:created",
+		size: 10,
+	};
+
+	const url = buildUrlWithQueries(apiPaths.projects.base, {
+		...defaultQueries,
+		...queries,
+	});
+	const data = await apiClient<ProjectList>(url);
 	return data;
 }

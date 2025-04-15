@@ -1,3 +1,13 @@
+import { NavMain } from "@/components/sidebar/nav-main";
+import { NavProjects } from "@/components/sidebar/nav-projects";
+import { NavSecondary } from "@/components/sidebar/nav-secondary";
+import { NavUser } from "@/components/sidebar/nav-user";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarHeader,
+} from "@/components/ui/sidebar";
 import {
 	BookOpen,
 	Bot,
@@ -10,17 +20,6 @@ import {
 	SquareTerminal,
 } from "lucide-react";
 import * as React from "react";
-
-import { NavMain } from "@/components/sidebar/nav-main";
-import { NavProjects } from "@/components/sidebar/nav-projects";
-import { NavSecondary } from "@/components/sidebar/nav-secondary";
-import { NavUser } from "@/components/sidebar/nav-user";
-import {
-	Sidebar,
-	SidebarContent,
-	SidebarFooter,
-	SidebarHeader,
-} from "@/components/ui/sidebar";
 import { ProjectSwitcher } from "./project-switcher";
 
 const data = {
@@ -125,16 +124,19 @@ const data = {
 	],
 	projects: [
 		{
+			id: "design-engineering",
 			name: "Design Engineering",
 			url: "#",
 			icon: Frame,
 		},
 		{
+			id: "sales-marketing",
 			name: "Sales & Marketing",
 			url: "#",
 			icon: PieChart,
 		},
 		{
+			id: "travel",
 			name: "Travel",
 			url: "#",
 			icon: Map,
@@ -142,14 +144,16 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function ProjectScopedSidebar({
+	...props
+}: React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar variant="inset" {...props}>
 			<SidebarHeader>
 				<ProjectSwitcher />
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
+				<NavMain label="Platform" items={data.navMain} />
 				<NavProjects projects={data.projects} />
 				<NavSecondary items={data.navSecondary} className="mt-auto" />
 			</SidebarContent>

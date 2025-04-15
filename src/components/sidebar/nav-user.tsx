@@ -15,11 +15,11 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { useLogoutUser } from "@/data/session/logout";
 import { UserQueries } from "@/data/user";
 import { getAvatarUrl } from "@/lib/avatar";
-import { getUsername } from "@/lib/users";
+import { getUsername } from "@/lib/names";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useLogoutUser } from "@/data/session/logout";
 
 export function NavUser() {
 	const { data } = useSuspenseQuery(UserQueries.currentUser());

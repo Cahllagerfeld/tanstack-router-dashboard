@@ -15,14 +15,15 @@ import {
 } from "@/components/ui/sidebar";
 import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
-import { CreateProjectDialog } from "@/features/create-project/create-project-dialog";
+import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
+import { getIllustrationUrl } from "@/lib/images";
+import { getProjectDisplayName } from "@/lib/names";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { getIllustrationUrl } from "@/lib/images";
 
 export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
@@ -30,12 +31,14 @@ export function ProjectSwitcher() {
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
 	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
 	const { project_id } = useParams({
-		from: "/(private)/$project_id",
+		from: "/(private)/_scoped/projects/$project_id",
 	});
 
 	const activeProject = projectData.items.find(
-		(project) => project.id === project_id
-	)?.name;
+		(project) => project.id === project_id || project.name === project_id
+	);
+
+	const displayName = activeProject ? getProjectDisplayName(activeProject) : "";
 
 	const { isMobile } = useSidebar();
 
@@ -56,13 +59,11 @@ export function ProjectSwitcher() {
 								<Avatar className="size-8 shrink-0 rounded-md">
 									<AvatarImage
 										className="object-cover"
-										src={getIllustrationUrl(activeProject || "")}
+										src={getIllustrationUrl(activeProject?.name || "")}
 									/>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold">
-										{activeProject}
-									</span>
+									<span className="truncate font-semibold">{displayName}</span>
 									<span className="truncate text-xs">{serverData.name}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto" />
@@ -81,10 +82,10 @@ export function ProjectSwitcher() {
 								<DropdownMenuItem
 									key={project.id}
 									onClick={() => {
-										setProjectToLocalStorage(project.id);
+										setProjectToLocalStorage(project.name);
 										navigate({
-											to: "/$project_id",
-											params: { project_id: project.id },
+											to: "/projects/$project_id",
+											params: { project_id: project.name },
 										});
 									}}
 									className="gap-2 p-2"
@@ -96,7 +97,9 @@ export function ProjectSwitcher() {
 										/>
 									</Avatar>
 
-									<span className="truncate">{project.name}</span>
+									<span className="truncate">
+										{getProjectDisplayName(project)}
+									</span>
 									<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
 								</DropdownMenuItem>
 							))}
