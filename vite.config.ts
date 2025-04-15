@@ -1,10 +1,13 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
+	test: {
+		exclude: ["node_modules/**/*", "dist/**/*", "e2e-tests/**/*"],
+	},
 	plugins: [TanStackRouterVite(), react(), tsconfigPaths()],
 	server: {
 		proxy: {
