@@ -1,4 +1,4 @@
-import { UnscopedSidebar } from "@/components/sidebar/unscoped-sidebar";
+import { UnscopedSidebar } from "@/components/sidebar/unscoped";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
