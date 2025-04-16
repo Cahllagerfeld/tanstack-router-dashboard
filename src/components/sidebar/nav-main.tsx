@@ -1,5 +1,3 @@
-import { ChevronRight, type LucideIcon } from "lucide-react";
-
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -16,23 +14,16 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { NavbarItem } from "@/types/navbar";
 import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 
 export function NavMain({
 	items,
 	label,
 }: {
 	label?: string;
-	items: {
-		title: string;
-		url: string;
-		icon: LucideIcon;
-		isActive?: boolean;
-		items?: {
-			title: string;
-			url: string;
-		}[];
-	}[];
+	items: NavbarItem[];
 }) {
 	return (
 		<SidebarGroup>
@@ -41,7 +32,11 @@ export function NavMain({
 				{items.map((item) => (
 					<Collapsible key={item.title} asChild defaultOpen={item.isActive}>
 						<SidebarMenuItem>
-							<SidebarMenuButton asChild tooltip={item.title}>
+							<SidebarMenuButton
+								isActive={item.isActive}
+								asChild
+								tooltip={item.title}
+							>
 								<Link to={item.url}>
 									<item.icon />
 									<span>{item.title}</span>
@@ -59,7 +54,10 @@ export function NavMain({
 										<SidebarMenuSub>
 											{item.items?.map((subItem) => (
 												<SidebarMenuSubItem key={subItem.title}>
-													<SidebarMenuSubButton asChild>
+													<SidebarMenuSubButton
+														isActive={subItem.isActive}
+														asChild
+													>
 														<Link to={subItem.url}>
 															<span>{subItem.title}</span>
 														</Link>

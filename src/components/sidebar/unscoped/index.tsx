@@ -15,71 +15,24 @@ import { getAvatarUrl } from "@/lib/avatar";
 import { getProjectDisplayName } from "@/lib/names";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Box, Boxes, Frame, Settings } from "lucide-react";
+import { Frame } from "lucide-react";
 import { Suspense } from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { NavProjects } from "./nav-projects";
-
-const unscopedNavMain = [
-	{
-		title: "Projects",
-		url: "/projects",
-		icon: Frame,
-	},
-	{
-		title: "Components",
-		url: "/components",
-		icon: Box,
-	},
-	{
-		title: "Stacks",
-		url: "#",
-		icon: Boxes,
-	},
-	{
-		title: "Settings",
-		url: "#",
-		icon: Settings,
-		isActive: true,
-		items: [
-			{
-				title: "General",
-				url: "/settings/general",
-			},
-			{
-				title: "Members",
-				url: "#",
-			},
-			{
-				title: "API Tokens",
-				url: "#",
-			},
-			{
-				title: "Secrets",
-				url: "#",
-			},
-			{
-				title: "Connectors",
-				url: "#",
-			},
-			{
-				title: "Service Accounts",
-				url: "#",
-			},
-		],
-	},
-];
+import { Avatar, AvatarImage } from "../../ui/avatar";
+import { NavProjects } from "../nav-projects";
+import { useUnscopedSidebar } from "./service";
 
 export function UnscopedSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
+	const { navItems } = useUnscopedSidebar();
+
 	return (
 		<Sidebar variant="inset" {...props}>
 			<SidebarHeader>
 				<UnscopedSidebarHeader />
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={unscopedNavMain} label="Server" />
+				<NavMain items={navItems} label="Server" />
 				<Suspense fallback={<div>Loading...</div>}>
 					<ProjectsSidebar />
 				</Suspense>
