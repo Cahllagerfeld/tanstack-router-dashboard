@@ -1,7 +1,15 @@
 {
-	"$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.13.6/.schema/devbox.schema.json",
-	"packages": ["bun@latest", "git@latest"],
+	"$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.1/.schema/devbox.schema.json",
+	"packages": {
+		"bun": "latest",
+		"git": "latest",
+		"python": {
+			"version": "3.12.8",
+			"patch": "never"
+		}
+	},
 	"shell": {
+		"init_hook": ". $VENV_DIR/bin/activate",
 		"scripts": {
 			"preview": ["bun run build && bun run preview"]
 		}
