@@ -16,13 +16,13 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { useLogoutUser } from "@/data/session/logout";
-import { UserQueries } from "@/data/user";
+import { userQueries } from "@/data/user";
 import { getAvatarUrl } from "@/lib/avatar";
 import { getUsername } from "@/lib/names";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function NavUser() {
-	const { data } = useSuspenseQuery(UserQueries.currentUser());
+	const { data } = useSuspenseQuery(userQueries.currentUser());
 	const { isMobile } = useSidebar();
 	const name = getUsername(data);
 

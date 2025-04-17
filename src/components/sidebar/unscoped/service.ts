@@ -29,7 +29,7 @@ const unscopedNavMain: NavbarItem[] = [
 			},
 			{
 				title: "Members",
-				url: "#",
+				url: "/settings/members",
 			},
 			{
 				title: "API Tokens",

@@ -12,6 +12,7 @@ export const apiPaths = {
 		base: "/components",
 	},
 	users: {
+		base: "/users",
 		currentUser: "/current-user",
 	},
 } as const;
