@@ -7,71 +7,15 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useServerActivation } from "@/data/server/activate-server";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import {
-	adjectives,
-	animals,
-	colors,
-	uniqueNamesGenerator,
-} from "unique-names-generator";
-import { z } from "zod";
-
-const passwordStepSchema = z
-	.object({
-		username: z.string().trim().min(1),
-		password: z
-			.string()
-			.trim()
-			.min(8, "Password must be at least 8 characters"),
-		confirmPassword: z.string().trim(),
-	})
-	.refine(
-		(data) => {
-			return data.password === data.confirmPassword;
-		},
-		{ path: ["confirmPassword"], message: "Passwords do not match" }
-	);
-type PasswordForm = z.infer<typeof passwordStepSchema>;
+import { usePasswordStep } from "./use-password-step";
 
 export function PasswordStep() {
-	const navigate = useNavigate();
-	const form = useForm<PasswordForm>({
-		resolver: zodResolver(passwordStepSchema),
-		defaultValues: {
-			username: "",
-			password: "",
-			confirmPassword: "",
-		},
-	});
-
-	const { mutateAsync } = useServerActivation();
-
-	async function handlePasswordStep(values: PasswordForm) {
-		try {
-			await mutateAsync({
-				admin_username: values.username,
-				admin_password: values.password,
-				server_name: uniqueNamesGenerator({
-					dictionaries: [adjectives, colors, animals],
-					separator: "-",
-				}),
-			});
-			toast.success("Server activated!");
-			navigate({ to: "/" });
-		} catch (e) {
-			console.error(e);
-			toast.error("Failed to activate server");
-		}
-	}
+	const { form, activationHandler } = usePasswordStep();
 
 	return (
 		<Form {...form}>
 			<form
-				onSubmit={form.handleSubmit(handlePasswordStep)}
+				onSubmit={form.handleSubmit(activationHandler)}
 				className="space-y-4"
 				id="password"
 			>

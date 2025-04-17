@@ -353,6 +353,59 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/artifact_versions/{artifact_version_id}/download-token": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Artifact Download Token
+		 * @description Get a download token for the artifact data.
+		 *
+		 *     Args:
+		 *         artifact_version_id: ID of the artifact version for which to get the data.
+		 *
+		 *     Returns:
+		 *         The download token for the artifact data.
+		 */
+		get: operations["get_artifact_download_token_api_v1_artifact_versions__artifact_version_id__download_token_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/artifact_versions/{artifact_version_id}/data": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Download Artifact Data
+		 * @description Download the artifact data.
+		 *
+		 *     Args:
+		 *         artifact_version_id: ID of the artifact version for which to get the data.
+		 *         token: The token to authenticate the artifact download.
+		 *
+		 *     Returns:
+		 *         The artifact data.
+		 */
+		get: operations["download_artifact_data_api_v1_artifact_versions__artifact_version_id__data_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/login": {
 		parameters: {
 			query?: never;
@@ -482,7 +535,6 @@ export type paths = {
 		 *         schedule_id: The ID of the schedule to scope the workload API token to.
 		 *         pipeline_run_id: The ID of the pipeline run to scope the workload API
 		 *             token to.
-		 *         step_run_id: The ID of the step run to scope the workload API token to.
 		 *         auth_context: The authentication context.
 		 *
 		 *     Returns:
@@ -1652,6 +1704,37 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/pipeline_deployments/{deployment_id}/logs": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Deployment Logs
+		 * @description Get deployment logs.
+		 *
+		 *     Args:
+		 *         deployment_id: ID of the deployment.
+		 *         offset: The offset from which to start reading.
+		 *         length: The amount of bytes that should be read.
+		 *
+		 *     Returns:
+		 *         The deployment logs.
+		 *
+		 *     Raises:
+		 *         KeyError: If no logs are available for the deployment.
+		 */
+		get: operations["deployment_logs_api_v1_pipeline_deployments__deployment_id__logs_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/runs": {
 		parameters: {
 			query?: never;
@@ -1842,6 +1925,37 @@ export type paths = {
 		 *         RuntimeError: If the stack or the orchestrator of the run is deleted.
 		 */
 		get: operations["refresh_run_status_api_v1_runs__run_id__refresh_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/runs/{run_id}/logs": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Run Logs
+		 * @description Get pipeline run logs.
+		 *
+		 *     Args:
+		 *         run_id: ID of the pipeline run.
+		 *         offset: The offset from which to start reading.
+		 *         length: The amount of bytes that should be read.
+		 *
+		 *     Returns:
+		 *         The pipeline run logs.
+		 *
+		 *     Raises:
+		 *         KeyError: If no logs are available for the pipeline run.
+		 */
+		get: operations["run_logs_api_v1_runs__run_id__logs_get"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -2635,6 +2749,36 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/service_connectors/resources": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Service Connector Resources
+		 * @description List resources that can be accessed by service connectors.
+		 *
+		 *     Args:
+		 *         filter_model: The filter model to use when fetching service
+		 *             connectors.
+		 *         project_name_or_id: Optional name or ID of the project.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The matching list of resources that available service
+		 *         connectors have access to.
+		 */
+		get: operations["list_service_connector_resources_api_v1_service_connectors_resources_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/service_connectors/{connector_id}": {
 		parameters: {
 			query?: never;
@@ -2709,36 +2853,6 @@ export type paths = {
 		 *         access to.
 		 */
 		post: operations["validate_and_verify_service_connector_config_api_v1_service_connectors_verify_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/service_connectors/resources": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Service Connector Resources
-		 * @description List resources that can be accessed by service connectors.
-		 *
-		 *     Args:
-		 *         filter_model: The filter model to use when fetching service
-		 *             connectors.
-		 *         project_name_or_id: Optional name or ID of the project.
-		 *         auth_context: Authentication context.
-		 *
-		 *     Returns:
-		 *         The matching list of resources that available service
-		 *         connectors have access to.
-		 */
-		get: operations["list_service_connector_resources_api_v1_service_connectors_resources_get"];
-		put?: never;
-		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -4953,12 +5067,8 @@ export type components = {
 			description: string;
 			/** The flavor of the action. */
 			flavor: string;
-			/**
-			 * The subtype of the action.
-			 * @description All possible types of Plugins.
-			 * @enum {string}
-			 */
-			plugin_subtype: "webhook" | "pipeline_run";
+			/** The subtype of the action. */
+			plugin_subtype: components["schemas"]["PluginSubType"];
 			/** The configuration for the action. */
 			configuration: {
 				[key: string]: unknown;
@@ -5014,12 +5124,8 @@ export type components = {
 			user?: components["schemas"]["UserResponse"] | null;
 			/** The flavor of the action. */
 			flavor: string;
-			/**
-			 * The subtype of the action.
-			 * @description All possible types of Plugins.
-			 * @enum {string}
-			 */
-			plugin_subtype: "webhook" | "pipeline_run";
+			/** The subtype of the action. */
+			plugin_subtype: components["schemas"]["PluginSubType"];
 		};
 		/**
 		 * ActionResponseMetadata
@@ -5541,7 +5647,7 @@ export type components = {
 			/** Type of the plugin. */
 			type: components["schemas"]["PluginType"];
 			/** Subtype of the plugin. */
-			subtype: components["schemas"]["zenml__enums__PluginSubType__2"];
+			subtype: components["schemas"]["PluginSubType"];
 		};
 		/**
 		 * BasePluginResponseBody
@@ -6090,7 +6196,7 @@ export type components = {
 			/** The flavor of event source. */
 			flavor: string;
 			/** The plugin subtype of the event source. */
-			plugin_subtype: components["schemas"]["zenml__enums__PluginSubType__2"];
+			plugin_subtype: components["schemas"]["PluginSubType"];
 			/**
 			 * The description of the event source.
 			 * @default
@@ -6145,7 +6251,7 @@ export type components = {
 			/** The flavor of event source. */
 			flavor: string;
 			/** The plugin subtype of the event source. */
-			plugin_subtype: components["schemas"]["zenml__enums__PluginSubType__2"];
+			plugin_subtype: components["schemas"]["PluginSubType"];
 			/** Whether the event source is active. */
 			is_active: boolean;
 		};
@@ -7804,6 +7910,8 @@ export type components = {
 			enable_artifact_visualization?: boolean | null;
 			/** Enable Step Logs */
 			enable_step_logs?: boolean | null;
+			/** Enable Pipeline Logs */
+			enable_pipeline_logs?: boolean | null;
 			/**
 			 * Settings
 			 * @default {}
@@ -7851,6 +7959,8 @@ export type components = {
 			enable_artifact_visualization?: boolean | null;
 			/** Enable Step Logs */
 			enable_step_logs?: boolean | null;
+			/** Enable Pipeline Logs */
+			enable_pipeline_logs?: boolean | null;
 			/**
 			 * Settings
 			 * @default {}
@@ -8183,6 +8293,8 @@ export type components = {
 			trigger_execution_id?: string | null;
 			/** Tags of the pipeline run. */
 			tags?: (string | components["schemas"]["Tag"])[] | null;
+			/** Logs of the pipeline run. */
+			logs?: components["schemas"]["LogsRequest"] | null;
 		};
 		/**
 		 * PipelineRunResponse
@@ -8315,6 +8427,8 @@ export type components = {
 			model_version?: components["schemas"]["ModelVersionResponse"] | null;
 			/** Tags associated with the pipeline run. */
 			tags: components["schemas"]["TagResponse"][];
+			/** Logs associated with this pipeline run. */
+			logs?: components["schemas"]["LogsResponse"] | null;
 		} & {
 			[key: string]: unknown;
 		};
@@ -8385,6 +8499,12 @@ export type components = {
 			/** Tags to remove from the pipeline. */
 			remove_tags?: string[] | null;
 		};
+		/**
+		 * PluginSubType
+		 * @description All possible types of Plugins.
+		 * @enum {string}
+		 */
+		PluginSubType: "webhook" | "pipeline_run";
 		/**
 		 * PluginType
 		 * @description All possible types of Plugins.
@@ -8607,6 +8727,11 @@ export type components = {
 			 * Format: uuid
 			 */
 			source_deployment_id: string;
+			/**
+			 * Whether the run template is hidden.
+			 * @default false
+			 */
+			hidden: boolean;
 			/** Tags of the run template. */
 			tags?: string[] | null;
 		};
@@ -8653,6 +8778,11 @@ export type components = {
 			user?: components["schemas"]["UserResponse"] | null;
 			/** If a run can be started from the template. */
 			runnable: boolean;
+			/**
+			 * Whether the run template is hidden.
+			 * @default false
+			 */
+			hidden: boolean;
 			/** The ID of the latest run of the run template. */
 			latest_run_id?: string | null;
 			/** The status of the latest run of the run template. */
@@ -8707,6 +8837,8 @@ export type components = {
 			name?: string | null;
 			/** The description of the run template. */
 			description?: string | null;
+			/** Whether the run template is hidden. */
+			hidden?: boolean | null;
 			/** New tags to add to the run template. */
 			add_tags?: string[] | null;
 			/** Tags to remove from the run template. */
@@ -11183,18 +11315,6 @@ export type components = {
 			/** Selector */
 			selector?: unknown | null;
 		};
-		/**
-		 * PluginSubType
-		 * @description All possible types of Plugins.
-		 * @enum {string}
-		 */
-		zenml__enums__PluginSubType__1: "webhook" | "pipeline_run";
-		/**
-		 * PluginSubType
-		 * @description All possible types of Plugins.
-		 * @enum {string}
-		 */
-		zenml__enums__PluginSubType__2: "webhook" | "pipeline_run";
 	};
 	responses: never;
 	parameters: never;
@@ -12353,6 +12473,124 @@ export interface operations {
 			};
 		};
 	};
+	get_artifact_download_token_api_v1_artifact_versions__artifact_version_id__download_token_get: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				artifact_version_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	download_artifact_data_api_v1_artifact_versions__artifact_version_id__data_get: {
+		parameters: {
+			query: {
+				token: string;
+			};
+			header?: never;
+			path: {
+				artifact_version_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	token_api_v1_login_post: {
 		parameters: {
 			query?: never;
@@ -12475,7 +12713,6 @@ export interface operations {
 				expires_in?: number | null;
 				schedule_id?: string | null;
 				pipeline_run_id?: string | null;
-				step_run_id?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -13099,7 +13336,7 @@ export interface operations {
 		parameters: {
 			query: {
 				type: components["schemas"]["PluginType"];
-				subtype: components["schemas"]["zenml__enums__PluginSubType__2"];
+				subtype: components["schemas"]["PluginSubType"];
 				page?: number;
 				size?: number;
 				hydrate?: boolean;
@@ -13161,7 +13398,7 @@ export interface operations {
 		parameters: {
 			query: {
 				type: components["schemas"]["PluginType"];
-				subtype: components["schemas"]["zenml__enums__PluginSubType__2"];
+				subtype: components["schemas"]["PluginSubType"];
 			};
 			header?: never;
 			path: {
@@ -15991,6 +16228,67 @@ export interface operations {
 			};
 		};
 	};
+	deployment_logs_api_v1_pipeline_deployments__deployment_id__logs_get: {
+		parameters: {
+			query?: {
+				offset?: number;
+				length?: number;
+			};
+			header?: never;
+			path: {
+				deployment_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_runs_api_v1_runs_get: {
 		parameters: {
 			query?: {
@@ -16587,6 +16885,67 @@ export interface operations {
 			};
 		};
 	};
+	run_logs_api_v1_runs__run_id__logs_get: {
+		parameters: {
+			query?: {
+				offset?: number;
+				length?: number;
+			};
+			header?: never;
+			path: {
+				run_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	create_run_metadata_api_v1_run_metadata_post: {
 		parameters: {
 			query?: {
@@ -16667,6 +17026,7 @@ export interface operations {
 				user?: string | null;
 				project?: string | null;
 				name?: string | null;
+				hidden?: boolean | null;
 				pipeline_id?: string | null;
 				build_id?: string | null;
 				stack_id?: string | null;
@@ -18676,7 +19036,6 @@ export interface operations {
 				updated?: string | null;
 				scope_user?: string | null;
 				user?: string | null;
-				scope_type?: string | null;
 				name?: string | null;
 				connector_type?: string | null;
 				auth_method?: string | null;
@@ -18788,6 +19147,86 @@ export interface operations {
 			};
 			/** @description Conflict */
 			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_service_connector_resources_api_v1_service_connectors_resources_get: {
+		parameters: {
+			query?: {
+				project_name_or_id?: string | null;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | null;
+				created?: string | null;
+				updated?: string | null;
+				scope_user?: string | null;
+				user?: string | null;
+				name?: string | null;
+				connector_type?: string | null;
+				auth_method?: string | null;
+				resource_type?: string | null;
+				resource_id?: string | null;
+				labels_str?: string | null;
+				secret_id?: string | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				"application/json": {
+					[key: string]: unknown;
+				} | null;
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ServiceConnectorResourcesModel"][];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -19031,87 +19470,6 @@ export interface operations {
 			};
 			/** @description Conflict */
 			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	list_service_connector_resources_api_v1_service_connectors_resources_get: {
-		parameters: {
-			query?: {
-				project_name_or_id?: string | null;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | null;
-				created?: string | null;
-				updated?: string | null;
-				scope_user?: string | null;
-				user?: string | null;
-				scope_type?: string | null;
-				name?: string | null;
-				connector_type?: string | null;
-				auth_method?: string | null;
-				resource_type?: string | null;
-				resource_id?: string | null;
-				labels_str?: string | null;
-				secret_id?: string | null;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					[key: string]: unknown;
-				} | null;
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ServiceConnectorResourcesModel"][];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -23356,6 +23714,7 @@ export interface operations {
 				user?: string | null;
 				project?: string | null;
 				name?: string | null;
+				hidden?: boolean | null;
 				pipeline_id?: string | null;
 				build_id?: string | null;
 				stack_id?: string | null;
@@ -23794,7 +24153,6 @@ export interface operations {
 				updated?: string | null;
 				scope_user?: string | null;
 				user?: string | null;
-				scope_type?: string | null;
 				name?: string | null;
 				connector_type?: string | null;
 				auth_method?: string | null;
@@ -23920,7 +24278,6 @@ export interface operations {
 				updated?: string | null;
 				scope_user?: string | null;
 				user?: string | null;
-				scope_type?: string | null;
 				name?: string | null;
 				connector_type?: string | null;
 				auth_method?: string | null;
