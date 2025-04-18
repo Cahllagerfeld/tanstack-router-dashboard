@@ -1,11 +1,15 @@
+import DisplayDate from "@/components/display-date";
+import { NotAvailableTag } from "@/components/not-available-tag";
+import { Checkbox } from "@/components/ui/checkbox";
+import { getUsername } from "@/lib/names";
 import { User } from "@/types/user";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { IsAdminBadge } from "./is-admin-badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { getUsername } from "@/lib/names";
+import { AdminActions } from "./admin-actions";
+import { IsActiveBadge } from "./is-active-badge";
+import { Badge } from "@/components/ui/badge";
 
-export function useUserListColumns(): ColumnDef<User>[] {
+export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 	return useMemo(() => {
 		const columns: ColumnDef<User>[] = [
 			{
@@ -36,19 +40,52 @@ export function useUserListColumns(): ColumnDef<User>[] {
 				header: "Name",
 				accessorKey: "name",
 				cell: ({ row }) => {
-					return getUsername(row.original);
+					const username = getUsername(row.original);
+					const isAdmin = row.original.body?.is_admin;
+					return (
+						<div className="flex items-center gap-2">
+							<p>{username}</p>
+							{isAdmin && <Badge variant="outline">Admin</Badge>}
+						</div>
+					);
 				},
 			},
 			{
-				header: "Admin",
-				accessorFn: (row) => row.body?.is_admin,
+				header: "Status",
+				accessorFn: (row) => row.body?.active,
 				cell: ({ row }) => {
-					const isAdmin = !!row.original.body?.is_admin;
-					return <IsAdminBadge isAdmin={isAdmin} />;
+					const isActive = !!row.original.body?.active;
+					return <IsActiveBadge isActive={isActive} />;
 				},
 			},
+			{
+				id: "created",
+				header: "Created",
+				accessorFn: (row) => row.body?.created,
+				cell: ({ row }) => {
+					const dateString = row.original.body?.created;
+					if (!dateString) return <NotAvailableTag />;
+					return (
+						<p>
+							<DisplayDate short dateString={dateString} />
+						</p>
+					);
+				},
+			},
+			...(isAdmin ? adminColumns : []),
 		];
 
 		return columns;
-	}, []);
+	}, [isAdmin]);
 }
+
+const adminColumns: ColumnDef<User>[] = [
+	{
+		id: "actions",
+		enableSorting: false,
+		enableHiding: false,
+		cell: () => {
+			return <AdminActions />;
+		},
+	},
+];

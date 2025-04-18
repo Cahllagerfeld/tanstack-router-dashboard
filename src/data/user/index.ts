@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchCurrentUser } from "./current-user";
+import { fetchCurrentUser } from "./queries/current-user";
 import { fetchUserList } from "./queries/user-list";
 import { UserListQueryParams } from "@/types/user";
 

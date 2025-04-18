@@ -13,8 +13,9 @@ export const Route = createLazyFileRoute(
 });
 
 function RouteComponent() {
-	const columns = useUserListColumns();
-	const { data } = useSuspenseQuery(userQueries.userList({}));
+	const { data: userList } = useSuspenseQuery(userQueries.userList({}));
+	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
+	const columns = useUserListColumns(!!currentUser.body?.is_admin);
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	return (
 		<div className="space-y-4">
@@ -26,7 +27,7 @@ function RouteComponent() {
 			</div>
 			<DataTable
 				getRowId={(row) => row.id}
-				data={data.items}
+				data={userList.items}
 				rowSelection={rowSelection}
 				setRowSelection={setRowSelection}
 				columns={columns}

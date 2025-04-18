@@ -6,6 +6,9 @@ export const Route = createFileRoute("/(private)/_unscoped/settings/members")({
 		if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
 	},
 	loader: async ({ context: { queryClient } }) => {
-		await queryClient.ensureQueryData(userQueries.userList({}));
+		await Promise.all([
+			queryClient.ensureQueryData(userQueries.userList({})),
+			queryClient.ensureQueryData(userQueries.currentUser()),
+		]);
 	},
 });
