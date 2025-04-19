@@ -1,13 +1,12 @@
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getUsername } from "@/lib/names";
 import { User } from "@/types/user";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { AdminActions } from "./admin-actions";
 import { IsActiveBadge } from "./is-active-badge";
-import { Badge } from "@/components/ui/badge";
 
 export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 	return useMemo(() => {
@@ -40,7 +39,7 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 				header: "Name",
 				accessorKey: "name",
 				cell: ({ row }) => {
-					const username = getUsername(row.original);
+					const username = row.original.name;
 					const isAdmin = row.original.body?.is_admin;
 					return (
 						<div className="flex items-center gap-2">

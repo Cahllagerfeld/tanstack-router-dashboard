@@ -1,10 +1,10 @@
-import { DataTable } from "@/components/ui/data-table";
-import { userQueries } from "@/data/user";
-import { useUserListColumns } from "@/features/users/list/columns";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { RowSelectionState } from "@tanstack/react-table";
-import { useState } from "react";
+import { createFilter, getFilterValue } from "@/features/filters/filter";
+import { UserListSearchbar } from "@/features/users/list/searchbar";
+import { UserList } from "@/features/users/list/user-list";
+import { UserListSkeleton } from "@/features/users/list/user-list-skeleton";
+import { UserListQueryParams } from "@/types/user";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { Suspense } from "react";
 
 export const Route = createLazyFileRoute(
 	"/(private)/_unscoped/settings/members"
@@ -13,10 +13,23 @@ export const Route = createLazyFileRoute(
 });
 
 function RouteComponent() {
-	const { data: userList } = useSuspenseQuery(userQueries.userList({}));
-	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
-	const columns = useUserListColumns(!!currentUser.body?.is_admin);
-	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+	const { name, page } = Route.useSearch();
+	const navigate = useNavigate({ from: "/settings/members" });
+	const queries: UserListQueryParams = {
+		name,
+		page,
+	};
+
+	function setSearchValue(name: string) {
+		navigate({
+			replace: true,
+			params: true,
+			search: {
+				name: name ? createFilter("contains", name) : undefined,
+			},
+		});
+	}
+
 	return (
 		<div className="space-y-4">
 			<div>
@@ -25,13 +38,13 @@ function RouteComponent() {
 					Manage your team members and their access to your server.
 				</p>
 			</div>
-			<DataTable
-				getRowId={(row) => row.id}
-				data={userList.items}
-				rowSelection={rowSelection}
-				setRowSelection={setRowSelection}
-				columns={columns}
+			<UserListSearchbar
+				searchValue={getFilterValue(name ?? "")}
+				onChange={setSearchValue}
 			/>
+			<Suspense fallback={<UserListSkeleton />}>
+				<UserList queries={queries} />
+			</Suspense>
 		</div>
 	);
 }
