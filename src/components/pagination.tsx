@@ -77,7 +77,7 @@ export function Pagination({ index, totalPages }: Props) {
 				{pageNumbers.map((page, idx) => (
 					<PaginationItem key={idx}>
 						<PaginationLink
-							to="/projects"
+							to="."
 							search={(prev) => ({ ...prev, page })}
 							isActive={page === index}
 						>

@@ -20,6 +20,7 @@ import { Route as publicGridLayoutServerActivationImport } from './routes/(publi
 import { Route as publicGridLayoutLoginImport } from './routes/(public)/_grid-layout/login'
 import { Route as privateUnscopedProjectsImport } from './routes/(private)/_unscoped/projects'
 import { Route as privateUnscopedComponentsIndexImport } from './routes/(private)/_unscoped/components/index'
+import { Route as privateUnscopedSettingsMembersImport } from './routes/(private)/_unscoped/settings/members'
 import { Route as privateUnscopedSettingsGeneralImport } from './routes/(private)/_unscoped/settings/general'
 import { Route as privateScopedProjectsProjectidImport } from './routes/(private)/_scoped/projects/$project_id'
 
@@ -102,6 +103,18 @@ const privateUnscopedComponentsIndexRoute = privateUnscopedComponentsIndexImport
   } as any)
   .lazy(() =>
     import('./routes/(private)/_unscoped/components/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const privateUnscopedSettingsMembersRoute = privateUnscopedSettingsMembersImport
+  .update({
+    id: '/settings/members',
+    path: '/settings/members',
+    getParentRoute: () => privateUnscopedRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(private)/_unscoped/settings/members.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateUnscopedSettingsGeneralImport
       parentRoute: typeof privateUnscopedImport
     }
+    '/(private)/_unscoped/settings/members': {
+      id: '/(private)/_unscoped/settings/members'
+      path: '/settings/members'
+      fullPath: '/settings/members'
+      preLoaderRoute: typeof privateUnscopedSettingsMembersImport
+      parentRoute: typeof privateUnscopedImport
+    }
     '/(private)/_unscoped/components/': {
       id: '/(private)/_unscoped/components/'
       path: '/components'
@@ -234,12 +254,14 @@ declare module '@tanstack/react-router' {
 interface privateUnscopedRouteChildren {
   privateUnscopedProjectsRoute: typeof privateUnscopedProjectsRoute
   privateUnscopedSettingsGeneralRoute: typeof privateUnscopedSettingsGeneralRoute
+  privateUnscopedSettingsMembersRoute: typeof privateUnscopedSettingsMembersRoute
   privateUnscopedComponentsIndexRoute: typeof privateUnscopedComponentsIndexRoute
 }
 
 const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
   privateUnscopedProjectsRoute: privateUnscopedProjectsRoute,
   privateUnscopedSettingsGeneralRoute: privateUnscopedSettingsGeneralRoute,
+  privateUnscopedSettingsMembersRoute: privateUnscopedSettingsMembersRoute,
   privateUnscopedComponentsIndexRoute: privateUnscopedComponentsIndexRoute,
 }
 
@@ -309,6 +331,7 @@ export interface FileRoutesByFullPath {
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/projects/$project_id': typeof privateScopedProjectsProjectidRouteWithChildren
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
+  '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
   '/projects/$project_id/': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
@@ -319,6 +342,7 @@ export interface FileRoutesByTo {
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
+  '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
   '/projects/$project_id': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
@@ -335,6 +359,7 @@ export interface FileRoutesById {
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
   '/(private)/_scoped/projects/$project_id': typeof privateScopedProjectsProjectidRouteWithChildren
   '/(private)/_unscoped/settings/general': typeof privateUnscopedSettingsGeneralRoute
+  '/(private)/_unscoped/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
   '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
@@ -348,6 +373,7 @@ export interface FileRouteTypes {
     | '/server-activation'
     | '/projects/$project_id'
     | '/settings/general'
+    | '/settings/members'
     | '/components'
     | '/projects/$project_id/'
   fileRoutesByTo: FileRoutesByTo
@@ -357,6 +383,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/server-activation'
     | '/settings/general'
+    | '/settings/members'
     | '/components'
     | '/projects/$project_id'
   id:
@@ -371,6 +398,7 @@ export interface FileRouteTypes {
     | '/(public)/_grid-layout/server-activation'
     | '/(private)/_scoped/projects/$project_id'
     | '/(private)/_unscoped/settings/general'
+    | '/(private)/_unscoped/settings/members'
     | '/(private)/_unscoped/components/'
     | '/(private)/_scoped/projects/$project_id/'
   fileRoutesById: FileRoutesById
@@ -414,6 +442,7 @@ export const routeTree = rootRoute
       "children": [
         "/(private)/_unscoped/projects",
         "/(private)/_unscoped/settings/general",
+        "/(private)/_unscoped/settings/members",
         "/(private)/_unscoped/components/"
       ]
     },
@@ -456,6 +485,10 @@ export const routeTree = rootRoute
     },
     "/(private)/_unscoped/settings/general": {
       "filePath": "(private)/_unscoped/settings/general.tsx",
+      "parent": "/(private)/_unscoped"
+    },
+    "/(private)/_unscoped/settings/members": {
+      "filePath": "(private)/_unscoped/settings/members.tsx",
       "parent": "/(private)/_unscoped"
     },
     "/(private)/_unscoped/components/": {
