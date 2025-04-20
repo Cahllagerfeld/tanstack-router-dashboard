@@ -13,6 +13,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 		const columns: ColumnDef<User>[] = [
 			{
 				id: "select",
+				meta: {
+					className: "w-fit",
+				},
 				header: ({ table }) => (
 					<Checkbox
 						checked={
@@ -38,6 +41,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			{
 				header: "Name",
 				accessorKey: "name",
+				meta: {
+					className: "w-full",
+				},
 				cell: ({ row }) => {
 					const username = row.original.name;
 					const isAdmin = row.original.body?.is_admin;
@@ -51,6 +57,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			},
 			{
 				header: "Status",
+				meta: {
+					className: "w-[10%]",
+				},
 				accessorFn: (row) => row.body?.active,
 				cell: ({ row }) => {
 					const isActive = !!row.original.body?.active;
@@ -60,6 +69,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			{
 				id: "created",
 				header: "Created",
+				meta: {
+					className: "w-[10%]",
+				},
 				accessorFn: (row) => row.body?.created,
 				cell: ({ row }) => {
 					const dateString = row.original.body?.created;
@@ -81,6 +93,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 const adminColumns: ColumnDef<User>[] = [
 	{
 		id: "actions",
+		meta: {
+			className: "w-fit",
+		},
 		enableSorting: false,
 		enableHiding: false,
 		cell: () => {
