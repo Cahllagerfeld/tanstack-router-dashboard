@@ -19,15 +19,6 @@ export const Route = createFileRoute("/(private)/")({
 				params: { project_id: selectedProject.name },
 			});
 		}
-		const defaultProject = projectItems.find(
-			(project) => project.name === "default"
-		);
-		if (!defaultProject) {
-			throw redirect({ to: "/projects" });
-		}
-		throw redirect({
-			to: "/projects/$project_id",
-			params: { project_id: defaultProject.name },
-		});
+		throw redirect({ to: "/projects" });
 	},
 });
