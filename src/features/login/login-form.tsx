@@ -12,7 +12,7 @@ import { useAuth } from "@/context/auth";
 import { useLoginUser } from "@/data/session/login";
 import { sleep } from "@/lib/sleep";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -25,6 +25,7 @@ const loginSchema = z.object({
 type LoginFormType = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
+	const { next } = useSearch({ from: "/(public)/_grid-layout/login" });
 	const auth = useAuth();
 	const router = useRouter();
 
@@ -41,7 +42,7 @@ export function LoginForm() {
 			auth.login(username);
 			// this is a hack to wait for the auth state to update
 			await sleep(50);
-			router.navigate({ to: "/" });
+			router.navigate({ to: next ?? "/" });
 		},
 		onError: (err) => {
 			// @ts-expect-error - detail is an array
