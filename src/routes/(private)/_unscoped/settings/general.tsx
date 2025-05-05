@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { serverQueries } from "@/data/server";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_unscoped/settings/general")({
-	component: RouteComponent,
+	beforeLoad: ({ context }) => {
+		if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
+	},
+	loader: async ({ context: { queryClient } }) => {
+		await queryClient.ensureQueryData(serverQueries.serverSettings());
+	},
 });
-
-function RouteComponent() {
-	return <div>Hello "/(private)/_unscoped/settings/general"!</div>;
-}

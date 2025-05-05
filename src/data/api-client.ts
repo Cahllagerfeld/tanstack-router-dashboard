@@ -29,7 +29,7 @@ export async function apiClient<T>(
 				}
 				return data.detail;
 			})
-			.catch(() => "Error while fetching data");
+			.catch(() => `Error while fetching data on ${url}`);
 		throw new FetchError({
 			status: res.status,
 			statusText: res.statusText,

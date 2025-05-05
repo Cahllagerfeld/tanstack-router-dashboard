@@ -119,12 +119,17 @@ const privateUnscopedSettingsMembersRoute = privateUnscopedSettingsMembersImport
     ),
   )
 
-const privateUnscopedSettingsGeneralRoute =
-  privateUnscopedSettingsGeneralImport.update({
+const privateUnscopedSettingsGeneralRoute = privateUnscopedSettingsGeneralImport
+  .update({
     id: '/settings/general',
     path: '/settings/general',
     getParentRoute: () => privateUnscopedRoute,
   } as any)
+  .lazy(() =>
+    import('./routes/(private)/_unscoped/settings/general.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const privateScopedProjectsProjectidRoute = privateScopedProjectsProjectidImport
   .update({
