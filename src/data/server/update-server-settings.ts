@@ -28,7 +28,10 @@ export function useUpdateServerSettings(
 		mutationFn: updateServerSettings,
 		onSuccess: (data, vars, ctx) => {
 			queryClient.invalidateQueries({ queryKey: serverQueries.settingsKey });
-			queryClient.invalidateQueries({ queryKey: serverQueries.infoKey });
+			queryClient.invalidateQueries({
+				queryKey: serverQueries.infoKey,
+				type: "all",
+			});
 			toast.success(`Server settings updated`);
 			onSuccess?.(data, vars, ctx);
 		},

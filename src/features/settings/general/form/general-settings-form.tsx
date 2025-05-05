@@ -12,12 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { serverQueries } from "@/data/server";
+import { Switch } from "@/components/ui/switch";
 
 export function GeneralSettingsForm() {
 	const { data } = useSuspenseQuery(serverQueries.serverSettings());
-	const { form, handleUpdateServerSettings } = useSettingsForm({
+	const { form, handleUpdateServerSettings, isSubmitting } = useSettingsForm({
 		defaultValues: {
 			serverName: data.body?.server_name ?? "",
+			analyticsEnabled: data.body?.enable_analytics ?? false,
 		},
 	});
 
@@ -43,8 +45,30 @@ export function GeneralSettingsForm() {
 						</FormItem>
 					)}
 				></FormField>
+				<FormField
+					control={form.control}
+					name="analyticsEnabled"
+					render={({ field }) => (
+						<FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+							<div className="space-y-0.5">
+								<FormLabel>Enable Analytics</FormLabel>
+								<FormDescription>
+									Enable analytics to help us improve the server.
+								</FormDescription>
+							</div>
+							<FormControl>
+								<Switch
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
+							</FormControl>
+						</FormItem>
+					)}
+				/>
 				<div className="flex justify-end">
-					<Button type="submit">Update</Button>
+					<Button disabled={isSubmitting} type="submit">
+						{isSubmitting ? "Updating..." : "Update"}
+					</Button>
 				</div>
 			</form>
 		</Form>
