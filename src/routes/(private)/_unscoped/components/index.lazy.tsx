@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/ui/data-table";
+import { Pagination } from "@/components/pagination";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { TypeFilter } from "@/features/filters/type-filter";
@@ -35,6 +36,7 @@ function RouteComponent() {
 				setRowSelection={setRowSelection}
 				columns={columns}
 			/>
+			<Pagination index={data.data.index} totalPages={data.data.total_pages} />
 		</div>
 	);
 }
