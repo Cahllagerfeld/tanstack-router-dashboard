@@ -1,8 +1,9 @@
 import { ServerActivation } from "@/types/server";
-import { apiPaths } from "../api";
 import { User } from "@/types/user";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { apiPaths } from "../api";
 import { apiClient } from "../api-client";
+import { loginUser } from "../session/login";
 
 async function activateServer(bodyData: ServerActivation) {
 	const response = await apiClient<User>(apiPaths.activate, {
@@ -16,11 +17,23 @@ async function activateServer(bodyData: ServerActivation) {
 	return response;
 }
 
+async function activateAndLogin(bodyData: ServerActivation) {
+	const activateResponse = await activateServer(bodyData);
+	if (bodyData.admin_password && bodyData.admin_username) {
+		await loginUser({
+			password: bodyData.admin_password,
+			username: bodyData.admin_username,
+		});
+	}
+
+	return activateResponse;
+}
+
 export function useServerActivation(
 	options?: UseMutationOptions<User | null, Error, ServerActivation>
 ) {
 	return useMutation({
 		...options,
-		mutationFn: activateServer,
+		mutationFn: activateAndLogin,
 	});
 }
