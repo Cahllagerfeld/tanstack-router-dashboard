@@ -23,6 +23,7 @@ import { Route as privateUnscopedComponentsIndexImport } from './routes/(private
 import { Route as privateUnscopedSettingsMembersImport } from './routes/(private)/_unscoped/settings/members'
 import { Route as privateUnscopedSettingsGeneralImport } from './routes/(private)/_unscoped/settings/general'
 import { Route as privateScopedProjectsProjectidImport } from './routes/(private)/_scoped/projects/$project_id'
+import { Route as privateUnscopedSettingsServiceAccountsIndexImport } from './routes/(private)/_unscoped/settings/service-accounts/index'
 
 // Create Virtual Routes
 
@@ -151,6 +152,19 @@ const privateScopedProjectsProjectidIndexLazyRoute =
       ),
     )
 
+const privateUnscopedSettingsServiceAccountsIndexRoute =
+  privateUnscopedSettingsServiceAccountsIndexImport
+    .update({
+      id: '/settings/service-accounts/',
+      path: '/settings/service-accounts/',
+      getParentRoute: () => privateUnscopedRoute,
+    } as any)
+    .lazy(() =>
+      import(
+        './routes/(private)/_unscoped/settings/service-accounts/index.lazy'
+      ).then((d) => d.Route),
+    )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -239,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateUnscopedComponentsIndexImport
       parentRoute: typeof privateUnscopedImport
     }
+    '/(private)/_unscoped/settings/service-accounts/': {
+      id: '/(private)/_unscoped/settings/service-accounts/'
+      path: '/settings/service-accounts'
+      fullPath: '/settings/service-accounts'
+      preLoaderRoute: typeof privateUnscopedSettingsServiceAccountsIndexImport
+      parentRoute: typeof privateUnscopedImport
+    }
     '/(private)/_scoped/projects/$project_id/': {
       id: '/(private)/_scoped/projects/$project_id/'
       path: '/'
@@ -256,6 +277,7 @@ interface privateUnscopedRouteChildren {
   privateUnscopedSettingsGeneralRoute: typeof privateUnscopedSettingsGeneralRoute
   privateUnscopedSettingsMembersRoute: typeof privateUnscopedSettingsMembersRoute
   privateUnscopedComponentsIndexRoute: typeof privateUnscopedComponentsIndexRoute
+  privateUnscopedSettingsServiceAccountsIndexRoute: typeof privateUnscopedSettingsServiceAccountsIndexRoute
 }
 
 const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
@@ -263,6 +285,8 @@ const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
   privateUnscopedSettingsGeneralRoute: privateUnscopedSettingsGeneralRoute,
   privateUnscopedSettingsMembersRoute: privateUnscopedSettingsMembersRoute,
   privateUnscopedComponentsIndexRoute: privateUnscopedComponentsIndexRoute,
+  privateUnscopedSettingsServiceAccountsIndexRoute:
+    privateUnscopedSettingsServiceAccountsIndexRoute,
 }
 
 const privateUnscopedRouteWithChildren = privateUnscopedRoute._addFileChildren(
@@ -333,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
+  '/settings/service-accounts': typeof privateUnscopedSettingsServiceAccountsIndexRoute
   '/projects/$project_id/': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
 
@@ -344,6 +369,7 @@ export interface FileRoutesByTo {
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
+  '/settings/service-accounts': typeof privateUnscopedSettingsServiceAccountsIndexRoute
   '/projects/$project_id': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
 
@@ -361,6 +387,7 @@ export interface FileRoutesById {
   '/(private)/_unscoped/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/(private)/_unscoped/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
+  '/(private)/_unscoped/settings/service-accounts/': typeof privateUnscopedSettingsServiceAccountsIndexRoute
   '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProjectidIndexLazyRoute
 }
 
@@ -375,6 +402,7 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/members'
     | '/components'
+    | '/settings/service-accounts'
     | '/projects/$project_id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -385,6 +413,7 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/members'
     | '/components'
+    | '/settings/service-accounts'
     | '/projects/$project_id'
   id:
     | '__root__'
@@ -400,6 +429,7 @@ export interface FileRouteTypes {
     | '/(private)/_unscoped/settings/general'
     | '/(private)/_unscoped/settings/members'
     | '/(private)/_unscoped/components/'
+    | '/(private)/_unscoped/settings/service-accounts/'
     | '/(private)/_scoped/projects/$project_id/'
   fileRoutesById: FileRoutesById
 }
@@ -443,7 +473,8 @@ export const routeTree = rootRoute
         "/(private)/_unscoped/projects",
         "/(private)/_unscoped/settings/general",
         "/(private)/_unscoped/settings/members",
-        "/(private)/_unscoped/components/"
+        "/(private)/_unscoped/components/",
+        "/(private)/_unscoped/settings/service-accounts/"
       ]
     },
     "/(public)": {
@@ -493,6 +524,10 @@ export const routeTree = rootRoute
     },
     "/(private)/_unscoped/components/": {
       "filePath": "(private)/_unscoped/components/index.tsx",
+      "parent": "/(private)/_unscoped"
+    },
+    "/(private)/_unscoped/settings/service-accounts/": {
+      "filePath": "(private)/_unscoped/settings/service-accounts/index.tsx",
       "parent": "/(private)/_unscoped"
     },
     "/(private)/_scoped/projects/$project_id/": {

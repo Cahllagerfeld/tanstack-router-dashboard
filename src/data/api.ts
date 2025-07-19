@@ -8,6 +8,9 @@ export const apiPaths = {
 		base: "/projects",
 		detail: (id: string) => `/projects/${id}`,
 	},
+	serviceAccounts: {
+		base: "/service_accounts",
+	},
 	components: {
 		base: "/components",
 	},

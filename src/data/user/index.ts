@@ -10,9 +10,14 @@ export const userQueries = {
 			queryKey: ["current-user"],
 			queryFn: fetchCurrentUser,
 		}),
-	userList: (queries: UserListQueryParams) =>
-		queryOptions({
-			queryKey: [...userQueries.usersBaseKey, queries],
-			queryFn: () => fetchUserList({ queries }),
-		}),
+	userList: (queries: UserListQueryParams) => {
+		const defaultQueries: UserListQueryParams = {
+			sort_by: "desc:created",
+		};
+		const finalQueries = { ...defaultQueries, ...queries };
+		return queryOptions({
+			queryKey: [...userQueries.usersBaseKey, finalQueries],
+			queryFn: () => fetchUserList({ queries: finalQueries }),
+		});
+	},
 };
