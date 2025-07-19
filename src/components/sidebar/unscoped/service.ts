@@ -45,7 +45,7 @@ const unscopedNavMain: NavbarItem[] = [
 			},
 			{
 				title: "Service Accounts",
-				url: "#",
+				url: "/settings/service-accounts",
 			},
 		],
 	},

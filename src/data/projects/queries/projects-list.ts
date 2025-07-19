@@ -8,15 +8,8 @@ type Args = {
 };
 
 export async function fetchProjectList({ queries }: Args) {
-	const defaultQueries: ProjectListQueries = {
-		sort_by: "desc:created",
-		size: 10,
-	};
+	const url = buildUrlWithQueries(apiPaths.projects.base, queries);
 
-	const url = buildUrlWithQueries(apiPaths.projects.base, {
-		...defaultQueries,
-		...queries,
-	});
 	const data = await apiClient<ProjectList>(url);
 	return data;
 }
