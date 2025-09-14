@@ -1,6 +1,6 @@
 import { ComponentProps, useCallback, useEffect, useState } from "react";
 import { Input } from "./ui/input";
-import debounce from "lodash.debounce";
+import { debounce } from "es-toolkit";
 
 type Props = Omit<ComponentProps<typeof Input>, "onChange"> & {
 	debounceMs?: number;
