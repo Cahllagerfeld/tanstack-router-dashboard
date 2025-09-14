@@ -1,5 +1,5 @@
 import { getLocalStorageKey } from "@/lib/localstorage";
-import { ReactNode } from "@tanstack/react-router";
+import { ReactNode } from "react";
 import {
 	createContext,
 	useCallback,
