@@ -1,6 +1,7 @@
 import { projectQueries } from "@/data/projects";
 import { filterSchema } from "@/features/filters/filter";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guards";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -11,8 +12,8 @@ const querySchema = z.object({
 export const Route = createFileRoute("/(private)/_unscoped/projects")({
 	validateSearch: (search) => querySchema.parse(search),
 	loaderDeps: ({ search: { name, page } }) => ({ name, page }),
-	beforeLoad: ({ context }) => {
-		if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
+	beforeLoad: async ({ context: { queryClient } }) => {
+		await requireAuth(queryClient);
 	},
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {
 		await queryClient.ensureQueryData(

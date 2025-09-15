@@ -9,19 +9,24 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 // Import the generated route tree
-import { routeTree } from "./routeTree.gen";
-import { AuthProvider, setStoredUser, useAuth } from "./context/auth";
 import { isFetchError } from "./lib/fetch-error";
+import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
 
 const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: false,
+		},
+	},
 	queryCache: new QueryCache({
 		onError: (error) => {
 			if (isFetchError(error)) {
 				if (error.status === 401) {
-					setStoredUser(null);
-					window.location.assign("/login");
+					if (window.location.pathname !== "/login") {
+						window.location.assign("/login");
+					}
 				}
 			}
 		},
@@ -30,7 +35,7 @@ const queryClient = new QueryClient({
 
 const router = createRouter({
 	routeTree,
-	context: { queryClient, auth: undefined! },
+	context: { queryClient },
 	defaultPreload: "intent",
 	defaultPreloadStaleTime: 0,
 });
@@ -42,20 +47,11 @@ declare module "@tanstack/react-router" {
 	}
 }
 
-function InnerApp() {
-	const auth = useAuth();
-	return (
-		<QueryClientProvider client={queryClient}>
-			<RouterProvider context={{ auth }} router={router} />
-		</QueryClientProvider>
-	);
-}
-
 function App() {
 	return (
-		<AuthProvider>
-			<InnerApp />
-		</AuthProvider>
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider context={{ queryClient }} router={router} />
+		</QueryClientProvider>
 	);
 }
 
