@@ -117,7 +117,7 @@ export function TypeSelect({
 }: ComponentPropsWithoutRef<typeof Select>) {
 	return (
 		<Select {...rest}>
-			<SelectTrigger>
+			<SelectTrigger className="w-full">
 				<FormControl>
 					<SelectValue placeholder="Select a type..." />
 				</FormControl>

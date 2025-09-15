@@ -55,7 +55,10 @@ export function Pagination({ index, totalPages }: Props) {
 			<PaginationContent>
 				{index > 1 && (
 					<PaginationItem>
-						<PaginationFirst to="." search={(prev) => ({ ...prev, page: 1 })} />
+						<PaginationFirst
+							to="."
+							search={(prev: any) => ({ ...prev, page: 1 })}
+						/>
 					</PaginationItem>
 				)}
 
@@ -63,7 +66,7 @@ export function Pagination({ index, totalPages }: Props) {
 					<PaginationItem>
 						<PaginationPrevious
 							to="."
-							search={(prev) => ({ ...prev, page: index - 1 })}
+							search={(prev: any) => ({ ...prev, page: index - 1 })}
 						/>
 					</PaginationItem>
 				)}
@@ -78,7 +81,7 @@ export function Pagination({ index, totalPages }: Props) {
 					<PaginationItem key={idx}>
 						<PaginationLink
 							to="."
-							search={(prev) => ({ ...prev, page })}
+							search={(prev: any) => ({ ...prev, page })}
 							isActive={page === index}
 						>
 							{page}
@@ -96,7 +99,7 @@ export function Pagination({ index, totalPages }: Props) {
 					<PaginationItem>
 						<PaginationNext
 							to="."
-							search={(prev) => ({ ...prev, page: index + 1 })}
+							search={(prev: any) => ({ ...prev, page: index + 1 })}
 						/>
 					</PaginationItem>
 				)}
@@ -105,7 +108,7 @@ export function Pagination({ index, totalPages }: Props) {
 					<PaginationItem>
 						<PaginationLast
 							to="."
-							search={(prev) => ({ ...prev, page: totalPages })}
+							search={(prev: any) => ({ ...prev, page: totalPages })}
 						/>
 					</PaginationItem>
 				)}
