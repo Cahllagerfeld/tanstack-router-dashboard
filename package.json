@@ -10,7 +10,8 @@
 		"format": "prettier --write .",
 		"generate:types": "bun scripts/types.js",
 		"lint": "oxlint --fix .",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test:unit": "vitest"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
@@ -50,6 +51,7 @@
 		"tw-animate-css": "^1.3.8",
 		"typescript": "~5.9.2",
 		"vite": "^7.1.5",
-		"vite-tsconfig-paths": "^5.1.4"
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "^3.2.4"
 	}
 }

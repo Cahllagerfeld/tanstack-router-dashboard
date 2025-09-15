@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { getComponentTypeLabel } from "@/lib/components";
+import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { ComponentType } from "@/types/components";
 import { zodResolver } from "@hookform/resolvers/zod";
