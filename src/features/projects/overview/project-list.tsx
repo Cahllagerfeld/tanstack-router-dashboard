@@ -29,10 +29,10 @@ export function ProjectList({ queries }: Props) {
 					</li>
 				))}
 			</ul>
-			<Pagination
+			{/* <Pagination
 				index={projectData.index}
 				totalPages={projectData.total_pages}
-			/>
+			/> */}
 		</div>
 	);
 }

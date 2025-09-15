@@ -32,7 +32,7 @@ export function UserList({ queries }: Props) {
 				setRowSelection={setRowSelection}
 				columns={columns}
 			/>
-			<Pagination index={userList.index} totalPages={userList.total_pages} />
+			{/* <Pagination index={userList.index} totalPages={userList.total_pages} /> */}
 		</div>
 	);
 }
