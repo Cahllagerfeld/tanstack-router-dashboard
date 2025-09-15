@@ -1,11 +1,12 @@
 import { serverQueries } from "@/data/server";
 import { projectQueries } from "@/data/projects";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guards";
 
 export const Route = createFileRoute("/(private)/_scoped/projects/$project_id")(
 	{
-		beforeLoad: ({ context }) => {
-			if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
+		beforeLoad: async ({ context: { queryClient } }) => {
+			await requireAuth(queryClient);
 		},
 		loader: async ({ context: { queryClient }, params: { project_id } }) => {
 			await Promise.all([

@@ -1,4 +1,5 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { redirectIfAuthenticated } from "@/lib/auth-guards";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -7,7 +8,7 @@ const querySchema = z.object({
 
 export const Route = createFileRoute("/(public)/_grid-layout/login")({
 	validateSearch: (search) => querySchema.parse(search),
-	beforeLoad: ({ context, search: { next } }) => {
-		if (context.auth.isAuthenticated) throw redirect({ to: next ?? "/" });
+	beforeLoad: async ({ context: { queryClient }, search: { next } }) => {
+		await redirectIfAuthenticated(queryClient, next ?? "/");
 	},
 });

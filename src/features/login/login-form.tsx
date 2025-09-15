@@ -8,9 +8,9 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/context/auth";
 import { useLoginUser } from "@/data/session/login";
-import { sleep } from "@/lib/sleep";
+import { useQueryClient } from "@tanstack/react-query";
+import { userQueries } from "@/data/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
@@ -26,8 +26,8 @@ type LoginFormType = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
 	const { next } = useSearch({ from: "/(public)/_grid-layout/login" });
-	const auth = useAuth();
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const form = useForm<LoginFormType>({
 		resolver: zodResolver(loginSchema),
@@ -38,10 +38,10 @@ export function LoginForm() {
 	});
 
 	const { mutate } = useLoginUser({
-		onSuccess: async (_, { username }) => {
-			auth.login(username);
-			// this is a hack to wait for the auth state to update
-			await sleep(50);
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["current-user"] });
+			// Ensure cache is warm for guards
+			await queryClient.ensureQueryData(userQueries.currentUser());
 			router.navigate({ to: next ?? "/" });
 		},
 		onError: (err) => {

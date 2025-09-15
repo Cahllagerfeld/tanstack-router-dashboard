@@ -1,19 +1,19 @@
 import { Toaster } from "@/components/ui/sonner";
-import { AuthContext } from "@/context/auth";
 import { serverQueries } from "@/data/server";
+import { userQueries } from "@/data/user";
 import { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
 	createRootRouteWithContext,
 	Outlet,
 	redirect,
 } from "@tanstack/react-router";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
-	auth: AuthContext;
 }>()({
 	beforeLoad: async ({ context: { queryClient }, location }) => {
+		await queryClient.prefetchQuery(userQueries.currentUser());
 		const serverInfo = await queryClient.ensureQueryData(
 			serverQueries.serverInfo()
 		);
