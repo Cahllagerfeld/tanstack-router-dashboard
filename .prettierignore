@@ -3,3 +3,4 @@ dist
 build
 .devbox
 src/routeTree.gen.ts
+.venv

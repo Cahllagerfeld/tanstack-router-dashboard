@@ -15,13 +15,13 @@ export function NoItemFallback({
 	cta,
 }: Props) {
 	return (
-		<div className="flex h-full w-full flex-col items-center justify-center space-y-6 rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
-			<div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-muted">
-				<Icon className="h-10 w-10 text-muted-foreground" />
+		<div className="animate-in fade-in-50 flex size-full flex-col items-center justify-center space-y-6 rounded-md border border-dashed p-8 text-center">
+			<div className="bg-muted mx-auto flex size-20 items-center justify-center rounded-full">
+				<Icon className="text-muted-foreground size-10" />
 			</div>
 			<div className="space-y-2">
 				<h3 className="text-xl font-semibold">{title}</h3>
-				<p className="text-sm text-muted-foreground">{subtitle}</p>
+				<p className="text-muted-foreground text-sm">{subtitle}</p>
 			</div>
 			{cta}
 		</div>

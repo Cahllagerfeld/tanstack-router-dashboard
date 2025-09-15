@@ -7,11 +7,11 @@ export function SetProjectCommand({ projectId }: { projectId: string }) {
 
 	return (
 		<div className="flex items-center gap-2 truncate text-sm">
-			<div className="flex w-full items-center justify-between gap-1 overflow-hidden truncate rounded-md border border-border bg-muted px-2 py-1">
+			<div className="border-border bg-muted flex w-full items-center justify-between gap-1 truncate overflow-hidden rounded-md border px-2 py-1">
 				<code className="truncate">{loginCommand}</code>
 				{copied ? (
 					<>
-						<Check className="h-3 w-3 shrink-0 stroke-muted-foreground" />
+						<Check className="stroke-muted-foreground size-3 shrink-0" />
 						<p className="sr-only">copied successfully</p>
 					</>
 				) : (
@@ -19,7 +19,7 @@ export function SetProjectCommand({ projectId }: { projectId: string }) {
 						className="z-10"
 						onClick={() => copyToClipboard(loginCommand)}
 					>
-						<Copy className="h-3 w-3 shrink-0 stroke-muted-foreground" />
+						<Copy className="stroke-muted-foreground size-3 shrink-0" />
 						<p className="sr-only">Copy tenantUrl</p>
 					</button>
 				)}
