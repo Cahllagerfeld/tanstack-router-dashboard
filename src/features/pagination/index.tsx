@@ -8,7 +8,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 	Pagination as PaginationPrimitive,
-} from "../ui/pagination";
+} from "@/components/ui/pagination";
 import { getPageNumbers } from "./page-numbers";
 
 type Props = {
