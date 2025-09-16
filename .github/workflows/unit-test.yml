@@ -1,0 +1,33 @@
+name: Build & Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Use latest LTS Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "lts/*"
+          check-latest: true
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install project dependencies
+        run: bun install --frozen-lockfile
+
+      - name: "Run Build"
+        run: bun run build
+
+      - name: Run Unit Tests
+        run: bun run test:unit

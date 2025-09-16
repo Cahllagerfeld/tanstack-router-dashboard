@@ -1,4 +1,4 @@
-import { Pagination } from "@/components/pagination";
+import { Pagination } from "@/features/pagination";
 import { DataTable } from "@/components/ui/data-table";
 import { userQueries } from "@/data/user";
 import { useUserListColumns } from "@/features/users/list/columns";
