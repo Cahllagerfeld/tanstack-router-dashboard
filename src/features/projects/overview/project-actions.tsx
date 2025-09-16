@@ -6,7 +6,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical, Trash2 } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { DeleteProjectAlert } from "../delete/delete-project-alert";
 
@@ -26,7 +26,7 @@ export function ProjectActions({ projectId }: Props) {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" className="z-10" size="icon">
-						<EllipsisVertical className="size-5" />
+						<MoreHorizontal className="size-5" />
 						<span className="sr-only">Open project actions</span>
 					</Button>
 				</DropdownMenuTrigger>
