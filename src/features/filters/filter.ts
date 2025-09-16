@@ -27,10 +27,17 @@ export function createFilter(option: FilterOption, value: string) {
 	return `${option}:${value}` as Filter;
 }
 
+const filterOptionSchema = z.enum(FILTER_OPTIONS);
+
 export const filterSchema = z.string().refine(
 	(value): value is Filter => {
 		const [option, ...rest] = value.split(":");
-		return FILTER_OPTIONS.includes(option as FilterOption) && rest.length > 0;
+		const optionSchema = filterOptionSchema.safeParse(option);
+		if (!optionSchema.success) {
+			return false;
+		}
+		const hasNonEmptyValue = rest.some((segment) => segment.length > 0);
+		return hasNonEmptyValue;
 	},
 	{
 		message:

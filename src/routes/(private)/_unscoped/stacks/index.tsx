@@ -1,9 +1,10 @@
 import { stackQueries } from "@/data/stacks";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guards";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_unscoped/stacks/")({
-	beforeLoad: ({ context }) => {
-		if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
+	beforeLoad: async ({ context: { queryClient } }) => {
+		await requireAuth(queryClient);
 	},
 	loader: async ({ context: { queryClient } }) => {
 		await queryClient.ensureQueryData(stackQueries.stackList());

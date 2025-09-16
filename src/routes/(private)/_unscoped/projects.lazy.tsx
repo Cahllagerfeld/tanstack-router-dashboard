@@ -35,7 +35,7 @@ function RouteComponent() {
 		<div className="flex h-full flex-col space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">Projects</h1>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-muted-foreground text-sm">
 					Projects allow you to organize your MLOps resources.
 				</p>
 			</div>

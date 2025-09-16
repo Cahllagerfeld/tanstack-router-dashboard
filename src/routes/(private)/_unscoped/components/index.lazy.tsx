@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/ui/data-table";
-import { Pagination } from "@/components/pagination";
+import { Pagination } from "@/features/pagination";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { TypeFilter } from "@/features/filters/type-filter";
@@ -24,7 +24,7 @@ function RouteComponent() {
 		<div className="space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">Components</h1>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-muted-foreground text-sm">
 					Components are the building blocks of your stacks.
 				</p>
 			</div>

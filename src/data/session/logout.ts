@@ -1,9 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPaths } from "../api";
 import { apiClient } from "../api-client";
-import { useAuth } from "@/context/auth";
 import { useNavigate } from "@tanstack/react-router";
-import { sleep } from "@/lib/sleep";
 
 async function performLogout() {
 	const res = await apiClient<string>(apiPaths.logout);
@@ -11,13 +9,12 @@ async function performLogout() {
 }
 
 export function useLogoutUser() {
-	const { logout } = useAuth();
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: performLogout,
 		onSuccess: async () => {
-			logout();
-			await sleep(50);
+			await queryClient.invalidateQueries({ queryKey: ["current-user"] });
 			navigate({ to: "/login" });
 		},
 	});

@@ -1,11 +1,16 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-	plugins: [TanStackRouterVite(), react(), tsconfigPaths()],
+	test: {
+		exclude: ["node_modules/**/*", "build/**/*", "dist/**/*", "e2e-tests/**/*"],
+	},
+	plugins: [tanstackRouter(), react(), tailwindcss(), tsconfigPaths()],
 	server: {
 		proxy: {
 			"/api": {

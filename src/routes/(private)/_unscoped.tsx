@@ -1,7 +1,8 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { requireAuth } from "@/lib/auth-guards";
 
 export const Route = createFileRoute("/(private)/_unscoped")({
-	beforeLoad: ({ context }) => {
-		if (!context.auth.isAuthenticated) throw redirect({ to: "/login" });
+	beforeLoad: async ({ context: { queryClient } }) => {
+		await requireAuth(queryClient);
 	},
 });
