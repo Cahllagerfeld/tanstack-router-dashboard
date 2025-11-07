@@ -15,9 +15,9 @@ export async function loginUser(body: Login) {
 }
 
 export function useLoginUser(
-	options?: UseMutationOptions<LoginTokenResponse, unknown, Login>
+	options?: UseMutationOptions<LoginTokenResponse, unknown, Login, unknown>
 ) {
-	return useMutation<LoginTokenResponse, unknown, Login>({
+	return useMutation<LoginTokenResponse, unknown, Login, unknown>({
 		...options,
 		mutationFn: async (payload) => {
 			return loginUser(payload);

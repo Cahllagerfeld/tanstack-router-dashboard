@@ -23,7 +23,7 @@ export async function deleteProject({
 }
 
 export function useDeleteProject(
-	options?: UseMutationOptions<void, FetchError, DeleteProjectParams>
+	options?: UseMutationOptions<void, FetchError, DeleteProjectParams, unknown>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
@@ -33,17 +33,17 @@ export function useDeleteProject(
 		mutationFn: async ({ projectId }: DeleteProjectParams) => {
 			await deleteProject({ projectId });
 		},
-		onSuccess: (data, vars, ctx) => {
+		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: ["projects"] });
 			toast.success(`Project deleted`);
 			navigate({
 				to: "/projects",
 			});
-			onSuccess?.(data, vars, ctx);
+			onSuccess?.(data, variables, onMutateResult, context);
 		},
-		onError: (error, vars, ctx) => {
+		onError: (error, variables, onMutateResult, context) => {
 			toast.error(error.message);
-			onError?.(error, vars, ctx);
+			onError?.(error, variables, onMutateResult, context);
 		},
 	});
 }

@@ -20,22 +20,22 @@ async function createProject(payload: CreateProject) {
 }
 
 export function useCreateProject(
-	options?: UseMutationOptions<Project, unknown, CreateProject>
+	options?: UseMutationOptions<Project, unknown, CreateProject, unknown>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, ...rest } = options || {};
-	return useMutation({
+	return useMutation<Project, unknown, CreateProject, unknown>({
 		...rest,
 		mutationFn: createProject,
-		onSuccess: (data, vars, ctx) => {
+		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: ["projects"] });
 			toast.success(`Project ${getProjectDisplayName(data)} created`);
 			navigate({
 				to: "/projects/$project_id",
 				params: { project_id: data.name },
 			});
-			onSuccess?.(data, vars, ctx);
+			onSuccess?.(data, variables, onMutateResult, context);
 		},
 	});
 }

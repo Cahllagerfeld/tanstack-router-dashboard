@@ -11,7 +11,7 @@ async function performLogout() {
 export function useLogoutUser() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	return useMutation({
+	return useMutation<string, unknown, void, unknown>({
 		mutationFn: performLogout,
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ["current-user"] });
