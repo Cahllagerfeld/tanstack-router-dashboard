@@ -17,9 +17,9 @@ async function activateServer(bodyData: ServerActivation) {
 }
 
 export function useServerActivation(
-	options?: UseMutationOptions<User | null, Error, ServerActivation>
+	options?: UseMutationOptions<User | null, Error, ServerActivation, unknown>
 ) {
-	return useMutation({
+	return useMutation<User | null, Error, ServerActivation, unknown>({
 		...options,
 		mutationFn: activateServer,
 	});

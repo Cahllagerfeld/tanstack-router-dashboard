@@ -10,6 +10,9 @@
 
   packages = [ pkgs.git ];
 
+  env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
+  env.ZENML_ANALYTICS_OPT_IN = "False";
+
   languages.python = {
     enable = true;
     package = pkgs.python312;

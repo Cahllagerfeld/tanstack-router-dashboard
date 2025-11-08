@@ -22,33 +22,23 @@ import { Route as privateUnscopedSettingsMembersRouteImport } from './routes/(pr
 import { Route as privateUnscopedSettingsGeneralRouteImport } from './routes/(private)/_unscoped/settings/general'
 import { Route as privateScopedProjectsProject_idRouteImport } from './routes/(private)/_scoped/projects/$project_id'
 
-const publicRouteImport = createFileRoute('/(public)')()
-const privateRouteImport = createFileRoute('/(private)')()
 const privateScopedProjectsProject_idIndexLazyRouteImport = createFileRoute(
   '/(private)/_scoped/projects/$project_id/',
 )()
 
-const publicRoute = publicRouteImport.update({
-  id: '/(public)',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const privateRoute = privateRouteImport.update({
-  id: '/(private)',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const privateIndexRoute = privateIndexRouteImport.update({
-  id: '/',
+  id: '/(private)/',
   path: '/',
-  getParentRoute: () => privateRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const publicGridLayoutRoute = publicGridLayoutRouteImport.update({
-  id: '/_grid-layout',
-  getParentRoute: () => publicRoute,
+  id: '/(public)/_grid-layout',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const privateUnscopedRoute = privateUnscopedRouteImport
   .update({
-    id: '/_unscoped',
-    getParentRoute: () => privateRoute,
+    id: '/(private)/_unscoped',
+    getParentRoute: () => rootRouteImport,
   } as any)
   .lazy(() => import('./routes/(private)/_unscoped.lazy').then((d) => d.Route))
 const publicGridLayoutServerActivationRoute =
@@ -114,9 +104,9 @@ const privateUnscopedSettingsGeneralRoute =
 const privateScopedProjectsProject_idRoute =
   privateScopedProjectsProject_idRouteImport
     .update({
-      id: '/_scoped/projects/$project_id',
+      id: '/(private)/_scoped/projects/$project_id',
       path: '/projects/$project_id',
-      getParentRoute: () => privateRoute,
+      getParentRoute: () => rootRouteImport,
     } as any)
     .lazy(() =>
       import('./routes/(private)/_scoped/projects/$project_id.lazy').then(
@@ -159,9 +149,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(private)': typeof privateRouteWithChildren
   '/(private)/_unscoped': typeof privateUnscopedRouteWithChildren
-  '/(public)': typeof publicRouteWithChildren
   '/(public)/_grid-layout': typeof publicGridLayoutRouteWithChildren
   '/(private)/': typeof privateIndexRoute
   '/(private)/_unscoped/projects': typeof privateUnscopedProjectsRoute
@@ -197,9 +185,7 @@ export interface FileRouteTypes {
     | '/projects/$project_id'
   id:
     | '__root__'
-    | '/(private)'
     | '/(private)/_unscoped'
-    | '/(public)'
     | '/(public)/_grid-layout'
     | '/(private)/'
     | '/(private)/_unscoped/projects'
@@ -213,46 +199,34 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  privateRoute: typeof privateRouteWithChildren
-  publicRoute: typeof publicRouteWithChildren
+  privateUnscopedRoute: typeof privateUnscopedRouteWithChildren
+  publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren
+  privateIndexRoute: typeof privateIndexRoute
+  privateScopedProjectsProject_idRoute: typeof privateScopedProjectsProject_idRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(public)': {
-      id: '/(public)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof publicRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(private)': {
-      id: '/(private)'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof privateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(private)/': {
       id: '/(private)/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof privateIndexRouteImport
-      parentRoute: typeof privateRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(public)/_grid-layout': {
       id: '/(public)/_grid-layout'
-      path: '/'
-      fullPath: '/'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof publicGridLayoutRouteImport
-      parentRoute: typeof publicRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(private)/_unscoped': {
       id: '/(private)/_unscoped'
-      path: '/'
-      fullPath: '/'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof privateUnscopedRouteImport
-      parentRoute: typeof privateRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(public)/_grid-layout/server-activation': {
       id: '/(public)/_grid-layout/server-activation'
@@ -301,7 +275,7 @@ declare module '@tanstack/react-router' {
       path: '/projects/$project_id'
       fullPath: '/projects/$project_id'
       preLoaderRoute: typeof privateScopedProjectsProject_idRouteImport
-      parentRoute: typeof privateRoute
+      parentRoute: typeof rootRouteImport
     }
     '/(private)/_scoped/projects/$project_id/': {
       id: '/(private)/_scoped/projects/$project_id/'
@@ -331,6 +305,19 @@ const privateUnscopedRouteWithChildren = privateUnscopedRoute._addFileChildren(
   privateUnscopedRouteChildren,
 )
 
+interface publicGridLayoutRouteChildren {
+  publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
+  publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
+}
+
+const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
+  publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
+  publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
+}
+
+const publicGridLayoutRouteWithChildren =
+  publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren)
+
 interface privateScopedProjectsProject_idRouteChildren {
   privateScopedProjectsProject_idIndexLazyRoute: typeof privateScopedProjectsProject_idIndexLazyRoute
 }
@@ -346,49 +333,12 @@ const privateScopedProjectsProject_idRouteWithChildren =
     privateScopedProjectsProject_idRouteChildren,
   )
 
-interface privateRouteChildren {
-  privateUnscopedRoute: typeof privateUnscopedRouteWithChildren
-  privateIndexRoute: typeof privateIndexRoute
-  privateScopedProjectsProject_idRoute: typeof privateScopedProjectsProject_idRouteWithChildren
-}
-
-const privateRouteChildren: privateRouteChildren = {
+const rootRouteChildren: RootRouteChildren = {
   privateUnscopedRoute: privateUnscopedRouteWithChildren,
+  publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
   privateIndexRoute: privateIndexRoute,
   privateScopedProjectsProject_idRoute:
     privateScopedProjectsProject_idRouteWithChildren,
-}
-
-const privateRouteWithChildren =
-  privateRoute._addFileChildren(privateRouteChildren)
-
-interface publicGridLayoutRouteChildren {
-  publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
-  publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
-}
-
-const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
-  publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
-  publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
-}
-
-const publicGridLayoutRouteWithChildren =
-  publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren)
-
-interface publicRouteChildren {
-  publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren
-}
-
-const publicRouteChildren: publicRouteChildren = {
-  publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
-}
-
-const publicRouteWithChildren =
-  publicRoute._addFileChildren(publicRouteChildren)
-
-const rootRouteChildren: RootRouteChildren = {
-  privateRoute: privateRouteWithChildren,
-  publicRoute: publicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -12,4 +12,5 @@ export const COMPONENT_TYPES = [
 	"model_registry",
 	"orchestrator",
 	"step_operator",
+	"deployer",
 ] as const;
