@@ -14,7 +14,7 @@ const querySchema = z.object({
 			z.literal(50),
 			z.undefined(),
 		])
-		.catch(20),
+		.catch(undefined),
 });
 
 export const Route = createFileRoute("/(private)/_unscoped/components/")({

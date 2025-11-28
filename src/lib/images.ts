@@ -1,6 +1,6 @@
 import { S3_BASE_URL } from "./constants/storage";
 
-function generateNumberFromSalt(salt: string): number {
+export function generateNumberFromSalt(salt: string, max: number = 49): number {
 	function hashString(str: string): number {
 		let hash = 0;
 		for (let i = 0; i < str.length; i++) {
@@ -10,7 +10,7 @@ function generateNumberFromSalt(salt: string): number {
 	}
 
 	const hash = hashString(salt);
-	return (hash % 49) + 1;
+	return (hash % max) + 1;
 }
 
 export function getIllustrationUrl(name: string) {
