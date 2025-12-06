@@ -1,6 +1,6 @@
-import { ComponentProps, useCallback, useEffect, useState } from "react";
-import { Input } from "./ui/input";
 import { debounce } from "es-toolkit";
+import { ComponentProps, useEffect, useState } from "react";
+import { Input } from "./ui/input";
 
 type Props = Omit<ComponentProps<typeof Input>, "onChange"> & {
 	debounceMs?: number;
@@ -21,12 +21,9 @@ export function DebouncedInput({
 	}, [value]);
 
 	// Create debounced onChange handler
-	const debouncedOnChange = useCallback(
-		debounce((newValue: string) => {
-			onChange?.(newValue);
-		}, debounceMs),
-		[onChange, debounceMs]
-	);
+	const debouncedOnChange = debounce((newValue: string) => {
+		onChange?.(newValue);
+	}, debounceMs);
 
 	// Cleanup debounced function on unmount
 	useEffect(() => {
