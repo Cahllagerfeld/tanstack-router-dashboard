@@ -3791,6 +3791,36 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/steps/{step_run_id}/heartbeat": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		/**
+		 * Update Heartbeat
+		 * @description Updates a step.
+		 *
+		 *     Args:
+		 *         step_run_id: ID of the step.
+		 *         auth_context: Authorization/Authentication context.
+		 *
+		 *     Returns:
+		 *         The step heartbeat response (id, status, last_heartbeat).
+		 *
+		 *     Raises:
+		 *         HTTPException: If the step is finished raises with 422 status code.
+		 */
+		put: operations["update_heartbeat_api_v1_steps__step_run_id__heartbeat_put"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/steps/{step_id}/step-configuration": {
 		parameters: {
 			query?: never;
@@ -5739,6 +5769,8 @@ export type components = {
 			metadata?: {
 				[key: string]: unknown;
 			} | null;
+			/** The number of items in the artifact version if it is sequence-like. This should only be set for artifacts that can be split into parts, like lists or arrays. */
+			item_count?: number | null;
 		};
 		/**
 		 * ArtifactVersionResponse
@@ -5806,6 +5838,8 @@ export type components = {
 			artifact_store_id?: string | null;
 			/** The content hash of the artifact version. */
 			content_hash?: string | null;
+			/** The number of items in the artifact version if it is sequence-like. This should only be set for artifacts that can be split into parts, like lists or arrays. */
+			item_count?: number | null;
 		};
 		/**
 		 * ArtifactVersionResponseMetadata
@@ -6961,6 +6995,11 @@ export type components = {
 			tags: components["schemas"]["TagResponse"][];
 			/** Curated deployment visualizations. */
 			visualizations?: components["schemas"]["CuratedVisualizationResponse"][];
+			/**
+			 * The stack that was deployed.
+			 * @description The stack that was deployed.
+			 */
+			stack?: components["schemas"]["StackResponse"] | null;
 		} & {
 			[key: string]: unknown;
 		};
@@ -7194,6 +7233,8 @@ export type components = {
 			user?: string | null;
 			/** The name of the Flavor. */
 			name: string;
+			/** The display name of the Flavor. */
+			display_name?: string | null;
 			/** The type of the Flavor. */
 			type: components["schemas"]["StackComponentType"];
 			/** The JSON schema of this flavor's corresponding configuration. */
@@ -7265,6 +7306,8 @@ export type components = {
 			user_id?: string | null;
 			/** The type of the Flavor. */
 			type: components["schemas"]["StackComponentType"];
+			/** The display name of the Flavor. */
+			display_name: string;
 			/** The name of the integration that the Flavor belongs to. */
 			integration: string | null;
 			/** The path to the module which contains this Flavor. */
@@ -7314,6 +7357,8 @@ export type components = {
 		FlavorUpdate: {
 			/** The name of the Flavor. */
 			name?: string | null;
+			/** The display name of the Flavor. */
+			display_name?: string | null;
 			/** The type of the Flavor. */
 			type?: components["schemas"]["StackComponentType"] | null;
 			/** The JSON schema of this flavor's corresponding configuration. */
@@ -7353,6 +7398,10 @@ export type components = {
 			step_name: string;
 			/** Output Name */
 			output_name: string;
+			/** Chunk Index */
+			chunk_index?: number | null;
+			/** Chunk Size */
+			chunk_size?: number | null;
 		};
 		/**
 		 * LoadedVisualization
@@ -9273,6 +9322,8 @@ export type components = {
 			 * @default false
 			 */
 			is_templatable: boolean;
+			/** Trigger information for the pipeline run. */
+			trigger_info?: components["schemas"]["PipelineRunTriggerInfo"] | null;
 		};
 		/**
 		 * PipelineRunResponseResources
@@ -9334,6 +9385,8 @@ export type components = {
 			status_reason?: string | null;
 			/** End Time */
 			end_time?: string | null;
+			/** Whether the pipeline run is finished. */
+			is_finished?: boolean | null;
 			/** Orchestrator Run Id */
 			orchestrator_run_id?: string | null;
 			/** New tags to add to the pipeline run. */
@@ -9381,6 +9434,11 @@ export type components = {
 			pipeline_version_hash?: string | null;
 			/** The pipeline spec of the snapshot. */
 			pipeline_spec?: components["schemas"]["PipelineSpec-Input"] | null;
+			/**
+			 * Whether this is a snapshot of a dynamic pipeline.
+			 * @default false
+			 */
+			is_dynamic: boolean;
 			/** The name of the snapshot. */
 			name?: boolean | string | null;
 			/** The description of the snapshot. */
@@ -9472,6 +9530,8 @@ export type components = {
 			runnable: boolean;
 			/** If the snapshot can be deployed. */
 			deployable: boolean;
+			/** Whether this is a snapshot of a dynamic pipeline. */
+			is_dynamic: boolean;
 		};
 		/**
 		 * PipelineSnapshotResponseMetadata
@@ -11580,13 +11640,17 @@ export type components = {
 			substitutions: {
 				[key: string]: unknown;
 			};
-			/** @default {
+			/**
+			 * @default {
 			 *       "include_step_code": true,
 			 *       "include_step_parameters": true,
 			 *       "include_artifact_values": true,
 			 *       "include_artifact_ids": true
-			 *     } */
+			 *     }
+			 */
 			cache_policy: components["schemas"]["CachePolicy-Input"];
+			/** @description The step runtime. If not configured, the step will run inline unless a step operator or docker/resource settings are configured. This is only applicable for dynamic pipelines. */
+			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
 			 * Outputs
 			 * @default {}
@@ -11596,6 +11660,8 @@ export type components = {
 			};
 			/** Name */
 			name: string;
+			/** Template */
+			template?: string | null;
 			/**
 			 * Caching Parameters
 			 * @default {}
@@ -11708,13 +11774,17 @@ export type components = {
 			substitutions: {
 				[key: string]: unknown;
 			};
-			/** @default {
+			/**
+			 * @default {
 			 *       "include_step_code": true,
 			 *       "include_step_parameters": true,
 			 *       "include_artifact_values": true,
 			 *       "include_artifact_ids": true
-			 *     } */
+			 *     }
+			 */
 			cache_policy: components["schemas"]["CachePolicy-Output"];
+			/** @description The step runtime. If not configured, the step will run inline unless a step operator or docker/resource settings are configured. This is only applicable for dynamic pipelines. */
+			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
 			 * Outputs
 			 * @default {}
@@ -11724,6 +11794,8 @@ export type components = {
 			};
 			/** Name */
 			name: string;
+			/** Template */
+			template?: string | null;
 			/**
 			 * Caching Parameters
 			 * @default {}
@@ -11752,6 +11824,23 @@ export type components = {
 			client_lazy_loaders: {
 				[key: string]: unknown;
 			};
+		};
+		/**
+		 * StepHeartbeatResponse
+		 * @description Light-weight model for Step Heartbeat responses.
+		 */
+		StepHeartbeatResponse: {
+			/**
+			 * Id
+			 * Format: uuid
+			 */
+			id: string;
+			status: components["schemas"]["ExecutionStatus"];
+			/**
+			 * Latest Heartbeat
+			 * Format: date-time
+			 */
+			latest_heartbeat: string;
 		};
 		/**
 		 * StepRetryConfig
@@ -11808,6 +11897,12 @@ export type components = {
 			 */
 			permission_denied: boolean;
 			input_type: components["schemas"]["StepRunInputArtifactType"];
+			/** The index of the input artifact in the step run. */
+			index?: number | null;
+			/** The index of the chunk in the input artifact. */
+			chunk_index?: number | null;
+			/** The size of the chunk in the input artifact. */
+			chunk_size?: number | null;
 		};
 		/**
 		 * StepRunRequest
@@ -11866,6 +11961,8 @@ export type components = {
 			logs?: components["schemas"]["LogsRequest"] | null;
 			/** The exception information of the step run. */
 			exception_info?: components["schemas"]["ExceptionInfo"] | null;
+			/** The dynamic configuration of the step run. */
+			dynamic_config?: components["schemas"]["Step-Input"] | null;
 		};
 		/**
 		 * StepRunResponse
@@ -11923,6 +12020,8 @@ export type components = {
 			start_time?: string | null;
 			/** The end time of the step run. */
 			end_time?: string | null;
+			/** The latest heartbeat of the step run. */
+			latest_heartbeat?: string | null;
 			/** The ID of the model version that was configured by this step run explicitly. */
 			model_version_id?: string | null;
 			/**
@@ -12026,6 +12125,12 @@ export type components = {
 			cache_expires_at?: string | null;
 		};
 		/**
+		 * StepRuntime
+		 * @description All possible runtime modes for a step.
+		 * @enum {string}
+		 */
+		StepRuntime: "inline" | "isolated";
+		/**
 		 * StepSpec
 		 * @description Specification of a pipeline.
 		 */
@@ -12042,6 +12147,11 @@ export type components = {
 			};
 			/** Invocation Id */
 			invocation_id: string;
+			/**
+			 * Enable Heartbeat
+			 * @default false
+			 */
+			enable_heartbeat: boolean;
 		};
 		/**
 		 * StepSpec
@@ -12060,6 +12170,11 @@ export type components = {
 			};
 			/** Invocation Id */
 			invocation_id: string;
+			/**
+			 * Enable Heartbeat
+			 * @default false
+			 */
+			enable_heartbeat: boolean;
 		};
 		/**
 		 * Tag
@@ -15723,6 +15838,7 @@ export interface operations {
 				scope_user?: string | null;
 				user?: string | null;
 				name?: string | null;
+				display_name?: string | null;
 				type?: string | null;
 				integration?: string | null;
 			};
@@ -23525,6 +23641,64 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["StepRunResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	update_heartbeat_api_v1_steps__step_run_id__heartbeat_put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				step_run_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["StepHeartbeatResponse"];
 				};
 			};
 			/** @description Unauthorized */
