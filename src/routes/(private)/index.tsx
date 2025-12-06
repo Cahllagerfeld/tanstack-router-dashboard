@@ -5,7 +5,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/(private)/")({
 	loader: async ({ context }) => {
 		const projects = await context.queryClient.ensureQueryData(
-			projectQueries.projectList()
+			projectQueries.list()
 		);
 		const { items: projectItems } = projects;
 		const localProjectId = getProjectFromLocalStorage();

@@ -11,8 +11,8 @@ export const Route = createFileRoute("/(private)/_scoped/projects/$project_id")(
 		loader: async ({ context: { queryClient }, params: { project_id } }) => {
 			await Promise.all([
 				queryClient.ensureQueryData(serverQueries.serverInfo()),
-				queryClient.ensureQueryData(projectQueries.projectList()),
-				queryClient.ensureQueryData(projectQueries.projectDetail(project_id)),
+				queryClient.ensureQueryData(projectQueries.list()),
+				queryClient.ensureQueryData(projectQueries.detail(project_id)),
 			]);
 		},
 	}

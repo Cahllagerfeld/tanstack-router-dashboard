@@ -10,9 +10,7 @@ type Props = {
 };
 
 export function ProjectList({ queries }: Props) {
-	const { data: projectData } = useSuspenseQuery(
-		projectQueries.projectList(queries)
-	);
+	const { data: projectData } = useSuspenseQuery(projectQueries.list(queries));
 
 	const hasProjects = projectData.total > 0;
 

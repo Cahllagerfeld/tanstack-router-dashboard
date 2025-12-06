@@ -47,7 +47,7 @@ export function UnscopedSidebar({
 
 function ProjectsSidebar() {
 	const { data: projectData } = useSuspenseQuery(
-		projectQueries.projectList({ size: 3 })
+		projectQueries.list({ size: 3 })
 	);
 
 	const projects = projectData.items.map((project) => ({
