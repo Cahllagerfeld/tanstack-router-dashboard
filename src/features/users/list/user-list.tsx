@@ -12,7 +12,7 @@ type Props = {
 };
 
 export function UserList({ queries }: Props) {
-	const { data: userList } = useSuspenseQuery(userQueries.userList(queries));
+	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
 	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
 	const columns = useUserListColumns(!!currentUser.body?.is_admin);
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});

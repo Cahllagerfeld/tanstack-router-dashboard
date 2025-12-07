@@ -15,9 +15,7 @@ function RouteComponent() {
 	const columns = useComponentColumns();
 	const { size, page, type } = Route.useSearch();
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-	const data = useSuspenseQuery(
-		componentQueries.componentList({ size, page, type })
-	);
+	const data = useSuspenseQuery(componentQueries.list({ size, page, type }));
 
 	return (
 		<div className="space-y-4">

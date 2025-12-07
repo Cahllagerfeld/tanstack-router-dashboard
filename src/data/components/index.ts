@@ -1,11 +1,18 @@
-import { queryOptions } from "@tanstack/react-query";
-import { fetchComponentList } from "./queries/component-list";
-import { ComponentsListQueryParams } from "@/types/components";
+import { createResourceQueries } from "../query-factory";
+import { apiPaths } from "../api";
+import {
+	Component,
+	ComponentsList,
+	ComponentsListQueryParams,
+} from "@/types/components";
 
-export const componentQueries = {
-	componentList: (options?: ComponentsListQueryParams) =>
-		queryOptions({
-			queryFn: () => fetchComponentList(options),
-			queryKey: ["components", options],
-		}),
-};
+export const componentQueries = createResourceQueries<
+	ComponentsList,
+	Component,
+	ComponentsListQueryParams
+>({
+	baseKey: "components",
+	endpoints: {
+		base: apiPaths.components.base,
+	},
+});

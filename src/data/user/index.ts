@@ -1,18 +1,29 @@
 import { queryOptions } from "@tanstack/react-query";
-import { fetchCurrentUser } from "./queries/current-user";
-import { fetchUserList } from "./queries/user-list";
-import { UserListQueryParams } from "@/types/user";
+import { createResourceQueries } from "../query-factory";
+import { apiPaths } from "../api";
+import { apiClient } from "../api-client";
+import { User, UserList, UserListQueryParams } from "@/types/user";
+
+const baseUserQueries = createResourceQueries<
+	UserList,
+	User,
+	UserListQueryParams
+>({
+	baseKey: "users",
+	endpoints: {
+		base: apiPaths.users.base,
+	},
+	defaultListParams: {
+		sort_by: "desc:created",
+	},
+});
 
 export const userQueries = {
-	usersBaseKey: ["users"] as const,
+	...baseUserQueries,
+	/** Special query for the currently authenticated user */
 	currentUser: () =>
 		queryOptions({
 			queryKey: ["current-user"],
-			queryFn: fetchCurrentUser,
-		}),
-	userList: (queries: UserListQueryParams) =>
-		queryOptions({
-			queryKey: [...userQueries.usersBaseKey, queries],
-			queryFn: () => fetchUserList({ queries }),
+			queryFn: () => apiClient<User>(apiPaths.users.currentUser),
 		}),
 };

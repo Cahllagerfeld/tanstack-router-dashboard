@@ -29,7 +29,7 @@ export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
 	const navigate = useNavigate();
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
-	const { data: projectData } = useSuspenseQuery(projectQueries.projectList());
+	const { data: projectData } = useSuspenseQuery(projectQueries.list());
 	const { project_id } = useParams({
 		from: "/(private)/_scoped/projects/$project_id",
 	});
