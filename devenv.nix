@@ -8,7 +8,10 @@
 
 {
 
-  packages = [ pkgs.git ];
+  packages = [ 
+    pkgs.git
+    pkgs.claude-code
+  ];
 
   env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
   env.ZENML_ANALYTICS_OPT_IN = "False";
