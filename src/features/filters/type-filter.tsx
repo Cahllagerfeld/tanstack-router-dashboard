@@ -35,7 +35,7 @@ type Props = {
 };
 
 const filterFormSchema = z.object({
-	type: z.union([z.enum(COMPONENT_TYPES), z.literal("")]),
+	type: z.enum(COMPONENT_TYPES).optional(),
 });
 
 type FilterForm = z.infer<typeof filterFormSchema>;
@@ -55,13 +55,13 @@ export function TypeFilter({ filter }: Props) {
 		navigate({
 			replace: true,
 			to: ".",
-			search: (prev) => ({ ...prev, type: type || undefined }),
+			search: (prev) => ({ ...prev, type }),
 		});
 	}
 
 	function handleClearFilter() {
-		form.reset({ type: "" }, { keepDefaultValues: false });
-		handleApplyFilter({ type: "" });
+		form.reset({ type: undefined }, { keepDefaultValues: false });
+		handleApplyFilter({ type: undefined });
 	}
 
 	return (

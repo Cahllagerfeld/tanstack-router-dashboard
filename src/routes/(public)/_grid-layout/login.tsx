@@ -7,7 +7,7 @@ const querySchema = z.object({
 });
 
 export const Route = createFileRoute("/(public)/_grid-layout/login")({
-	validateSearch: (search) => querySchema.parse(search),
+	validateSearch: querySchema,
 	beforeLoad: async ({ context: { queryClient }, search: { next } }) => {
 		await redirectIfAuthenticated(queryClient, next ?? "/");
 	},

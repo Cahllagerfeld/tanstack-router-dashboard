@@ -10,7 +10,7 @@ const querySchema = z.object({
 });
 
 export const Route = createFileRoute("/(private)/_unscoped/projects")({
-	validateSearch: (search) => querySchema.parse(search),
+	validateSearch: querySchema,
 	loaderDeps: ({ search: { name, page } }) => ({ name, page }),
 	beforeLoad: async ({ context: { queryClient } }) => {
 		await requireAuth(queryClient);
