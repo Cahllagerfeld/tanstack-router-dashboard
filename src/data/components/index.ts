@@ -16,4 +16,7 @@ export const componentQueries = createResourceQueries<
 		base: apiPaths.components.base,
 		detail: apiPaths.components.detail,
 	},
+	defaultListParams: {
+		sort_by: "desc:created",
+	},
 });

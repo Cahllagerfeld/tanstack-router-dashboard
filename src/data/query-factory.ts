@@ -81,28 +81,23 @@ export function createResourceQueries<
 >(config: ResourceConfig<TListParams, TDetailParams>) {
 	const { baseKey, endpoints, defaultListParams } = config;
 
-	// Raw fetchers
-	const fetchList = async (params?: TListParams): Promise<TList> => {
-		const mergedParams = { ...defaultListParams, ...params };
-		const url = buildUrlWithQueries(endpoints.base, mergedParams);
+	// Raw fetchers (params should already be merged when called)
+	const fetchList = async (params: Record<string, unknown>): Promise<TList> => {
+		const url = buildUrlWithQueries(endpoints.base, params);
 		return apiClient<TList>(url);
 	};
 
 	const fetchDetail = async (
 		id: string,
-		params?: TDetailParams
+		params?: Record<string, unknown>
 	): Promise<TDetail> => {
 		if (!endpoints.detail) {
 			throw new Error(`Detail endpoint not configured for ${baseKey}`);
 		}
 		const baseUrl = endpoints.detail(id);
-		const mergedParams = {
-			...(config.defaultDetailParams as Record<string, unknown> | undefined),
-			...params,
-		};
 		const url =
-			mergedParams && Object.keys(mergedParams).length > 0
-				? buildUrlWithQueries(baseUrl, mergedParams)
+			params && Object.keys(params).length > 0
+				? buildUrlWithQueries(baseUrl, params)
 				: baseUrl;
 		return apiClient<TDetail>(url);
 	};
@@ -112,21 +107,34 @@ export function createResourceQueries<
 		baseKey: [baseKey] as const,
 
 		/** Query options for fetching a list */
-		list: (params?: TListParams) =>
-			queryOptions({
-				queryKey: [baseKey, params ?? {}] as const,
-				queryFn: () => fetchList(params),
-			}),
+		list: (params?: TListParams) => {
+			// Merge params with defaults BEFORE creating queryKey
+			const mergedParams = {
+				...defaultListParams,
+				...params,
+			};
+			return queryOptions({
+				queryKey: [baseKey, mergedParams] as const,
+				queryFn: () => fetchList(mergedParams),
+			});
+		},
 
 		/** Query options for fetching a single item by ID (optionally with params) */
-		detail: (id: string, params?: TDetailParams) =>
-			queryOptions({
-				queryKey:
-					params !== undefined
-						? ([baseKey, id, params] as const)
-						: ([baseKey, id] as const),
-				queryFn: () => fetchDetail(id, params),
-			}),
+		detail: (id: string, params?: TDetailParams) => {
+			// Merge params with defaults BEFORE creating queryKey
+			const mergedParams = {
+				...(config.defaultDetailParams as Record<string, unknown> | undefined),
+				...params,
+			};
+			const hasParams = mergedParams && Object.keys(mergedParams).length > 0;
+
+			return queryOptions({
+				queryKey: hasParams
+					? ([baseKey, id, mergedParams] as const)
+					: ([baseKey, id] as const),
+				queryFn: () => fetchDetail(id, hasParams ? mergedParams : undefined),
+			});
+		},
 
 		/** Raw fetch functions for use in mutations or custom queries */
 		fetchers: {
