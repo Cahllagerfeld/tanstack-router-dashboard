@@ -11,4 +11,7 @@ export const Route = createFileRoute("/(public)/_grid-layout/login")({
 	beforeLoad: async ({ context: { queryClient }, search: { next } }) => {
 		await redirectIfAuthenticated(queryClient, next ?? "/");
 	},
+	head: () => ({
+		meta: [{ title: "Login" }],
+	}),
 });

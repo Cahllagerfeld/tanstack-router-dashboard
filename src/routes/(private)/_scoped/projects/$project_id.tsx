@@ -9,11 +9,19 @@ export const Route = createFileRoute("/(private)/_scoped/projects/$project_id")(
 			await requireAuth(queryClient);
 		},
 		loader: async ({ context: { queryClient }, params: { project_id } }) => {
-			await Promise.all([
+			const [, , project] = await Promise.all([
 				queryClient.ensureQueryData(serverQueries.serverInfo()),
 				queryClient.ensureQueryData(projectQueries.list()),
 				queryClient.ensureQueryData(projectQueries.detail(project_id)),
 			]);
+			return { project };
+		},
+		head({ loaderData }) {
+			if (!loaderData?.project)
+				return { meta: [{ title: "Project Not Found" }] };
+			return {
+				meta: [{ title: `Project ${loaderData.project.name}` }],
+			};
 		},
 	}
 );

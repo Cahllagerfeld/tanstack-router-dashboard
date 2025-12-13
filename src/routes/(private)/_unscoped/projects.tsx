@@ -18,4 +18,7 @@ export const Route = createFileRoute("/(private)/_unscoped/projects")({
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {
 		await queryClient.ensureQueryData(projectQueries.list({ name, page }));
 	},
+	head: () => ({
+		meta: [{ title: "Projects" }],
+	}),
 });

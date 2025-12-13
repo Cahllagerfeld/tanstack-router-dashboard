@@ -5,6 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
 	createRootRouteWithContext,
+	HeadContent,
 	Outlet,
 	redirect,
 } from "@tanstack/react-router";
@@ -27,11 +28,17 @@ export const Route = createRootRouteWithContext<{
 		return queryClient.ensureQueryData(serverQueries.serverInfo());
 	},
 	component: RootLayout,
+	head: () => {
+		return {
+			meta: [{ title: "Dashboard" }],
+		};
+	},
 });
 
 function RootLayout() {
 	return (
 		<div className="font-medium antialiased">
+			<HeadContent />
 			<Outlet />
 			<Toaster position="top-center" />
 			{/* <TanStackRouterDevtools /> */}

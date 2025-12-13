@@ -19,4 +19,7 @@ export const Route = createFileRoute("/(private)/_unscoped/components/")({
 			})
 		);
 	},
+	head: () => ({
+		meta: [{ title: "Components" }],
+	}),
 });
