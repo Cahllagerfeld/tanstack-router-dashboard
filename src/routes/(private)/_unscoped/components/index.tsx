@@ -15,7 +15,7 @@ export const Route = createFileRoute("/(private)/_unscoped/components/")({
 			componentQueries.list({
 				type,
 				page,
-				size: size ?? 20,
+				size,
 			})
 		);
 	},
