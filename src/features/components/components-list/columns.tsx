@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { snakeCaseToTitleCase } from "@/lib/strings";
 import { Component } from "@/types/components";
 import { ColumnDef } from "@tanstack/react-table";
+import { Link } from "@tanstack/react-router";
 
 export function useComponentColumns(): ColumnDef<Component>[] {
 	return [
@@ -32,6 +33,16 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		{
 			header: "Name",
 			accessorKey: "name",
+			cell: ({ row }) => (
+				<Link
+					to="/components/$component_id"
+					params={{ component_id: row.original.id }}
+					search={{ tab: "general" }}
+					className="text-primary hover:underline"
+				>
+					{row.original.name}
+				</Link>
+			),
 			meta: {
 				className: "w-1/2",
 			},
