@@ -48,7 +48,7 @@ export function ValueRenderer({
 		if (value === "") {
 			return <NotAvailableTag />;
 		}
-		return <span className="break-all font-mono text-sm">{value}</span>;
+		return <span className="font-mono text-sm break-all">{value}</span>;
 	}
 
 	// Number
@@ -59,9 +59,7 @@ export function ValueRenderer({
 	// Array - collapsible
 	if (isArray(value)) {
 		if (value.length === 0) {
-			return (
-				<span className="text-muted-foreground text-sm">Empty array</span>
-			);
+			return <span className="text-muted-foreground text-sm">Empty array</span>;
 		}
 
 		return (
@@ -119,7 +117,5 @@ export function ValueRenderer({
 	}
 
 	// Fallback for complex values at max depth
-	return (
-		<span className="text-muted-foreground text-sm">[Complex value]</span>
-	);
+	return <span className="text-muted-foreground text-sm">[Complex value]</span>;
 }

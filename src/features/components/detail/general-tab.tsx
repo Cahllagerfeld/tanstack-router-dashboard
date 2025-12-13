@@ -1,10 +1,5 @@
 import type { Component } from "@/types/components";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { KeyValueList, type KeyValueItem } from "@/components/key-value-list";
 import { ObjectRenderer } from "@/components/object-renderer";
 import { CopyButton } from "@/components/copy-button";
@@ -96,8 +91,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 	];
 
 	const hasConfiguration =
-		metadata?.configuration &&
-		Object.keys(metadata.configuration).length > 0;
+		metadata?.configuration && Object.keys(metadata.configuration).length > 0;
 
 	const hasEnvironment =
 		metadata?.environment && Object.keys(metadata.environment).length > 0;

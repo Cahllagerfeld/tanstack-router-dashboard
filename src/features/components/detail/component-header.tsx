@@ -25,9 +25,7 @@ export function ComponentHeader({ component }: ComponentHeaderProps) {
 				<h1 className="text-2xl font-bold">{component.name}</h1>
 
 				{body?.type && (
-					<Badge variant="secondary">
-						{snakeCaseToTitleCase(body.type)}
-					</Badge>
+					<Badge variant="secondary">{snakeCaseToTitleCase(body.type)}</Badge>
 				)}
 			</div>
 

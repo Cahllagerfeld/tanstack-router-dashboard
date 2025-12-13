@@ -9,9 +9,7 @@ function isComplexValue(value: unknown): boolean {
 	return isArray(value) || isObject(value);
 }
 
-function sortEntries(
-	entries: [string, unknown][]
-): [string, unknown][] {
+function sortEntries(entries: [string, unknown][]): [string, unknown][] {
 	return entries.sort((a, b) => {
 		const aIsComplex = isComplexValue(a[1]);
 		const bIsComplex = isComplexValue(b[1]);
@@ -41,13 +39,7 @@ export function ObjectRenderer({
 	const sortedEntries = sortEntries(entries);
 
 	return (
-		<dl
-			className={cn(
-				"space-y-3",
-				depth > 0 && "border-l pl-4",
-				className
-			)}
-		>
+		<dl className={cn("space-y-3", depth > 0 && "border-l pl-4", className)}>
 			{sortedEntries.map(([key, value]) => (
 				<div key={key} className="space-y-1">
 					<dt className="text-muted-foreground text-sm font-medium">
