@@ -1,10 +1,13 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { componentQueries } from "@/data/components";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ComponentHeader } from "@/features/components/detail/component-header";
-import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
-import { ComponentStacksTab } from "@/features/components/detail/stacks-tab";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+	createLazyFileRoute,
+	Link,
+	Outlet,
+	useMatchRoute,
+} from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute(
 	"/(private)/_unscoped/components/$component_id"
@@ -14,7 +17,11 @@ export const Route = createLazyFileRoute(
 
 function RouteComponent() {
 	const { component_id } = Route.useParams();
-	const { tab } = Route.useSearch();
+	const matchRoute = useMatchRoute();
+
+	const activeTab = matchRoute({ to: "/components/$component_id/stacks" })
+		? "stacks"
+		: "general";
 
 	const { data: component } = useSuspenseQuery(
 		componentQueries.detail(component_id)
@@ -24,35 +31,26 @@ function RouteComponent() {
 		<div className="space-y-6">
 			<ComponentHeader component={component} />
 
-			<Tabs value={tab} className="w-full">
+			<Tabs value={activeTab} className="w-full">
 				<TabsList>
 					<TabsTrigger value="general" asChild>
-						<Link
-							to="/components/$component_id"
-							params={{ component_id }}
-							search={{ tab: "general" }}
-						>
+						<Link to="/components/$component_id" params={{ component_id }}>
 							General
 						</Link>
 					</TabsTrigger>
 					<TabsTrigger value="stacks" asChild>
 						<Link
-							to="/components/$component_id"
+							to="/components/$component_id/stacks"
 							params={{ component_id }}
-							search={{ tab: "stacks" }}
 						>
 							Stacks
 						</Link>
 					</TabsTrigger>
 				</TabsList>
 
-				<TabsContent value="general" className="mt-6">
-					<ComponentGeneralTab component={component} />
-				</TabsContent>
-
-				<TabsContent value="stacks" className="mt-6">
-					<ComponentStacksTab componentId={component.id} />
-				</TabsContent>
+				<div className="mt-6">
+					<Outlet />
+				</div>
 			</Tabs>
 		</div>
 	);

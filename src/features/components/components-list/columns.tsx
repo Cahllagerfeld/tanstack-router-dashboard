@@ -37,7 +37,6 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 				<Link
 					to="/components/$component_id"
 					params={{ component_id: row.original.id }}
-					search={{ tab: "general" }}
 					className="text-primary hover:underline"
 				>
 					{row.original.name}
