@@ -8,7 +8,7 @@ const querySchema = commonFilterSchema.extend({
 });
 
 export const Route = createFileRoute("/(private)/_unscoped/components/")({
-	validateSearch: (search) => querySchema.parse(search),
+	validateSearch: querySchema,
 	loaderDeps: ({ search: { type, page, size } }) => ({ type, page, size }),
 	loader: ({ context: { queryClient }, deps: { type, page, size } }) => {
 		return queryClient.ensureQueryData(
@@ -19,4 +19,7 @@ export const Route = createFileRoute("/(private)/_unscoped/components/")({
 			})
 		);
 	},
+	head: () => ({
+		meta: [{ title: "Components" }],
+	}),
 });

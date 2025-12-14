@@ -11,4 +11,7 @@ export const Route = createFileRoute(
 
 		if (serverInfo.active) throw redirect({ to: "/" });
 	},
+	head: () => ({
+		meta: [{ title: "Server Activation" }],
+	}),
 });

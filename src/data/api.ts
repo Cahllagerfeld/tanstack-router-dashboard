@@ -10,6 +10,7 @@ export const apiPaths = {
 	},
 	components: {
 		base: "/components",
+		detail: (id: string) => `/components/${id}`,
 	},
 	users: {
 		base: "/users",
