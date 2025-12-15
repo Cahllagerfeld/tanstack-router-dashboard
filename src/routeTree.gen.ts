@@ -17,19 +17,19 @@ import { Route as privateUnscopedRouteImport } from './routes/(private)/_unscope
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
 import { Route as privateUnscopedProjectsRouteImport } from './routes/(private)/_unscoped/projects'
+import { Route as privateUnscopedStacksIndexRouteImport } from './routes/(private)/_unscoped/stacks/index'
 import { Route as privateUnscopedComponentsIndexRouteImport } from './routes/(private)/_unscoped/components/index'
 import { Route as privateUnscopedSettingsMembersRouteImport } from './routes/(private)/_unscoped/settings/members'
 import { Route as privateUnscopedSettingsGeneralRouteImport } from './routes/(private)/_unscoped/settings/general'
 import { Route as privateUnscopedComponentsComponent_idRouteImport } from './routes/(private)/_unscoped/components/$component_id'
 import { Route as privateScopedProjectsProject_idRouteImport } from './routes/(private)/_scoped/projects/$project_id'
+import { Route as privateUnscopedComponentsComponent_idStacksRouteImport } from './routes/(private)/_unscoped/components/$component_id/stacks'
 
 const privateUnscopedComponentsComponent_idIndexLazyRouteImport =
   createFileRoute('/(private)/_unscoped/components/$component_id/')()
 const privateScopedProjectsProject_idIndexLazyRouteImport = createFileRoute(
   '/(private)/_scoped/projects/$project_id/',
 )()
-const privateUnscopedComponentsComponent_idStacksLazyRouteImport =
-  createFileRoute('/(private)/_unscoped/components/$component_id/stacks')()
 
 const privateIndexRoute = privateIndexRouteImport.update({
   id: '/(private)/',
@@ -75,6 +75,17 @@ const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport
   } as any)
   .lazy(() =>
     import('./routes/(private)/_unscoped/projects.lazy').then((d) => d.Route),
+  )
+const privateUnscopedStacksIndexRoute = privateUnscopedStacksIndexRouteImport
+  .update({
+    id: '/stacks/',
+    path: '/stacks/',
+    getParentRoute: () => privateUnscopedRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(private)/_unscoped/stacks/index.lazy').then(
+      (d) => d.Route,
+    ),
   )
 const privateUnscopedComponentsIndexRoute =
   privateUnscopedComponentsIndexRouteImport
@@ -154,8 +165,8 @@ const privateScopedProjectsProject_idIndexLazyRoute =
         (d) => d.Route,
       ),
     )
-const privateUnscopedComponentsComponent_idStacksLazyRoute =
-  privateUnscopedComponentsComponent_idStacksLazyRouteImport
+const privateUnscopedComponentsComponent_idStacksRoute =
+  privateUnscopedComponentsComponent_idStacksRouteImport
     .update({
       id: '/stacks',
       path: '/stacks',
@@ -177,7 +188,8 @@ export interface FileRoutesByFullPath {
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
-  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksLazyRoute
+  '/stacks': typeof privateUnscopedStacksIndexRoute
+  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
   '/projects/$project_id/': typeof privateScopedProjectsProject_idIndexLazyRoute
   '/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
 }
@@ -189,7 +201,8 @@ export interface FileRoutesByTo {
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components': typeof privateUnscopedComponentsIndexRoute
-  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksLazyRoute
+  '/stacks': typeof privateUnscopedStacksIndexRoute
+  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
   '/projects/$project_id': typeof privateScopedProjectsProject_idIndexLazyRoute
   '/components/$component_id': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
 }
@@ -206,7 +219,8 @@ export interface FileRoutesById {
   '/(private)/_unscoped/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/(private)/_unscoped/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
-  '/(private)/_unscoped/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksLazyRoute
+  '/(private)/_unscoped/stacks/': typeof privateUnscopedStacksIndexRoute
+  '/(private)/_unscoped/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
   '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProject_idIndexLazyRoute
   '/(private)/_unscoped/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
 }
@@ -222,6 +236,7 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/members'
     | '/components'
+    | '/stacks'
     | '/components/$component_id/stacks'
     | '/projects/$project_id/'
     | '/components/$component_id/'
@@ -234,6 +249,7 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/members'
     | '/components'
+    | '/stacks'
     | '/components/$component_id/stacks'
     | '/projects/$project_id'
     | '/components/$component_id'
@@ -250,6 +266,7 @@ export interface FileRouteTypes {
     | '/(private)/_unscoped/settings/general'
     | '/(private)/_unscoped/settings/members'
     | '/(private)/_unscoped/components/'
+    | '/(private)/_unscoped/stacks/'
     | '/(private)/_unscoped/components/$component_id/stacks'
     | '/(private)/_scoped/projects/$project_id/'
     | '/(private)/_unscoped/components/$component_id/'
@@ -306,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateUnscopedProjectsRouteImport
       parentRoute: typeof privateUnscopedRoute
     }
+    '/(private)/_unscoped/stacks/': {
+      id: '/(private)/_unscoped/stacks/'
+      path: '/stacks'
+      fullPath: '/stacks'
+      preLoaderRoute: typeof privateUnscopedStacksIndexRouteImport
+      parentRoute: typeof privateUnscopedRoute
+    }
     '/(private)/_unscoped/components/': {
       id: '/(private)/_unscoped/components/'
       path: '/components'
@@ -359,21 +383,21 @@ declare module '@tanstack/react-router' {
       id: '/(private)/_unscoped/components/$component_id/stacks'
       path: '/stacks'
       fullPath: '/components/$component_id/stacks'
-      preLoaderRoute: typeof privateUnscopedComponentsComponent_idStacksLazyRouteImport
+      preLoaderRoute: typeof privateUnscopedComponentsComponent_idStacksRouteImport
       parentRoute: typeof privateUnscopedComponentsComponent_idRoute
     }
   }
 }
 
 interface privateUnscopedComponentsComponent_idRouteChildren {
-  privateUnscopedComponentsComponent_idStacksLazyRoute: typeof privateUnscopedComponentsComponent_idStacksLazyRoute
+  privateUnscopedComponentsComponent_idStacksRoute: typeof privateUnscopedComponentsComponent_idStacksRoute
   privateUnscopedComponentsComponent_idIndexLazyRoute: typeof privateUnscopedComponentsComponent_idIndexLazyRoute
 }
 
 const privateUnscopedComponentsComponent_idRouteChildren: privateUnscopedComponentsComponent_idRouteChildren =
   {
-    privateUnscopedComponentsComponent_idStacksLazyRoute:
-      privateUnscopedComponentsComponent_idStacksLazyRoute,
+    privateUnscopedComponentsComponent_idStacksRoute:
+      privateUnscopedComponentsComponent_idStacksRoute,
     privateUnscopedComponentsComponent_idIndexLazyRoute:
       privateUnscopedComponentsComponent_idIndexLazyRoute,
   }
@@ -389,6 +413,7 @@ interface privateUnscopedRouteChildren {
   privateUnscopedSettingsGeneralRoute: typeof privateUnscopedSettingsGeneralRoute
   privateUnscopedSettingsMembersRoute: typeof privateUnscopedSettingsMembersRoute
   privateUnscopedComponentsIndexRoute: typeof privateUnscopedComponentsIndexRoute
+  privateUnscopedStacksIndexRoute: typeof privateUnscopedStacksIndexRoute
 }
 
 const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
@@ -398,6 +423,7 @@ const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
   privateUnscopedSettingsGeneralRoute: privateUnscopedSettingsGeneralRoute,
   privateUnscopedSettingsMembersRoute: privateUnscopedSettingsMembersRoute,
   privateUnscopedComponentsIndexRoute: privateUnscopedComponentsIndexRoute,
+  privateUnscopedStacksIndexRoute: privateUnscopedStacksIndexRoute,
 }
 
 const privateUnscopedRouteWithChildren = privateUnscopedRoute._addFileChildren(
