@@ -15,7 +15,7 @@ const unscopedNavMain: NavbarItem[] = [
 	},
 	{
 		title: "Stacks",
-		url: "#",
+		url: "/stacks",
 		icon: Boxes,
 	},
 	{

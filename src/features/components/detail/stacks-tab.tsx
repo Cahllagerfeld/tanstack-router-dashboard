@@ -1,23 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+import { stackQueries } from "@/data/stacks";
+import {
+	stackNameColumn,
+	stackCreatedByColumn,
+	stackCreatedAtColumn,
+} from "@/features/stacks/stacks-list/columns";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface ComponentStacksTabProps {
 	componentId: string;
 }
 
 export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
+	const { data } = useSuspenseQuery(
+		stackQueries.list({ component_id: componentId })
+	);
+
+	const columns = [stackNameColumn, stackCreatedByColumn, stackCreatedAtColumn];
+
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>Stacks</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<p className="text-muted-foreground text-sm">
-					Stacks using this component will be displayed here.
-				</p>
-				<p className="text-muted-foreground mt-2 text-xs">
-					Component ID: {componentId}
-				</p>
-			</CardContent>
-		</Card>
+		<DataTable getRowId={(row) => row.id} data={data.items} columns={columns} />
 	);
 }

@@ -12,6 +12,10 @@ export const apiPaths = {
 		base: "/components",
 		detail: (id: string) => `/components/${id}`,
 	},
+	stacks: {
+		base: "/stacks",
+		detail: (id: string) => `/stacks/${id}`,
+	},
 	users: {
 		base: "/users",
 		currentUser: "/current-user",

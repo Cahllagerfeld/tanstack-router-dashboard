@@ -1,5 +1,5 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
 import { ComponentStacksTab } from "@/features/components/detail/stacks-tab";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute(
 	"/(private)/_unscoped/components/$component_id/stacks"
