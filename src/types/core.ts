@@ -366,6 +366,9 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The visualization of the artifact version.
+		 *
+		 *     Raises:
+		 *         KeyError: If the artifact version has no artifact store.
 		 */
 		get: operations["get_artifact_visualization_api_v1_artifact_versions__artifact_version_id__visualize_get"];
 		put?: never;
@@ -392,6 +395,9 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The download token for the artifact data.
+		 *
+		 *     Raises:
+		 *         KeyError: If the artifact version has no artifact store.
 		 */
 		get: operations["get_artifact_download_token_api_v1_artifact_versions__artifact_version_id__download_token_get"];
 		put?: never;
@@ -419,6 +425,9 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The artifact data.
+		 *
+		 *     Raises:
+		 *         KeyError: If the artifact version has no artifact store.
 		 */
 		get: operations["download_artifact_data_api_v1_artifact_versions__artifact_version_id__data_get"];
 		put?: never;
@@ -1698,35 +1707,6 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/pipelines/{pipeline_id}/runs": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Pipeline Runs
-		 * @description Get pipeline runs according to query filters.
-		 *
-		 *     Args:
-		 *         pipeline_run_filter_model: Filter model used for pagination, sorting,
-		 *             filtering
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         The pipeline runs according to query filters.
-		 */
-		get: operations["list_pipeline_runs_api_v1_pipelines__pipeline_id__runs_get"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	"/api/v1/pipeline_builds": {
 		parameters: {
 			query?: never;
@@ -2464,6 +2444,7 @@ export type paths = {
 		 *
 		 *     Args:
 		 *         schedule_id: ID of the schedule to delete.
+		 *         soft: Soft deletion will archive the schedule.
 		 */
 		delete: operations["delete_schedule_api_v1_schedules__schedule_id__delete"];
 		options?: never;
@@ -3886,6 +3867,7 @@ export type paths = {
 		 *
 		 *     Args:
 		 *         step_id: ID of the step for which to get the logs.
+		 *         source: The source of the logs to get. Default is "step".
 		 *
 		 *     Returns:
 		 *         List of log entries.
@@ -7206,9 +7188,9 @@ export type components = {
 		ExecutionStatus:
 			| "initializing"
 			| "provisioning"
+			| "running"
 			| "failed"
 			| "completed"
-			| "running"
 			| "cached"
 			| "retrying"
 			| "retried"
@@ -7415,6 +7397,11 @@ export type components = {
 		/**
 		 * LogEntry
 		 * @description A structured log entry with parsed information.
+		 *
+		 *     This is used in two distinct ways:
+		 *         1. If we are using the artifact log store, we save the
+		 *         entries as JSON-serialized LogEntry's in the artifact store.
+		 *         2. When queried, the server returns logs as a list of LogEntry's.
 		 */
 		LogEntry: {
 			/**
@@ -7485,18 +7472,22 @@ export type components = {
 		 * @description Request model for logs.
 		 */
 		LogsRequest: {
-			/** The uri of the logs file */
-			uri: string;
+			/**
+			 * The unique id.
+			 * Format: uuid
+			 */
+			id?: string;
+			/** The URI of the logs file (for artifact store logs) */
+			uri?: string | null;
 			/**
 			 * The source of the logs file
 			 * @default
 			 */
 			source: string;
-			/**
-			 * The artifact store ID to associate the logs with.
-			 * Format: uuid
-			 */
-			artifact_store_id: string;
+			/** The artifact store ID (for artifact store logs) */
+			artifact_store_id?: string | null;
+			/** The log store ID that collected these logs */
+			log_store_id?: string | null;
 		};
 		/**
 		 * LogsResponse
@@ -7535,8 +7526,8 @@ export type components = {
 			 * Format: date-time
 			 */
 			updated: string;
-			/** The uri of the logs file */
-			uri: string;
+			/** The URI of the logs file (for artifact store logs) */
+			uri?: string | null;
 			/** The source of the logs file */
 			source: string;
 		};
@@ -7555,11 +7546,10 @@ export type components = {
 			 * @description When this is set, step_run_id should be set to None.
 			 */
 			pipeline_run_id?: string | null;
-			/**
-			 * The artifact store ID to associate the logs with.
-			 * Format: uuid
-			 */
-			artifact_store_id: string;
+			/** The artifact store ID that collected these logs */
+			artifact_store_id?: string | null;
+			/** The log store ID that collected these logs */
+			log_store_id?: string | null;
 		};
 		/**
 		 * LogsResponseResources
@@ -9193,8 +9183,6 @@ export type components = {
 			 * Format: uuid
 			 */
 			snapshot: string;
-			/** The pipeline associated with the pipeline run. */
-			pipeline?: string | null;
 			/** The orchestrator run ID. */
 			orchestrator_run_id?: string | null;
 			/** The start time of the pipeline run. */
@@ -9273,6 +9261,8 @@ export type components = {
 			in_progress: boolean;
 			/** The reason for the status of the pipeline run. */
 			status_reason?: string | null;
+			/** The unique index of the run within the pipeline. */
+			index: number;
 		};
 		/**
 		 * PipelineRunResponseMetadata
@@ -9353,8 +9343,6 @@ export type components = {
 			model_version?: components["schemas"]["ModelVersionResponse"] | null;
 			/** Tags associated with the pipeline run. */
 			tags: components["schemas"]["TagResponse"][];
-			/** Logs associated with this pipeline run. */
-			logs?: components["schemas"]["LogsResponse"] | null;
 			/** Logs associated with this pipeline run. */
 			log_collection?: components["schemas"]["LogsResponse"][] | null;
 			/**
@@ -9443,6 +9431,8 @@ export type components = {
 			name?: boolean | string | null;
 			/** The description of the snapshot. */
 			description?: string | null;
+			/** The source code of the pipeline function or class. */
+			source_code?: string | null;
 			/** Whether to replace the existing snapshot with the same name. */
 			replace?: boolean | null;
 			/** Tags of the snapshot. */
@@ -9540,6 +9530,8 @@ export type components = {
 		PipelineSnapshotResponseMetadata: {
 			/** The description of the snapshot. */
 			description?: string | null;
+			/** The source code of the pipeline function or class. */
+			source_code?: string | null;
 			/** The run name template for runs created using this snapshot. */
 			run_name_template: string;
 			/** The pipeline configuration for this snapshot. */
@@ -10231,6 +10223,8 @@ export type components = {
 			catchup: boolean;
 			/** Run Once Start Time */
 			run_once_start_time?: string | null;
+			/** Is Archived */
+			is_archived: boolean;
 		};
 		/**
 		 * ScheduleResponseMetadata
@@ -10268,6 +10262,8 @@ export type components = {
 			name?: string | null;
 			/** Cron Expression */
 			cron_expression?: string | null;
+			/** Active */
+			active?: boolean | null;
 		};
 		/**
 		 * SecretRequest
@@ -11309,6 +11305,7 @@ export type components = {
 			| "experiment_tracker"
 			| "feature_store"
 			| "image_builder"
+			| "log_store"
 			| "model_deployer"
 			| "orchestrator"
 			| "step_operator"
@@ -11652,6 +11649,12 @@ export type components = {
 			/** @description The step runtime. If not configured, the step will run inline unless a step operator or docker/resource settings are configured. This is only applicable for dynamic pipelines. */
 			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
+			 * Heartbeat Healthy Threshold
+			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to the maximum value (30 minutes).
+			 * @default 30
+			 */
+			heartbeat_healthy_threshold: number;
+			/**
 			 * Outputs
 			 * @default {}
 			 */
@@ -11786,6 +11789,12 @@ export type components = {
 			/** @description The step runtime. If not configured, the step will run inline unless a step operator or docker/resource settings are configured. This is only applicable for dynamic pipelines. */
 			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
+			 * Heartbeat Healthy Threshold
+			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to the maximum value (30 minutes).
+			 * @default 30
+			 */
+			heartbeat_healthy_threshold: number;
+			/**
 			 * Outputs
 			 * @default {}
 			 */
@@ -11841,6 +11850,7 @@ export type components = {
 			 * Format: date-time
 			 */
 			latest_heartbeat: string;
+			pipeline_run_status?: components["schemas"]["ExecutionStatus"] | null;
 		};
 		/**
 		 * StepRetryConfig
@@ -12053,8 +12063,6 @@ export type components = {
 			source_code?: string | null;
 			/** The exception information of the step run. */
 			exception_info?: components["schemas"]["ExceptionInfo"] | null;
-			/** Logs associated with this step run. */
-			logs?: components["schemas"]["LogsResponse"] | null;
 			/**
 			 * The snapshot associated with the step run.
 			 * Format: uuid
@@ -12084,6 +12092,8 @@ export type components = {
 		StepRunResponseResources: {
 			/** The user who created this resource. */
 			user?: components["schemas"]["UserResponse"] | null;
+			/** Logs associated with this step run. */
+			log_collection?: components["schemas"]["LogsResponse"][] | null;
 			model_version?: components["schemas"]["ModelVersionResponse"] | null;
 			/** The input artifact versions of the step run. */
 			inputs?: {
@@ -12123,6 +12133,8 @@ export type components = {
 			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 			/** The time at which this step run should not be used for cached results anymore. */
 			cache_expires_at?: string | null;
+			/** New logs to add to the step run. */
+			add_logs?: components["schemas"]["LogsRequest"][] | null;
 		};
 		/**
 		 * StepRuntime
@@ -17680,104 +17692,6 @@ export interface operations {
 			};
 		};
 	};
-	list_pipeline_runs_api_v1_pipelines__pipeline_id__runs_get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | null;
-				created?: string | null;
-				updated?: string | null;
-				run_metadata?: string[] | null;
-				tag?: string | null;
-				tags?: string[] | null;
-				scope_user?: string | null;
-				user?: string | null;
-				project?: string | null;
-				name?: string | null;
-				orchestrator_run_id?: string | null;
-				stack_id?: string | null;
-				schedule_id?: string | null;
-				build_id?: string | null;
-				snapshot_id?: string | null;
-				code_repository_id?: string | null;
-				template_id?: string | null;
-				source_snapshot_id?: string | null;
-				model_version_id?: string | null;
-				linked_to_model_version_id?: string | null;
-				status?: string | null;
-				in_progress?: boolean | null;
-				start_time?: string | null;
-				end_time?: string | null;
-				unlisted?: boolean | null;
-				pipeline_name?: string | null;
-				pipeline?: string | null;
-				stack?: string | null;
-				code_repository?: string | null;
-				model?: string | null;
-				stack_component?: string | null;
-				templatable?: boolean | null;
-				triggered_by_step_run_id?: string | null;
-				triggered_by_deployment_id?: string | null;
-			};
-			header?: never;
-			path: {
-				pipeline_id: string | null;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["Page_PipelineRunResponse_"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
 	list_builds_api_v1_pipeline_builds_get: {
 		parameters: {
 			query?: {
@@ -18644,6 +18558,7 @@ export interface operations {
 				user?: string | null;
 				project?: string | null;
 				name?: string | null;
+				index?: number | null;
 				orchestrator_run_id?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
@@ -18659,7 +18574,6 @@ export interface operations {
 				in_progress?: boolean | null;
 				start_time?: string | null;
 				end_time?: string | null;
-				unlisted?: boolean | null;
 				pipeline_name?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
@@ -19828,6 +19742,7 @@ export interface operations {
 				catchup?: boolean | null;
 				name?: string | null;
 				run_once_start_time?: string | null;
+				is_archived?: boolean;
 			};
 			header?: never;
 			path?: never;
@@ -20068,7 +19983,9 @@ export interface operations {
 	};
 	delete_schedule_api_v1_schedules__schedule_id__delete: {
 		parameters: {
-			query?: never;
+			query: {
+				soft: boolean;
+			};
 			header?: never;
 			path: {
 				schedule_id: string;
@@ -23859,7 +23776,9 @@ export interface operations {
 	};
 	get_step_logs_api_v1_steps__step_id__logs_get: {
 		parameters: {
-			query?: never;
+			query?: {
+				source?: string;
+			};
 			header?: never;
 			path: {
 				step_id: string;
@@ -26388,6 +26307,7 @@ export interface operations {
 				user?: string | null;
 				project?: string | null;
 				name?: string | null;
+				index?: number | null;
 				orchestrator_run_id?: string | null;
 				pipeline_id?: string | null;
 				stack_id?: string | null;
@@ -26403,7 +26323,6 @@ export interface operations {
 				in_progress?: boolean | null;
 				start_time?: string | null;
 				end_time?: string | null;
-				unlisted?: boolean | null;
 				pipeline_name?: string | null;
 				pipeline?: string | null;
 				stack?: string | null;
@@ -26540,6 +26459,7 @@ export interface operations {
 				catchup?: boolean | null;
 				name?: string | null;
 				run_once_start_time?: string | null;
+				is_archived?: boolean;
 			};
 			header?: never;
 			path: {
