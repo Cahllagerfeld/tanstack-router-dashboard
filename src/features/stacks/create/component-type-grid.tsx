@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
-import { snakeCaseToTitleCase } from "@/lib/strings";
+import { ComponentTypeGridItem } from "./component-type-grid-item";
 
 export function ComponentTypeGrid() {
 	return (
@@ -8,11 +8,9 @@ export function ComponentTypeGrid() {
 			<CardHeader>
 				<CardTitle>Stack Components</CardTitle>
 			</CardHeader>
-			<CardContent className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+			<CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{COMPONENT_TYPES.map((type) => (
-					<div className="rounded-sm border p-2 text-sm">
-						{snakeCaseToTitleCase(type)}
-					</div>
+					<ComponentTypeGridItem key={type} type={type} />
 				))}
 			</CardContent>
 		</Card>
