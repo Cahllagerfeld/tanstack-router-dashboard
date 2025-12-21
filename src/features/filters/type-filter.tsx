@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form";
+import { Field, FieldError } from "@/components/ui/field";
 import {
 	Select,
 	SelectContent,
@@ -21,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { Filter, Trash2 } from "lucide-react";
 import { ComponentPropsWithoutRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
 	Popover,
@@ -84,29 +78,30 @@ export function TypeFilter({ filter }: Props) {
 						<span className="sr-only">Clear Filter</span>
 					</Button>
 				</div>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleApplyFilter)}
-						className="space-y-4"
-					>
-						<FormField
-							control={form.control}
-							name="type"
-							render={({ field }) => (
-								<FormItem>
-									<TypeSelect
-										onValueChange={field.onChange}
-										value={field.value}
-									/>
-									<FormMessage />
-								</FormItem>
-							)}
-						></FormField>
-						<Button className="w-full" type="submit">
-							Apply
-						</Button>
-					</form>
-				</Form>
+				<form
+					onSubmit={form.handleSubmit(handleApplyFilter)}
+					className="space-y-4"
+				>
+					<Controller
+						control={form.control}
+						name="type"
+						render={({ field, fieldState }) => (
+							<Field data-invalid={fieldState.invalid}>
+								<TypeSelect
+									onValueChange={field.onChange}
+									value={field.value}
+									aria-invalid={fieldState.invalid}
+								/>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
+						)}
+					/>
+					<Button className="w-full" type="submit">
+						Apply
+					</Button>
+				</form>
 			</PopoverContent>
 		</Popover>
 	);
@@ -118,9 +113,7 @@ export function TypeSelect({
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-full">
-				<FormControl>
-					<SelectValue placeholder="Select a type..." />
-				</FormControl>
+				<SelectValue placeholder="Select a type..." />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

@@ -27,7 +27,9 @@ function RouteComponent() {
 				<PasswordStep />
 			</CardContent>
 			<CardFooter className="flex justify-end">
-				<Button form="password">Activate</Button>
+				<Button type="submit" form="server-activation-form">
+					Activate
+				</Button>
 			</CardFooter>
 		</Card>
 	);
