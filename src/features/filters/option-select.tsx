@@ -1,4 +1,3 @@
-import { FormControl } from "@/components/ui/form";
 import {
 	Select,
 	SelectContent,
@@ -20,9 +19,7 @@ export function OptionSelect({
 	return (
 		<Select {...rest}>
 			<SelectTrigger>
-				<FormControl>
-					<SelectValue placeholder="Select an option" />
-				</FormControl>
+				<SelectValue placeholder="Select an option" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

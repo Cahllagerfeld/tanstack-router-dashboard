@@ -1,3 +1,5 @@
+import { ComponentType } from "@/types/components";
+
 // generate an array with all possible values from ComponentType
 export const COMPONENT_TYPES = [
 	"alerter",
@@ -13,4 +15,5 @@ export const COMPONENT_TYPES = [
 	"orchestrator",
 	"step_operator",
 	"deployer",
-] as const;
+	"log_store",
+] as const satisfies ComponentType[];
