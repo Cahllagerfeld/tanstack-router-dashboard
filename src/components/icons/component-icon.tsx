@@ -1,20 +1,21 @@
+import type { ComponentType } from "@/types/components";
 import {
-	type LucideIcon,
-	type LucideProps,
-	Workflow,
-	Database,
+	Bell,
+	BookOpen,
 	Container,
-	Wrench,
+	Database,
+	FileText,
 	FlaskConical,
 	Image as ImageIcon,
-	Bell,
-	Pencil,
-	ShieldCheck,
 	Layers,
+	type LucideIcon,
+	type LucideProps,
+	Pencil,
 	Rocket,
-	BookOpen,
+	ShieldCheck,
+	Workflow,
+	Wrench,
 } from "lucide-react";
-import type { ComponentType } from "@/types/components";
 
 const COMPONENT_TYPE_TO_ICON: Record<ComponentType, LucideIcon> = {
 	orchestrator: Workflow,
@@ -30,6 +31,7 @@ const COMPONENT_TYPE_TO_ICON: Record<ComponentType, LucideIcon> = {
 	model_deployer: Rocket,
 	model_registry: BookOpen,
 	deployer: Rocket,
+	log_store: FileText,
 } as const;
 
 export interface ComponentIconProps extends LucideProps {
