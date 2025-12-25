@@ -19,7 +19,7 @@ export function OptionSelect({
 	return (
 		<Select {...rest}>
 			<SelectTrigger>
-				<SelectValue placeholder="Select an option" />
+				<SelectValue data-placeholder="Select an option" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
