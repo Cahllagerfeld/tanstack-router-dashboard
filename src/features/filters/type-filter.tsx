@@ -115,7 +115,11 @@ export function TypeSelect({
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-full">
-				<SelectValue data-placeholder="Select a type..." />
+				<SelectValue>
+					{(value: ComponentType | null) =>
+						value ? getComponentTypeLabel(value) : "Select a type..."
+					}
+				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
