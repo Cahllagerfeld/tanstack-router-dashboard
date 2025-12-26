@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { stackQueries } from "@/data/stacks";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
+import { StackSearchbar } from "@/features/stacks/stacks-list/searchbar";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { RowSelectionState } from "@tanstack/react-table";
@@ -24,6 +25,7 @@ function RouteComponent() {
 					Stacks are collections of components that work together.
 				</p>
 			</div>
+			<StackSearchbar />
 			<DataTable
 				getRowId={(row) => row.id}
 				data={data.data.items}
