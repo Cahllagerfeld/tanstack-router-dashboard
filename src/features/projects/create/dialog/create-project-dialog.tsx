@@ -38,12 +38,14 @@ export function CreateProjectDialogWithTrigger() {
 	if (isDesktop) {
 		return (
 			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger asChild>
-					<Button>
-						<Plus />
-						Create Project
-					</Button>
-				</DialogTrigger>
+				<DialogTrigger
+					render={
+						<Button>
+							<Plus />
+							Create Project
+						</Button>
+					}
+				></DialogTrigger>
 				<CreateProjectDialogContent setOpen={setOpen} />
 			</Dialog>
 		);

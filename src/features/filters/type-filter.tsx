@@ -60,16 +60,18 @@ export function TypeFilter({ filter }: Props) {
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger asChild>
-				<Button
-					data-state={filter ? "active" : "inactive"}
-					variant="outline"
-					className="data-[state=active]:border-primary"
-				>
-					<Filter />
-					{getComponentTypeLabel(filter) || "Type"}
-				</Button>
-			</PopoverTrigger>
+			<PopoverTrigger
+				render={
+					<Button
+						data-state={filter ? "active" : "inactive"}
+						variant="outline"
+						className="data-[state=active]:border-primary"
+					>
+						<Filter />
+						{getComponentTypeLabel(filter) || "Type"}
+					</Button>
+				}
+			></PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">
 					<div>Type</div>
@@ -113,7 +115,11 @@ export function TypeSelect({
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-full">
-				<SelectValue placeholder="Select a type..." />
+				<SelectValue>
+					{(value: ComponentType | null) =>
+						value ? getComponentTypeLabel(value) : "Select a type..."
+					}
+				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

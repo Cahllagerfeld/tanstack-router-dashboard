@@ -1,6 +1,7 @@
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
@@ -51,58 +52,64 @@ export function ProjectSwitcher() {
 			<SidebarMenu>
 				<SidebarMenuItem>
 					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<SidebarMenuButton
-								size="lg"
-								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-							>
-								<Avatar className="size-8 shrink-0 rounded-md">
-									<AvatarImage
-										className="object-cover"
-										src={getIllustrationUrl(activeProject?.name || "")}
-									/>
-								</Avatar>
-								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold">{displayName}</span>
-									<span className="truncate text-xs">{serverData.name}</span>
-								</div>
-								<ChevronsUpDown className="ml-auto" />
-							</SidebarMenuButton>
-						</DropdownMenuTrigger>
+						<DropdownMenuTrigger
+							render={
+								<SidebarMenuButton
+									size="lg"
+									className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								>
+									<Avatar className="size-8 shrink-0">
+										<AvatarImage
+											className="rounded-lg object-cover"
+											src={getIllustrationUrl(activeProject?.name || "")}
+										/>
+									</Avatar>
+									<div className="grid flex-1 text-left text-sm leading-tight">
+										<span className="truncate font-semibold">
+											{displayName}
+										</span>
+										<span className="truncate text-xs">{serverData.name}</span>
+									</div>
+									<ChevronsUpDown className="ml-auto" />
+								</SidebarMenuButton>
+							}
+						></DropdownMenuTrigger>
 						<DropdownMenuContent
-							className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+							className="min-w-56 rounded-lg"
 							align="start"
 							side={isMobile ? "bottom" : "right"}
 							sideOffset={4}
 						>
-							<DropdownMenuLabel className="text-muted-foreground text-xs">
-								Projects
-							</DropdownMenuLabel>
-							{projectData.items.map((project, index) => (
-								<DropdownMenuItem
-									key={project.id}
-									onClick={() => {
-										setProjectToLocalStorage(project.name);
-										navigate({
-											to: "/projects/$project_id",
-											params: { project_id: project.name },
-										});
-									}}
-									className="gap-2 p-2"
-								>
-									<Avatar className="size-6 shrink-0 rounded-md">
-										<AvatarImage
-											className="object-cover"
-											src={getIllustrationUrl(project.name)}
-										/>
-									</Avatar>
+							<DropdownMenuGroup>
+								<DropdownMenuLabel className="text-muted-foreground text-xs">
+									Projects
+								</DropdownMenuLabel>
+								{projectData.items.map((project, index) => (
+									<DropdownMenuItem
+										key={project.id}
+										onClick={() => {
+											setProjectToLocalStorage(project.name);
+											navigate({
+												to: "/projects/$project_id",
+												params: { project_id: project.name },
+											});
+										}}
+										className="gap-2 p-2"
+									>
+										<Avatar className="size-6 shrink-0">
+											<AvatarImage
+												className="rounded-md object-cover"
+												src={getIllustrationUrl(project.name)}
+											/>
+										</Avatar>
 
-									<span className="truncate">
-										{getProjectDisplayName(project)}
-									</span>
-									<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-								</DropdownMenuItem>
-							))}
+										<span className="truncate">
+											{getProjectDisplayName(project)}
+										</span>
+										<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+									</DropdownMenuItem>
+								))}
+							</DropdownMenuGroup>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
 								onClick={() => setProjectDialogOpen(true)}
