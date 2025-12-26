@@ -33,19 +33,25 @@ function RouteComponent() {
 
 			<Tabs value={activeTab} className="w-full">
 				<TabsList>
-					<TabsTrigger value="general" asChild>
-						<Link to="/components/$component_id" params={{ component_id }}>
-							General
-						</Link>
-					</TabsTrigger>
-					<TabsTrigger value="stacks" asChild>
-						<Link
-							to="/components/$component_id/stacks"
-							params={{ component_id }}
-						>
-							Stacks
-						</Link>
-					</TabsTrigger>
+					<TabsTrigger
+						value="general"
+						render={
+							<Link to="/components/$component_id" params={{ component_id }}>
+								General
+							</Link>
+						}
+					></TabsTrigger>
+					<TabsTrigger
+						value="stacks"
+						render={
+							<Link
+								to="/components/$component_id/stacks"
+								params={{ component_id }}
+							>
+								Stacks
+							</Link>
+						}
+					></TabsTrigger>
 				</TabsList>
 
 				<div className="mt-6">

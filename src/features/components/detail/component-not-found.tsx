@@ -23,9 +23,10 @@ export function ComponentNotFound() {
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<Button size="sm" asChild>
-					<Link to="/components">Go to Components</Link>
-				</Button>
+				<Button
+					size="sm"
+					render={<Link to="/components">Go to Components</Link>}
+				></Button>
 			</EmptyContent>
 		</Empty>
 	);

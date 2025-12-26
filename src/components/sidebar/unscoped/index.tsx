@@ -67,21 +67,23 @@ function UnscopedSidebarHeader() {
 			<SidebarMenuItem>
 				<SidebarMenuButton
 					size="lg"
-					asChild
 					className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-				>
-					<Link to="/projects">
-						<Avatar className="size-8 shrink-0 rounded-md">
-							<AvatarImage
-								className="object-cover"
-								src={getAvatarUrl(serverData.name || "")}
-							/>
-						</Avatar>
-						<div className="grid flex-1 text-left text-sm leading-tight">
-							<span className="truncate font-semibold">{serverData.name}</span>
-						</div>
-					</Link>
-				</SidebarMenuButton>
+					render={
+						<Link to="/projects">
+							<Avatar className="size-8 shrink-0">
+								<AvatarImage
+									className="rounded-md object-cover"
+									src={getAvatarUrl(serverData.name || "")}
+								/>
+							</Avatar>
+							<div className="grid flex-1 text-left text-sm leading-tight">
+								<span className="truncate font-semibold">
+									{serverData.name}
+								</span>
+							</div>
+						</Link>
+					}
+				></SidebarMenuButton>
 			</SidebarMenuItem>
 		</SidebarMenu>
 	);
