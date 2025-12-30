@@ -1,65 +1,65 @@
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Dispatch, SetStateAction, useState } from "react";
 import {
-	CreateProjectDialogContent,
-	CreateProjectDrawerContent,
-} from "./dialog-content";
+	ResponsiveDialog,
+	ResponsiveDialogContent,
+	ResponsiveDialogDescription,
+	ResponsiveDialogHeader,
+	ResponsiveDialogTitle,
+	ResponsiveDialogTrigger,
+	ResponsiveDialogFooter,
+	ResponsiveDialogClose,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { CreateProjectForm } from "./form";
 
 type Props = {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
 };
+
 export function CreateProjectDialog({ open, setOpen }: Props) {
-	const isDesktop = useMediaQuery("(min-width: 768px)");
-
-	if (isDesktop) {
-		return (
-			<Dialog open={open} onOpenChange={setOpen}>
-				<CreateProjectDialogContent setOpen={setOpen} />
-			</Dialog>
-		);
-	}
-
 	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<CreateProjectDrawerContent setOpen={setOpen} />
-		</Drawer>
+		<ResponsiveDialog open={open} onOpenChange={setOpen}>
+			<ResponsiveDialogContent className="sm:max-w-[425px]">
+				<ResponsiveDialogHeader>
+					<ResponsiveDialogTitle>Create Project</ResponsiveDialogTitle>
+					<ResponsiveDialogDescription>
+						Create a new project to start collaborating with your team.
+					</ResponsiveDialogDescription>
+				</ResponsiveDialogHeader>
+				<CreateProjectForm setOpen={setOpen} className="max-md:px-4" />
+				<ResponsiveDialogFooter className="max-md:pt-2">
+					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
+				</ResponsiveDialogFooter>
+			</ResponsiveDialogContent>
+		</ResponsiveDialog>
 	);
 }
 
 export function CreateProjectDialogWithTrigger() {
-	const isDesktop = useMediaQuery("(min-width: 768px)");
 	const [open, setOpen] = useState(false);
 
-	if (isDesktop) {
-		return (
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger
-					render={
-						<Button>
-							<Plus />
-							Create Project
-						</Button>
-					}
-				></DialogTrigger>
-				<CreateProjectDialogContent setOpen={setOpen} />
-			</Dialog>
-		);
-	}
-
 	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerTrigger asChild>
+		<ResponsiveDialog open={open} onOpenChange={setOpen}>
+			<ResponsiveDialogTrigger>
 				<Button>
 					<Plus />
 					Create Project
 				</Button>
-			</DrawerTrigger>
-			<CreateProjectDrawerContent setOpen={setOpen} />
-		</Drawer>
+			</ResponsiveDialogTrigger>
+			<ResponsiveDialogContent className="sm:max-w-[425px]">
+				<ResponsiveDialogHeader>
+					<ResponsiveDialogTitle>Create Project</ResponsiveDialogTitle>
+					<ResponsiveDialogDescription>
+						Create a new project to start collaborating with your team.
+					</ResponsiveDialogDescription>
+				</ResponsiveDialogHeader>
+				<CreateProjectForm setOpen={setOpen} className="max-md:px-4" />
+				<ResponsiveDialogFooter className="max-md:pt-2">
+					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
+				</ResponsiveDialogFooter>
+			</ResponsiveDialogContent>
+		</ResponsiveDialog>
 	);
 }
