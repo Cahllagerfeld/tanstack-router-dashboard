@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
 import { Route as publicGridLayoutRouteImport } from './routes/(public)/_grid-layout'
@@ -23,13 +21,9 @@ import { Route as privateUnscopedSettingsMembersRouteImport } from './routes/(pr
 import { Route as privateUnscopedSettingsGeneralRouteImport } from './routes/(private)/_unscoped/settings/general'
 import { Route as privateUnscopedComponentsComponent_idRouteImport } from './routes/(private)/_unscoped/components/$component_id'
 import { Route as privateScopedProjectsProject_idRouteImport } from './routes/(private)/_scoped/projects/$project_id'
+import { Route as privateUnscopedComponentsComponent_idIndexRouteImport } from './routes/(private)/_unscoped/components/$component_id/index'
+import { Route as privateScopedProjectsProject_idIndexRouteImport } from './routes/(private)/_scoped/projects/$project_id/index'
 import { Route as privateUnscopedComponentsComponent_idStacksRouteImport } from './routes/(private)/_unscoped/components/$component_id/stacks'
-
-const privateUnscopedComponentsComponent_idIndexLazyRouteImport =
-  createFileRoute('/(private)/_unscoped/components/$component_id/')()
-const privateScopedProjectsProject_idIndexLazyRouteImport = createFileRoute(
-  '/(private)/_scoped/projects/$project_id/',
-)()
 
 const privateIndexRoute = privateIndexRouteImport.update({
   id: '/(private)/',
@@ -40,77 +34,44 @@ const publicGridLayoutRoute = publicGridLayoutRouteImport.update({
   id: '/(public)/_grid-layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateUnscopedRoute = privateUnscopedRouteImport
-  .update({
-    id: '/(private)/_unscoped',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-  .lazy(() => import('./routes/(private)/_unscoped.lazy').then((d) => d.Route))
+const privateUnscopedRoute = privateUnscopedRouteImport.update({
+  id: '/(private)/_unscoped',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const publicGridLayoutServerActivationRoute =
-  publicGridLayoutServerActivationRouteImport
-    .update({
-      id: '/server-activation',
-      path: '/server-activation',
-      getParentRoute: () => publicGridLayoutRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(public)/_grid-layout/server-activation.lazy').then(
-        (d) => d.Route,
-      ),
-    )
-const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport
-  .update({
-    id: '/login',
-    path: '/login',
+  publicGridLayoutServerActivationRouteImport.update({
+    id: '/server-activation',
+    path: '/server-activation',
     getParentRoute: () => publicGridLayoutRoute,
   } as any)
-  .lazy(() =>
-    import('./routes/(public)/_grid-layout/login.lazy').then((d) => d.Route),
-  )
-const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport
-  .update({
-    id: '/projects',
-    path: '/projects',
-    getParentRoute: () => privateUnscopedRoute,
-  } as any)
-  .lazy(() =>
-    import('./routes/(private)/_unscoped/projects.lazy').then((d) => d.Route),
-  )
-const privateUnscopedStacksIndexRoute = privateUnscopedStacksIndexRouteImport
-  .update({
+const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => publicGridLayoutRoute,
+} as any)
+const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => privateUnscopedRoute,
+} as any)
+const privateUnscopedStacksIndexRoute =
+  privateUnscopedStacksIndexRouteImport.update({
     id: '/stacks/',
     path: '/stacks/',
     getParentRoute: () => privateUnscopedRoute,
   } as any)
-  .lazy(() =>
-    import('./routes/(private)/_unscoped/stacks/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
 const privateUnscopedComponentsIndexRoute =
-  privateUnscopedComponentsIndexRouteImport
-    .update({
-      id: '/components/',
-      path: '/components/',
-      getParentRoute: () => privateUnscopedRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_unscoped/components/index.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+  privateUnscopedComponentsIndexRouteImport.update({
+    id: '/components/',
+    path: '/components/',
+    getParentRoute: () => privateUnscopedRoute,
+  } as any)
 const privateUnscopedSettingsMembersRoute =
-  privateUnscopedSettingsMembersRouteImport
-    .update({
-      id: '/settings/members',
-      path: '/settings/members',
-      getParentRoute: () => privateUnscopedRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_unscoped/settings/members.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+  privateUnscopedSettingsMembersRouteImport.update({
+    id: '/settings/members',
+    path: '/settings/members',
+    getParentRoute: () => privateUnscopedRoute,
+  } as any)
 const privateUnscopedSettingsGeneralRoute =
   privateUnscopedSettingsGeneralRouteImport.update({
     id: '/settings/general',
@@ -118,65 +79,35 @@ const privateUnscopedSettingsGeneralRoute =
     getParentRoute: () => privateUnscopedRoute,
   } as any)
 const privateUnscopedComponentsComponent_idRoute =
-  privateUnscopedComponentsComponent_idRouteImport
-    .update({
-      id: '/components/$component_id',
-      path: '/components/$component_id',
-      getParentRoute: () => privateUnscopedRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_unscoped/components/$component_id.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+  privateUnscopedComponentsComponent_idRouteImport.update({
+    id: '/components/$component_id',
+    path: '/components/$component_id',
+    getParentRoute: () => privateUnscopedRoute,
+  } as any)
 const privateScopedProjectsProject_idRoute =
-  privateScopedProjectsProject_idRouteImport
-    .update({
-      id: '/(private)/_scoped/projects/$project_id',
-      path: '/projects/$project_id',
-      getParentRoute: () => rootRouteImport,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_scoped/projects/$project_id.lazy').then(
-        (d) => d.Route,
-      ),
-    )
-const privateUnscopedComponentsComponent_idIndexLazyRoute =
-  privateUnscopedComponentsComponent_idIndexLazyRouteImport
-    .update({
-      id: '/',
-      path: '/',
-      getParentRoute: () => privateUnscopedComponentsComponent_idRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_unscoped/components/$component_id/index.lazy').then(
-        (d) => d.Route,
-      ),
-    )
-const privateScopedProjectsProject_idIndexLazyRoute =
-  privateScopedProjectsProject_idIndexLazyRouteImport
-    .update({
-      id: '/',
-      path: '/',
-      getParentRoute: () => privateScopedProjectsProject_idRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_scoped/projects/$project_id/index.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+  privateScopedProjectsProject_idRouteImport.update({
+    id: '/(private)/_scoped/projects/$project_id',
+    path: '/projects/$project_id',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const privateUnscopedComponentsComponent_idIndexRoute =
+  privateUnscopedComponentsComponent_idIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateUnscopedComponentsComponent_idRoute,
+  } as any)
+const privateScopedProjectsProject_idIndexRoute =
+  privateScopedProjectsProject_idIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateScopedProjectsProject_idRoute,
+  } as any)
 const privateUnscopedComponentsComponent_idStacksRoute =
-  privateUnscopedComponentsComponent_idStacksRouteImport
-    .update({
-      id: '/stacks',
-      path: '/stacks',
-      getParentRoute: () => privateUnscopedComponentsComponent_idRoute,
-    } as any)
-    .lazy(() =>
-      import('./routes/(private)/_unscoped/components/$component_id/stacks.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+  privateUnscopedComponentsComponent_idStacksRouteImport.update({
+    id: '/stacks',
+    path: '/stacks',
+    getParentRoute: () => privateUnscopedComponentsComponent_idRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof privateIndexRoute
@@ -190,8 +121,8 @@ export interface FileRoutesByFullPath {
   '/components': typeof privateUnscopedComponentsIndexRoute
   '/stacks': typeof privateUnscopedStacksIndexRoute
   '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/projects/$project_id/': typeof privateScopedProjectsProject_idIndexLazyRoute
-  '/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
+  '/projects/$project_id/': typeof privateScopedProjectsProject_idIndexRoute
+  '/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof privateIndexRoute
@@ -203,8 +134,8 @@ export interface FileRoutesByTo {
   '/components': typeof privateUnscopedComponentsIndexRoute
   '/stacks': typeof privateUnscopedStacksIndexRoute
   '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/projects/$project_id': typeof privateScopedProjectsProject_idIndexLazyRoute
-  '/components/$component_id': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
+  '/projects/$project_id': typeof privateScopedProjectsProject_idIndexRoute
+  '/components/$component_id': typeof privateUnscopedComponentsComponent_idIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -221,8 +152,8 @@ export interface FileRoutesById {
   '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
   '/(private)/_unscoped/stacks/': typeof privateUnscopedStacksIndexRoute
   '/(private)/_unscoped/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProject_idIndexLazyRoute
-  '/(private)/_unscoped/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexLazyRoute
+  '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProject_idIndexRoute
+  '/(private)/_unscoped/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -369,14 +300,14 @@ declare module '@tanstack/react-router' {
       id: '/(private)/_unscoped/components/$component_id/'
       path: '/'
       fullPath: '/components/$component_id/'
-      preLoaderRoute: typeof privateUnscopedComponentsComponent_idIndexLazyRouteImport
+      preLoaderRoute: typeof privateUnscopedComponentsComponent_idIndexRouteImport
       parentRoute: typeof privateUnscopedComponentsComponent_idRoute
     }
     '/(private)/_scoped/projects/$project_id/': {
       id: '/(private)/_scoped/projects/$project_id/'
       path: '/'
       fullPath: '/projects/$project_id/'
-      preLoaderRoute: typeof privateScopedProjectsProject_idIndexLazyRouteImport
+      preLoaderRoute: typeof privateScopedProjectsProject_idIndexRouteImport
       parentRoute: typeof privateScopedProjectsProject_idRoute
     }
     '/(private)/_unscoped/components/$component_id/stacks': {
@@ -391,15 +322,15 @@ declare module '@tanstack/react-router' {
 
 interface privateUnscopedComponentsComponent_idRouteChildren {
   privateUnscopedComponentsComponent_idStacksRoute: typeof privateUnscopedComponentsComponent_idStacksRoute
-  privateUnscopedComponentsComponent_idIndexLazyRoute: typeof privateUnscopedComponentsComponent_idIndexLazyRoute
+  privateUnscopedComponentsComponent_idIndexRoute: typeof privateUnscopedComponentsComponent_idIndexRoute
 }
 
 const privateUnscopedComponentsComponent_idRouteChildren: privateUnscopedComponentsComponent_idRouteChildren =
   {
     privateUnscopedComponentsComponent_idStacksRoute:
       privateUnscopedComponentsComponent_idStacksRoute,
-    privateUnscopedComponentsComponent_idIndexLazyRoute:
-      privateUnscopedComponentsComponent_idIndexLazyRoute,
+    privateUnscopedComponentsComponent_idIndexRoute:
+      privateUnscopedComponentsComponent_idIndexRoute,
   }
 
 const privateUnscopedComponentsComponent_idRouteWithChildren =
@@ -444,13 +375,13 @@ const publicGridLayoutRouteWithChildren =
   publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren)
 
 interface privateScopedProjectsProject_idRouteChildren {
-  privateScopedProjectsProject_idIndexLazyRoute: typeof privateScopedProjectsProject_idIndexLazyRoute
+  privateScopedProjectsProject_idIndexRoute: typeof privateScopedProjectsProject_idIndexRoute
 }
 
 const privateScopedProjectsProject_idRouteChildren: privateScopedProjectsProject_idRouteChildren =
   {
-    privateScopedProjectsProject_idIndexLazyRoute:
-      privateScopedProjectsProject_idIndexLazyRoute,
+    privateScopedProjectsProject_idIndexRoute:
+      privateScopedProjectsProject_idIndexRoute,
   }
 
 const privateScopedProjectsProject_idRouteWithChildren =
