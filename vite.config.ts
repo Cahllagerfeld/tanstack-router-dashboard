@@ -11,7 +11,9 @@ export default defineConfig({
 		exclude: ["node_modules/**/*", "build/**/*", "dist/**/*", "e2e-tests/**/*"],
 	},
 	plugins: [
-		tanstackRouter(),
+		tanstackRouter({
+			autoCodeSplitting: true,
+		}),
 		react({
 			babel: {
 				plugins: ["babel-plugin-react-compiler"],
