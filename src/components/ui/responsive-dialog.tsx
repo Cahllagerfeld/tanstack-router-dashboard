@@ -235,11 +235,21 @@ function ResponsiveDialogClose({
 	);
 }
 
+// Body component for content between header and footer
+function ResponsiveDialogBody({
+	className,
+	...props
+}: React.ComponentProps<"div">) {
+	const { isMobile } = useResponsiveDialog();
+	return <div className={cn(isMobile ? "px-4" : "", className)} {...props} />;
+}
+
 export {
 	ResponsiveDialog,
 	ResponsiveDialogTrigger,
 	ResponsiveDialogContent,
 	ResponsiveDialogHeader,
+	ResponsiveDialogBody,
 	ResponsiveDialogFooter,
 	ResponsiveDialogTitle,
 	ResponsiveDialogDescription,

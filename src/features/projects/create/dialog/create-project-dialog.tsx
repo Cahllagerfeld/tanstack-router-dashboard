@@ -1,5 +1,6 @@
 import {
 	ResponsiveDialog,
+	ResponsiveDialogBody,
 	ResponsiveDialogContent,
 	ResponsiveDialogDescription,
 	ResponsiveDialogHeader,
@@ -28,7 +29,9 @@ export function CreateProjectDialog({ open, setOpen }: Props) {
 						Create a new project to start collaborating with your team.
 					</ResponsiveDialogDescription>
 				</ResponsiveDialogHeader>
-				<CreateProjectForm setOpen={setOpen} className="max-md:px-4" />
+				<ResponsiveDialogBody>
+					<CreateProjectForm setOpen={setOpen} />
+				</ResponsiveDialogBody>
 				<ResponsiveDialogFooter className="max-md:pt-2">
 					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
 				</ResponsiveDialogFooter>
@@ -55,7 +58,9 @@ export function CreateProjectDialogWithTrigger() {
 						Create a new project to start collaborating with your team.
 					</ResponsiveDialogDescription>
 				</ResponsiveDialogHeader>
-				<CreateProjectForm setOpen={setOpen} className="max-md:px-4" />
+				<ResponsiveDialogBody>
+					<CreateProjectForm setOpen={setOpen} />
+				</ResponsiveDialogBody>
 				<ResponsiveDialogFooter className="max-md:pt-2">
 					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
 				</ResponsiveDialogFooter>

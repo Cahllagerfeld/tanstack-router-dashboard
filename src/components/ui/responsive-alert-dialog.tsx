@@ -56,7 +56,7 @@ function ResponsiveAlertDialog({
 	open,
 	onOpenChange,
 	children,
-	dismissible = true,
+	dismissible = false,
 }: ResponsiveAlertDialogProps) {
 	const isMobile = useIsMobile();
 
@@ -224,7 +224,7 @@ function ResponsiveAlertDialogCancel({
 	if (isMobile) {
 		return (
 			<DrawerClose asChild>
-				<Button variant={variant} className={className}>
+				<Button variant={variant} className={cn("w-full", className)}>
 					{children}
 				</Button>
 			</DrawerClose>
@@ -238,11 +238,21 @@ function ResponsiveAlertDialogCancel({
 	);
 }
 
+// Body component for content between header and footer
+function ResponsiveAlertDialogBody({
+	className,
+	...props
+}: React.ComponentProps<"div">) {
+	const { isMobile } = useResponsiveAlertDialog();
+	return <div className={cn(isMobile ? "px-4" : "", className)} {...props} />;
+}
+
 export {
 	ResponsiveAlertDialog,
 	ResponsiveAlertDialogTrigger,
 	ResponsiveAlertDialogContent,
 	ResponsiveAlertDialogHeader,
+	ResponsiveAlertDialogBody,
 	ResponsiveAlertDialogFooter,
 	ResponsiveAlertDialogTitle,
 	ResponsiveAlertDialogDescription,
