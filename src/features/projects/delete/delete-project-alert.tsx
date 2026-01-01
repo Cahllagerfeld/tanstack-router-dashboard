@@ -1,24 +1,14 @@
 import {
-	AlertDialog,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-} from "@/components/ui/drawer";
+	ResponsiveAlertDialog,
+	ResponsiveAlertDialogAction,
+	ResponsiveAlertDialogCancel,
+	ResponsiveAlertDialogContent,
+	ResponsiveAlertDialogDescription,
+	ResponsiveAlertDialogFooter,
+	ResponsiveAlertDialogHeader,
+	ResponsiveAlertDialogTitle,
+} from "@/components/ui/responsive-alert-dialog";
 import { useDeleteProject } from "@/data/projects/mutations/delete-project";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
@@ -28,64 +18,35 @@ type Props = {
 };
 
 export function DeleteProjectAlert({ projectId, open, setOpen }: Props) {
-	const isDesktop = useMediaQuery("(min-width: 768px)");
 	const { mutate, isPending } = useDeleteProject({
 		onSuccess: () => {
 			setOpen(false);
 		},
 	});
 
-	if (isDesktop) {
-		return (
-			<AlertDialog open={open} onOpenChange={setOpen}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-						<AlertDialogDescription>
-							This action cannot be undone. This will permanently delete your
-							project and remove all associated data.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<Button
-							variant="destructive"
-							disabled={isPending}
-							onClick={() => mutate({ projectId })}
-						>
-							{isPending ? "Deleting..." : "Delete"}
-						</Button>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-		);
-	}
-
 	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerContent>
-				<DrawerHeader className="text-left">
-					<DrawerTitle>Delete Project</DrawerTitle>
-					<DrawerDescription>
+		<ResponsiveAlertDialog open={open} onOpenChange={setOpen}>
+			<ResponsiveAlertDialogContent>
+				<ResponsiveAlertDialogHeader>
+					<ResponsiveAlertDialogTitle>
+						Are you absolutely sure?
+					</ResponsiveAlertDialogTitle>
+					<ResponsiveAlertDialogDescription>
 						This action cannot be undone. This will permanently delete your
 						project and remove all associated data.
-					</DrawerDescription>
-				</DrawerHeader>
-
-				<DrawerFooter className="py-2">
-					<Button
+					</ResponsiveAlertDialogDescription>
+				</ResponsiveAlertDialogHeader>
+				<ResponsiveAlertDialogFooter className="max-md:py-2">
+					<ResponsiveAlertDialogCancel>Cancel</ResponsiveAlertDialogCancel>
+					<ResponsiveAlertDialogAction
 						variant="destructive"
-						className="w-full"
 						disabled={isPending}
 						onClick={() => mutate({ projectId })}
 					>
-						{isPending ? "Deleting..." : "Delete Project"}
-					</Button>
-					<DrawerClose asChild>
-						<Button variant="outline">Cancel</Button>
-					</DrawerClose>
-				</DrawerFooter>
-			</DrawerContent>
-		</Drawer>
+						{isPending ? "Deleting..." : "Delete"}
+					</ResponsiveAlertDialogAction>
+				</ResponsiveAlertDialogFooter>
+			</ResponsiveAlertDialogContent>
+		</ResponsiveAlertDialog>
 	);
 }

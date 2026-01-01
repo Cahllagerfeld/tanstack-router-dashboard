@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
 	Field,
 	FieldError,
@@ -15,14 +14,17 @@ import { useCreateProjectForm } from "./use-create-project-form";
 export function CreateProjectForm({
 	className,
 	setOpen,
+	id,
 	...rest
 }: HTMLAttributes<HTMLFormElement> & {
 	setOpen: Dispatch<SetStateAction<boolean>>;
+	id: string;
 }) {
 	const { form, handleCreateProject } = useCreateProjectForm(setOpen);
 
 	return (
 		<form
+			id={id}
 			onSubmit={form.handleSubmit(handleCreateProject)}
 			className={cn("space-y-4", className)}
 			{...rest}
@@ -88,9 +90,6 @@ export function CreateProjectForm({
 					/>
 				</FieldGroup>
 			</FieldSet>
-			<Button className="w-full" type="submit">
-				Create Project
-			</Button>
 		</form>
 	);
 }
