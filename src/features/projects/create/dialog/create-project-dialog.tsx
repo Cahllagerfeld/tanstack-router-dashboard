@@ -14,6 +14,8 @@ import { Plus } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { CreateProjectForm } from "./form";
 
+const FORM_ID = "create-project-form";
+
 type Props = {
 	open: boolean;
 	setOpen: Dispatch<SetStateAction<boolean>>;
@@ -30,10 +32,13 @@ export function CreateProjectDialog({ open, setOpen }: Props) {
 					</ResponsiveDialogDescription>
 				</ResponsiveDialogHeader>
 				<ResponsiveDialogBody>
-					<CreateProjectForm setOpen={setOpen} />
+					<CreateProjectForm id={FORM_ID} setOpen={setOpen} />
 				</ResponsiveDialogBody>
 				<ResponsiveDialogFooter className="max-md:pt-2">
 					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
+					<Button type="submit" form={FORM_ID}>
+						Create Project
+					</Button>
 				</ResponsiveDialogFooter>
 			</ResponsiveDialogContent>
 		</ResponsiveDialog>
@@ -59,10 +64,13 @@ export function CreateProjectDialogWithTrigger() {
 					</ResponsiveDialogDescription>
 				</ResponsiveDialogHeader>
 				<ResponsiveDialogBody>
-					<CreateProjectForm setOpen={setOpen} />
+					<CreateProjectForm id={FORM_ID} setOpen={setOpen} />
 				</ResponsiveDialogBody>
 				<ResponsiveDialogFooter className="max-md:pt-2">
 					<ResponsiveDialogClose>Cancel</ResponsiveDialogClose>
+					<Button type="submit" form={FORM_ID}>
+						Create Project
+					</Button>
 				</ResponsiveDialogFooter>
 			</ResponsiveDialogContent>
 		</ResponsiveDialog>
