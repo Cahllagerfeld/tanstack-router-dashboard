@@ -17,7 +17,7 @@
 		"@base-ui/react": "^1.0.0",
 		"@fontsource-variable/inter": "^5.2.8",
 		"@hookform/resolvers": "^5.2.2",
-		"@tanstack/react-query": "^5.90.14",
+		"@tanstack/react-query": "^5.90.16",
 		"@tanstack/react-query-devtools": "^5.91.2",
 		"@tanstack/react-router": "^1.144.0",
 		"@tanstack/react-table": "^8.21.3",
@@ -33,12 +33,12 @@
 		"tailwind-merge": "^3.4.0",
 		"unique-names-generator": "^4.7.1",
 		"vaul": "^1.1.2",
-		"zod": "^4.2.1"
+		"zod": "^4.3.4"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "4.1.18",
 		"@tanstack/router-devtools": "1.144.0",
-		"@tanstack/router-plugin": "1.144.0",
+		"@tanstack/router-plugin": "1.145.2",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.2",
