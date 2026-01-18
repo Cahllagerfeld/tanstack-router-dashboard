@@ -2243,6 +2243,29 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/runs/{run_id}/disable_heartbeat": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		/**
+		 * Disable Run Heartbeat
+		 * @description Disables heartbeats for a run.
+		 *
+		 *     Args:
+		 *         run_id: ID of the run.
+		 */
+		put: operations["disable_run_heartbeat_api_v1_runs__run_id__disable_heartbeat_put"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/run-metadata": {
 		parameters: {
 			query?: never;
@@ -3790,9 +3813,6 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The step heartbeat response (id, status, last_heartbeat).
-		 *
-		 *     Raises:
-		 *         HTTPException: If the step is finished raises with 422 status code.
 		 */
 		put: operations["update_heartbeat_api_v1_steps__step_run_id__heartbeat_put"];
 		post?: never;
@@ -8924,6 +8944,8 @@ export type components = {
 			enable_artifact_visualization?: boolean | null;
 			/** Enable Step Logs */
 			enable_step_logs?: boolean | null;
+			/** Enable Heartbeat */
+			enable_heartbeat?: boolean | null;
 			/**
 			 * Environment
 			 * @default {}
@@ -8994,6 +9016,8 @@ export type components = {
 			enable_artifact_visualization?: boolean | null;
 			/** Enable Step Logs */
 			enable_step_logs?: boolean | null;
+			/** Enable Heartbeat */
+			enable_heartbeat?: boolean | null;
 			/**
 			 * Environment
 			 * @default {}
@@ -9314,6 +9338,8 @@ export type components = {
 			is_templatable: boolean;
 			/** Trigger information for the pipeline run. */
 			trigger_info?: components["schemas"]["PipelineRunTriggerInfo"] | null;
+			/** Enable heartbeat flag for run. */
+			enable_heartbeat: boolean;
 		};
 		/**
 		 * PipelineRunResponseResources
@@ -11650,7 +11676,7 @@ export type components = {
 			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
 			 * Heartbeat Healthy Threshold
-			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to the maximum value (30 minutes).
+			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to 30 minutes.
 			 * @default 30
 			 */
 			heartbeat_healthy_threshold: number;
@@ -11790,7 +11816,7 @@ export type components = {
 			runtime?: components["schemas"]["StepRuntime"] | null;
 			/**
 			 * Heartbeat Healthy Threshold
-			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to the maximum value (30 minutes).
+			 * @description The amount of time (in minutes) that a running step has not received heartbeat and is considered healthy. By default, set to 30 minutes.
 			 * @default 30
 			 */
 			heartbeat_healthy_threshold: number;
@@ -11851,6 +11877,8 @@ export type components = {
 			 */
 			latest_heartbeat: string;
 			pipeline_run_status?: components["schemas"]["ExecutionStatus"] | null;
+			/** Heartbeat Enabled */
+			heartbeat_enabled: boolean;
 		};
 		/**
 		 * StepRetryConfig
@@ -12041,6 +12069,8 @@ export type components = {
 			substitutions: {
 				[key: string]: unknown;
 			};
+			/** The applied heartbeat healthiness threshold */
+			heartbeat_threshold?: number | null;
 		};
 		/**
 		 * StepRunResponseMetadata
@@ -19285,6 +19315,73 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["LogEntry"][];
+				};
+			};
+			/** @description Bad Request */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	disable_run_heartbeat_api_v1_runs__run_id__disable_heartbeat_put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				run_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
 				};
 			};
 			/** @description Bad Request */

@@ -118,8 +118,8 @@ export interface FileRoutesByFullPath {
   '/components/$component_id': typeof privateUnscopedComponentsComponent_idRouteWithChildren
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
-  '/components': typeof privateUnscopedComponentsIndexRoute
-  '/stacks': typeof privateUnscopedStacksIndexRoute
+  '/components/': typeof privateUnscopedComponentsIndexRoute
+  '/stacks/': typeof privateUnscopedStacksIndexRoute
   '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
   '/projects/$project_id/': typeof privateScopedProjectsProject_idIndexRoute
   '/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexRoute
@@ -166,8 +166,8 @@ export interface FileRouteTypes {
     | '/components/$component_id'
     | '/settings/general'
     | '/settings/members'
-    | '/components'
-    | '/stacks'
+    | '/components/'
+    | '/stacks/'
     | '/components/$component_id/stacks'
     | '/projects/$project_id/'
     | '/components/$component_id/'
@@ -257,14 +257,14 @@ declare module '@tanstack/react-router' {
     '/(private)/_unscoped/stacks/': {
       id: '/(private)/_unscoped/stacks/'
       path: '/stacks'
-      fullPath: '/stacks'
+      fullPath: '/stacks/'
       preLoaderRoute: typeof privateUnscopedStacksIndexRouteImport
       parentRoute: typeof privateUnscopedRoute
     }
     '/(private)/_unscoped/components/': {
       id: '/(private)/_unscoped/components/'
       path: '/components'
-      fullPath: '/components'
+      fullPath: '/components/'
       preLoaderRoute: typeof privateUnscopedComponentsIndexRouteImport
       parentRoute: typeof privateUnscopedRoute
     }
