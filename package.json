@@ -39,7 +39,7 @@
 		"@tailwindcss/vite": "4.1.18",
 		"@tanstack/router-devtools": "1.157.3",
 		"@tanstack/router-plugin": "1.157.3",
-		"@types/react": "19.2.9",
+		"@types/react": "19.2.10",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.2",
 		"babel-plugin-react-compiler": "1.0.0",
