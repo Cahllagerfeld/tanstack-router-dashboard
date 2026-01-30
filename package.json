@@ -43,7 +43,7 @@
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.2",
 		"babel-plugin-react-compiler": "1.0.0",
-		"lefthook": "2.0.15",
+		"lefthook": "2.0.16",
 		"openapi-typescript": "7.10.1",
 		"oxlint": "1.41.0",
 		"postcss": "8.5.6",
