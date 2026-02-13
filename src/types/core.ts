@@ -425,9 +425,6 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The artifact data.
-		 *
-		 *     Raises:
-		 *         KeyError: If the artifact version has no artifact store.
 		 */
 		get: operations["download_artifact_data_api_v1_artifact_versions__artifact_version_id__data_get"];
 		put?: never;
@@ -1233,6 +1230,32 @@ export type paths = {
 		patch: operations["sync_flavors_api_v1_flavors_sync_patch"];
 		trace?: never;
 	};
+	"/api/v1/logs": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create Logs
+		 * @description Create a new log model.
+		 *
+		 *     Args:
+		 *         logs: The log model to create.
+		 *
+		 *     Returns:
+		 *         The created log model.
+		 */
+		post: operations["create_logs_api_v1_logs_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/logs/{logs_id}": {
 		parameters: {
 			query?: never;
@@ -1242,18 +1265,33 @@ export type paths = {
 		};
 		/**
 		 * Get Logs
-		 * @description Returns the requested logs.
+		 * @description Returns the requested log model.
 		 *
 		 *     Args:
-		 *         logs_id: ID of the logs.
+		 *         logs_id: ID of the log model.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
 		 *     Returns:
-		 *         The requested logs.
+		 *         The requested log model.
+		 *
+		 *     Raises:
+		 *         IllegalOperationError: If the logs are not associated
+		 *             with a pipeline run or step run before fetching.
 		 */
 		get: operations["get_logs_api_v1_logs__logs_id__get"];
-		put?: never;
+		/**
+		 * Update Logs
+		 * @description Update an existing log model.
+		 *
+		 *     Args:
+		 *         logs_id: ID of the log model to update.
+		 *         logs_update: Update to apply to the log model.
+		 *
+		 *     Returns:
+		 *         The updated log model.
+		 */
+		put: operations["update_logs_api_v1_logs__logs_id__put"];
 		post?: never;
 		delete?: never;
 		options?: never;
@@ -1955,6 +1993,65 @@ export type paths = {
 		 *         snapshot_id: ID of the snapshot to delete.
 		 */
 		delete: operations["delete_pipeline_snapshot_api_v1_pipeline_snapshots__snapshot_id__delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/pipeline_snapshots/{snapshot_id}/download-token": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Snapshot Code Download Token
+		 * @description Get a download token for the snapshot code.
+		 *
+		 *     Args:
+		 *         snapshot_id: ID of the snapshot for which to get the code.
+		 *
+		 *     Returns:
+		 *         The download token for the snapshot code.
+		 *
+		 *     Raises:
+		 *         ValueError: If the snapshot has no code path or stack.
+		 */
+		get: operations["get_snapshot_code_download_token_api_v1_pipeline_snapshots__snapshot_id__download_token_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/pipeline_snapshots/{snapshot_id}/code": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Download Snapshot Code
+		 * @description Download the snapshot code.
+		 *
+		 *     Args:
+		 *         snapshot_id: ID of the snapshot for which to get the code.
+		 *         token: The token to authenticate the code download.
+		 *
+		 *     Returns:
+		 *         The snapshot code.
+		 *
+		 *     Raises:
+		 *         ValueError: If the snapshot has no code path or stack.
+		 */
+		get: operations["download_snapshot_code_api_v1_pipeline_snapshots__snapshot_id__code_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -7191,8 +7288,10 @@ export type components = {
 		ExceptionInfo: {
 			/** The traceback of the exception. */
 			traceback: string;
-			/** The line number of the step code that raised the exception. */
-			step_code_line?: number | null;
+			/** The line number of the user code that raised the exception. */
+			user_code_line?: number | null;
+		} & {
+			[key: string]: unknown;
 		};
 		/**
 		 * ExecutionMode
@@ -7386,6 +7485,24 @@ export type components = {
 			/** Whether or not this flavor is a custom, user created flavor. */
 			is_custom?: boolean | null;
 		};
+		/**
+		 * GroupInfo
+		 * @description Class representing group information.
+		 */
+		GroupInfo: {
+			/** Id */
+			id: string;
+			/** Name */
+			name?: string | null;
+			/** @default manual */
+			type: components["schemas"]["GroupType"];
+		};
+		/**
+		 * GroupType
+		 * @description Enum representing different types of group.
+		 * @enum {string}
+		 */
+		GroupType: "manual" | "map";
 		/** HTTPValidationError */
 		HTTPValidationError: {
 			/** Detail */
@@ -7492,6 +7609,13 @@ export type components = {
 		 * @description Request model for logs.
 		 */
 		LogsRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
+			/**
+			 * The project to which this resource belongs.
+			 * Format: uuid
+			 */
+			project: string;
 			/**
 			 * The unique id.
 			 * Format: uuid
@@ -7508,6 +7632,10 @@ export type components = {
 			artifact_store_id?: string | null;
 			/** The log store ID that collected these logs */
 			log_store_id?: string | null;
+			/** The pipeline run ID to associate the logs with. */
+			pipeline_run_id?: string | null;
+			/** The step run ID to associate the logs with. */
+			step_run_id?: string | null;
 		};
 		/**
 		 * LogsResponse
@@ -7546,6 +7674,13 @@ export type components = {
 			 * Format: date-time
 			 */
 			updated: string;
+			/** The user id. */
+			user_id?: string | null;
+			/**
+			 * The project id.
+			 * Format: uuid
+			 */
+			project_id: string;
 			/** The URI of the logs file (for artifact store logs) */
 			uri?: string | null;
 			/** The source of the logs file */
@@ -7576,7 +7711,20 @@ export type components = {
 		 * @description Class for all resource models associated with the Logs entity.
 		 */
 		LogsResponseResources: {
+			/** The user who created this resource. */
+			user?: components["schemas"]["UserResponse"] | null;
+		} & {
 			[key: string]: unknown;
+		};
+		/**
+		 * LogsUpdate
+		 * @description Update model for logs.
+		 */
+		LogsUpdate: {
+			/** The pipeline run ID to associate the logs with. */
+			pipeline_run_id?: string | null;
+			/** The step run ID to associate the logs with. */
+			step_run_id?: string | null;
 		};
 		/**
 		 * MetadataResourceTypes
@@ -9231,7 +9379,9 @@ export type components = {
 			/** Tags of the pipeline run. */
 			tags?: (string | components["schemas"]["Tag"])[] | null;
 			/** Logs of the pipeline run. */
-			logs?: components["schemas"]["LogsRequest"] | null;
+			logs?: string | components["schemas"]["LogsRequest"] | null;
+			/** The exception information of the pipeline run. */
+			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 		};
 		/**
 		 * PipelineRunResponse
@@ -9340,6 +9490,8 @@ export type components = {
 			trigger_info?: components["schemas"]["PipelineRunTriggerInfo"] | null;
 			/** Enable heartbeat flag for run. */
 			enable_heartbeat: boolean;
+			/** The exception information of the pipeline run. */
+			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 		};
 		/**
 		 * PipelineRunResponseResources
@@ -9403,6 +9555,8 @@ export type components = {
 			is_finished?: boolean | null;
 			/** Orchestrator Run Id */
 			orchestrator_run_id?: string | null;
+			/** The exception information of the pipeline run. */
+			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 			/** New tags to add to the pipeline run. */
 			add_tags?: string[] | null;
 			/** Tags to remove from the pipeline run. */
@@ -11680,6 +11834,8 @@ export type components = {
 			 * @default 30
 			 */
 			heartbeat_healthy_threshold: number;
+			/** @description The group information for the step. */
+			group?: components["schemas"]["GroupInfo"] | null;
 			/**
 			 * Outputs
 			 * @default {}
@@ -11820,6 +11976,8 @@ export type components = {
 			 * @default 30
 			 */
 			heartbeat_healthy_threshold: number;
+			/** @description The group information for the step. */
+			group?: components["schemas"]["GroupInfo"] | null;
 			/**
 			 * Outputs
 			 * @default {}
@@ -11996,7 +12154,7 @@ export type components = {
 				[key: string]: unknown;
 			};
 			/** Logs associated with this step run. */
-			logs?: components["schemas"]["LogsRequest"] | null;
+			logs?: string | components["schemas"]["LogsRequest"] | null;
 			/** The exception information of the step run. */
 			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 			/** The dynamic configuration of the step run. */
@@ -16233,6 +16391,66 @@ export interface operations {
 			};
 		};
 	};
+	create_logs_api_v1_logs_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["LogsRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["LogsResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Conflict */
+			409: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	get_logs_api_v1_logs__logs_id__get: {
 		parameters: {
 			query?: {
@@ -16245,6 +16463,68 @@ export interface operations {
 			cookie?: never;
 		};
 		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["LogsResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	update_logs_api_v1_logs__logs_id__put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				logs_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["LogsUpdate"];
+			};
+		};
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -18513,6 +18793,133 @@ export interface operations {
 	delete_pipeline_snapshot_api_v1_pipeline_snapshots__snapshot_id__delete: {
 		parameters: {
 			query?: never;
+			header?: never;
+			path: {
+				snapshot_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	get_snapshot_code_download_token_api_v1_pipeline_snapshots__snapshot_id__download_token_get: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				snapshot_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": string;
+				};
+			};
+			/** @description Bad Request */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	download_snapshot_code_api_v1_pipeline_snapshots__snapshot_id__code_get: {
+		parameters: {
+			query: {
+				token: string;
+			};
 			header?: never;
 			path: {
 				snapshot_id: string;
