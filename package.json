@@ -37,8 +37,8 @@
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "4.2.0",
-		"@tanstack/router-devtools": "1.161.3",
-		"@tanstack/router-plugin": "1.161.3",
+		"@tanstack/router-devtools": "1.162.2",
+		"@tanstack/router-plugin": "1.162.2",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "5.1.4",
