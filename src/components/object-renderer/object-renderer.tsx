@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
-import { snakeCaseToTitleCase } from "@/lib/strings";
 import { NotAvailableTag } from "@/components/not-available-tag";
-import { isArray, isObject } from "@/lib/type-guards";
+import { snakeCaseToTitleCase } from "@/lib/strings";
+import { cn } from "@/lib/utils";
+import { isArray, isObject } from "es-toolkit/compat";
 import type { ObjectRendererProps } from "./types";
 import { ValueRenderer } from "./value-renderer";
 

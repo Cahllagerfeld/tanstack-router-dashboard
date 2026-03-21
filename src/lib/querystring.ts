@@ -1,4 +1,4 @@
-import { isArray, isObject } from "./type-guards";
+import { isArray, isObject } from "es-toolkit/compat";
 
 /**
  * Converts an object to URLSearchParams

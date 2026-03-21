@@ -1,5 +1,5 @@
-import { Pagination } from "@/features/pagination";
 import { projectQueries } from "@/data/projects";
+import { Pagination } from "@/features/pagination";
 import { ProjectListQueries } from "@/types/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ProjectItem } from "./project-item";

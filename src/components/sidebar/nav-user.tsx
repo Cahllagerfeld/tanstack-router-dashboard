@@ -19,13 +19,11 @@ import {
 import { useLogoutUser } from "@/data/session/logout";
 import { userQueries } from "@/data/user";
 import { getAvatarUrl } from "@/lib/avatar";
-import { getUsername } from "@/lib/names";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function NavUser() {
 	const { data } = useSuspenseQuery(userQueries.currentUser());
 	const { isMobile } = useSidebar();
-	const name = getUsername(data);
 
 	const logout = useLogoutUser();
 
@@ -42,19 +40,19 @@ export function NavUser() {
 								<Avatar className="size-8">
 									<AvatarImage
 										className="rounded-lg"
-										src={getAvatarUrl(name, {
+										src={getAvatarUrl(data.resolvedName, {
 											size: 32,
 										})}
 									/>
 									<AvatarFallback className="rounded-lg">
-										{name[0]}
+										{data.resolvedName[0]}
 									</AvatarFallback>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
-									<span className="truncate font-semibold">{name}</span>
-									<span className="truncate text-xs">
-										{data.metadata?.email}
+									<span className="truncate font-semibold">
+										{data.resolvedName}
 									</span>
+									<span className="truncate text-xs">{data.email}</span>
 								</div>
 								<ChevronsUpDown className="ml-auto size-4" />
 							</SidebarMenuButton>
@@ -72,19 +70,19 @@ export function NavUser() {
 									<Avatar className="size-8">
 										<AvatarImage
 											className="rounded-lg"
-											src={getAvatarUrl(name, {
+											src={getAvatarUrl(data.resolvedName, {
 												size: 32,
 											})}
 										/>
 										<AvatarFallback className="rounded-lg">
-											{name[0]}
+											{data.resolvedName[0]}
 										</AvatarFallback>
 									</Avatar>
 									<div className="grid flex-1 text-left text-sm leading-tight">
-										<span className="truncate font-semibold">{name}</span>
-										<span className="truncate text-xs">
-											{data.metadata?.email}
+										<span className="truncate font-semibold">
+											{data.resolvedName}
 										</span>
+										<span className="truncate text-xs">{data.email}</span>
 									</div>
 								</div>
 							</DropdownMenuLabel>

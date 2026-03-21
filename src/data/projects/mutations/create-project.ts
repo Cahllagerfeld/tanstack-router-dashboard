@@ -1,5 +1,8 @@
+import { Project, projectFromApi } from "@/domain/projects";
+import { expectData } from "@/lib/fetch-error";
 import { getProjectDisplayName } from "@/lib/names";
-import { CreateProject, Project } from "@/types/projects";
+import { ApiClientError } from "@/types/api";
+import { ApiCreateProject } from "@/types/projects";
 import {
 	useMutation,
 	UseMutationOptions,
@@ -7,25 +10,29 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { apiPaths } from "../../api";
 import { apiClient } from "../../api-client";
 
-async function createProject(payload: CreateProject) {
-	const project: Project = await apiClient(apiPaths.projects.base, {
+async function createProject(payload: ApiCreateProject) {
+	const project = await apiClient.POST("/api/v1/projects", {
 		method: "POST",
-		body: JSON.stringify(payload),
+		body: payload,
 	});
 
-	return project;
+	return projectFromApi(expectData(project));
 }
 
 export function useCreateProject(
-	options?: UseMutationOptions<Project, unknown, CreateProject, unknown>
+	options?: UseMutationOptions<
+		Project,
+		ApiClientError,
+		ApiCreateProject,
+		unknown
+	>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, ...rest } = options || {};
-	return useMutation<Project, unknown, CreateProject, unknown>({
+	return useMutation<Project, ApiClientError, ApiCreateProject, unknown>({
 		...rest,
 		mutationFn: createProject,
 		onSuccess: (data, variables, onMutateResult, context) => {

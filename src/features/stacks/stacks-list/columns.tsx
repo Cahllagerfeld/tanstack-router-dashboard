@@ -1,7 +1,7 @@
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Stack } from "@/types/stacks";
+import { Stack } from "@/domain/stacks";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const stackSelectColumn: ColumnDef<Stack> = {
@@ -38,9 +38,9 @@ export const stackNameColumn: ColumnDef<Stack> = {
 
 export const stackCreatedByColumn: ColumnDef<Stack> = {
 	header: "Created by",
-	accessorFn: (row) => row.resources?.user?.name,
+	accessorFn: (row) => row.user?.name,
 	cell: ({ row }) => {
-		const userName = row.original.resources?.user?.name;
+		const userName = row.original.user?.name;
 		if (!userName) return <NotAvailableTag />;
 		return <p>{userName}</p>;
 	},
@@ -51,18 +51,14 @@ export const stackCreatedByColumn: ColumnDef<Stack> = {
 
 export const stackCreatedAtColumn: ColumnDef<Stack> = {
 	header: "Created at",
-	accessorFn: (row) => row.body?.created,
+	accessorFn: (row) => row.created,
 	meta: {
 		className: "w-[15%]",
 	},
 	cell: ({ row }) => {
-		const dateString = row.original.body?.created;
-		if (!dateString) return <NotAvailableTag />;
-		return (
-			<p>
-				<DisplayDate short dateString={dateString} />
-			</p>
-		);
+		const date = row.original.created;
+		if (!date) return <NotAvailableTag />;
+		return <DisplayDate date={date} />;
 	},
 };
 
