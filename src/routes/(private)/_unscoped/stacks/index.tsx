@@ -12,8 +12,8 @@ const querySchema = commonFilterSchema;
 export const Route = createFileRoute("/(private)/_unscoped/stacks/")({
 	validateSearch: querySchema,
 	loaderDeps: ({ search: { page, size } }) => ({ page, size }),
-	loader: ({ context: { queryClient }, deps: { page, size } }) => {
-		return queryClient.ensureQueryData(
+	loader: async ({ context: { queryClient }, deps: { page, size } }) => {
+		await queryClient.ensureQueryData(
 			stackQueries.list({
 				page,
 				size,

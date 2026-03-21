@@ -25,6 +25,7 @@ export const Route = createFileRoute("/(private)/_unscoped/settings/members")({
 			queryClient.ensureQueryData(userQueries.list({ name, page })),
 			queryClient.ensureQueryData(userQueries.currentUser()),
 		]);
+		return { crumb: "Members" };
 	},
 	head: () => ({
 		meta: [{ title: "Members" }],
