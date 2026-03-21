@@ -52,6 +52,7 @@ function RouteComponent() {
 			<Tabs value={activeTab} className="w-full">
 				<TabsList>
 					<TabsTrigger
+						nativeButton={false}
 						value="general"
 						render={
 							<Link to="/components/$component_id" params={{ component_id }}>
@@ -60,6 +61,7 @@ function RouteComponent() {
 						}
 					></TabsTrigger>
 					<TabsTrigger
+						nativeButton={false}
 						value="stacks"
 						render={
 							<Link
