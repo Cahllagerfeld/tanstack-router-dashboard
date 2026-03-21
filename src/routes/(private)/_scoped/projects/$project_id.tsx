@@ -16,15 +16,11 @@ import {
 } from "@/components/ui/sidebar";
 import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
-import { requireAuth } from "@/lib/auth-guards";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_scoped/projects/$project_id")(
 	{
-		beforeLoad: async ({ context: { queryClient } }) => {
-			await requireAuth(queryClient);
-		},
 		loader: async ({ context: { queryClient }, params: { project_id } }) => {
 			const [, , project] = await Promise.all([
 				queryClient.ensureQueryData(serverQueries.serverInfo()),

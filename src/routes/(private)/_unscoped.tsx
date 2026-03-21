@@ -1,5 +1,3 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { requireAuth } from "@/lib/auth-guards";
 import { UnscopedSidebar } from "@/components/sidebar/unscoped";
 import {
 	Breadcrumb,
@@ -9,18 +7,16 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_unscoped")({
-	beforeLoad: async ({ context: { queryClient } }) => {
-		await requireAuth(queryClient);
-	},
 	component: RouteComponent,
 });
 

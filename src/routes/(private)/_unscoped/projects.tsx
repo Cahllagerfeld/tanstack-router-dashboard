@@ -7,7 +7,6 @@ import {
 import { ProjectList } from "@/features/projects/overview/project-list";
 import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
-import { requireAuth } from "@/lib/auth-guards";
 import { ProjectListQueries } from "@/types/projects";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
@@ -21,9 +20,6 @@ const querySchema = z.object({
 export const Route = createFileRoute("/(private)/_unscoped/projects")({
 	validateSearch: querySchema,
 	loaderDeps: ({ search: { name, page } }) => ({ name, page }),
-	beforeLoad: async ({ context: { queryClient } }) => {
-		await requireAuth(queryClient);
-	},
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {
 		await queryClient.ensureQueryData(projectQueries.list({ name, page }));
 	},
