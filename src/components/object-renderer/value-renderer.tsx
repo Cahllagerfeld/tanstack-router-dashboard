@@ -1,22 +1,22 @@
-import { ChevronRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { SecretValue } from "@/components/secret-value";
+import { Badge } from "@/components/ui/badge";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-	isString,
-	isNumber,
-	isBoolean,
 	isArray,
+	isBoolean,
+	isNumber,
 	isObject,
-} from "@/lib/type-guards";
+	isString,
+} from "es-toolkit/compat";
+import { ChevronRight } from "lucide-react";
+import { ObjectRenderer } from "./object-renderer";
 import type { ValueRendererProps } from "./types";
 import { isSensitiveKey } from "./types";
-import { ObjectRenderer } from "./object-renderer";
 
 export function ValueRenderer({
 	value,

@@ -1,19 +1,27 @@
-import { createResourceQueries } from "../query-factory";
-import { apiPaths } from "../api";
-import { Project, ProjectList, ProjectListQueries } from "@/types/projects";
+import { queryOptions } from "@tanstack/react-query";
+import { ProjectListQueries } from "@/types/projects";
+import { fetchProjectDetail } from "./fetch-detail";
+import { fetchProjectList } from "./fetch-list";
 
-export const projectQueries = createResourceQueries<
-	ProjectList,
-	Project,
-	ProjectListQueries
->({
-	baseKey: "projects",
-	endpoints: {
-		base: apiPaths.projects.base,
-		detail: apiPaths.projects.detail,
+const baseKey = "projects" as const;
+
+export const projectQueries = {
+	baseKey: [baseKey] as const,
+	list: (params?: ProjectListQueries) => {
+		const mergedParams = {
+			sort_by: "desc:created",
+			size: 10,
+			...params,
+		} satisfies ProjectListQueries;
+
+		return queryOptions({
+			queryKey: [baseKey, mergedParams] as const,
+			queryFn: () => fetchProjectList(mergedParams),
+		});
 	},
-	defaultListParams: {
-		sort_by: "desc:created",
-		size: 10,
-	},
-});
+	detail: (projectId: string) =>
+		queryOptions({
+			queryKey: [baseKey, projectId] as const,
+			queryFn: () => fetchProjectDetail(projectId),
+		}),
+};

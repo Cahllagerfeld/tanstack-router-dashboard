@@ -1,4 +1,3 @@
-import { apiPaths } from "@/data/api";
 import { apiClient } from "@/data/api-client";
 import { FetchError } from "@/lib/fetch-error";
 import {
@@ -13,12 +12,13 @@ interface DeleteProjectParams {
 	projectId: string;
 }
 
-export async function deleteProject({
-	projectId,
-}: DeleteProjectParams): Promise<void> {
-	const url = apiPaths.projects.detail(projectId);
-	await apiClient<void>(url, {
-		method: "DELETE",
+export async function deleteProject({ projectId }: DeleteProjectParams) {
+	await apiClient.DELETE("/api/v1/projects/{project_name_or_id}", {
+		params: {
+			path: {
+				project_name_or_id: projectId,
+			},
+		},
 	});
 }
 
