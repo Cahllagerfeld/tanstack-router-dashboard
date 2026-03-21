@@ -2,7 +2,7 @@ import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { User } from "@/types/user";
+import { User } from "@/domain/users";
 import { ColumnDef } from "@tanstack/react-table";
 import { AdminActions } from "./admin-actions";
 import { IsActiveBadge } from "./is-active-badge";
@@ -45,7 +45,7 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			},
 			cell: ({ row }) => {
 				const username = row.original.name;
-				const isAdmin = row.original.body?.is_admin;
+				const isAdmin = row.original.isAdmin;
 				return (
 					<div className="flex items-center gap-2">
 						<p>{username}</p>
@@ -59,9 +59,9 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			meta: {
 				className: "w-[10%]",
 			},
-			accessorFn: (row) => row.body?.active,
+			accessorFn: (row) => row.isActive,
 			cell: ({ row }) => {
-				const isActive = !!row.original.body?.active;
+				const isActive = !!row.original.isActive;
 				return <IsActiveBadge isActive={isActive} />;
 			},
 		},
@@ -71,15 +71,11 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			meta: {
 				className: "w-[10%]",
 			},
-			accessorFn: (row) => row.body?.created,
+			accessorFn: (row) => row.created,
 			cell: ({ row }) => {
-				const dateString = row.original.body?.created;
-				if (!dateString) return <NotAvailableTag />;
-				return (
-					<p>
-						<DisplayDate short dateString={dateString} />
-					</p>
-				);
+				const date = row.original.created;
+				if (!date) return <NotAvailableTag />;
+				return <DisplayDate date={date} />;
 			},
 		},
 		...(isAdmin ? adminColumns : []),

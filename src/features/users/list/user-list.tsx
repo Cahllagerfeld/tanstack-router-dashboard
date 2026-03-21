@@ -1,6 +1,6 @@
-import { Pagination } from "@/features/pagination";
 import { DataTable } from "@/components/ui/data-table";
 import { userQueries } from "@/data/user";
+import { Pagination } from "@/features/pagination";
 import { useUserListColumns } from "@/features/users/list/columns";
 import { UserListQueryParams } from "@/types/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ type Props = {
 export function UserList({ queries }: Props) {
 	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
 	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
-	const columns = useUserListColumns(!!currentUser.body?.is_admin);
+	const columns = useUserListColumns(!!currentUser.isAdmin);
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
 	// const hasUsers = userList.total > 0;

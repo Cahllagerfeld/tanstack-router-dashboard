@@ -1,11 +1,11 @@
-import type { Component } from "@/types/components";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyValueList, type KeyValueItem } from "@/components/key-value-list";
-import { ObjectRenderer } from "@/components/object-renderer";
 import { CopyButton } from "@/components/copy-button";
 import DisplayDate from "@/components/display-date";
+import { KeyValueList, type KeyValueItem } from "@/components/key-value-list";
 import { NotAvailableTag } from "@/components/not-available-tag";
+import { ObjectRenderer } from "@/components/object-renderer";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
 
 interface ComponentGeneralTabProps {
@@ -13,7 +13,16 @@ interface ComponentGeneralTabProps {
 }
 
 export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
-	const { body, metadata, resources } = component;
+	const {
+		type,
+		flavor,
+		created,
+		updated,
+		user,
+		configuration,
+		environment,
+		secrets,
+	} = component;
 
 	const basicInfoItems: KeyValueItem[] = [
 		{
@@ -36,8 +45,8 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		{
 			key: "type",
 			label: "Type",
-			value: body?.type ? (
-				<Badge variant="secondary">{snakeCaseToTitleCase(body.type)}</Badge>
+			value: type ? (
+				<Badge variant="secondary">{snakeCaseToTitleCase(type)}</Badge>
 			) : (
 				<NotAvailableTag />
 			),
@@ -45,58 +54,40 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		{
 			key: "flavor",
 			label: "Flavor",
-			value: resources?.flavor ? (
+			value: flavor ? (
 				<div className="flex items-center gap-2">
-					{resources.flavor.body?.logo_url && (
-						<img
-							src={resources.flavor.body.logo_url}
-							alt={resources.flavor.name}
-							className="size-5"
-						/>
+					{flavor.logoUrl && (
+						<img src={flavor.logoUrl} alt={flavor.name} className="size-5" />
 					)}
-					<span>{resources.flavor.name}</span>
+					<span>{flavor.name}</span>
 				</div>
 			) : (
 				<NotAvailableTag />
 			),
 		},
 		{
-			key: "integration",
-			label: "Integration",
-			value: body?.integration || <NotAvailableTag />,
-		},
-		{
 			key: "created",
 			label: "Created",
-			value: body?.created ? (
-				<DisplayDate dateString={body.created} />
-			) : (
-				<NotAvailableTag />
-			),
+			value: created ? <DisplayDate date={created} /> : <NotAvailableTag />,
 		},
 		{
 			key: "updated",
 			label: "Updated",
-			value: body?.updated ? (
-				<DisplayDate dateString={body.updated} />
-			) : (
-				<NotAvailableTag />
-			),
+			value: updated ? <DisplayDate date={updated} /> : <NotAvailableTag />,
 		},
 		{
 			key: "user",
 			label: "Created by",
-			value: resources?.user?.name || <NotAvailableTag />,
+			value: user?.name || <NotAvailableTag />,
 		},
 	];
 
 	const hasConfiguration =
-		metadata?.configuration && Object.keys(metadata.configuration).length > 0;
+		configuration && Object.keys(configuration).length > 0;
 
-	const hasEnvironment =
-		metadata?.environment && Object.keys(metadata.environment).length > 0;
+	const hasEnvironment = environment && Object.keys(environment).length > 0;
 
-	const hasSecrets = metadata?.secrets && metadata.secrets.length > 0;
+	const hasSecrets = secrets && secrets.length > 0;
 
 	return (
 		<div className="@container">
@@ -116,7 +107,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 					</CardHeader>
 					<CardContent>
 						{hasConfiguration ? (
-							<ObjectRenderer data={metadata.configuration} />
+							<ObjectRenderer data={configuration} />
 						) : (
 							<p className="text-muted-foreground text-sm">
 								No configuration available
@@ -131,7 +122,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 					</CardHeader>
 					<CardContent>
 						{hasEnvironment ? (
-							<ObjectRenderer data={metadata.environment} />
+							<ObjectRenderer data={environment} />
 						) : (
 							<p className="text-muted-foreground text-sm">
 								No environment variables configured
@@ -147,7 +138,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 					<CardContent>
 						{hasSecrets ? (
 							<ul className="space-y-2">
-								{metadata.secrets.map((secret) => (
+								{secrets.map((secret) => (
 									<li key={secret} className="flex items-center gap-2">
 										<code className="bg-muted rounded px-1.5 py-0.5 text-xs">
 											{secret}

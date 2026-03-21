@@ -1,3 +1,4 @@
+import { stackFromApi } from "@/domain/stacks";
 import { expectData } from "@/lib/fetch-error";
 import { apiClient } from "../api-client";
 
@@ -9,5 +10,5 @@ export async function fetchStackDetail(stackId: string) {
 			},
 		},
 	});
-	return expectData(response);
+	return stackFromApi(expectData(response));
 }

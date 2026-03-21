@@ -1,3 +1,4 @@
+import { componentFromApi } from "@/domain/components";
 import { expectData } from "@/lib/fetch-error";
 import { apiClient } from "../api-client";
 
@@ -9,5 +10,5 @@ export async function fetchComponentDetail(componentId: string) {
 			},
 		},
 	});
-	return expectData(response);
+	return componentFromApi(expectData(response));
 }

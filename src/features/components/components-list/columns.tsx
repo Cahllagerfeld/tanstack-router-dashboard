@@ -1,10 +1,10 @@
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
-import { Component } from "@/types/components";
-import { ColumnDef } from "@tanstack/react-table";
 import { Link } from "@tanstack/react-router";
+import { ColumnDef } from "@tanstack/react-table";
 
 export function useComponentColumns(): ColumnDef<Component>[] {
 	return [
@@ -51,9 +51,9 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		},
 		{
 			header: "Type",
-			accessorFn: (row) => row.body?.type,
+			accessorFn: (row) => row.type,
 			cell: ({ row }) => {
-				const type = row.original.body?.type;
+				const type = row.original.type;
 				if (!type) return <NotAvailableTag />;
 				return <p>{snakeCaseToTitleCase(type)}</p>;
 			},
@@ -63,10 +63,10 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		},
 		{
 			header: "Flavor",
-			accessorFn: (row) => row.resources?.flavor.name,
+			accessorFn: (row) => row.flavor?.name,
 			cell: ({ row }) => {
-				const logoUrl = row.original.resources?.flavor.body?.logo_url;
-				const flavor = row.original.resources?.flavor.name;
+				const logoUrl = row.original.flavor?.logoUrl;
+				const flavor = row.original.flavor?.name;
 				if (!flavor) return <NotAvailableTag />;
 				return (
 					<div className="flex items-center gap-2">
@@ -89,16 +89,16 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		},
 		{
 			header: "Created at",
-			accessorFn: (row) => row.body?.created,
+			accessorFn: (row) => row.created,
 			meta: {
 				className: "w-[15%]",
 			},
 			cell: ({ row }) => {
-				const dateString = row.original.body?.created;
-				if (!dateString) return <NotAvailableTag />;
+				const created = row.original.created;
+				if (!created) return <NotAvailableTag />;
 				return (
 					<p>
-						<DisplayDate short dateString={dateString} />
+						<DisplayDate short date={created} />
 					</p>
 				);
 			},

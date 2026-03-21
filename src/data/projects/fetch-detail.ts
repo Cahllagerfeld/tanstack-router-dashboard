@@ -1,3 +1,4 @@
+import { projectFromApi } from "@/domain/projects";
 import { expectData } from "@/lib/fetch-error";
 import { apiClient } from "../api-client";
 
@@ -12,5 +13,5 @@ export async function fetchProjectDetail(projectId: string) {
 			},
 		}
 	);
-	return expectData(response);
+	return projectFromApi(expectData(response));
 }

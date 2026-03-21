@@ -1,14 +1,17 @@
 import { projectQueries } from "@/data/projects";
-import { filterSchema } from "@/features/filters/filter";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { requireAuth } from "@/lib/auth-guards";
-import { z } from "zod";
-import { createFilter, getFilterValue } from "@/features/filters/filter";
+import {
+	createFilter,
+	filterSchema,
+	getFilterValue,
+} from "@/features/filters/filter";
 import { ProjectList } from "@/features/projects/overview/project-list";
 import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
+import { requireAuth } from "@/lib/auth-guards";
 import { ProjectListQueries } from "@/types/projects";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
+import { z } from "zod";
 
 const querySchema = z.object({
 	name: filterSchema.optional().catch(undefined),

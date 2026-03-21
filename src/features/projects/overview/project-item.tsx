@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Project } from "@/domain/projects";
 import { getProjectDisplayName } from "@/lib/names";
-import { Project } from "@/types/projects";
 import { Link } from "@tanstack/react-router";
 import { Hash } from "lucide-react";
 import { ProjectActions } from "./project-actions";

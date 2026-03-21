@@ -1,10 +1,5 @@
-import { Project } from "@/types/projects";
-import { User } from "@/types/user";
-
-export function getUsername(user: User) {
-	return user.body?.full_name || user.name;
-}
+import { Project } from "@/domain/projects";
 
 export function getProjectDisplayName(project: Project) {
-	return project.body?.display_name || project.name;
+	return project.displayName ?? project.name;
 }

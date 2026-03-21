@@ -1,7 +1,7 @@
-import type { Component } from "@/types/components";
-import { Badge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/copy-button";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
 
 interface ComponentHeaderProps {
@@ -9,23 +9,19 @@ interface ComponentHeaderProps {
 }
 
 export function ComponentHeader({ component }: ComponentHeaderProps) {
-	const { body, resources } = component;
+	const { flavor, type } = component;
 
 	return (
 		<div className="space-y-1">
 			<div className="flex items-center gap-3">
-				{resources?.flavor?.body?.logo_url && (
-					<img
-						src={resources.flavor.body.logo_url}
-						alt={resources.flavor.name}
-						className="size-8"
-					/>
+				{flavor?.logoUrl && (
+					<img src={flavor.logoUrl} alt={flavor.name} className="size-8" />
 				)}
 
 				<h1 className="text-2xl font-bold">{component.name}</h1>
 
-				{body?.type && (
-					<Badge variant="secondary">{snakeCaseToTitleCase(body.type)}</Badge>
+				{type && (
+					<Badge variant="secondary">{snakeCaseToTitleCase(type)}</Badge>
 				)}
 			</div>
 
