@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
-import { Route as publicGridLayoutRouteImport } from './routes/(public)/_grid-layout'
 import { Route as privateUnscopedRouteImport } from './routes/(private)/_unscoped'
+import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
 import { Route as privateUnscopedProjectsRouteImport } from './routes/(private)/_unscoped/projects'
@@ -37,24 +37,24 @@ const privateIndexRoute = privateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => privateRouteRoute,
 } as any)
-const publicGridLayoutRoute = publicGridLayoutRouteImport.update({
-  id: '/(public)/_grid-layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const privateUnscopedRoute = privateUnscopedRouteImport.update({
   id: '/_unscoped',
   getParentRoute: () => privateRouteRoute,
+} as any)
+const publicGridLayoutRouteRoute = publicGridLayoutRouteRouteImport.update({
+  id: '/(public)/_grid-layout',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const publicGridLayoutServerActivationRoute =
   publicGridLayoutServerActivationRouteImport.update({
     id: '/server-activation',
     path: '/server-activation',
-    getParentRoute: () => publicGridLayoutRoute,
+    getParentRoute: () => publicGridLayoutRouteRoute,
   } as any)
 const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => publicGridLayoutRoute,
+  getParentRoute: () => publicGridLayoutRouteRoute,
 } as any)
 const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport.update({
   id: '/projects',
@@ -161,8 +161,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(private)': typeof privateRouteRouteWithChildren
+  '/(public)/_grid-layout': typeof publicGridLayoutRouteRouteWithChildren
   '/(private)/_unscoped': typeof privateUnscopedRouteWithChildren
-  '/(public)/_grid-layout': typeof publicGridLayoutRouteWithChildren
   '/(private)/': typeof privateIndexRoute
   '/(private)/_unscoped/components': typeof privateUnscopedComponentsRouteRouteWithChildren
   '/(private)/_unscoped/stacks': typeof privateUnscopedStacksRouteRouteWithChildren
@@ -213,8 +213,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(private)'
-    | '/(private)/_unscoped'
     | '/(public)/_grid-layout'
+    | '/(private)/_unscoped'
     | '/(private)/'
     | '/(private)/_unscoped/components'
     | '/(private)/_unscoped/stacks'
@@ -234,7 +234,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   privateRouteRoute: typeof privateRouteRouteWithChildren
-  publicGridLayoutRoute: typeof publicGridLayoutRouteWithChildren
+  publicGridLayoutRouteRoute: typeof publicGridLayoutRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -253,13 +253,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateIndexRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(public)/_grid-layout': {
-      id: '/(public)/_grid-layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof publicGridLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(private)/_unscoped': {
       id: '/(private)/_unscoped'
       path: ''
@@ -267,19 +260,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateUnscopedRouteImport
       parentRoute: typeof privateRouteRoute
     }
+    '/(public)/_grid-layout': {
+      id: '/(public)/_grid-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicGridLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(public)/_grid-layout/server-activation': {
       id: '/(public)/_grid-layout/server-activation'
       path: '/server-activation'
       fullPath: '/server-activation'
       preLoaderRoute: typeof publicGridLayoutServerActivationRouteImport
-      parentRoute: typeof publicGridLayoutRoute
+      parentRoute: typeof publicGridLayoutRouteRoute
     }
     '/(public)/_grid-layout/login': {
       id: '/(public)/_grid-layout/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof publicGridLayoutLoginRouteImport
-      parentRoute: typeof publicGridLayoutRoute
+      parentRoute: typeof publicGridLayoutRouteRoute
     }
     '/(private)/_unscoped/projects': {
       id: '/(private)/_unscoped/projects'
@@ -470,22 +470,24 @@ const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
   privateRouteRouteChildren,
 )
 
-interface publicGridLayoutRouteChildren {
+interface publicGridLayoutRouteRouteChildren {
   publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
   publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
 }
 
-const publicGridLayoutRouteChildren: publicGridLayoutRouteChildren = {
+const publicGridLayoutRouteRouteChildren: publicGridLayoutRouteRouteChildren = {
   publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
   publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
 }
 
-const publicGridLayoutRouteWithChildren =
-  publicGridLayoutRoute._addFileChildren(publicGridLayoutRouteChildren)
+const publicGridLayoutRouteRouteWithChildren =
+  publicGridLayoutRouteRoute._addFileChildren(
+    publicGridLayoutRouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   privateRouteRoute: privateRouteRouteWithChildren,
-  publicGridLayoutRoute: publicGridLayoutRouteWithChildren,
+  publicGridLayoutRouteRoute: publicGridLayoutRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
