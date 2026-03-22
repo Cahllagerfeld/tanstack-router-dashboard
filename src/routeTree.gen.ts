@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
-import { Route as privateUnscopedRouteImport } from './routes/(private)/_unscoped'
 import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
+import { Route as privateUnscopedRouteRouteImport } from './routes/(private)/_unscoped/route'
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
 import { Route as privateUnscopedProjectsRouteImport } from './routes/(private)/_unscoped/projects'
@@ -22,8 +22,8 @@ import { Route as privateUnscopedStacksIndexRouteImport } from './routes/(privat
 import { Route as privateUnscopedComponentsIndexRouteImport } from './routes/(private)/_unscoped/components/index'
 import { Route as privateUnscopedSettingsMembersRouteImport } from './routes/(private)/_unscoped/settings/members'
 import { Route as privateUnscopedSettingsGeneralRouteImport } from './routes/(private)/_unscoped/settings/general'
-import { Route as privateScopedProjectsProject_idRouteImport } from './routes/(private)/_scoped/projects/$project_id'
 import { Route as privateUnscopedComponentsComponent_idRouteRouteImport } from './routes/(private)/_unscoped/components/$component_id/route'
+import { Route as privateScopedProjectsProject_idRouteRouteImport } from './routes/(private)/_scoped/projects/$project_id/route'
 import { Route as privateUnscopedComponentsComponent_idIndexRouteImport } from './routes/(private)/_unscoped/components/$component_id/index'
 import { Route as privateScopedProjectsProject_idIndexRouteImport } from './routes/(private)/_scoped/projects/$project_id/index'
 import { Route as privateUnscopedComponentsComponent_idStacksRouteImport } from './routes/(private)/_unscoped/components/$component_id/stacks'
@@ -37,13 +37,13 @@ const privateIndexRoute = privateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => privateRouteRoute,
 } as any)
-const privateUnscopedRoute = privateUnscopedRouteImport.update({
-  id: '/_unscoped',
-  getParentRoute: () => privateRouteRoute,
-} as any)
 const publicGridLayoutRouteRoute = publicGridLayoutRouteRouteImport.update({
   id: '/(public)/_grid-layout',
   getParentRoute: () => rootRouteImport,
+} as any)
+const privateUnscopedRouteRoute = privateUnscopedRouteRouteImport.update({
+  id: '/_unscoped',
+  getParentRoute: () => privateRouteRoute,
 } as any)
 const publicGridLayoutServerActivationRoute =
   publicGridLayoutServerActivationRouteImport.update({
@@ -59,19 +59,19 @@ const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
 const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
-  getParentRoute: () => privateUnscopedRoute,
+  getParentRoute: () => privateUnscopedRouteRoute,
 } as any)
 const privateUnscopedStacksRouteRoute =
   privateUnscopedStacksRouteRouteImport.update({
     id: '/stacks',
     path: '/stacks',
-    getParentRoute: () => privateUnscopedRoute,
+    getParentRoute: () => privateUnscopedRouteRoute,
   } as any)
 const privateUnscopedComponentsRouteRoute =
   privateUnscopedComponentsRouteRouteImport.update({
     id: '/components',
     path: '/components',
-    getParentRoute: () => privateUnscopedRoute,
+    getParentRoute: () => privateUnscopedRouteRoute,
   } as any)
 const privateUnscopedStacksIndexRoute =
   privateUnscopedStacksIndexRouteImport.update({
@@ -89,25 +89,25 @@ const privateUnscopedSettingsMembersRoute =
   privateUnscopedSettingsMembersRouteImport.update({
     id: '/settings/members',
     path: '/settings/members',
-    getParentRoute: () => privateUnscopedRoute,
+    getParentRoute: () => privateUnscopedRouteRoute,
   } as any)
 const privateUnscopedSettingsGeneralRoute =
   privateUnscopedSettingsGeneralRouteImport.update({
     id: '/settings/general',
     path: '/settings/general',
-    getParentRoute: () => privateUnscopedRoute,
-  } as any)
-const privateScopedProjectsProject_idRoute =
-  privateScopedProjectsProject_idRouteImport.update({
-    id: '/_scoped/projects/$project_id',
-    path: '/projects/$project_id',
-    getParentRoute: () => privateRouteRoute,
+    getParentRoute: () => privateUnscopedRouteRoute,
   } as any)
 const privateUnscopedComponentsComponent_idRouteRoute =
   privateUnscopedComponentsComponent_idRouteRouteImport.update({
     id: '/$component_id',
     path: '/$component_id',
     getParentRoute: () => privateUnscopedComponentsRouteRoute,
+  } as any)
+const privateScopedProjectsProject_idRouteRoute =
+  privateScopedProjectsProject_idRouteRouteImport.update({
+    id: '/_scoped/projects/$project_id',
+    path: '/projects/$project_id',
+    getParentRoute: () => privateRouteRoute,
   } as any)
 const privateUnscopedComponentsComponent_idIndexRoute =
   privateUnscopedComponentsComponent_idIndexRouteImport.update({
@@ -119,7 +119,7 @@ const privateScopedProjectsProject_idIndexRoute =
   privateScopedProjectsProject_idIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => privateScopedProjectsProject_idRoute,
+    getParentRoute: () => privateScopedProjectsProject_idRouteRoute,
   } as any)
 const privateUnscopedComponentsComponent_idStacksRoute =
   privateUnscopedComponentsComponent_idStacksRouteImport.update({
@@ -135,8 +135,8 @@ export interface FileRoutesByFullPath {
   '/projects': typeof privateUnscopedProjectsRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
+  '/projects/$project_id': typeof privateScopedProjectsProject_idRouteRouteWithChildren
   '/components/$component_id': typeof privateUnscopedComponentsComponent_idRouteRouteWithChildren
-  '/projects/$project_id': typeof privateScopedProjectsProject_idRouteWithChildren
   '/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/components/': typeof privateUnscopedComponentsIndexRoute
@@ -161,16 +161,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(private)': typeof privateRouteRouteWithChildren
+  '/(private)/_unscoped': typeof privateUnscopedRouteRouteWithChildren
   '/(public)/_grid-layout': typeof publicGridLayoutRouteRouteWithChildren
-  '/(private)/_unscoped': typeof privateUnscopedRouteWithChildren
   '/(private)/': typeof privateIndexRoute
   '/(private)/_unscoped/components': typeof privateUnscopedComponentsRouteRouteWithChildren
   '/(private)/_unscoped/stacks': typeof privateUnscopedStacksRouteRouteWithChildren
   '/(private)/_unscoped/projects': typeof privateUnscopedProjectsRoute
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
+  '/(private)/_scoped/projects/$project_id': typeof privateScopedProjectsProject_idRouteRouteWithChildren
   '/(private)/_unscoped/components/$component_id': typeof privateUnscopedComponentsComponent_idRouteRouteWithChildren
-  '/(private)/_scoped/projects/$project_id': typeof privateScopedProjectsProject_idRouteWithChildren
   '/(private)/_unscoped/settings/general': typeof privateUnscopedSettingsGeneralRoute
   '/(private)/_unscoped/settings/members': typeof privateUnscopedSettingsMembersRoute
   '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
@@ -188,8 +188,8 @@ export interface FileRouteTypes {
     | '/projects'
     | '/login'
     | '/server-activation'
-    | '/components/$component_id'
     | '/projects/$project_id'
+    | '/components/$component_id'
     | '/settings/general'
     | '/settings/members'
     | '/components/'
@@ -213,16 +213,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(private)'
-    | '/(public)/_grid-layout'
     | '/(private)/_unscoped'
+    | '/(public)/_grid-layout'
     | '/(private)/'
     | '/(private)/_unscoped/components'
     | '/(private)/_unscoped/stacks'
     | '/(private)/_unscoped/projects'
     | '/(public)/_grid-layout/login'
     | '/(public)/_grid-layout/server-activation'
-    | '/(private)/_unscoped/components/$component_id'
     | '/(private)/_scoped/projects/$project_id'
+    | '/(private)/_unscoped/components/$component_id'
     | '/(private)/_unscoped/settings/general'
     | '/(private)/_unscoped/settings/members'
     | '/(private)/_unscoped/components/'
@@ -253,19 +253,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateIndexRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(private)/_unscoped': {
-      id: '/(private)/_unscoped'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof privateUnscopedRouteImport
-      parentRoute: typeof privateRouteRoute
-    }
     '/(public)/_grid-layout': {
       id: '/(public)/_grid-layout'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof publicGridLayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(private)/_unscoped': {
+      id: '/(private)/_unscoped'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof privateUnscopedRouteRouteImport
+      parentRoute: typeof privateRouteRoute
     }
     '/(public)/_grid-layout/server-activation': {
       id: '/(public)/_grid-layout/server-activation'
@@ -286,21 +286,21 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof privateUnscopedProjectsRouteImport
-      parentRoute: typeof privateUnscopedRoute
+      parentRoute: typeof privateUnscopedRouteRoute
     }
     '/(private)/_unscoped/stacks': {
       id: '/(private)/_unscoped/stacks'
       path: '/stacks'
       fullPath: '/stacks'
       preLoaderRoute: typeof privateUnscopedStacksRouteRouteImport
-      parentRoute: typeof privateUnscopedRoute
+      parentRoute: typeof privateUnscopedRouteRoute
     }
     '/(private)/_unscoped/components': {
       id: '/(private)/_unscoped/components'
       path: '/components'
       fullPath: '/components'
       preLoaderRoute: typeof privateUnscopedComponentsRouteRouteImport
-      parentRoute: typeof privateUnscopedRoute
+      parentRoute: typeof privateUnscopedRouteRoute
     }
     '/(private)/_unscoped/stacks/': {
       id: '/(private)/_unscoped/stacks/'
@@ -321,21 +321,14 @@ declare module '@tanstack/react-router' {
       path: '/settings/members'
       fullPath: '/settings/members'
       preLoaderRoute: typeof privateUnscopedSettingsMembersRouteImport
-      parentRoute: typeof privateUnscopedRoute
+      parentRoute: typeof privateUnscopedRouteRoute
     }
     '/(private)/_unscoped/settings/general': {
       id: '/(private)/_unscoped/settings/general'
       path: '/settings/general'
       fullPath: '/settings/general'
       preLoaderRoute: typeof privateUnscopedSettingsGeneralRouteImport
-      parentRoute: typeof privateUnscopedRoute
-    }
-    '/(private)/_scoped/projects/$project_id': {
-      id: '/(private)/_scoped/projects/$project_id'
-      path: '/projects/$project_id'
-      fullPath: '/projects/$project_id'
-      preLoaderRoute: typeof privateScopedProjectsProject_idRouteImport
-      parentRoute: typeof privateRouteRoute
+      parentRoute: typeof privateUnscopedRouteRoute
     }
     '/(private)/_unscoped/components/$component_id': {
       id: '/(private)/_unscoped/components/$component_id'
@@ -343,6 +336,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/components/$component_id'
       preLoaderRoute: typeof privateUnscopedComponentsComponent_idRouteRouteImport
       parentRoute: typeof privateUnscopedComponentsRouteRoute
+    }
+    '/(private)/_scoped/projects/$project_id': {
+      id: '/(private)/_scoped/projects/$project_id'
+      path: '/projects/$project_id'
+      fullPath: '/projects/$project_id'
+      preLoaderRoute: typeof privateScopedProjectsProject_idRouteRouteImport
+      parentRoute: typeof privateRouteRoute
     }
     '/(private)/_unscoped/components/$component_id/': {
       id: '/(private)/_unscoped/components/$component_id/'
@@ -356,7 +356,7 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/projects/$project_id/'
       preLoaderRoute: typeof privateScopedProjectsProject_idIndexRouteImport
-      parentRoute: typeof privateScopedProjectsProject_idRoute
+      parentRoute: typeof privateScopedProjectsProject_idRouteRoute
     }
     '/(private)/_unscoped/components/$component_id/stacks': {
       id: '/(private)/_unscoped/components/$component_id/stacks'
@@ -417,7 +417,7 @@ const privateUnscopedStacksRouteRouteWithChildren =
     privateUnscopedStacksRouteRouteChildren,
   )
 
-interface privateUnscopedRouteChildren {
+interface privateUnscopedRouteRouteChildren {
   privateUnscopedComponentsRouteRoute: typeof privateUnscopedComponentsRouteRouteWithChildren
   privateUnscopedStacksRouteRoute: typeof privateUnscopedStacksRouteRouteWithChildren
   privateUnscopedProjectsRoute: typeof privateUnscopedProjectsRoute
@@ -425,7 +425,7 @@ interface privateUnscopedRouteChildren {
   privateUnscopedSettingsMembersRoute: typeof privateUnscopedSettingsMembersRoute
 }
 
-const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
+const privateUnscopedRouteRouteChildren: privateUnscopedRouteRouteChildren = {
   privateUnscopedComponentsRouteRoute:
     privateUnscopedComponentsRouteRouteWithChildren,
   privateUnscopedStacksRouteRoute: privateUnscopedStacksRouteRouteWithChildren,
@@ -434,36 +434,35 @@ const privateUnscopedRouteChildren: privateUnscopedRouteChildren = {
   privateUnscopedSettingsMembersRoute: privateUnscopedSettingsMembersRoute,
 }
 
-const privateUnscopedRouteWithChildren = privateUnscopedRoute._addFileChildren(
-  privateUnscopedRouteChildren,
-)
+const privateUnscopedRouteRouteWithChildren =
+  privateUnscopedRouteRoute._addFileChildren(privateUnscopedRouteRouteChildren)
 
-interface privateScopedProjectsProject_idRouteChildren {
+interface privateScopedProjectsProject_idRouteRouteChildren {
   privateScopedProjectsProject_idIndexRoute: typeof privateScopedProjectsProject_idIndexRoute
 }
 
-const privateScopedProjectsProject_idRouteChildren: privateScopedProjectsProject_idRouteChildren =
+const privateScopedProjectsProject_idRouteRouteChildren: privateScopedProjectsProject_idRouteRouteChildren =
   {
     privateScopedProjectsProject_idIndexRoute:
       privateScopedProjectsProject_idIndexRoute,
   }
 
-const privateScopedProjectsProject_idRouteWithChildren =
-  privateScopedProjectsProject_idRoute._addFileChildren(
-    privateScopedProjectsProject_idRouteChildren,
+const privateScopedProjectsProject_idRouteRouteWithChildren =
+  privateScopedProjectsProject_idRouteRoute._addFileChildren(
+    privateScopedProjectsProject_idRouteRouteChildren,
   )
 
 interface privateRouteRouteChildren {
-  privateUnscopedRoute: typeof privateUnscopedRouteWithChildren
+  privateUnscopedRouteRoute: typeof privateUnscopedRouteRouteWithChildren
   privateIndexRoute: typeof privateIndexRoute
-  privateScopedProjectsProject_idRoute: typeof privateScopedProjectsProject_idRouteWithChildren
+  privateScopedProjectsProject_idRouteRoute: typeof privateScopedProjectsProject_idRouteRouteWithChildren
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
-  privateUnscopedRoute: privateUnscopedRouteWithChildren,
+  privateUnscopedRouteRoute: privateUnscopedRouteRouteWithChildren,
   privateIndexRoute: privateIndexRoute,
-  privateScopedProjectsProject_idRoute:
-    privateScopedProjectsProject_idRouteWithChildren,
+  privateScopedProjectsProject_idRouteRoute:
+    privateScopedProjectsProject_idRouteRouteWithChildren,
 }
 
 const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
