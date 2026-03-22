@@ -1,10 +1,17 @@
+import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { createFileRoute } from "@tanstack/react-router";
-import { DataTable } from "@/components/ui/data-table";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
+import { StackTable } from "@/features/stacks/stacks-list/stack-table";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RowSelectionState } from "@tanstack/react-table";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+	ColumnSizingState,
+	getCoreRowModel,
+	RowSelectionState,
+	useReactTable,
+	VisibilityState,
+} from "@tanstack/react-table";
 import { useState } from "react";
 
 const querySchema = commonFilterSchema;
@@ -29,8 +36,33 @@ export const Route = createFileRoute("/(private)/_unscoped/stacks/")({
 function RouteComponent() {
 	const columns = useStackColumns();
 	const { size, page } = Route.useSearch();
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	const data = useSuspenseQuery(stackQueries.list({ size, page }));
+
+	const table = useReactTable({
+		data: data.data.items,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		getRowId: (row) => row.id,
+		onColumnVisibilityChange: setColumnVisibility,
+		onColumnSizingChange: setColumnSizing,
+		onRowSelectionChange: setRowSelection,
+		columnResizeMode: "onChange",
+		enableColumnResizing: true,
+		defaultColumn: {
+			enableHiding: false,
+			size: 200,
+			minSize: 150,
+			maxSize: 400,
+		},
+		state: {
+			columnVisibility,
+			columnSizing,
+			rowSelection,
+		},
+	});
 
 	return (
 		<div className="space-y-4">
@@ -40,13 +72,10 @@ function RouteComponent() {
 					Stacks are collections of components that work together.
 				</p>
 			</div>
-			<DataTable
-				getRowId={(row) => row.id}
-				data={data.data.items}
-				rowSelection={rowSelection}
-				setRowSelection={setRowSelection}
-				columns={columns}
-			/>
+			<div className="flex items-center justify-end gap-2">
+				<DataTableViewOptions table={table} />
+			</div>
+			<StackTable table={table} />
 		</div>
 	);
 }

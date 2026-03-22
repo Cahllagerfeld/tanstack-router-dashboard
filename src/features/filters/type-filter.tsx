@@ -65,13 +65,13 @@ export function TypeFilter({ filter }: Props) {
 					<Button
 						data-state={filter ? "active" : "inactive"}
 						variant="outline"
-						className="data-[state=active]:border-primary"
-					>
-						<Filter />
-						{getComponentTypeLabel(filter) || "Type"}
-					</Button>
+						className="data-[state=active]:border-primary h-8"
+					></Button>
 				}
-			></PopoverTrigger>
+			>
+				<Filter />
+				{getComponentTypeLabel(filter) || "Type"}
+			</PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">
 					<div>Type</div>
