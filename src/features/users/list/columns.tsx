@@ -11,9 +11,10 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 	return [
 		{
 			id: "select",
-			meta: {
-				className: "w-fit",
-			},
+			enableResizing: false,
+			size: 32,
+			minSize: 32,
+			maxSize: 32,
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
@@ -40,9 +41,7 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 		{
 			header: "Name",
 			accessorKey: "name",
-			meta: {
-				className: "w-full",
-			},
+			enableHiding: true,
 			cell: ({ row }) => {
 				const username = row.original.name;
 				const isAdmin = row.original.isAdmin;
@@ -55,11 +54,10 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 			},
 		},
 		{
+			id: "status",
 			header: "Status",
-			meta: {
-				className: "w-[10%]",
-			},
 			accessorFn: (row) => row.isActive,
+			enableHiding: true,
 			cell: ({ row }) => {
 				const isActive = !!row.original.isActive;
 				return <IsActiveBadge isActive={isActive} />;
@@ -68,10 +66,8 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 		{
 			id: "created",
 			header: "Created",
-			meta: {
-				className: "w-[10%]",
-			},
 			accessorFn: (row) => row.created,
+			enableHiding: true,
 			cell: ({ row }) => {
 				const date = row.original.created;
 				if (!date) return <NotAvailableTag />;
@@ -85,9 +81,10 @@ export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
 const adminColumns: ColumnDef<User>[] = [
 	{
 		id: "actions",
-		meta: {
-			className: "w-fit",
-		},
+		enableResizing: false,
+		size: 80,
+		minSize: 80,
+		maxSize: 120,
 		enableSorting: false,
 		enableHiding: false,
 		cell: () => {

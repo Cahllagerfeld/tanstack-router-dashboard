@@ -6,6 +6,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const stackSelectColumn: ColumnDef<Stack> = {
 	id: "select",
+	enableResizing: false,
+	size: 32,
+	minSize: 32,
+	maxSize: 32,
 	header: ({ table }) => (
 		<Checkbox
 			checked={table.getIsAllPageRowsSelected()}
@@ -30,31 +34,27 @@ export const stackSelectColumn: ColumnDef<Stack> = {
 export const stackNameColumn: ColumnDef<Stack> = {
 	header: "Name",
 	accessorKey: "name",
+	enableHiding: true,
 	cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
-	meta: {
-		className: "w-1/2",
-	},
 };
 
 export const stackCreatedByColumn: ColumnDef<Stack> = {
+	id: "Created by",
 	header: "Created by",
 	accessorFn: (row) => row.user?.name,
+	enableHiding: true,
 	cell: ({ row }) => {
 		const userName = row.original.user?.name;
 		if (!userName) return <NotAvailableTag />;
 		return <p>{userName}</p>;
 	},
-	meta: {
-		className: "w-[20%]",
-	},
 };
 
 export const stackCreatedAtColumn: ColumnDef<Stack> = {
+	id: "Created at",
 	header: "Created at",
 	accessorFn: (row) => row.created,
-	meta: {
-		className: "w-[15%]",
-	},
+	enableHiding: true,
 	cell: ({ row }) => {
 		const date = row.original.created;
 		if (!date) return <NotAvailableTag />;
