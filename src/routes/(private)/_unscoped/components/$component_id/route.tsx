@@ -19,7 +19,7 @@ export const Route = createFileRoute(
 		const component = await ensureQueryDataOr404(
 			queryClient.ensureQueryData(componentQueries.detail(component_id))
 		);
-		return { component };
+		return { component, crumb: component.name };
 	},
 	head({ loaderData }) {
 		if (!loaderData?.component)

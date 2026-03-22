@@ -1,6 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
 import { serverQueries } from "@/data/server";
-import { userQueries } from "@/data/user";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -13,14 +12,13 @@ import {
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
 }>()({
-	beforeLoad: async ({ context: { queryClient }, location }) => {
-		await queryClient.prefetchQuery(userQueries.currentUser());
+	beforeLoad: async ({ context: { queryClient }, location, buildLocation }) => {
 		const serverInfo = await queryClient.ensureQueryData(
 			serverQueries.serverInfo()
 		);
 		if (
 			serverInfo.active === false &&
-			location.pathname !== "/server-activation"
+			location.pathname !== buildLocation({ to: "/server-activation" }).pathname
 		)
 			throw redirect({ to: "/server-activation" });
 	},
