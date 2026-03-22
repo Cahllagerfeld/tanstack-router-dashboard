@@ -1,12 +1,19 @@
+import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { componentQueries } from "@/data/components";
+import { useComponentColumns } from "@/features/components/components-list/columns";
+import { ComponentTable } from "@/features/components/components-list/component-table";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { typeFilterSchema } from "@/features/filters/type";
-import { createFileRoute } from "@tanstack/react-router";
-import { DataTable } from "@/components/ui/data-table";
-import { useComponentColumns } from "@/features/components/components-list/columns";
 import { TypeFilter } from "@/features/filters/type-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RowSelectionState } from "@tanstack/react-table";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+	ColumnSizingState,
+	getCoreRowModel,
+	RowSelectionState,
+	useReactTable,
+	VisibilityState,
+} from "@tanstack/react-table";
 import { useState } from "react";
 
 const querySchema = commonFilterSchema.extend({
@@ -34,8 +41,37 @@ export const Route = createFileRoute("/(private)/_unscoped/components/")({
 function RouteComponent() {
 	const columns = useComponentColumns();
 	const { size, page, type } = Route.useSearch();
+
+	const { data } = useSuspenseQuery(
+		componentQueries.list({ size, page, type })
+	);
+
+	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-	const data = useSuspenseQuery(componentQueries.list({ size, page, type }));
+
+	const table = useReactTable({
+		data: data.items,
+		columns: columns,
+		getCoreRowModel: getCoreRowModel(),
+		getRowId: (row) => row.id,
+		onColumnVisibilityChange: setColumnVisibility,
+		onColumnSizingChange: setColumnSizing,
+		onRowSelectionChange: setRowSelection,
+		columnResizeMode: "onChange",
+		enableColumnResizing: true,
+		defaultColumn: {
+			enableHiding: false,
+			size: 200,
+			minSize: 150,
+			maxSize: 400,
+		},
+		state: {
+			columnVisibility,
+			columnSizing,
+			rowSelection,
+		},
+	});
 
 	return (
 		<div className="space-y-4">
@@ -45,14 +81,11 @@ function RouteComponent() {
 					Components are the building blocks of your stacks.
 				</p>
 			</div>
-			<TypeFilter queryName="type" filter={type} />
-			<DataTable
-				getRowId={(row) => row.id}
-				data={data.data.items}
-				rowSelection={rowSelection}
-				setRowSelection={setRowSelection}
-				columns={columns}
-			/>
+			<div className="flex items-center gap-2">
+				<TypeFilter queryName="type" filter={type} />
+				<DataTableViewOptions table={table} />
+			</div>
+			<ComponentTable table={table} />
 		</div>
 	);
 }

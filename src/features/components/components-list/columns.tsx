@@ -10,6 +10,10 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 	return [
 		{
 			id: "select",
+			enableResizing: false,
+			size: 32,
+			minSize: 32,
+			maxSize: 32,
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
@@ -36,6 +40,7 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		{
 			header: "Name",
 			accessorKey: "name",
+			enableHiding: true,
 			cell: ({ row }) => (
 				<Link
 					to="/components/$component_id"
@@ -51,6 +56,7 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		},
 		{
 			header: "Type",
+			enableHiding: true,
 			accessorFn: (row) => row.type,
 			cell: ({ row }) => {
 				const type = row.original.type;
@@ -64,6 +70,7 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		{
 			header: "Flavor",
 			accessorFn: (row) => row.flavor?.name,
+			enableHiding: true,
 			cell: ({ row }) => {
 				const logoUrl = row.original.flavor?.logoUrl;
 				const flavor = row.original.flavor?.name;
@@ -89,6 +96,7 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 		},
 		{
 			header: "Created at",
+			enableHiding: true,
 			accessorFn: (row) => row.created,
 			meta: {
 				className: "w-[15%]",
