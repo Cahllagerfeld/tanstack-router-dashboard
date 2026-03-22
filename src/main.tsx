@@ -4,6 +4,7 @@ import { queryClient } from "@/lib/query-client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import { DefaultErrorPage } from "./features/root/global-error-boundary";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
@@ -11,6 +12,7 @@ const router = createRouter({
 	context: { queryClient },
 	defaultPreload: "intent",
 	defaultPreloadStaleTime: 0,
+	defaultErrorComponent: DefaultErrorPage,
 });
 
 declare module "@tanstack/react-router" {
