@@ -10,7 +10,6 @@
 
   packages = [ 
     pkgs.git
-    pkgs.claude-code
   ];
 
   env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
