@@ -1,6 +1,14 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { NavbarItem } from "@/types/navbar";
-import { Box, Boxes, Frame, Settings } from "lucide-react";
+import {
+	Activity,
+	Box,
+	Boxes,
+	Frame,
+	GitBranch,
+	PlayCircle,
+	Settings,
+} from "lucide-react";
 
 const unscopedNavMain: NavbarItem[] = [
 	{
@@ -51,8 +59,32 @@ const unscopedNavMain: NavbarItem[] = [
 	},
 ];
 
-export function useUnscopedSidebar() {
-	const navItems = useSidebarItems(unscopedNavMain);
+const projectPreviewNavMain: NavbarItem[] = [
+	{
+		title: "Project Overview",
+		url: "#",
+		icon: Frame,
+	},
+	{
+		title: "Pipelines",
+		url: "#",
+		icon: GitBranch,
+	},
+	{
+		title: "Runs",
+		url: "#",
+		icon: PlayCircle,
+	},
+	{
+		title: "Artifacts",
+		url: "#",
+		icon: Activity,
+	},
+];
 
-	return { navItems };
+export function useNavbarItems() {
+	const navItems = useSidebarItems(unscopedNavMain);
+	const projectPreviewItems = useSidebarItems(projectPreviewNavMain);
+
+	return { navItems, projectPreviewItems };
 }

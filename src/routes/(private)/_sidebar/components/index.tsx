@@ -1,8 +1,10 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { stackQueries } from "@/data/stacks";
+import { componentQueries } from "@/data/components";
+import { useComponentColumns } from "@/features/components/components-list/columns";
+import { ComponentTable } from "@/features/components/components-list/component-table";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { useStackColumns } from "@/features/stacks/stacks-list/columns";
-import { StackTable } from "@/features/stacks/stacks-list/stack-table";
+import { typeFilterSchema } from "@/features/filters/type";
+import { TypeFilter } from "@/features/filters/type-filter";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -14,36 +16,43 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-const querySchema = commonFilterSchema;
+const querySchema = commonFilterSchema.extend({
+	type: typeFilterSchema.catch(undefined),
+});
 
-export const Route = createFileRoute("/(private)/_unscoped/stacks/")({
+export const Route = createFileRoute("/(private)/_sidebar/components/")({
 	validateSearch: querySchema,
-	loaderDeps: ({ search: { page, size } }) => ({ page, size }),
-	loader: async ({ context: { queryClient }, deps: { page, size } }) => {
-		await queryClient.ensureQueryData(
-			stackQueries.list({
+	loaderDeps: ({ search: { type, page, size } }) => ({ type, page, size }),
+	loader: ({ context: { queryClient }, deps: { type, page, size } }) => {
+		return queryClient.ensureQueryData(
+			componentQueries.list({
+				type,
 				page,
 				size,
 			})
 		);
 	},
 	head: () => ({
-		meta: [{ title: "Stacks" }],
+		meta: [{ title: "Components" }],
 	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const columns = useStackColumns();
-	const { size, page } = Route.useSearch();
+	const columns = useComponentColumns();
+	const { size, page, type } = Route.useSearch();
+
+	const { data } = useSuspenseQuery(
+		componentQueries.list({ size, page, type })
+	);
+
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-	const data = useSuspenseQuery(stackQueries.list({ size, page }));
 
 	const table = useReactTable({
-		data: data.data.items,
-		columns,
+		data: data.items,
+		columns: columns,
 		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id,
 		onColumnVisibilityChange: setColumnVisibility,
@@ -67,15 +76,16 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Stacks</h1>
+				<h1 className="text-2xl font-bold">Components</h1>
 				<p className="text-muted-foreground text-sm">
-					Stacks are collections of components that work together.
+					Components are the building blocks of your stacks.
 				</p>
 			</div>
-			<div className="flex items-center justify-end gap-2">
+			<div className="flex items-center gap-2">
+				<TypeFilter queryName="type" filter={type} />
 				<DataTableViewOptions table={table} />
 			</div>
-			<StackTable table={table} />
+			<ComponentTable table={table} />
 		</div>
 	);
 }

@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
 
 export const Route = createFileRoute(
-	"/(private)/_unscoped/components/$component_id/"
+	"/(private)/_sidebar/components/$component_id/"
 )({
 	component: RouteComponent,
 });

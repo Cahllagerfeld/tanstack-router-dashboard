@@ -9,22 +9,17 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
 import { getAvatarUrl } from "@/lib/avatar";
-import { getProjectDisplayName } from "@/lib/names";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Frame } from "lucide-react";
-import { Suspense } from "react";
-import { Avatar, AvatarImage } from "../../ui/avatar";
-import { NavProjects } from "../nav-projects";
-import { useUnscopedSidebar } from "./service";
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { useNavbarItems } from "./use-navbar-items";
 
 export function UnscopedSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
-	const { navItems } = useUnscopedSidebar();
+	const { navItems, projectPreviewItems } = useNavbarItems();
 
 	return (
 		<Sidebar variant="inset" {...props}>
@@ -33,31 +28,13 @@ export function UnscopedSidebar({
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={navItems} label="Server" />
-				<Suspense fallback={<div>Loading...</div>}>
-					<ProjectsSidebar />
-				</Suspense>
-				{/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+				<NavMain items={projectPreviewItems} label="Project (Preview)" />
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser />
 			</SidebarFooter>
 		</Sidebar>
 	);
-}
-
-function ProjectsSidebar() {
-	const { data: projectData } = useSuspenseQuery(
-		projectQueries.list({ size: 3 })
-	);
-
-	const projects = projectData.items.map((project) => ({
-		id: project.id,
-		name: getProjectDisplayName(project),
-		url: `/projects/${project.name}`,
-		icon: Frame,
-	}));
-
-	return <NavProjects projects={projects} />;
 }
 
 function UnscopedSidebarHeader() {

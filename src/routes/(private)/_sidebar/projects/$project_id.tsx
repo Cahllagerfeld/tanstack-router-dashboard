@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-	"/(private)/_scoped/projects/$project_id/"
+	"/(private)/_sidebar/projects/$project_id"
 )({
 	component: RouteComponent,
 });
