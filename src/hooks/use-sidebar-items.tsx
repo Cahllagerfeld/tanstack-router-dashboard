@@ -5,6 +5,14 @@ export function useSidebarItems(items: NavbarItem[]) {
 	const location = useLocation();
 
 	return items.map((item) => {
+		if (item.activePathPrefix) {
+			const isActive = location.pathname.startsWith(item.activePathPrefix);
+			return {
+				...item,
+				isActive,
+			};
+		}
+
 		const subItems = item.items;
 		if (subItems && subItems.length > 0) {
 			const mappedSubItems = subItems.map((subItem) => ({

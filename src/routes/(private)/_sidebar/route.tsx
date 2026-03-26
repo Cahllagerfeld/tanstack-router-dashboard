@@ -1,5 +1,5 @@
 import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
-import { UnscopedSidebar } from "@/components/sidebar/unscoped";
+import { UnscopedSidebar } from "@/components/sidebar/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(private)/_unscoped")({
+export const Route = createFileRoute("/(private)/_sidebar")({
 	component: RouteComponent,
 });
 

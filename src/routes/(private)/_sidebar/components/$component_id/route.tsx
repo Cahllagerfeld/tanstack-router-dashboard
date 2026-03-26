@@ -13,7 +13,7 @@ import { ComponentHeader } from "@/features/components/detail/component-header";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute(
-	"/(private)/_unscoped/components/$component_id"
+	"/(private)/_sidebar/components/$component_id"
 )({
 	loader: async ({ context: { queryClient }, params: { component_id } }) => {
 		const component = await ensureQueryDataOr404(

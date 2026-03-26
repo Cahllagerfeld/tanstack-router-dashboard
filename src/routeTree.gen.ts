@@ -12,21 +12,23 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
 import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
-import { Route as privateUnscopedRouteRouteImport } from './routes/(private)/_unscoped/route'
+import { Route as privateSidebarRouteRouteImport } from './routes/(private)/_sidebar/route'
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
-import { Route as privateUnscopedProjectsRouteImport } from './routes/(private)/_unscoped/projects'
-import { Route as privateUnscopedStacksRouteRouteImport } from './routes/(private)/_unscoped/stacks/route'
-import { Route as privateUnscopedComponentsRouteRouteImport } from './routes/(private)/_unscoped/components/route'
-import { Route as privateUnscopedStacksIndexRouteImport } from './routes/(private)/_unscoped/stacks/index'
-import { Route as privateUnscopedComponentsIndexRouteImport } from './routes/(private)/_unscoped/components/index'
-import { Route as privateUnscopedSettingsMembersRouteImport } from './routes/(private)/_unscoped/settings/members'
-import { Route as privateUnscopedSettingsGeneralRouteImport } from './routes/(private)/_unscoped/settings/general'
-import { Route as privateUnscopedComponentsComponent_idRouteRouteImport } from './routes/(private)/_unscoped/components/$component_id/route'
-import { Route as privateScopedProjectsProject_idRouteRouteImport } from './routes/(private)/_scoped/projects/$project_id/route'
-import { Route as privateUnscopedComponentsComponent_idIndexRouteImport } from './routes/(private)/_unscoped/components/$component_id/index'
-import { Route as privateScopedProjectsProject_idIndexRouteImport } from './routes/(private)/_scoped/projects/$project_id/index'
-import { Route as privateUnscopedComponentsComponent_idStacksRouteImport } from './routes/(private)/_unscoped/components/$component_id/stacks'
+import { Route as privateSidebarStacksRouteRouteImport } from './routes/(private)/_sidebar/stacks/route'
+import { Route as privateSidebarSettingsRouteRouteImport } from './routes/(private)/_sidebar/settings/route'
+import { Route as privateSidebarProjectsRouteRouteImport } from './routes/(private)/_sidebar/projects/route'
+import { Route as privateSidebarComponentsRouteRouteImport } from './routes/(private)/_sidebar/components/route'
+import { Route as privateSidebarStacksIndexRouteImport } from './routes/(private)/_sidebar/stacks/index'
+import { Route as privateSidebarSettingsIndexRouteImport } from './routes/(private)/_sidebar/settings/index'
+import { Route as privateSidebarProjectsIndexRouteImport } from './routes/(private)/_sidebar/projects/index'
+import { Route as privateSidebarComponentsIndexRouteImport } from './routes/(private)/_sidebar/components/index'
+import { Route as privateSidebarSettingsMembersRouteImport } from './routes/(private)/_sidebar/settings/members'
+import { Route as privateSidebarSettingsGeneralRouteImport } from './routes/(private)/_sidebar/settings/general'
+import { Route as privateSidebarProjectsProject_idRouteImport } from './routes/(private)/_sidebar/projects/$project_id'
+import { Route as privateSidebarComponentsComponent_idRouteRouteImport } from './routes/(private)/_sidebar/components/$component_id/route'
+import { Route as privateSidebarComponentsComponent_idIndexRouteImport } from './routes/(private)/_sidebar/components/$component_id/index'
+import { Route as privateSidebarComponentsComponent_idStacksRouteImport } from './routes/(private)/_sidebar/components/$component_id/stacks'
 
 const privateRouteRoute = privateRouteRouteImport.update({
   id: '/(private)',
@@ -41,8 +43,8 @@ const publicGridLayoutRouteRoute = publicGridLayoutRouteRouteImport.update({
   id: '/(public)/_grid-layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const privateUnscopedRouteRoute = privateUnscopedRouteRouteImport.update({
-  id: '/_unscoped',
+const privateSidebarRouteRoute = privateSidebarRouteRouteImport.update({
+  id: '/_sidebar',
   getParentRoute: () => privateRouteRoute,
 } as any)
 const publicGridLayoutServerActivationRoute =
@@ -56,180 +58,203 @@ const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => publicGridLayoutRouteRoute,
 } as any)
-const privateUnscopedProjectsRoute = privateUnscopedProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => privateUnscopedRouteRoute,
-} as any)
-const privateUnscopedStacksRouteRoute =
-  privateUnscopedStacksRouteRouteImport.update({
+const privateSidebarStacksRouteRoute =
+  privateSidebarStacksRouteRouteImport.update({
     id: '/stacks',
     path: '/stacks',
-    getParentRoute: () => privateUnscopedRouteRoute,
+    getParentRoute: () => privateSidebarRouteRoute,
   } as any)
-const privateUnscopedComponentsRouteRoute =
-  privateUnscopedComponentsRouteRouteImport.update({
+const privateSidebarSettingsRouteRoute =
+  privateSidebarSettingsRouteRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => privateSidebarRouteRoute,
+  } as any)
+const privateSidebarProjectsRouteRoute =
+  privateSidebarProjectsRouteRouteImport.update({
+    id: '/projects',
+    path: '/projects',
+    getParentRoute: () => privateSidebarRouteRoute,
+  } as any)
+const privateSidebarComponentsRouteRoute =
+  privateSidebarComponentsRouteRouteImport.update({
     id: '/components',
     path: '/components',
-    getParentRoute: () => privateUnscopedRouteRoute,
+    getParentRoute: () => privateSidebarRouteRoute,
   } as any)
-const privateUnscopedStacksIndexRoute =
-  privateUnscopedStacksIndexRouteImport.update({
+const privateSidebarStacksIndexRoute =
+  privateSidebarStacksIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => privateUnscopedStacksRouteRoute,
+    getParentRoute: () => privateSidebarStacksRouteRoute,
   } as any)
-const privateUnscopedComponentsIndexRoute =
-  privateUnscopedComponentsIndexRouteImport.update({
+const privateSidebarSettingsIndexRoute =
+  privateSidebarSettingsIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => privateUnscopedComponentsRouteRoute,
+    getParentRoute: () => privateSidebarSettingsRouteRoute,
   } as any)
-const privateUnscopedSettingsMembersRoute =
-  privateUnscopedSettingsMembersRouteImport.update({
-    id: '/settings/members',
-    path: '/settings/members',
-    getParentRoute: () => privateUnscopedRouteRoute,
+const privateSidebarProjectsIndexRoute =
+  privateSidebarProjectsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarProjectsRouteRoute,
   } as any)
-const privateUnscopedSettingsGeneralRoute =
-  privateUnscopedSettingsGeneralRouteImport.update({
-    id: '/settings/general',
-    path: '/settings/general',
-    getParentRoute: () => privateUnscopedRouteRoute,
+const privateSidebarComponentsIndexRoute =
+  privateSidebarComponentsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarComponentsRouteRoute,
   } as any)
-const privateUnscopedComponentsComponent_idRouteRoute =
-  privateUnscopedComponentsComponent_idRouteRouteImport.update({
+const privateSidebarSettingsMembersRoute =
+  privateSidebarSettingsMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => privateSidebarSettingsRouteRoute,
+  } as any)
+const privateSidebarSettingsGeneralRoute =
+  privateSidebarSettingsGeneralRouteImport.update({
+    id: '/general',
+    path: '/general',
+    getParentRoute: () => privateSidebarSettingsRouteRoute,
+  } as any)
+const privateSidebarProjectsProject_idRoute =
+  privateSidebarProjectsProject_idRouteImport.update({
+    id: '/$project_id',
+    path: '/$project_id',
+    getParentRoute: () => privateSidebarProjectsRouteRoute,
+  } as any)
+const privateSidebarComponentsComponent_idRouteRoute =
+  privateSidebarComponentsComponent_idRouteRouteImport.update({
     id: '/$component_id',
     path: '/$component_id',
-    getParentRoute: () => privateUnscopedComponentsRouteRoute,
+    getParentRoute: () => privateSidebarComponentsRouteRoute,
   } as any)
-const privateScopedProjectsProject_idRouteRoute =
-  privateScopedProjectsProject_idRouteRouteImport.update({
-    id: '/_scoped/projects/$project_id',
-    path: '/projects/$project_id',
-    getParentRoute: () => privateRouteRoute,
-  } as any)
-const privateUnscopedComponentsComponent_idIndexRoute =
-  privateUnscopedComponentsComponent_idIndexRouteImport.update({
+const privateSidebarComponentsComponent_idIndexRoute =
+  privateSidebarComponentsComponent_idIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => privateUnscopedComponentsComponent_idRouteRoute,
+    getParentRoute: () => privateSidebarComponentsComponent_idRouteRoute,
   } as any)
-const privateScopedProjectsProject_idIndexRoute =
-  privateScopedProjectsProject_idIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => privateScopedProjectsProject_idRouteRoute,
-  } as any)
-const privateUnscopedComponentsComponent_idStacksRoute =
-  privateUnscopedComponentsComponent_idStacksRouteImport.update({
+const privateSidebarComponentsComponent_idStacksRoute =
+  privateSidebarComponentsComponent_idStacksRouteImport.update({
     id: '/stacks',
     path: '/stacks',
-    getParentRoute: () => privateUnscopedComponentsComponent_idRouteRoute,
+    getParentRoute: () => privateSidebarComponentsComponent_idRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof privateIndexRoute
-  '/components': typeof privateUnscopedComponentsRouteRouteWithChildren
-  '/stacks': typeof privateUnscopedStacksRouteRouteWithChildren
-  '/projects': typeof privateUnscopedProjectsRoute
+  '/components': typeof privateSidebarComponentsRouteRouteWithChildren
+  '/projects': typeof privateSidebarProjectsRouteRouteWithChildren
+  '/settings': typeof privateSidebarSettingsRouteRouteWithChildren
+  '/stacks': typeof privateSidebarStacksRouteRouteWithChildren
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/projects/$project_id': typeof privateScopedProjectsProject_idRouteRouteWithChildren
-  '/components/$component_id': typeof privateUnscopedComponentsComponent_idRouteRouteWithChildren
-  '/settings/general': typeof privateUnscopedSettingsGeneralRoute
-  '/settings/members': typeof privateUnscopedSettingsMembersRoute
-  '/components/': typeof privateUnscopedComponentsIndexRoute
-  '/stacks/': typeof privateUnscopedStacksIndexRoute
-  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/projects/$project_id/': typeof privateScopedProjectsProject_idIndexRoute
-  '/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexRoute
+  '/components/$component_id': typeof privateSidebarComponentsComponent_idRouteRouteWithChildren
+  '/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
+  '/settings/general': typeof privateSidebarSettingsGeneralRoute
+  '/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/components/': typeof privateSidebarComponentsIndexRoute
+  '/projects/': typeof privateSidebarProjectsIndexRoute
+  '/settings/': typeof privateSidebarSettingsIndexRoute
+  '/stacks/': typeof privateSidebarStacksIndexRoute
+  '/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/components/$component_id/': typeof privateSidebarComponentsComponent_idIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof privateIndexRoute
-  '/projects': typeof privateUnscopedProjectsRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/settings/general': typeof privateUnscopedSettingsGeneralRoute
-  '/settings/members': typeof privateUnscopedSettingsMembersRoute
-  '/components': typeof privateUnscopedComponentsIndexRoute
-  '/stacks': typeof privateUnscopedStacksIndexRoute
-  '/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/projects/$project_id': typeof privateScopedProjectsProject_idIndexRoute
-  '/components/$component_id': typeof privateUnscopedComponentsComponent_idIndexRoute
+  '/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
+  '/settings/general': typeof privateSidebarSettingsGeneralRoute
+  '/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/components': typeof privateSidebarComponentsIndexRoute
+  '/projects': typeof privateSidebarProjectsIndexRoute
+  '/settings': typeof privateSidebarSettingsIndexRoute
+  '/stacks': typeof privateSidebarStacksIndexRoute
+  '/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/components/$component_id': typeof privateSidebarComponentsComponent_idIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(private)': typeof privateRouteRouteWithChildren
-  '/(private)/_unscoped': typeof privateUnscopedRouteRouteWithChildren
+  '/(private)/_sidebar': typeof privateSidebarRouteRouteWithChildren
   '/(public)/_grid-layout': typeof publicGridLayoutRouteRouteWithChildren
   '/(private)/': typeof privateIndexRoute
-  '/(private)/_unscoped/components': typeof privateUnscopedComponentsRouteRouteWithChildren
-  '/(private)/_unscoped/stacks': typeof privateUnscopedStacksRouteRouteWithChildren
-  '/(private)/_unscoped/projects': typeof privateUnscopedProjectsRoute
+  '/(private)/_sidebar/components': typeof privateSidebarComponentsRouteRouteWithChildren
+  '/(private)/_sidebar/projects': typeof privateSidebarProjectsRouteRouteWithChildren
+  '/(private)/_sidebar/settings': typeof privateSidebarSettingsRouteRouteWithChildren
+  '/(private)/_sidebar/stacks': typeof privateSidebarStacksRouteRouteWithChildren
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/(private)/_scoped/projects/$project_id': typeof privateScopedProjectsProject_idRouteRouteWithChildren
-  '/(private)/_unscoped/components/$component_id': typeof privateUnscopedComponentsComponent_idRouteRouteWithChildren
-  '/(private)/_unscoped/settings/general': typeof privateUnscopedSettingsGeneralRoute
-  '/(private)/_unscoped/settings/members': typeof privateUnscopedSettingsMembersRoute
-  '/(private)/_unscoped/components/': typeof privateUnscopedComponentsIndexRoute
-  '/(private)/_unscoped/stacks/': typeof privateUnscopedStacksIndexRoute
-  '/(private)/_unscoped/components/$component_id/stacks': typeof privateUnscopedComponentsComponent_idStacksRoute
-  '/(private)/_scoped/projects/$project_id/': typeof privateScopedProjectsProject_idIndexRoute
-  '/(private)/_unscoped/components/$component_id/': typeof privateUnscopedComponentsComponent_idIndexRoute
+  '/(private)/_sidebar/components/$component_id': typeof privateSidebarComponentsComponent_idRouteRouteWithChildren
+  '/(private)/_sidebar/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
+  '/(private)/_sidebar/settings/general': typeof privateSidebarSettingsGeneralRoute
+  '/(private)/_sidebar/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/(private)/_sidebar/components/': typeof privateSidebarComponentsIndexRoute
+  '/(private)/_sidebar/projects/': typeof privateSidebarProjectsIndexRoute
+  '/(private)/_sidebar/settings/': typeof privateSidebarSettingsIndexRoute
+  '/(private)/_sidebar/stacks/': typeof privateSidebarStacksIndexRoute
+  '/(private)/_sidebar/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/(private)/_sidebar/components/$component_id/': typeof privateSidebarComponentsComponent_idIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/components'
-    | '/stacks'
     | '/projects'
+    | '/settings'
+    | '/stacks'
     | '/login'
     | '/server-activation'
-    | '/projects/$project_id'
     | '/components/$component_id'
+    | '/projects/$project_id'
     | '/settings/general'
     | '/settings/members'
     | '/components/'
+    | '/projects/'
+    | '/settings/'
     | '/stacks/'
     | '/components/$component_id/stacks'
-    | '/projects/$project_id/'
     | '/components/$component_id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/projects'
     | '/login'
     | '/server-activation'
+    | '/projects/$project_id'
     | '/settings/general'
     | '/settings/members'
     | '/components'
+    | '/projects'
+    | '/settings'
     | '/stacks'
     | '/components/$component_id/stacks'
-    | '/projects/$project_id'
     | '/components/$component_id'
   id:
     | '__root__'
     | '/(private)'
-    | '/(private)/_unscoped'
+    | '/(private)/_sidebar'
     | '/(public)/_grid-layout'
     | '/(private)/'
-    | '/(private)/_unscoped/components'
-    | '/(private)/_unscoped/stacks'
-    | '/(private)/_unscoped/projects'
+    | '/(private)/_sidebar/components'
+    | '/(private)/_sidebar/projects'
+    | '/(private)/_sidebar/settings'
+    | '/(private)/_sidebar/stacks'
     | '/(public)/_grid-layout/login'
     | '/(public)/_grid-layout/server-activation'
-    | '/(private)/_scoped/projects/$project_id'
-    | '/(private)/_unscoped/components/$component_id'
-    | '/(private)/_unscoped/settings/general'
-    | '/(private)/_unscoped/settings/members'
-    | '/(private)/_unscoped/components/'
-    | '/(private)/_unscoped/stacks/'
-    | '/(private)/_unscoped/components/$component_id/stacks'
-    | '/(private)/_scoped/projects/$project_id/'
-    | '/(private)/_unscoped/components/$component_id/'
+    | '/(private)/_sidebar/components/$component_id'
+    | '/(private)/_sidebar/projects/$project_id'
+    | '/(private)/_sidebar/settings/general'
+    | '/(private)/_sidebar/settings/members'
+    | '/(private)/_sidebar/components/'
+    | '/(private)/_sidebar/projects/'
+    | '/(private)/_sidebar/settings/'
+    | '/(private)/_sidebar/stacks/'
+    | '/(private)/_sidebar/components/$component_id/stacks'
+    | '/(private)/_sidebar/components/$component_id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -260,11 +285,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicGridLayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(private)/_unscoped': {
-      id: '/(private)/_unscoped'
+    '/(private)/_sidebar': {
+      id: '/(private)/_sidebar'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof privateUnscopedRouteRouteImport
+      preLoaderRoute: typeof privateSidebarRouteRouteImport
       parentRoute: typeof privateRouteRoute
     }
     '/(public)/_grid-layout/server-activation': {
@@ -281,188 +306,219 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicGridLayoutLoginRouteImport
       parentRoute: typeof publicGridLayoutRouteRoute
     }
-    '/(private)/_unscoped/projects': {
-      id: '/(private)/_unscoped/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof privateUnscopedProjectsRouteImport
-      parentRoute: typeof privateUnscopedRouteRoute
-    }
-    '/(private)/_unscoped/stacks': {
-      id: '/(private)/_unscoped/stacks'
+    '/(private)/_sidebar/stacks': {
+      id: '/(private)/_sidebar/stacks'
       path: '/stacks'
       fullPath: '/stacks'
-      preLoaderRoute: typeof privateUnscopedStacksRouteRouteImport
-      parentRoute: typeof privateUnscopedRouteRoute
+      preLoaderRoute: typeof privateSidebarStacksRouteRouteImport
+      parentRoute: typeof privateSidebarRouteRoute
     }
-    '/(private)/_unscoped/components': {
-      id: '/(private)/_unscoped/components'
+    '/(private)/_sidebar/settings': {
+      id: '/(private)/_sidebar/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privateSidebarSettingsRouteRouteImport
+      parentRoute: typeof privateSidebarRouteRoute
+    }
+    '/(private)/_sidebar/projects': {
+      id: '/(private)/_sidebar/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof privateSidebarProjectsRouteRouteImport
+      parentRoute: typeof privateSidebarRouteRoute
+    }
+    '/(private)/_sidebar/components': {
+      id: '/(private)/_sidebar/components'
       path: '/components'
       fullPath: '/components'
-      preLoaderRoute: typeof privateUnscopedComponentsRouteRouteImport
-      parentRoute: typeof privateUnscopedRouteRoute
+      preLoaderRoute: typeof privateSidebarComponentsRouteRouteImport
+      parentRoute: typeof privateSidebarRouteRoute
     }
-    '/(private)/_unscoped/stacks/': {
-      id: '/(private)/_unscoped/stacks/'
+    '/(private)/_sidebar/stacks/': {
+      id: '/(private)/_sidebar/stacks/'
       path: '/'
       fullPath: '/stacks/'
-      preLoaderRoute: typeof privateUnscopedStacksIndexRouteImport
-      parentRoute: typeof privateUnscopedStacksRouteRoute
+      preLoaderRoute: typeof privateSidebarStacksIndexRouteImport
+      parentRoute: typeof privateSidebarStacksRouteRoute
     }
-    '/(private)/_unscoped/components/': {
-      id: '/(private)/_unscoped/components/'
+    '/(private)/_sidebar/settings/': {
+      id: '/(private)/_sidebar/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof privateSidebarSettingsIndexRouteImport
+      parentRoute: typeof privateSidebarSettingsRouteRoute
+    }
+    '/(private)/_sidebar/projects/': {
+      id: '/(private)/_sidebar/projects/'
+      path: '/'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof privateSidebarProjectsIndexRouteImport
+      parentRoute: typeof privateSidebarProjectsRouteRoute
+    }
+    '/(private)/_sidebar/components/': {
+      id: '/(private)/_sidebar/components/'
       path: '/'
       fullPath: '/components/'
-      preLoaderRoute: typeof privateUnscopedComponentsIndexRouteImport
-      parentRoute: typeof privateUnscopedComponentsRouteRoute
+      preLoaderRoute: typeof privateSidebarComponentsIndexRouteImport
+      parentRoute: typeof privateSidebarComponentsRouteRoute
     }
-    '/(private)/_unscoped/settings/members': {
-      id: '/(private)/_unscoped/settings/members'
-      path: '/settings/members'
+    '/(private)/_sidebar/settings/members': {
+      id: '/(private)/_sidebar/settings/members'
+      path: '/members'
       fullPath: '/settings/members'
-      preLoaderRoute: typeof privateUnscopedSettingsMembersRouteImport
-      parentRoute: typeof privateUnscopedRouteRoute
+      preLoaderRoute: typeof privateSidebarSettingsMembersRouteImport
+      parentRoute: typeof privateSidebarSettingsRouteRoute
     }
-    '/(private)/_unscoped/settings/general': {
-      id: '/(private)/_unscoped/settings/general'
-      path: '/settings/general'
+    '/(private)/_sidebar/settings/general': {
+      id: '/(private)/_sidebar/settings/general'
+      path: '/general'
       fullPath: '/settings/general'
-      preLoaderRoute: typeof privateUnscopedSettingsGeneralRouteImport
-      parentRoute: typeof privateUnscopedRouteRoute
+      preLoaderRoute: typeof privateSidebarSettingsGeneralRouteImport
+      parentRoute: typeof privateSidebarSettingsRouteRoute
     }
-    '/(private)/_unscoped/components/$component_id': {
-      id: '/(private)/_unscoped/components/$component_id'
+    '/(private)/_sidebar/projects/$project_id': {
+      id: '/(private)/_sidebar/projects/$project_id'
+      path: '/$project_id'
+      fullPath: '/projects/$project_id'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idRouteImport
+      parentRoute: typeof privateSidebarProjectsRouteRoute
+    }
+    '/(private)/_sidebar/components/$component_id': {
+      id: '/(private)/_sidebar/components/$component_id'
       path: '/$component_id'
       fullPath: '/components/$component_id'
-      preLoaderRoute: typeof privateUnscopedComponentsComponent_idRouteRouteImport
-      parentRoute: typeof privateUnscopedComponentsRouteRoute
+      preLoaderRoute: typeof privateSidebarComponentsComponent_idRouteRouteImport
+      parentRoute: typeof privateSidebarComponentsRouteRoute
     }
-    '/(private)/_scoped/projects/$project_id': {
-      id: '/(private)/_scoped/projects/$project_id'
-      path: '/projects/$project_id'
-      fullPath: '/projects/$project_id'
-      preLoaderRoute: typeof privateScopedProjectsProject_idRouteRouteImport
-      parentRoute: typeof privateRouteRoute
-    }
-    '/(private)/_unscoped/components/$component_id/': {
-      id: '/(private)/_unscoped/components/$component_id/'
+    '/(private)/_sidebar/components/$component_id/': {
+      id: '/(private)/_sidebar/components/$component_id/'
       path: '/'
       fullPath: '/components/$component_id/'
-      preLoaderRoute: typeof privateUnscopedComponentsComponent_idIndexRouteImport
-      parentRoute: typeof privateUnscopedComponentsComponent_idRouteRoute
+      preLoaderRoute: typeof privateSidebarComponentsComponent_idIndexRouteImport
+      parentRoute: typeof privateSidebarComponentsComponent_idRouteRoute
     }
-    '/(private)/_scoped/projects/$project_id/': {
-      id: '/(private)/_scoped/projects/$project_id/'
-      path: '/'
-      fullPath: '/projects/$project_id/'
-      preLoaderRoute: typeof privateScopedProjectsProject_idIndexRouteImport
-      parentRoute: typeof privateScopedProjectsProject_idRouteRoute
-    }
-    '/(private)/_unscoped/components/$component_id/stacks': {
-      id: '/(private)/_unscoped/components/$component_id/stacks'
+    '/(private)/_sidebar/components/$component_id/stacks': {
+      id: '/(private)/_sidebar/components/$component_id/stacks'
       path: '/stacks'
       fullPath: '/components/$component_id/stacks'
-      preLoaderRoute: typeof privateUnscopedComponentsComponent_idStacksRouteImport
-      parentRoute: typeof privateUnscopedComponentsComponent_idRouteRoute
+      preLoaderRoute: typeof privateSidebarComponentsComponent_idStacksRouteImport
+      parentRoute: typeof privateSidebarComponentsComponent_idRouteRoute
     }
   }
 }
 
-interface privateUnscopedComponentsComponent_idRouteRouteChildren {
-  privateUnscopedComponentsComponent_idStacksRoute: typeof privateUnscopedComponentsComponent_idStacksRoute
-  privateUnscopedComponentsComponent_idIndexRoute: typeof privateUnscopedComponentsComponent_idIndexRoute
+interface privateSidebarComponentsComponent_idRouteRouteChildren {
+  privateSidebarComponentsComponent_idStacksRoute: typeof privateSidebarComponentsComponent_idStacksRoute
+  privateSidebarComponentsComponent_idIndexRoute: typeof privateSidebarComponentsComponent_idIndexRoute
 }
 
-const privateUnscopedComponentsComponent_idRouteRouteChildren: privateUnscopedComponentsComponent_idRouteRouteChildren =
+const privateSidebarComponentsComponent_idRouteRouteChildren: privateSidebarComponentsComponent_idRouteRouteChildren =
   {
-    privateUnscopedComponentsComponent_idStacksRoute:
-      privateUnscopedComponentsComponent_idStacksRoute,
-    privateUnscopedComponentsComponent_idIndexRoute:
-      privateUnscopedComponentsComponent_idIndexRoute,
+    privateSidebarComponentsComponent_idStacksRoute:
+      privateSidebarComponentsComponent_idStacksRoute,
+    privateSidebarComponentsComponent_idIndexRoute:
+      privateSidebarComponentsComponent_idIndexRoute,
   }
 
-const privateUnscopedComponentsComponent_idRouteRouteWithChildren =
-  privateUnscopedComponentsComponent_idRouteRoute._addFileChildren(
-    privateUnscopedComponentsComponent_idRouteRouteChildren,
+const privateSidebarComponentsComponent_idRouteRouteWithChildren =
+  privateSidebarComponentsComponent_idRouteRoute._addFileChildren(
+    privateSidebarComponentsComponent_idRouteRouteChildren,
   )
 
-interface privateUnscopedComponentsRouteRouteChildren {
-  privateUnscopedComponentsComponent_idRouteRoute: typeof privateUnscopedComponentsComponent_idRouteRouteWithChildren
-  privateUnscopedComponentsIndexRoute: typeof privateUnscopedComponentsIndexRoute
+interface privateSidebarComponentsRouteRouteChildren {
+  privateSidebarComponentsComponent_idRouteRoute: typeof privateSidebarComponentsComponent_idRouteRouteWithChildren
+  privateSidebarComponentsIndexRoute: typeof privateSidebarComponentsIndexRoute
 }
 
-const privateUnscopedComponentsRouteRouteChildren: privateUnscopedComponentsRouteRouteChildren =
+const privateSidebarComponentsRouteRouteChildren: privateSidebarComponentsRouteRouteChildren =
   {
-    privateUnscopedComponentsComponent_idRouteRoute:
-      privateUnscopedComponentsComponent_idRouteRouteWithChildren,
-    privateUnscopedComponentsIndexRoute: privateUnscopedComponentsIndexRoute,
+    privateSidebarComponentsComponent_idRouteRoute:
+      privateSidebarComponentsComponent_idRouteRouteWithChildren,
+    privateSidebarComponentsIndexRoute: privateSidebarComponentsIndexRoute,
   }
 
-const privateUnscopedComponentsRouteRouteWithChildren =
-  privateUnscopedComponentsRouteRoute._addFileChildren(
-    privateUnscopedComponentsRouteRouteChildren,
+const privateSidebarComponentsRouteRouteWithChildren =
+  privateSidebarComponentsRouteRoute._addFileChildren(
+    privateSidebarComponentsRouteRouteChildren,
   )
 
-interface privateUnscopedStacksRouteRouteChildren {
-  privateUnscopedStacksIndexRoute: typeof privateUnscopedStacksIndexRoute
+interface privateSidebarProjectsRouteRouteChildren {
+  privateSidebarProjectsProject_idRoute: typeof privateSidebarProjectsProject_idRoute
+  privateSidebarProjectsIndexRoute: typeof privateSidebarProjectsIndexRoute
 }
 
-const privateUnscopedStacksRouteRouteChildren: privateUnscopedStacksRouteRouteChildren =
+const privateSidebarProjectsRouteRouteChildren: privateSidebarProjectsRouteRouteChildren =
   {
-    privateUnscopedStacksIndexRoute: privateUnscopedStacksIndexRoute,
+    privateSidebarProjectsProject_idRoute:
+      privateSidebarProjectsProject_idRoute,
+    privateSidebarProjectsIndexRoute: privateSidebarProjectsIndexRoute,
   }
 
-const privateUnscopedStacksRouteRouteWithChildren =
-  privateUnscopedStacksRouteRoute._addFileChildren(
-    privateUnscopedStacksRouteRouteChildren,
+const privateSidebarProjectsRouteRouteWithChildren =
+  privateSidebarProjectsRouteRoute._addFileChildren(
+    privateSidebarProjectsRouteRouteChildren,
   )
 
-interface privateUnscopedRouteRouteChildren {
-  privateUnscopedComponentsRouteRoute: typeof privateUnscopedComponentsRouteRouteWithChildren
-  privateUnscopedStacksRouteRoute: typeof privateUnscopedStacksRouteRouteWithChildren
-  privateUnscopedProjectsRoute: typeof privateUnscopedProjectsRoute
-  privateUnscopedSettingsGeneralRoute: typeof privateUnscopedSettingsGeneralRoute
-  privateUnscopedSettingsMembersRoute: typeof privateUnscopedSettingsMembersRoute
+interface privateSidebarSettingsRouteRouteChildren {
+  privateSidebarSettingsGeneralRoute: typeof privateSidebarSettingsGeneralRoute
+  privateSidebarSettingsMembersRoute: typeof privateSidebarSettingsMembersRoute
+  privateSidebarSettingsIndexRoute: typeof privateSidebarSettingsIndexRoute
 }
 
-const privateUnscopedRouteRouteChildren: privateUnscopedRouteRouteChildren = {
-  privateUnscopedComponentsRouteRoute:
-    privateUnscopedComponentsRouteRouteWithChildren,
-  privateUnscopedStacksRouteRoute: privateUnscopedStacksRouteRouteWithChildren,
-  privateUnscopedProjectsRoute: privateUnscopedProjectsRoute,
-  privateUnscopedSettingsGeneralRoute: privateUnscopedSettingsGeneralRoute,
-  privateUnscopedSettingsMembersRoute: privateUnscopedSettingsMembersRoute,
-}
-
-const privateUnscopedRouteRouteWithChildren =
-  privateUnscopedRouteRoute._addFileChildren(privateUnscopedRouteRouteChildren)
-
-interface privateScopedProjectsProject_idRouteRouteChildren {
-  privateScopedProjectsProject_idIndexRoute: typeof privateScopedProjectsProject_idIndexRoute
-}
-
-const privateScopedProjectsProject_idRouteRouteChildren: privateScopedProjectsProject_idRouteRouteChildren =
+const privateSidebarSettingsRouteRouteChildren: privateSidebarSettingsRouteRouteChildren =
   {
-    privateScopedProjectsProject_idIndexRoute:
-      privateScopedProjectsProject_idIndexRoute,
+    privateSidebarSettingsGeneralRoute: privateSidebarSettingsGeneralRoute,
+    privateSidebarSettingsMembersRoute: privateSidebarSettingsMembersRoute,
+    privateSidebarSettingsIndexRoute: privateSidebarSettingsIndexRoute,
   }
 
-const privateScopedProjectsProject_idRouteRouteWithChildren =
-  privateScopedProjectsProject_idRouteRoute._addFileChildren(
-    privateScopedProjectsProject_idRouteRouteChildren,
+const privateSidebarSettingsRouteRouteWithChildren =
+  privateSidebarSettingsRouteRoute._addFileChildren(
+    privateSidebarSettingsRouteRouteChildren,
   )
+
+interface privateSidebarStacksRouteRouteChildren {
+  privateSidebarStacksIndexRoute: typeof privateSidebarStacksIndexRoute
+}
+
+const privateSidebarStacksRouteRouteChildren: privateSidebarStacksRouteRouteChildren =
+  {
+    privateSidebarStacksIndexRoute: privateSidebarStacksIndexRoute,
+  }
+
+const privateSidebarStacksRouteRouteWithChildren =
+  privateSidebarStacksRouteRoute._addFileChildren(
+    privateSidebarStacksRouteRouteChildren,
+  )
+
+interface privateSidebarRouteRouteChildren {
+  privateSidebarComponentsRouteRoute: typeof privateSidebarComponentsRouteRouteWithChildren
+  privateSidebarProjectsRouteRoute: typeof privateSidebarProjectsRouteRouteWithChildren
+  privateSidebarSettingsRouteRoute: typeof privateSidebarSettingsRouteRouteWithChildren
+  privateSidebarStacksRouteRoute: typeof privateSidebarStacksRouteRouteWithChildren
+}
+
+const privateSidebarRouteRouteChildren: privateSidebarRouteRouteChildren = {
+  privateSidebarComponentsRouteRoute:
+    privateSidebarComponentsRouteRouteWithChildren,
+  privateSidebarProjectsRouteRoute:
+    privateSidebarProjectsRouteRouteWithChildren,
+  privateSidebarSettingsRouteRoute:
+    privateSidebarSettingsRouteRouteWithChildren,
+  privateSidebarStacksRouteRoute: privateSidebarStacksRouteRouteWithChildren,
+}
+
+const privateSidebarRouteRouteWithChildren =
+  privateSidebarRouteRoute._addFileChildren(privateSidebarRouteRouteChildren)
 
 interface privateRouteRouteChildren {
-  privateUnscopedRouteRoute: typeof privateUnscopedRouteRouteWithChildren
+  privateSidebarRouteRoute: typeof privateSidebarRouteRouteWithChildren
   privateIndexRoute: typeof privateIndexRoute
-  privateScopedProjectsProject_idRouteRoute: typeof privateScopedProjectsProject_idRouteRouteWithChildren
 }
 
 const privateRouteRouteChildren: privateRouteRouteChildren = {
-  privateUnscopedRouteRoute: privateUnscopedRouteRouteWithChildren,
+  privateSidebarRouteRoute: privateSidebarRouteRouteWithChildren,
   privateIndexRoute: privateIndexRoute,
-  privateScopedProjectsProject_idRouteRoute:
-    privateScopedProjectsProject_idRouteRouteWithChildren,
 }
 
 const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(

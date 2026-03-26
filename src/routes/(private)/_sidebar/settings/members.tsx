@@ -17,7 +17,7 @@ const querySchema = z.object({
 	page: z.number().optional().catch(1),
 });
 
-export const Route = createFileRoute("/(private)/_unscoped/settings/members")({
+export const Route = createFileRoute("/(private)/_sidebar/settings/members")({
 	validateSearch: querySchema,
 	loaderDeps: ({ search: { name, page } }) => ({ name, page }),
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {

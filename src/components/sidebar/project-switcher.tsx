@@ -32,7 +32,7 @@ export function ProjectSwitcher() {
 	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
 	const { data: projectData } = useSuspenseQuery(projectQueries.list());
 	const { project_id } = useParams({
-		from: "/(private)/_scoped/projects/$project_id",
+		from: "/(private)/_sidebar/projects/$project_id",
 	});
 
 	const activeProject = projectData.items.find(
