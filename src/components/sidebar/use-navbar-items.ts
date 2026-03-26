@@ -30,32 +30,7 @@ const unscopedNavMain: NavbarItem[] = [
 		title: "Settings",
 		url: "/settings/general",
 		icon: Settings,
-		items: [
-			{
-				title: "General",
-				url: "/settings/general",
-			},
-			{
-				title: "Members",
-				url: "/settings/members",
-			},
-			{
-				title: "API Tokens",
-				url: "#",
-			},
-			{
-				title: "Secrets",
-				url: "#",
-			},
-			{
-				title: "Connectors",
-				url: "#",
-			},
-			{
-				title: "Service Accounts",
-				url: "#",
-			},
-		],
+		activePathPrefix: "/settings",
 	},
 ];
 

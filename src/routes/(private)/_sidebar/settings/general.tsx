@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
+	loader: () => ({ crumb: "General" }),
 	component: RouteComponent,
 	head: () => ({
 		meta: [{ title: "General Settings" }],
@@ -8,5 +9,14 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 });
 
 function RouteComponent() {
-	return <div>Hello "/(private)/_unscoped/settings/general"!</div>;
+	return (
+		<div className="space-y-4">
+			<div>
+				<h1 className="text-2xl font-bold">General</h1>
+				<p className="text-muted-foreground text-sm">
+					Server-wide preferences and configuration.
+				</p>
+			</div>
+		</div>
+	);
 }
