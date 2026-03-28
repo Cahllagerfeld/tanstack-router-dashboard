@@ -3,7 +3,7 @@ import {
 	createFileRoute,
 	Link,
 	Outlet,
-	useMatchRoute,
+	useLocation,
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings")({
@@ -12,10 +12,12 @@ export const Route = createFileRoute("/(private)/_sidebar/settings")({
 });
 
 function SettingsLayout() {
-	const matchRoute = useMatchRoute();
-	const activeTab = matchRoute({ to: "/settings/members" })
+	const pathname = useLocation({ select: (loc) => loc.pathname });
+	const activeTab = pathname.startsWith("/settings/members")
 		? "members"
-		: "general";
+		: pathname.startsWith("/settings/secrets")
+			? "secrets"
+			: "general";
 
 	return (
 		<div className="space-y-6">
@@ -30,6 +32,11 @@ function SettingsLayout() {
 						nativeButton={false}
 						value="members"
 						render={<Link to="/settings/members">Members</Link>}
+					/>
+					<TabsTrigger
+						nativeButton={false}
+						value="secrets"
+						render={<Link to="/settings/secrets">Secrets</Link>}
 					/>
 				</TabsList>
 				<div>
