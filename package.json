@@ -48,7 +48,6 @@
 		"lefthook": "2.1.5",
 		"openapi-typescript": "7.13.0",
 		"oxlint": "1.59.0",
-		"postcss": "8.5.9",
 		"prettier": "3.8.1",
 		"prettier-plugin-tailwindcss": "0.7.2",
 		"tailwindcss": "4.2.2",
