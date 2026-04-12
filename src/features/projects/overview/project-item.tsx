@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Project } from "@/domain/projects";
-import { getProjectDisplayName } from "@/lib/names";
 import { Link } from "@tanstack/react-router";
 import { Hash } from "lucide-react";
 import { ProjectActions } from "./project-actions";
@@ -16,7 +15,7 @@ export function ProjectItem({ project }: Props) {
 			<CardHeader className="flex flex-row items-start justify-between">
 				<div>
 					<CardTitle className="truncate text-xl font-semibold">
-						{getProjectDisplayName(project)}
+						{project.displayName}
 					</CardTitle>
 					<div className="text-muted-foreground flex items-center gap-0.5 text-sm">
 						<Hash

@@ -18,7 +18,6 @@ import { projectQueries } from "@/data/projects";
 import { serverQueries } from "@/data/server";
 import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
 import { getIllustrationUrl } from "@/lib/images";
-import { getProjectDisplayName } from "@/lib/names";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
@@ -39,7 +38,7 @@ export function ProjectSwitcher() {
 		(project) => project.id === project_id || project.name === project_id
 	);
 
-	const displayName = activeProject ? getProjectDisplayName(activeProject) : "";
+	const displayName = activeProject ? activeProject.displayName : "";
 
 	const { isMobile } = useSidebar();
 
@@ -103,9 +102,7 @@ export function ProjectSwitcher() {
 											/>
 										</Avatar>
 
-										<span className="truncate">
-											{getProjectDisplayName(project)}
-										</span>
+										<span className="truncate">{project.displayName}</span>
 										<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
 									</DropdownMenuItem>
 								))}

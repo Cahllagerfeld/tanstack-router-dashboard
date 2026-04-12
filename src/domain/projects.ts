@@ -12,6 +12,6 @@ export function projectFromApi(
 	return {
 		id: apiProject.id,
 		name: apiProject.name,
-		displayName: apiProject.body?.display_name ?? undefined,
+		displayName: apiProject.body?.display_name ?? apiProject.name,
 	};
 }
