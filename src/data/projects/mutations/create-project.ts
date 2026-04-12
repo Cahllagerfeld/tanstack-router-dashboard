@@ -1,6 +1,5 @@
 import { Project, projectFromApi } from "@/domain/projects";
 import { expectData } from "@/lib/fetch-error";
-import { getProjectDisplayName } from "@/lib/names";
 import { ApiClientError } from "@/types/api";
 import { ApiCreateProject } from "@/types/projects";
 import {
@@ -37,7 +36,7 @@ export function useCreateProject(
 		mutationFn: createProject,
 		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: ["projects"] });
-			toast.success(`Project ${getProjectDisplayName(data)} created`);
+			toast.success(`Project ${data.displayName} created`);
 			navigate({
 				to: "/projects/$project_id",
 				params: { project_id: data.name },
