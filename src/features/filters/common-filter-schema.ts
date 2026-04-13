@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 export const commonFilterSchema = z.object({
 	page: z.number().int().positive().optional().catch(undefined),
