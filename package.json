@@ -39,8 +39,8 @@
 	"devDependencies": {
 		"@rolldown/plugin-babel": "0.2.2",
 		"@tailwindcss/vite": "4.2.2",
-		"@tanstack/router-devtools": "1.166.11",
-		"@tanstack/router-plugin": "1.167.12",
+		"@tanstack/router-devtools": "1.166.13",
+		"@tanstack/router-plugin": "1.167.14",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "6.0.1",
