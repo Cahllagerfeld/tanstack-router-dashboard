@@ -11,27 +11,12 @@ async function generateTypes(baseUrl) {
 
 	const output = await openapiTS(`${baseUrl}/openapi.json`, {
 		exportType: true,
-		transform: (schema) => {
-			customTransformer(schema);
-		},
 	});
 
 	log("Writing output to file...", "📝");
 	fs.writeFileSync("./src/types/core.ts", astToString(output));
 
 	log("Script completed successfully.", "✅");
-}
-
-/**
- *
- * @param {import("openapi-typescript").SchemaObject} schema
- * @returns {import("openapi-typescript").SchemaObject}
- */
-export function customTransformer(schema) {
-	if (schema.type === "object" && !schema.properties) {
-		schema.additionalProperties = true;
-	}
-	return schema;
 }
 
 // Check if the script is called with at least one argument
