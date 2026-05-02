@@ -5,8 +5,17 @@ import { fetchStackList } from "./fetch-list";
 
 const baseKey = "stacks" as const;
 
+export const stackKeys = {
+	all: [baseKey] as const,
+	lists: () => [...stackKeys.all, "list"] as const,
+	list: (params: StacksListQueryParams) =>
+		[...stackKeys.lists(), params] as const,
+	details: () => [...stackKeys.all, "detail"] as const,
+	detail: (stackId: string) => [...stackKeys.details(), stackId] as const,
+};
+
 export const stackQueries = {
-	baseKey: [baseKey] as const,
+	baseKey: stackKeys.all,
 	list: (params?: StacksListQueryParams) => {
 		const mergedParams = {
 			sort_by: "desc:created",
@@ -14,13 +23,13 @@ export const stackQueries = {
 		} satisfies StacksListQueryParams;
 
 		return queryOptions({
-			queryKey: [baseKey, mergedParams] as const,
+			queryKey: stackKeys.list(mergedParams),
 			queryFn: () => fetchStackList(mergedParams),
 		});
 	},
 	detail: (stackId: string) =>
 		queryOptions({
-			queryKey: [baseKey, stackId] as const,
+			queryKey: stackKeys.detail(stackId),
 			queryFn: () => fetchStackDetail(stackId),
 		}),
 };

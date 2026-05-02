@@ -10,6 +10,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { apiClient } from "../../api-client";
+import { projectKeys } from "..";
 
 async function createProject(payload: ApiCreateProject) {
 	const project = await apiClient.POST("/api/v1/projects", {
@@ -35,7 +36,7 @@ export function useCreateProject(
 		...rest,
 		mutationFn: createProject,
 		onSuccess: (data, variables, onMutateResult, context) => {
-			queryClient.invalidateQueries({ queryKey: ["projects"] });
+			queryClient.invalidateQueries({ queryKey: projectKeys.all });
 			toast.success(`Project ${data.displayName} created`);
 			navigate({
 				to: "/projects/$project_id",
