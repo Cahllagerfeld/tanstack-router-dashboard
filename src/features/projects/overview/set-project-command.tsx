@@ -2,7 +2,7 @@ import { useCopy } from "@/hooks/use-copy";
 import { Check, Copy } from "lucide-react";
 
 export function SetProjectCommand({ projectId }: { projectId: string }) {
-	const { copied, copyToClipboard } = useCopy();
+	const [copied, copyToClipboard] = useCopy();
 	const loginCommand = `zenml project set ${projectId}`;
 
 	return (
