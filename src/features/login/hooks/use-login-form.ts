@@ -1,5 +1,5 @@
 import { useLoginUser } from "@/data/session/login";
-import { userQueries } from "@/data/user";
+import { userKeys, userQueries } from "@/data/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
@@ -29,7 +29,7 @@ export function useLoginForm() {
 
 	const { mutate } = useLoginUser({
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: ["current-user"] });
+			await queryClient.invalidateQueries({ queryKey: userKeys.current() });
 			// Ensure cache is warm for guards
 			await queryClient.ensureQueryData(userQueries.currentUser());
 			router.navigate({ to: next ?? "/" });

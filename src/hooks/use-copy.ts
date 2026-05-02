@@ -12,5 +12,5 @@ export function useCopy(duration = 2000) {
 			}, duration);
 		}
 	}
-	return { copied, copyToClipboard };
+	return [copied, copyToClipboard] as const;
 }

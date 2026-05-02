@@ -5,8 +5,18 @@ import { fetchComponentList } from "./fetch-list";
 
 const baseKey = "components" as const;
 
+export const componentKeys = {
+	all: [baseKey] as const,
+	lists: () => [...componentKeys.all, "list"] as const,
+	list: (params: ComponentsListQueryParams) =>
+		[...componentKeys.lists(), params] as const,
+	details: () => [...componentKeys.all, "detail"] as const,
+	detail: (componentId: string) =>
+		[...componentKeys.details(), componentId] as const,
+};
+
 export const componentQueries = {
-	baseKey: [baseKey] as const,
+	baseKey: componentKeys.all,
 	list: (params?: ComponentsListQueryParams) => {
 		const mergedParams = {
 			sort_by: "desc:created",
@@ -14,13 +24,13 @@ export const componentQueries = {
 		} satisfies ComponentsListQueryParams;
 
 		return queryOptions({
-			queryKey: [baseKey, mergedParams] as const,
+			queryKey: componentKeys.list(mergedParams),
 			queryFn: () => fetchComponentList(mergedParams),
 		});
 	},
 	detail: (componentId: string) =>
 		queryOptions({
-			queryKey: [baseKey, componentId] as const,
+			queryKey: componentKeys.detail(componentId),
 			queryFn: () => fetchComponentDetail(componentId),
 		}),
 };
