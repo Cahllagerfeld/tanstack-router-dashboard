@@ -48,7 +48,10 @@ export function useProjectItems() {
 	const projectPreviewNavMain: NavbarItem[] = [
 		{
 			title: "Project Overview",
-			url: "#",
+			url: buildLocation({
+				to: "/projects/$project_id",
+				params: { project_id: projectId.project_id },
+			}).pathname,
 			icon: Frame,
 		},
 		{
