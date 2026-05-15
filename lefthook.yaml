@@ -2,9 +2,9 @@ pre-commit:
   commands:
     oxlint:
       glob: "*.{js,ts,jsx,tsx}"
-      run: bun oxlint --fix {staged_files}
+      run: pnpm oxlint --fix {staged_files}
       stage_fixed: true
     prettier:
       glob: "*.{js,json,md,svelte,ts,yaml,yml,jsx,tsx}"
-      run: bun prettier --write {staged_files}
+      run: pnpm prettier --write {staged_files}
       stage_fixed: true

@@ -32,7 +32,7 @@
     npm = {
       enable = true;
     };
-    bun = {
+    pnpm = {
       enable = true;
       install.enable = true;
     };
