@@ -7,7 +7,9 @@ import {
 	HeadContent,
 	Outlet,
 	redirect,
+	useMatchRoute,
 } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;
@@ -35,12 +37,29 @@ export const Route = createRootRouteWithContext<{
 
 function RootLayout() {
 	return (
-		<div className="flex h-dvh flex-col font-medium antialiased">
+		<ThemeScope>
 			<HeadContent />
 			<Outlet />
 			<Toaster position="top-center" />
 			{/* <TanStackRouterDevtools /> */}
 			<ReactQueryDevtools />
+		</ThemeScope>
+	);
+}
+
+function ThemeScope({ children }: { children: ReactNode }) {
+	const matchRoute = useMatchRoute();
+	const isProjectScoped = !!matchRoute({
+		to: "/projects/$project_id",
+		fuzzy: true,
+	});
+
+	return (
+		<div
+			data-theme-scope={isProjectScoped ? "project" : "app"}
+			className="flex h-dvh flex-col font-medium antialiased"
+		>
+			{children}
 		</div>
 	);
 }

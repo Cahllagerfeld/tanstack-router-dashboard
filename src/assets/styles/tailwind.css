@@ -131,6 +131,20 @@
 	--sidebar-ring: oklch(0.556 0 0);
 }
 
+[data-theme-scope="project"] {
+	--accent: oklch(0.94 0.11 65);
+	--accent-foreground: oklch(0.25 0.09 45);
+	--sidebar-accent: oklch(0.94 0.11 65);
+	--sidebar-accent-foreground: oklch(0.25 0.09 45);
+}
+
+.dark [data-theme-scope="project"] {
+	--accent: oklch(0.35 0.1 55);
+	--accent-foreground: oklch(0.985 0 0);
+	--sidebar-accent: oklch(0.35 0.1 55);
+	--sidebar-accent-foreground: oklch(0.985 0 0);
+}
+
 @layer base {
 	* {
 		@apply border-border;
