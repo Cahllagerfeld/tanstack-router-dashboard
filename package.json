@@ -47,7 +47,7 @@
 		"babel-plugin-react-compiler": "1.0.0",
 		"lefthook": "2.1.6",
 		"openapi-typescript": "7.13.0",
-		"oxlint": "1.64.0",
+		"oxlint": "1.65.0",
 		"prettier": "3.8.3",
 		"prettier-plugin-tailwindcss": "0.8.0",
 		"tailwindcss": "4.3.0",
