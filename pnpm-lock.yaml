@@ -24,7 +24,7 @@ importers:
         specifier: ^5.100.11
         version: 5.100.11(@tanstack/react-query@5.100.11(react@19.2.6))(react@19.2.6)
       '@tanstack/react-router':
-        specifier: ^1.170.4
+        specifier: ^1.170.5
         version: 1.170.5(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@tanstack/react-table':
         specifier: ^8.21.3
@@ -1100,8 +1100,8 @@ packages:
   electron-to-chromium@1.5.360:
     resolution: {integrity: sha512-GkcBt6YYAw9SxFWn+xVar4cLVGlXVuswwtRLBozi2zp0GjXs4ZnOrqV4zbXzg35n7w81hCkyJNYicgXlVHAmBA==}
 
-  enhanced-resolve@5.21.5:
-    resolution: {integrity: sha512-mLCNbrQli11K1ySUmuNt4ZUB3OpGIDq4q2vTBTf5cL2lpsRjI9QKqSD0ndjW8FyvcW/Jj46gMe9syyHAsvMa/A==}
+  enhanced-resolve@5.21.6:
+    resolution: {integrity: sha512-aNnGCvbJ/RIyWo1IuhNdVjnNF+EjH9wpzpNHt+ci/m9He9LJvUN8wrCcXjp9cWsGNAuvSpVFTx/vraAFQ8qGjQ==}
     engines: {node: '>=10.13.0'}
 
   es-module-lexer@2.1.0:
@@ -2252,7 +2252,7 @@ snapshots:
   '@tailwindcss/node@4.3.0':
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.21.5
+      enhanced-resolve: 5.21.6
       jiti: 2.7.0
       lightningcss: 1.32.0
       magic-string: 0.30.21
@@ -2601,7 +2601,7 @@ snapshots:
 
   electron-to-chromium@1.5.360: {}
 
-  enhanced-resolve@5.21.5:
+  enhanced-resolve@5.21.6:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
