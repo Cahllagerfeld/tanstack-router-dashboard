@@ -6,8 +6,9 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { flexRender, type Table as TableType } from "@tanstack/react-table";
 import type { Component } from "@/domain/components";
+import { m } from "@/paraglide/messages";
+import { flexRender, type Table as TableType } from "@tanstack/react-table";
 
 type FlowsTableProps = {
 	table: TableType<Component>;
@@ -74,7 +75,7 @@ export function ComponentTable({ table }: FlowsTableProps) {
 								colSpan={table.getAllColumns().length}
 								className="h-24 text-center"
 							>
-								No results.
+								{m.no_results()}
 							</TableCell>
 						</TableRow>
 					)}

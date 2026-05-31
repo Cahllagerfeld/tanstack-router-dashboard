@@ -1,0 +1,6 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"stack_components": "Stack Komponenten",
+	"stack_components_description": "Komponenten sind die Bausteine von Stacks.",
+	"no_results": "Keine Ergebnisse."
+}

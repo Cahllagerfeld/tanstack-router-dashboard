@@ -5,6 +5,7 @@ import { ComponentTable } from "@/features/components/components-list/component-
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { typeFilterSchema } from "@/features/filters/type";
 import { TypeFilter } from "@/features/filters/type-filter";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -76,9 +77,9 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Components</h1>
+				<h1 className="text-2xl font-bold">{m.stack_components()}</h1>
 				<p className="text-muted-foreground text-sm">
-					Components are the building blocks of your stacks.
+					{m.stack_components_description()}
 				</p>
 			</div>
 			<div className="flex items-center gap-2">
