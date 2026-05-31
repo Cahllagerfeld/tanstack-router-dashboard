@@ -9,7 +9,7 @@ function log(message, emoji) {
 async function generateTypes(baseUrl) {
 	log("Script started.", "✨");
 
-	const output = await openapiTS(`${baseUrl}/openapi.json`, {
+	const output = await openapiTS(new URL(`${baseUrl}/openapi.json`), {
 		exportType: true,
 	});
 
@@ -20,12 +20,11 @@ async function generateTypes(baseUrl) {
 }
 
 // Check if the script is called with at least one argument
-if (process.argv.length < 3) {
-	console.log(process.argv);
-	console.error("Usage: bun run generate:types -- <baseurl>");
+if (process.argv.length < 4) {
+	console.error("Usage: pnpm generate:types -- <baseurl>");
 	process.exit(1);
 }
 
 // Take the base URL from the first argument
-const baseUrl = process.argv[2];
+const baseUrl = process.argv[3];
 generateTypes(baseUrl);
