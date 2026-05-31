@@ -10,6 +10,7 @@
 
   packages = [ 
     pkgs.git
+    pkgs.pinact
   ];
 
   env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
@@ -31,7 +32,7 @@
     npm = {
       enable = true;
     };
-    bun = {
+    pnpm = {
       enable = true;
       install.enable = true;
     };

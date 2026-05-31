@@ -1,4 +1,4 @@
-import { serverQueries } from "@/data/server";
+import { serverKeys } from "@/data/server";
 import { useServerActivation } from "@/data/server/activate-server";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -47,7 +47,7 @@ export function usePasswordStep() {
 		onSuccess: async () => {
 			toast.success("Server activated!");
 			await queryClient.invalidateQueries({
-				queryKey: serverQueries.infoKey,
+				queryKey: serverKeys.info(),
 				refetchType: "all",
 			});
 			await navigate({ to: "/login" });

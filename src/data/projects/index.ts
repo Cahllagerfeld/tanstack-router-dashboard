@@ -5,8 +5,17 @@ import { fetchProjectList } from "./fetch-list";
 
 const baseKey = "projects" as const;
 
+export const projectKeys = {
+	all: [baseKey] as const,
+	lists: () => [...projectKeys.all, "list"] as const,
+	list: (params: ProjectListQueries) =>
+		[...projectKeys.lists(), params] as const,
+	details: () => [...projectKeys.all, "detail"] as const,
+	detail: (projectId: string) => [...projectKeys.details(), projectId] as const,
+};
+
 export const projectQueries = {
-	baseKey: [baseKey] as const,
+	baseKey: projectKeys.all,
 	list: (params?: ProjectListQueries) => {
 		const mergedParams = {
 			sort_by: "desc:created",
@@ -15,13 +24,13 @@ export const projectQueries = {
 		} satisfies ProjectListQueries;
 
 		return queryOptions({
-			queryKey: [baseKey, mergedParams] as const,
+			queryKey: projectKeys.list(mergedParams),
 			queryFn: () => fetchProjectList(mergedParams),
 		});
 	},
 	detail: (projectId: string) =>
 		queryOptions({
-			queryKey: [baseKey, projectId] as const,
+			queryKey: projectKeys.detail(projectId),
 			queryFn: () => fetchProjectDetail(projectId),
 		}),
 };

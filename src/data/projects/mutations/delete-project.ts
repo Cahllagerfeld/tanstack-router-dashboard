@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { projectKeys } from "..";
 
 interface DeleteProjectParams {
 	projectId: string;
@@ -34,7 +35,7 @@ export function useDeleteProject(
 			await deleteProject({ projectId });
 		},
 		onSuccess: (data, variables, onMutateResult, context) => {
-			queryClient.invalidateQueries({ queryKey: ["projects"] });
+			queryClient.invalidateQueries({ queryKey: projectKeys.all });
 			toast.success(`Project deleted`);
 			navigate({
 				to: "/projects",

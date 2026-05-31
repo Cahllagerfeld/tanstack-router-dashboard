@@ -14,7 +14,7 @@ import { z } from "zod";
 
 const querySchema = z.object({
 	name: filterSchema.optional().catch(undefined),
-	page: z.number().optional().catch(1),
+	page: z.number().int().optional().catch(1),
 });
 
 export const Route = createFileRoute("/(private)/_sidebar/projects/")({

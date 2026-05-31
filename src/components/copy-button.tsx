@@ -9,7 +9,7 @@ interface CopyButtonProps {
 }
 
 export function CopyButton({ value, className }: CopyButtonProps) {
-	const { copied, copyToClipboard } = useCopy();
+	const [copied, copyToClipboard] = useCopy();
 
 	return (
 		<Button
