@@ -4,12 +4,13 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "tsc -b && vite build",
+		"build": "vite build && tsc -b",
 		"check:types": "tsc --noEmit",
 		"dev": "vite",
 		"format": "prettier --write .",
 		"generate:types": "node scripts/types.js",
 		"lint": "oxlint --fix .",
+		"machine-translate": "inlang machine translate --project project.inlang",
 		"preview": "vite preview",
 		"test:unit": "vitest"
 	},
@@ -37,6 +38,8 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@inlang/cli": "^3.1.11",
+		"@inlang/paraglide-js": "^2.18.1",
 		"@rolldown/plugin-babel": "0.2.3",
 		"@tailwindcss/vite": "4.3.0",
 		"@tanstack/router-devtools": "1.167.0",
