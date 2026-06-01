@@ -75,7 +75,7 @@ export function ComponentTable({ table }: FlowsTableProps) {
 								colSpan={table.getAllColumns().length}
 								className="h-24 text-center"
 							>
-								{m.no_results()}
+								{m.components_table_no_results()}
 							</TableCell>
 						</TableRow>
 					)}

@@ -77,9 +77,9 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">{m.stack_components()}</h1>
+				<h1 className="text-2xl font-bold">{m.components_list_title()}</h1>
 				<p className="text-muted-foreground text-sm">
-					{m.stack_components_description()}
+					{m.components_list_description()}
 				</p>
 			</div>
 			<div className="flex items-center gap-2">
