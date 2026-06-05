@@ -34,7 +34,6 @@
     };
     pnpm = {
       enable = true;
-      install.enable = true;
     };
   };
 
