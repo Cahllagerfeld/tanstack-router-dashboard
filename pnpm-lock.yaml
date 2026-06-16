@@ -16,7 +16,7 @@ importers:
         version: 5.2.8
       '@hookform/resolvers':
         specifier: ^5.4.0
-        version: 5.4.0(react-hook-form@7.78.0(react@19.2.7))
+        version: 5.4.0(react-hook-form@7.79.0(react@19.2.7))
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.101.0(react@19.2.7)
@@ -55,7 +55,7 @@ importers:
         version: 19.2.7(react@19.2.7)
       react-hook-form:
         specifier: ^7.77.0
-        version: 7.78.0(react@19.2.7)
+        version: 7.79.0(react@19.2.7)
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -1455,8 +1455,8 @@ packages:
     peerDependencies:
       react: ^19.2.7
 
-  react-hook-form@7.78.0:
-    resolution: {integrity: sha512-EEZqc+N23moyzTlz61Pj+JvcXo76ICkpfOZo8JZw+sM4+wLQGh6nI2Ms+PdMOYNluFu0ghlM7B8mCzhRYtJCnA==}
+  react-hook-form@7.79.0:
+    resolution: {integrity: sha512-mhYp/MTmXvzYX6AJcJVko0rktoIhhmRnEouObj4wF5i/tCttgJvnp1+9wRkpITZjDTqpo4IOSJqu0dBlPlV/Lw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -1906,10 +1906,10 @@ snapshots:
 
   '@fontsource-variable/inter@5.2.8': {}
 
-  '@hookform/resolvers@5.4.0(react-hook-form@7.78.0(react@19.2.7))':
+  '@hookform/resolvers@5.4.0(react-hook-form@7.79.0(react@19.2.7))':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.78.0(react@19.2.7)
+      react-hook-form: 7.79.0(react@19.2.7)
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -2825,7 +2825,7 @@ snapshots:
       react: 19.2.7
       scheduler: 0.27.0
 
-  react-hook-form@7.78.0(react@19.2.7):
+  react-hook-form@7.79.0(react@19.2.7):
     dependencies:
       react: 19.2.7
 
