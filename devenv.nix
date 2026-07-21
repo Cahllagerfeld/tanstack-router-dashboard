@@ -11,6 +11,7 @@
   packages = [ 
     pkgs.git
     pkgs.pinact
+    pkgs.github-cli
   ];
 
   env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
