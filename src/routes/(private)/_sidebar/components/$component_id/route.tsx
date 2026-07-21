@@ -50,7 +50,7 @@ function RouteComponent() {
 			<ComponentHeader component={component} />
 
 			<Tabs value={activeTab} className="w-full">
-				<TabsList>
+				<TabsList variant="line">
 					<TabsTrigger
 						nativeButton={false}
 						value="general"
