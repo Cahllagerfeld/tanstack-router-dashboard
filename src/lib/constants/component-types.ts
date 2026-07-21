@@ -16,4 +16,5 @@ export const COMPONENT_TYPES = [
 	"step_operator",
 	"deployer",
 	"log_store",
+	"sandbox",
 ] as const satisfies ComponentType[];
