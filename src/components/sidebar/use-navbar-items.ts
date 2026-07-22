@@ -1,30 +1,23 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
+import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { NavbarItem } from "@/types/navbar";
-import {
-	Activity,
-	Box,
-	Boxes,
-	Frame,
-	GitBranch,
-	PlayCircle,
-	Settings,
-} from "lucide-react";
+import { Settings } from "lucide-react";
 
 const unscopedNavMain: NavbarItem[] = [
 	{
 		title: "Projects",
 		url: "/projects",
-		icon: Frame,
+		icon: getEntityIcon("project"),
 	},
 	{
 		title: "Components",
 		url: "/components",
-		icon: Box,
+		icon: getEntityIcon("component"),
 	},
 	{
 		title: "Stacks",
 		url: "/stacks",
-		icon: Boxes,
+		icon: getEntityIcon("stack"),
 	},
 	{
 		title: "Settings",
@@ -38,22 +31,22 @@ const projectPreviewNavMain: NavbarItem[] = [
 	{
 		title: "Project Overview",
 		url: "#",
-		icon: Frame,
+		icon: getEntityIcon("project"),
 	},
 	{
 		title: "Pipelines",
 		url: "#",
-		icon: GitBranch,
+		icon: getEntityIcon("pipeline"),
 	},
 	{
 		title: "Runs",
 		url: "#",
-		icon: PlayCircle,
+		icon: getEntityIcon("run"),
 	},
 	{
 		title: "Artifacts",
 		url: "#",
-		icon: Activity,
+		icon: getEntityIcon("artifact"),
 	},
 ];
 
