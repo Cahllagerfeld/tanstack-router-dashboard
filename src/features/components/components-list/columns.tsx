@@ -3,10 +3,14 @@ import { NotAvailableTag } from "@/components/not-available-tag";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import { Link } from "@tanstack/react-router";
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 
-export function useComponentColumns(): ColumnDef<Component>[] {
+export function useComponentColumns(): ColumnDef<
+	DataTableFeatures,
+	Component
+>[] {
 	return [
 		{
 			id: "select",
@@ -34,7 +38,6 @@ export function useComponentColumns(): ColumnDef<Component>[] {
 					aria-label="Select row"
 				/>
 			),
-			enableSorting: false,
 			enableHiding: false,
 		},
 		{
