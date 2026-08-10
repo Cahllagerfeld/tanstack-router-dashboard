@@ -1,16 +1,16 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
-import { StackTable } from "@/features/stacks/stacks-list/stack-table";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	ColumnSizingState,
-	getCoreRowModel,
+	ColumnVisibilityState,
 	RowSelectionState,
-	useReactTable,
-	VisibilityState,
+	useTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -36,16 +36,18 @@ export const Route = createFileRoute("/(private)/_sidebar/stacks/")({
 function RouteComponent() {
 	const columns = useStackColumns();
 	const { size, page } = Route.useSearch();
-	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [columnVisibility, setColumnVisibility] =
+		useState<ColumnVisibilityState>({});
 	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	const data = useSuspenseQuery(stackQueries.list({ size, page }));
 
-	const table = useReactTable({
+	const table = useTable({
+		features,
 		data: data.data.items,
 		columns,
-		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id,
+		manualPagination: true,
 		onColumnVisibilityChange: setColumnVisibility,
 		onColumnSizingChange: setColumnSizing,
 		onRowSelectionChange: setRowSelection,
@@ -75,7 +77,7 @@ function RouteComponent() {
 			<div className="flex items-center justify-end gap-2">
 				<DataTableViewOptions table={table} />
 			</div>
-			<StackTable table={table} />
+			<DataTable table={table} />
 		</div>
 	);
 }
