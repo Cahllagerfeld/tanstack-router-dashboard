@@ -31,3 +31,7 @@ _Avoid_: Output, asset, file, dataset (dataset is a kind of Artifact, not a syno
 **Artifact Version**:
 One concrete materialization of an Artifact. In the UI, distinguished from its Artifact by a version label, not a separate type icon.
 _Avoid_: Artifact (when you mean a specific version), output, blob
+
+**Table Toolbar**:
+The control area associated with a resource table, with flexible left and right groups for table-specific controls and preferences.
+_Avoid_: Table actions (when referring to the whole control area), table header

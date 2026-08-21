@@ -1,6 +1,7 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
@@ -74,9 +75,11 @@ function RouteComponent() {
 					Stacks are collections of components that work together.
 				</p>
 			</div>
-			<div className="flex items-center justify-end gap-2">
-				<DataTableViewOptions table={table} />
-			</div>
+			<TableToolbar>
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
 			<DataTable table={table} />
 		</div>
 	);

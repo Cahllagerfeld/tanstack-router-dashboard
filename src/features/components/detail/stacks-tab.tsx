@@ -1,6 +1,7 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { stackQueries } from "@/data/stacks";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -50,9 +51,11 @@ export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
 
 	return (
 		<div className="space-y-2">
-			<div className="flex items-center justify-end gap-2">
-				<DataTableViewOptions table={table} />
-			</div>
+			<TableToolbar>
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
 			<DataTable table={table} />
 		</div>
 	);

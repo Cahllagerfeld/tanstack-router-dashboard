@@ -1,6 +1,7 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { userQueries } from "@/data/user";
 import { Pagination } from "@/features/pagination";
 import { useUserListColumns } from "@/features/users/list/columns";
@@ -12,13 +13,15 @@ import {
 	RowSelectionState,
 	useTable,
 } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 import { useState } from "react";
 
 type Props = {
 	queries: UserListQueryParams;
+	toolbarStart?: ReactNode;
 };
 
-export function UserList({ queries }: Props) {
+export function UserList({ queries, toolbarStart }: Props) {
 	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
 	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
 	const columns = useUserListColumns(!!currentUser.isAdmin);
@@ -59,9 +62,14 @@ export function UserList({ queries }: Props) {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-end gap-2">
-				<DataTableViewOptions table={table} />
-			</div>
+			<TableToolbar>
+				{toolbarStart ? (
+					<TableToolbar.Start>{toolbarStart}</TableToolbar.Start>
+				) : null}
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
 			<DataTable table={table} />
 			<Pagination index={userList.index} totalPages={userList.total_pages} />
 		</div>
