@@ -13,7 +13,7 @@ async function activateServer(bodyData: ServerActivation) {
 	return expectData(response);
 }
 
-async function activateAndLogin(bodyData: ServerActivation) {
+export async function activateAndLogin(bodyData: ServerActivation) {
 	const activateResponse = await activateServer(bodyData);
 	if (bodyData.admin_password && bodyData.admin_username) {
 		await loginUserRequest({
