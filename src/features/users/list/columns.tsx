@@ -2,101 +2,91 @@ import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { User } from "@/types/user";
-import { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { User } from "@/domain/users";
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
+import type { ColumnDef } from "@tanstack/react-table";
 import { AdminActions } from "./admin-actions";
 import { IsActiveBadge } from "./is-active-badge";
 
-export function useUserListColumns(isAdmin: boolean): ColumnDef<User>[] {
-	return useMemo(() => {
-		const columns: ColumnDef<User>[] = [
-			{
-				id: "select",
-				meta: {
-					className: "w-fit",
-				},
-				header: ({ table }) => (
-					<Checkbox
-						checked={
-							table.getIsAllPageRowsSelected() ||
-							(table.getIsSomePageRowsSelected() && "indeterminate")
-						}
-						onCheckedChange={(value) =>
-							table.toggleAllPageRowsSelected(!!value)
-						}
-						aria-label="Select all"
-					/>
-				),
-				cell: ({ row }) => (
-					<Checkbox
-						checked={row.getIsSelected()}
-						onCheckedChange={(value) => row.toggleSelected(!!value)}
-						aria-label="Select row"
-					/>
-				),
-				enableSorting: false,
-				enableHiding: false,
+export function useUserListColumns(
+	isAdmin: boolean
+): ColumnDef<DataTableFeatures, User>[] {
+	return [
+		{
+			id: "select",
+			enableResizing: false,
+			size: 32,
+			minSize: 32,
+			maxSize: 32,
+			header: ({ table }) => (
+				<Checkbox
+					checked={table.getIsAllPageRowsSelected()}
+					indeterminate={
+						!table.getIsAllPageRowsSelected() &&
+						table.getIsSomePageRowsSelected()
+					}
+					onCheckedChange={(checked) =>
+						table.toggleAllPageRowsSelected(checked)
+					}
+					aria-label="Select all"
+				/>
+			),
+			cell: ({ row }) => (
+				<Checkbox
+					checked={row.getIsSelected()}
+					onCheckedChange={(checked) => row.toggleSelected(checked)}
+					aria-label="Select row"
+				/>
+			),
+			enableHiding: false,
+		},
+		{
+			header: "Name",
+			accessorKey: "name",
+			enableHiding: true,
+			cell: ({ row }) => {
+				const username = row.original.name;
+				const isAdmin = row.original.isAdmin;
+				return (
+					<div className="flex items-center gap-2">
+						<p>{username}</p>
+						{isAdmin && <Badge variant="outline">Admin</Badge>}
+					</div>
+				);
 			},
-			{
-				header: "Name",
-				accessorKey: "name",
-				meta: {
-					className: "w-full",
-				},
-				cell: ({ row }) => {
-					const username = row.original.name;
-					const isAdmin = row.original.body?.is_admin;
-					return (
-						<div className="flex items-center gap-2">
-							<p>{username}</p>
-							{isAdmin && <Badge variant="outline">Admin</Badge>}
-						</div>
-					);
-				},
+		},
+		{
+			id: "status",
+			header: "Status",
+			accessorFn: (row) => row.isActive,
+			enableHiding: true,
+			cell: ({ row }) => {
+				const isActive = !!row.original.isActive;
+				return <IsActiveBadge isActive={isActive} />;
 			},
-			{
-				header: "Status",
-				meta: {
-					className: "w-[10%]",
-				},
-				accessorFn: (row) => row.body?.active,
-				cell: ({ row }) => {
-					const isActive = !!row.original.body?.active;
-					return <IsActiveBadge isActive={isActive} />;
-				},
+		},
+		{
+			id: "created",
+			header: "Created",
+			accessorFn: (row) => row.created,
+			enableHiding: true,
+			cell: ({ row }) => {
+				const date = row.original.created;
+				if (!date) return <NotAvailableTag />;
+				return <DisplayDate date={date} />;
 			},
-			{
-				id: "created",
-				header: "Created",
-				meta: {
-					className: "w-[10%]",
-				},
-				accessorFn: (row) => row.body?.created,
-				cell: ({ row }) => {
-					const dateString = row.original.body?.created;
-					if (!dateString) return <NotAvailableTag />;
-					return (
-						<p>
-							<DisplayDate short dateString={dateString} />
-						</p>
-					);
-				},
-			},
-			...(isAdmin ? adminColumns : []),
-		];
-
-		return columns;
-	}, [isAdmin]);
+		},
+		...(isAdmin ? adminColumns : []),
+	];
 }
 
-const adminColumns: ColumnDef<User>[] = [
+const adminColumns: ColumnDef<DataTableFeatures, User>[] = [
 	{
 		id: "actions",
-		meta: {
-			className: "w-fit",
-		},
-		enableSorting: false,
+		enableResizing: false,
+		size: 80,
+		minSize: 80,
+		maxSize: 120,
 		enableHiding: false,
 		cell: () => {
 			return <AdminActions />;

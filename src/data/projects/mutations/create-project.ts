@@ -1,5 +1,7 @@
-import { getProjectDisplayName } from "@/lib/names";
-import { CreateProject, Project } from "@/types/projects";
+import { Project, projectFromApi } from "@/domain/projects";
+import { expectData } from "@/lib/fetch-error";
+import { ApiClientError } from "@/types/api";
+import { ApiCreateProject } from "@/types/projects";
 import {
 	useMutation,
 	UseMutationOptions,
@@ -7,35 +9,40 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { apiPaths } from "../../api";
 import { apiClient } from "../../api-client";
+import { projectKeys } from "..";
 
-async function createProject(payload: CreateProject) {
-	const project: Project = await apiClient(apiPaths.projects.base, {
+async function createProject(payload: ApiCreateProject) {
+	const project = await apiClient.POST("/api/v1/projects", {
 		method: "POST",
-		body: JSON.stringify(payload),
+		body: payload,
 	});
 
-	return project;
+	return projectFromApi(expectData(project));
 }
 
 export function useCreateProject(
-	options?: UseMutationOptions<Project, unknown, CreateProject>
+	options?: UseMutationOptions<
+		Project,
+		ApiClientError,
+		ApiCreateProject,
+		unknown
+	>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, ...rest } = options || {};
-	return useMutation({
+	return useMutation<Project, ApiClientError, ApiCreateProject, unknown>({
 		...rest,
 		mutationFn: createProject,
-		onSuccess: (data, vars, ctx) => {
-			queryClient.invalidateQueries({ queryKey: ["projects"] });
-			toast.success(`Project ${getProjectDisplayName(data)} created`);
+		onSuccess: (data, variables, onMutateResult, context) => {
+			queryClient.invalidateQueries({ queryKey: projectKeys.all });
+			toast.success(`Project ${data.displayName} created`);
 			navigate({
 				to: "/projects/$project_id",
 				params: { project_id: data.name },
 			});
-			onSuccess?.(data, vars, ctx);
+			onSuccess?.(data, variables, onMutateResult, context);
 		},
 	});
 }

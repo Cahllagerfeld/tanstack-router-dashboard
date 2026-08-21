@@ -1,5 +1,5 @@
-import { Pagination } from "@/components/pagination";
 import { projectQueries } from "@/data/projects";
+import { Pagination } from "@/features/pagination";
 import { ProjectListQueries } from "@/types/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ProjectItem } from "./project-item";
@@ -10,9 +10,7 @@ type Props = {
 };
 
 export function ProjectList({ queries }: Props) {
-	const { data: projectData } = useSuspenseQuery(
-		projectQueries.projectList(queries)
-	);
+	const { data: projectData } = useSuspenseQuery(projectQueries.list(queries));
 
 	const hasProjects = projectData.total > 0;
 

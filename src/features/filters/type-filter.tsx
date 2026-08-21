@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormMessage,
-} from "@/components/ui/form";
+import { Field, FieldError } from "@/components/ui/field";
 import {
 	Select,
 	SelectContent,
@@ -14,14 +8,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { getComponentTypeLabel } from "@/lib/components";
+import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { ComponentType } from "@/types/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { Filter, Trash2 } from "lucide-react";
 import { ComponentPropsWithoutRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
 	Popover,
@@ -35,7 +29,7 @@ type Props = {
 };
 
 const filterFormSchema = z.object({
-	type: z.union([z.enum(COMPONENT_TYPES), z.literal("")]),
+	type: z.enum(COMPONENT_TYPES).optional(),
 });
 
 type FilterForm = z.infer<typeof filterFormSchema>;
@@ -55,26 +49,28 @@ export function TypeFilter({ filter }: Props) {
 		navigate({
 			replace: true,
 			to: ".",
-			search: (prev) => ({ ...prev, type: type || undefined }),
+			search: (prev) => ({ ...prev, type }),
 		});
 	}
 
 	function handleClearFilter() {
-		form.reset({ type: "" }, { keepDefaultValues: false });
-		handleApplyFilter({ type: "" });
+		form.reset({ type: undefined }, { keepDefaultValues: false });
+		handleApplyFilter({ type: undefined });
 	}
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger asChild>
-				<Button
-					data-state={filter ? "active" : "inactive"}
-					variant="outline"
-					className="data-[state=active]:border-primary"
-				>
-					<Filter />
-					{getComponentTypeLabel(filter) || "Type"}
-				</Button>
+			<PopoverTrigger
+				render={
+					<Button
+						data-state={filter ? "active" : "inactive"}
+						variant="outline"
+						className="data-[state=active]:border-primary h-8"
+					></Button>
+				}
+			>
+				<Filter />
+				{getComponentTypeLabel(filter) || "Type"}
 			</PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">
@@ -84,29 +80,30 @@ export function TypeFilter({ filter }: Props) {
 						<span className="sr-only">Clear Filter</span>
 					</Button>
 				</div>
-				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleApplyFilter)}
-						className="space-y-4"
-					>
-						<FormField
-							control={form.control}
-							name="type"
-							render={({ field }) => (
-								<FormItem>
-									<TypeSelect
-										onValueChange={field.onChange}
-										value={field.value}
-									/>
-									<FormMessage />
-								</FormItem>
-							)}
-						></FormField>
-						<Button className="w-full" type="submit">
-							Apply
-						</Button>
-					</form>
-				</Form>
+				<form
+					onSubmit={form.handleSubmit(handleApplyFilter)}
+					className="space-y-4"
+				>
+					<Controller
+						control={form.control}
+						name="type"
+						render={({ field, fieldState }) => (
+							<Field data-invalid={fieldState.invalid}>
+								<TypeSelect
+									onValueChange={field.onChange}
+									value={field.value}
+									aria-invalid={fieldState.invalid}
+								/>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
+						)}
+					/>
+					<Button className="w-full" type="submit">
+						Apply
+					</Button>
+				</form>
 			</PopoverContent>
 		</Popover>
 	);
@@ -117,10 +114,12 @@ export function TypeSelect({
 }: ComponentPropsWithoutRef<typeof Select>) {
 	return (
 		<Select {...rest}>
-			<SelectTrigger>
-				<FormControl>
-					<SelectValue placeholder="Select a type..." />
-				</FormControl>
+			<SelectTrigger className="w-full">
+				<SelectValue>
+					{(value: ComponentType | null) =>
+						value ? getComponentTypeLabel(value) : "Select a type..."
+					}
+				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>

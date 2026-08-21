@@ -1,4 +1,12 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { LoginForm } from "@/features/login/login-form";
+import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -6,8 +14,23 @@ const querySchema = z.object({
 });
 
 export const Route = createFileRoute("/(public)/_grid-layout/login")({
-	validateSearch: (search) => querySchema.parse(search),
-	beforeLoad: ({ context, search: { next } }) => {
-		if (context.auth.isAuthenticated) throw redirect({ to: next ?? "/" });
-	},
+	validateSearch: querySchema,
+	head: () => ({
+		meta: [{ title: "Login" }],
+	}),
+	component: RouteComponent,
 });
+
+function RouteComponent() {
+	return (
+		<Card className="mx-auto md:w-[400px]">
+			<CardHeader>
+				<CardTitle className="text-2xl">Login</CardTitle>
+				<CardDescription>Use your credentials to log in.</CardDescription>
+			</CardHeader>
+			<CardContent>
+				<LoginForm />
+			</CardContent>
+		</Card>
+	);
+}

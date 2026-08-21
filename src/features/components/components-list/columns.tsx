@@ -1,100 +1,118 @@
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
-import { Component } from "@/types/components";
-import { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
+import { Link } from "@tanstack/react-router";
+import type { ColumnDef } from "@tanstack/react-table";
 
-export function useComponentColumns(): ColumnDef<Component>[] {
-	return useMemo(
-		() => [
-			{
-				id: "select",
-				header: ({ table }) => (
-					<Checkbox
-						checked={
-							table.getIsAllPageRowsSelected() ||
-							(table.getIsSomePageRowsSelected() && "indeterminate")
-						}
-						onCheckedChange={(value) =>
-							table.toggleAllPageRowsSelected(!!value)
-						}
-						aria-label="Select all"
-					/>
-				),
-				cell: ({ row }) => (
-					<Checkbox
-						checked={row.getIsSelected()}
-						onCheckedChange={(value) => row.toggleSelected(!!value)}
-						aria-label="Select row"
-					/>
-				),
-				enableSorting: false,
-				enableHiding: false,
+export function useComponentColumns(): ColumnDef<
+	DataTableFeatures,
+	Component
+>[] {
+	return [
+		{
+			id: "select",
+			enableResizing: false,
+			size: 32,
+			minSize: 32,
+			maxSize: 32,
+			header: ({ table }) => (
+				<Checkbox
+					checked={table.getIsAllPageRowsSelected()}
+					indeterminate={
+						!table.getIsAllPageRowsSelected() &&
+						table.getIsSomePageRowsSelected()
+					}
+					onCheckedChange={(checked) =>
+						table.toggleAllPageRowsSelected(checked)
+					}
+					aria-label="Select all"
+				/>
+			),
+			cell: ({ row }) => (
+				<Checkbox
+					checked={row.getIsSelected()}
+					onCheckedChange={(checked) => row.toggleSelected(checked)}
+					aria-label="Select row"
+				/>
+			),
+			enableHiding: false,
+		},
+		{
+			header: "Name",
+			accessorKey: "name",
+			enableHiding: true,
+			cell: ({ row }) => (
+				<Link
+					to="/components/$component_id"
+					params={{ component_id: row.original.id }}
+					className="text-primary hover:underline"
+				>
+					{row.original.name}
+				</Link>
+			),
+			meta: {
+				className: "w-1/2",
 			},
-			{
-				header: "Name",
-				accessorKey: "name",
-				meta: {
-					className: "w-1/2",
-				},
+		},
+		{
+			header: "Type",
+			enableHiding: true,
+			accessorFn: (row) => row.type,
+			cell: ({ row }) => {
+				const type = row.original.type;
+				if (!type) return <NotAvailableTag />;
+				return <p>{snakeCaseToTitleCase(type)}</p>;
 			},
-			{
-				header: "Type",
-				accessorFn: (row) => row.body?.type,
-				cell: ({ row }) => {
-					const type = row.original.body?.type;
-					if (!type) return <NotAvailableTag />;
-					return <p>{snakeCaseToTitleCase(type)}</p>;
-				},
-				meta: {
-					className: "w-[17.5%]",
-				},
+			meta: {
+				className: "w-[17.5%]",
 			},
-			{
-				header: "Flavor",
-				accessorFn: (row) => row.resources?.flavor.name,
-				cell: ({ row }) => {
-					const logoUrl = row.original.resources?.flavor.body?.logo_url;
-					const flavor = row.original.resources?.flavor.name;
-					if (!flavor) return <NotAvailableTag />;
-					return (
-						<div className="flex items-center gap-2">
-							{logoUrl && (
-								<img
-									src={logoUrl}
-									alt={flavor}
-									width={24}
-									height={24}
-									className="shrink-0"
-								/>
-							)}
-							<p>{snakeCaseToTitleCase(flavor)}</p>
-						</div>
-					);
-				},
-				meta: {
-					className: "w-[17.5%]",
-				},
+		},
+		{
+			header: "Flavor",
+			accessorFn: (row) => row.flavor?.name,
+			enableHiding: true,
+			cell: ({ row }) => {
+				const logoUrl = row.original.flavor?.logoUrl;
+				const flavor = row.original.flavor?.name;
+				if (!flavor) return <NotAvailableTag />;
+				return (
+					<div className="flex items-center gap-2">
+						{logoUrl && (
+							<img
+								src={logoUrl}
+								alt={flavor}
+								width={24}
+								height={24}
+								className="shrink-0"
+							/>
+						)}
+						<p>{snakeCaseToTitleCase(flavor)}</p>
+					</div>
+				);
 			},
-			{
-				header: "Created at",
-				accessorFn: (row) => row.body?.created,
-				meta: {
-					className: "w-[15%]",
-				},
-				cell: ({ row }) => {
-					const dateString = row.original.body?.created;
-					if (!dateString) return <NotAvailableTag />;
-					return (
-						<p>
-							<DisplayDate short dateString={dateString} />
-						</p>
-					);
-				},
+			meta: {
+				className: "w-[17.5%]",
 			},
-		],
-		[]
-	);
+		},
+		{
+			header: "Created at",
+			enableHiding: true,
+			accessorFn: (row) => row.created,
+			meta: {
+				className: "w-[15%]",
+			},
+			cell: ({ row }) => {
+				const created = row.original.created;
+				if (!created) return <NotAvailableTag />;
+				return (
+					<p>
+						<DisplayDate short date={created} />
+					</p>
+				);
+			},
+		},
+	];
 }

@@ -35,12 +35,14 @@ export function NavProjects({
 				<SidebarMenu>
 					{projects.map((item) => (
 						<SidebarMenuItem key={item.name}>
-							<SidebarMenuButton asChild>
-								<Link to={item.url}>
-									<item.icon />
-									<span>{item.name}</span>
-								</Link>
-							</SidebarMenuButton>
+							<SidebarMenuButton
+								render={
+									<Link to={item.url}>
+										<item.icon />
+										<span>{item.name}</span>
+									</Link>
+								}
+							></SidebarMenuButton>
 							<ProjectMenuDropdown projectId={item.id} />
 						</SidebarMenuItem>
 					))}
@@ -61,18 +63,20 @@ export function ProjectMenuDropdown({ projectId }: { projectId: string }) {
 				setOpen={setDeleteOpen}
 			/>
 			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<SidebarMenuAction showOnHover>
-						<MoreHorizontal />
-						<span className="sr-only">More</span>
-					</SidebarMenuAction>
-				</DropdownMenuTrigger>
+				<DropdownMenuTrigger
+					render={
+						<SidebarMenuAction showOnHover>
+							<MoreHorizontal />
+							<span className="sr-only">More</span>
+						</SidebarMenuAction>
+					}
+				></DropdownMenuTrigger>
 				<DropdownMenuContent
 					className="w-48"
 					side={isMobile ? "bottom" : "right"}
 					align={isMobile ? "end" : "start"}
 				>
-					<DropdownMenuItem onSelect={() => setDeleteOpen(true)}>
+					<DropdownMenuItem onClick={() => setDeleteOpen(true)}>
 						<Trash2 className="text-muted-foreground" />
 						<span>Delete Project</span>
 					</DropdownMenuItem>

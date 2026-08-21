@@ -1,16 +1,13 @@
 export default function DisplayDate({
-	dateString,
+	date,
 	short = false,
 }: {
-	dateString: string;
+	date: Date;
 	short?: boolean;
 }) {
-	const parsedDate = new Date(`${dateString}Z`);
-	const date = short
-		? formatShortDate(parsedDate)
-		: parsedDate.toLocaleString();
+	const formattedDate = short ? formatShortDate(date) : date.toLocaleString();
 
-	return <>{date}</>;
+	return <>{formattedDate}</>;
 }
 
 function formatShortDate(date: Date) {

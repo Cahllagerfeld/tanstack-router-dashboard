@@ -1,10 +1,17 @@
-import { Pagination } from "@/components/pagination";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
 import { userQueries } from "@/data/user";
+import { Pagination } from "@/features/pagination";
 import { useUserListColumns } from "@/features/users/list/columns";
 import { UserListQueryParams } from "@/types/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RowSelectionState } from "@tanstack/react-table";
+import {
+	ColumnSizingState,
+	ColumnVisibilityState,
+	RowSelectionState,
+	useTable,
+} from "@tanstack/react-table";
 import { useState } from "react";
 
 type Props = {
@@ -12,10 +19,37 @@ type Props = {
 };
 
 export function UserList({ queries }: Props) {
-	const { data: userList } = useSuspenseQuery(userQueries.userList(queries));
+	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
 	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
-	const columns = useUserListColumns(!!currentUser.body?.is_admin);
+	const columns = useUserListColumns(!!currentUser.isAdmin);
+	const [columnVisibility, setColumnVisibility] =
+		useState<ColumnVisibilityState>({});
+	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+	const table = useTable({
+		features,
+		data: userList.items,
+		columns,
+		getRowId: (row) => row.id,
+		manualPagination: true,
+		onColumnVisibilityChange: setColumnVisibility,
+		onColumnSizingChange: setColumnSizing,
+		onRowSelectionChange: setRowSelection,
+		columnResizeMode: "onChange",
+		enableColumnResizing: true,
+		defaultColumn: {
+			enableHiding: false,
+			size: 200,
+			minSize: 150,
+			maxSize: 400,
+		},
+		state: {
+			columnVisibility,
+			columnSizing,
+			rowSelection,
+		},
+	});
 
 	// const hasUsers = userList.total > 0;
 
@@ -25,13 +59,10 @@ export function UserList({ queries }: Props) {
 
 	return (
 		<div className="space-y-4">
-			<DataTable
-				getRowId={(row) => row.id}
-				data={userList.items}
-				rowSelection={rowSelection}
-				setRowSelection={setRowSelection}
-				columns={columns}
-			/>
+			<div className="flex items-center justify-end gap-2">
+				<DataTableViewOptions table={table} />
+			</div>
+			<DataTable table={table} />
 			<Pagination index={userList.index} totalPages={userList.total_pages} />
 		</div>
 	);
