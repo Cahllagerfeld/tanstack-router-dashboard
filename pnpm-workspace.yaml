@@ -3,6 +3,3 @@ allowBuilds:
 
 blockExoticSubdeps: true
 minimumReleaseAge: 4320
-
-overrides:
-  js-yaml: "^4.3.1"
