@@ -1,6 +1,7 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
@@ -83,10 +84,14 @@ function RouteComponent() {
 					Components are the building blocks of your stacks.
 				</p>
 			</div>
-			<div className="flex items-center gap-2">
-				<TypeFilter queryName="type" filter={type} />
-				<DataTableViewOptions table={table} />
-			</div>
+			<TableToolbar>
+				<TableToolbar.Start>
+					<TypeFilter queryName="type" filter={type} />
+				</TableToolbar.Start>
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
 			<DataTable table={table} />
 		</div>
 	);

@@ -59,12 +59,16 @@ function RouteComponent() {
 					Manage your team members and their access to your server.
 				</p>
 			</div>
-			<UserListSearchbar
-				searchValue={getFilterValue(name ?? "")}
-				onChange={setSearchValue}
-			/>
 			<Suspense fallback={<UserListSkeleton />}>
-				<UserList queries={queries} />
+				<UserList
+					queries={queries}
+					toolbarStart={
+						<UserListSearchbar
+							searchValue={getFilterValue(name ?? "")}
+							onChange={setSearchValue}
+						/>
+					}
+				/>
 			</Suspense>
 		</div>
 	);
