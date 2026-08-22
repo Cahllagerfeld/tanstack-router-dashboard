@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/select";
 import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
-import { ComponentType } from "@/types/components";
+import type { ComponentType } from "@/types/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { Filter, Trash2 } from "lucide-react";
-import { ComponentPropsWithoutRef, useState } from "react";
+import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import {

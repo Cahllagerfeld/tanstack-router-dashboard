@@ -1,5 +1,5 @@
 import { expectData } from "@/lib/fetch-error";
-import { StacksListQueryParams } from "@/types/stacks";
+import type { StacksListQueryParams } from "@/types/stacks";
 import { apiClient } from "../api-client";
 import { stackFromApi } from "@/domain/stacks";
 

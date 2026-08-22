@@ -1,4 +1,4 @@
-import { components } from "./core";
+import type { components } from "./core";
 
 export type ServerActivation = components["schemas"]["ServerActivationRequest"];
 

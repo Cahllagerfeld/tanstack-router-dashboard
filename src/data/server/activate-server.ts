@@ -1,7 +1,10 @@
 import { expectData } from "@/lib/fetch-error";
-import { ApiClientError } from "@/types/api";
-import { ApiServerActivationResult, ServerActivation } from "@/types/server";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import type { ApiClientError } from "@/types/api";
+import type {
+	ApiServerActivationResult,
+	ServerActivation,
+} from "@/types/server";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 import { loginUserRequest } from "../session/login";
 

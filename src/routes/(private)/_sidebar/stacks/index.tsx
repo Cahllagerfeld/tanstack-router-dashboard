@@ -8,9 +8,9 @@ import { useStackColumns } from "@/features/stacks/stacks-list/columns";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-	ColumnSizingState,
-	ColumnVisibilityState,
-	RowSelectionState,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	type RowSelectionState,
 	useTable,
 } from "@tanstack/react-table";
 import { useState } from "react";

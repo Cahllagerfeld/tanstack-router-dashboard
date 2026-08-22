@@ -1,7 +1,7 @@
 import { expectData } from "@/lib/fetch-error";
-import { ApiClientError } from "@/types/api";
-import { Login, LoginSuccessResponse } from "@/types/session";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import type { ApiClientError } from "@/types/api";
+import type { Login, LoginSuccessResponse } from "@/types/session";
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
 import { apiClient } from "../api-client";
 
 export async function loginUserRequest(body: Login) {

@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { StacksListQueryParams } from "@/types/stacks";
+import type { StacksListQueryParams } from "@/types/stacks";
 import { fetchStackDetail } from "./fetch-detail";
 import { fetchStackList } from "./fetch-list";
 

@@ -1,10 +1,11 @@
-import { Project, projectFromApi } from "@/domain/projects";
+import type { Project } from "@/domain/projects";
+import { projectFromApi } from "@/domain/projects";
 import { expectData } from "@/lib/fetch-error";
-import { ApiClientError } from "@/types/api";
-import { ApiCreateProject } from "@/types/projects";
+import type { ApiClientError } from "@/types/api";
+import type { ApiCreateProject } from "@/types/projects";
 import {
 	useMutation,
-	UseMutationOptions,
+	type UseMutationOptions,
 	useQueryClient,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";

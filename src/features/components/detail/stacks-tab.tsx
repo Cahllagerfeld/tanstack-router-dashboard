@@ -6,8 +6,8 @@ import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { stackQueries } from "@/data/stacks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
-	ColumnSizingState,
-	ColumnVisibilityState,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
 	useTable,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";

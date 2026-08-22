@@ -5,12 +5,12 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { userQueries } from "@/data/user";
 import { Pagination } from "@/features/pagination";
 import { useUserListColumns } from "@/features/users/list/columns";
-import { UserListQueryParams } from "@/types/user";
+import type { UserListQueryParams } from "@/types/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
-	ColumnSizingState,
-	ColumnVisibilityState,
-	RowSelectionState,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	type RowSelectionState,
 	useTable,
 } from "@tanstack/react-table";
 import type { ReactNode } from "react";

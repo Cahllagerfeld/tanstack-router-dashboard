@@ -1,7 +1,7 @@
 import { useCreateProject } from "@/data/projects/mutations/create-project";
 import { isFetchError } from "@/lib/fetch-error";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type CreateProjectForm, createProjectSchema } from "./schema";

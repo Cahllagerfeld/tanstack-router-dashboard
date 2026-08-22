@@ -1,4 +1,4 @@
-import { ComponentType } from "@/types/components";
+import type { ComponentType } from "@/types/components";
 
 // generate an array with all possible values from ComponentType
 export const COMPONENT_TYPES = [

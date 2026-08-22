@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { CreateProjectForm } from "./form";
 
 const FORM_ID = "create-project-form";

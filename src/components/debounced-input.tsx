@@ -1,5 +1,5 @@
 import { debounce } from "es-toolkit";
-import { ComponentProps, useEffect, useState } from "react";
+import { useEffect, useState, type ComponentProps } from "react";
 import { Input } from "./ui/input";
 
 type Props = Omit<ComponentProps<typeof Input>, "onChange"> & {

@@ -14,7 +14,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { NavbarItem } from "@/types/navbar";
+import type { NavbarItem } from "@/types/navbar";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 

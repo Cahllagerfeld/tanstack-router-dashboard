@@ -1,6 +1,6 @@
 import { componentFromApi } from "@/domain/components";
 import { expectData } from "@/lib/fetch-error";
-import { ComponentsListQueryParams } from "@/types/components";
+import type { ComponentsListQueryParams } from "@/types/components";
 import { apiClient } from "../api-client";
 
 export async function fetchComponentList(params: ComponentsListQueryParams) {

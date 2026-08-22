@@ -2,7 +2,7 @@ import { apiClient } from "@/data/api-client";
 import { FetchError } from "@/lib/fetch-error";
 import {
 	useMutation,
-	UseMutationOptions,
+	type UseMutationOptions,
 	useQueryClient,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";

@@ -1,6 +1,6 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
-import { NavbarItem } from "@/types/navbar";
+import type { NavbarItem } from "@/types/navbar";
 import { Settings } from "lucide-react";
 
 const unscopedNavMain: NavbarItem[] = [

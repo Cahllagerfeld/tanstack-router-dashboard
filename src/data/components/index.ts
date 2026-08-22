@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { ComponentsListQueryParams } from "@/types/components";
+import type { ComponentsListQueryParams } from "@/types/components";
 import { fetchComponentDetail } from "./fetch-detail";
 import { fetchComponentList } from "./fetch-list";
 
