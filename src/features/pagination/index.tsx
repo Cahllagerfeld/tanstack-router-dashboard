@@ -1,3 +1,4 @@
+import { getPageNumbers } from "./page-numbers";
 import {
 	PaginationContent,
 	PaginationEllipsis,
@@ -9,7 +10,6 @@ import {
 	PaginationPrevious,
 	Pagination as PaginationPrimitive,
 } from "@/components/ui/pagination";
-import { getPageNumbers } from "./page-numbers";
 
 type Props = {
 	index: number;

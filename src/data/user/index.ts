@@ -1,7 +1,7 @@
-import { queryOptions } from "@tanstack/react-query";
-import { UserListQueryParams } from "@/types/user";
 import { fetchCurrentUser } from "./fetch-current-user";
 import { fetchUserList } from "./fetch-list";
+import type { UserListQueryParams } from "@/types/user";
+import { queryOptions } from "@tanstack/react-query";
 
 const baseKey = "users" as const;
 

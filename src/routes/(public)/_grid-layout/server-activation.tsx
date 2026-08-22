@@ -1,5 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { serverQueries } from "@/data/server";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,8 +7,9 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { serverQueries } from "@/data/server";
 import { PasswordStep } from "@/features/server-activation/password-step";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
 	"/(public)/_grid-layout/server-activation"

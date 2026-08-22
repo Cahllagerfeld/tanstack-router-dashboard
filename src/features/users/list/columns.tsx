@@ -1,12 +1,12 @@
-import DisplayDate from "@/components/display-date";
-import { NotAvailableTag } from "@/components/not-available-tag";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { User } from "@/domain/users";
-import type { DataTableFeatures } from "@/components/tables/data-table-features";
-import type { ColumnDef } from "@tanstack/react-table";
 import { AdminActions } from "./admin-actions";
 import { IsActiveBadge } from "./is-active-badge";
+import DisplayDate from "@/components/display-date";
+import { NotAvailableTag } from "@/components/not-available-tag";
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { User } from "@/domain/users";
+import type { ColumnDef } from "@tanstack/react-table";
 
 export function useUserListColumns(
 	isAdmin: boolean

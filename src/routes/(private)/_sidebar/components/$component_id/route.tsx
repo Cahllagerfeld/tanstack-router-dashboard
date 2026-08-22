@@ -1,16 +1,16 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { componentQueries } from "@/data/components";
+import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
+import { ComponentHeader } from "@/features/components/detail/component-header";
+import { ComponentNotFound } from "@/features/components/detail/component-not-found";
+import { ensureQueryDataOr404 } from "@/lib/loader-utils";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import {
-	createFileRoute,
 	Link,
 	Outlet,
+	createFileRoute,
 	useMatchRoute,
 } from "@tanstack/react-router";
-import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
-import { ensureQueryDataOr404 } from "@/lib/loader-utils";
-import { ComponentNotFound } from "@/features/components/detail/component-not-found";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ComponentHeader } from "@/features/components/detail/component-header";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/components/$component_id"

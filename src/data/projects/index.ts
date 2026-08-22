@@ -1,7 +1,7 @@
-import { ProjectListQueries } from "@/types/projects";
-import { queryOptions } from "@tanstack/react-query";
 import { fetchProjectDetail } from "./fetch-detail";
 import { fetchProjectList } from "./fetch-list";
+import type { ProjectListQueries } from "@/types/projects";
+import { queryOptions } from "@tanstack/react-query";
 
 const baseKey = "projects" as const;
 

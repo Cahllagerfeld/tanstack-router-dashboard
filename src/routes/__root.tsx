@@ -3,9 +3,9 @@ import { serverQueries } from "@/data/server";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
-	createRootRouteWithContext,
 	HeadContent,
 	Outlet,
+	createRootRouteWithContext,
 	redirect,
 } from "@tanstack/react-router";
 

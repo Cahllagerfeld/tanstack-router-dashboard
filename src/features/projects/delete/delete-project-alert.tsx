@@ -9,7 +9,7 @@ import {
 	ResponsiveAlertDialogTitle,
 } from "@/components/ui/responsive-alert-dialog";
 import { useDeleteProject } from "@/data/projects/mutations/delete-project";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 type Props = {
 	projectId: string;

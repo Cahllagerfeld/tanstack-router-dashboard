@@ -1,8 +1,10 @@
+import type { Flavor } from "./flavors";
+import { flavorFromApi } from "./flavors";
+import type { User } from "./users";
+import { userFromApi } from "./users";
 import { parseBackendDate } from "@/lib/dates";
-import { ComponentType } from "@/types/components";
-import { components } from "@/types/core";
-import { Flavor, flavorFromApi } from "./flavors";
-import { User, userFromApi } from "./users";
+import type { ComponentType } from "@/types/components";
+import type { components } from "@/types/core";
 
 export type Component = {
 	id: string;

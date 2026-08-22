@@ -1,3 +1,4 @@
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -8,7 +9,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Columns3 } from "lucide-react";
 

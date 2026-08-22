@@ -5,7 +5,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 export function BaseTableActions({ children }: PropsWithChildren) {
 	return (

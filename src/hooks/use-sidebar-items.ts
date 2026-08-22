@@ -1,4 +1,4 @@
-import { NavbarItem } from "@/types/navbar";
+import type { NavbarItem } from "@/types/navbar";
 import { useLocation } from "@tanstack/react-router";
 
 export function useSidebarItems(items: NavbarItem[]) {

@@ -1,5 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { activateAndLogin } from "./activate-server";
 import type { ServerActivation } from "@/types/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { put, loginUserRequest } = vi.hoisted(() => ({
 	put: vi.fn(),
@@ -11,8 +12,6 @@ vi.mock("../api-client", () => ({
 }));
 
 vi.mock("../session/login", () => ({ loginUserRequest }));
-
-import { activateAndLogin } from "./activate-server";
 
 describe("activateAndLogin", () => {
 	beforeEach(() => {

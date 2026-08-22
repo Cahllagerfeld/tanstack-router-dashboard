@@ -1,9 +1,9 @@
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Component } from "@/domain/components";
-import { snakeCaseToTitleCase } from "@/lib/strings";
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
+import { Checkbox } from "@/components/ui/checkbox";
+import type { Component } from "@/domain/components";
+import { snakeCaseToTitleCase } from "@/lib/strings";
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 

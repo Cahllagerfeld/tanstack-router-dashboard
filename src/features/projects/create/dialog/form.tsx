@@ -1,3 +1,4 @@
+import { useCreateProjectForm } from "./use-create-project-form";
 import {
 	Field,
 	FieldError,
@@ -7,9 +8,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Dispatch, HTMLAttributes, SetStateAction } from "react";
+import type { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { Controller } from "react-hook-form";
-import { useCreateProjectForm } from "./use-create-project-form";
 
 export function CreateProjectForm({
 	className,

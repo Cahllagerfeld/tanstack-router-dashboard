@@ -1,4 +1,4 @@
-import { operations } from "./core";
+import type { operations } from "./core";
 
 export type StacksListQueryParams = NonNullable<
 	operations["list_stacks_api_v1_stacks_get"]["parameters"]["query"]
