@@ -1,4 +1,4 @@
-import { components } from "@/types/core";
+import type { components } from "@/types/core";
 
 export type Project = {
 	id: string;

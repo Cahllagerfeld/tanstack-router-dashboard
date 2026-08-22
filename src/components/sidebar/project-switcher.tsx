@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage } from "../ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -23,7 +24,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
 
 export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);

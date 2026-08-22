@@ -1,6 +1,6 @@
-import { debounce } from "es-toolkit";
-import { ComponentProps, useEffect, useState } from "react";
 import { Input } from "./ui/input";
+import { debounce } from "es-toolkit";
+import { type ComponentProps, useEffect, useState } from "react";
 
 type Props = Omit<ComponentProps<typeof Input>, "onChange"> & {
 	debounceMs?: number;
@@ -17,6 +17,8 @@ export function DebouncedInput({
 
 	// Update local state when value prop changes
 	useEffect(() => {
+		// The local value must follow the controlled value after a debounced update.
+		// oxlint-disable-next-line react/set-state-in-effect
 		setLocalValue(value);
 	}, [value]);
 

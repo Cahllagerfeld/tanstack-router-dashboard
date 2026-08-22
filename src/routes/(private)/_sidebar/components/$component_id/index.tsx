@@ -1,7 +1,7 @@
 import { componentQueries } from "@/data/components";
+import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/components/$component_id/"

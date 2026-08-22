@@ -1,5 +1,5 @@
 import { FetchError, throwFetchErrorFromResponse } from "@/lib/fetch-error";
-import { paths } from "@/types/core";
+import type { paths } from "@/types/core";
 import createClient, { type Middleware } from "openapi-fetch";
 
 const defaultHeaders = {

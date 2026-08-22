@@ -1,13 +1,13 @@
+import { projectKeys } from "..";
 import { apiClient } from "@/data/api-client";
 import { FetchError } from "@/lib/fetch-error";
 import {
+	type UseMutationOptions,
 	useMutation,
-	UseMutationOptions,
 	useQueryClient,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { projectKeys } from "..";
 
 interface DeleteProjectParams {
 	projectId: string;

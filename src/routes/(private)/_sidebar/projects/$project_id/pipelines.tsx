@@ -1,5 +1,5 @@
 import { pipelineQueries } from "@/data/pipelines";
-import { PipelineListQueryParams } from "@/types/pipelines";
+import { type PipelineListQueryParams } from "@/types/pipelines";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 

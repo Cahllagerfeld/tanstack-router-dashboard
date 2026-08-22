@@ -1,3 +1,6 @@
+import { ObjectRenderer } from "./object-renderer";
+import type { ValueRendererProps } from "./types";
+import { isSensitiveKey } from "./types";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { SecretValue } from "@/components/secret-value";
 import { Badge } from "@/components/ui/badge";
@@ -14,9 +17,6 @@ import {
 	isString,
 } from "es-toolkit/compat";
 import { ChevronRight } from "lucide-react";
-import { ObjectRenderer } from "./object-renderer";
-import type { ValueRendererProps } from "./types";
-import { isSensitiveKey } from "./types";
 
 export function ValueRenderer({
 	value,

@@ -50,7 +50,7 @@ export function usePasswordStep() {
 				queryKey: serverKeys.info(),
 				refetchType: "all",
 			});
-			await navigate({ to: "/login" });
+			await navigate({ to: "/" });
 		},
 		onError: (e) => {
 			console.error(e);

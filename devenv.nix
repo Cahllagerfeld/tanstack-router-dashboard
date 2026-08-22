@@ -11,6 +11,7 @@
   packages = [ 
     pkgs.git
     pkgs.pinact
+    pkgs.github-cli
   ];
 
   env.OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
@@ -29,12 +30,12 @@
 
   languages.javascript = {
     enable = true;
+    package = pkgs.nodejs-slim_26;
     npm = {
       enable = true;
     };
     pnpm = {
       enable = true;
-      install.enable = true;
     };
   };
 

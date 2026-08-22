@@ -1,6 +1,6 @@
-import { PipelineListQueryParams } from "@/types/pipelines";
-import { queryOptions } from "@tanstack/react-query";
 import { fetchPipelineList } from "./fetch-list";
+import { type PipelineListQueryParams } from "@/types/pipelines";
+import { queryOptions } from "@tanstack/react-query";
 
 const baseKey = "components" as const;
 

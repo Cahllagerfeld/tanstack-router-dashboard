@@ -1,31 +1,24 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
-import { NavbarItem } from "@/types/navbar";
+import { getEntityIcon } from "@/lib/constants/entity-icons";
+import type { NavbarItem } from "@/types/navbar";
 import { useParams, useRouter } from "@tanstack/react-router";
-import {
-	Activity,
-	Box,
-	Boxes,
-	Frame,
-	GitBranch,
-	PlayCircle,
-	Settings,
-} from "lucide-react";
+import { Frame, Settings } from "lucide-react";
 
 const unscopedNavMain: NavbarItem[] = [
 	{
 		title: "Projects",
 		url: "/projects",
-		icon: Frame,
+		icon: getEntityIcon("project"),
 	},
 	{
 		title: "Components",
 		url: "/components",
-		icon: Box,
+		icon: getEntityIcon("component"),
 	},
 	{
 		title: "Stacks",
 		url: "/stacks",
-		icon: Boxes,
+		icon: getEntityIcon("stack"),
 	},
 	{
 		title: "Settings",
@@ -60,17 +53,17 @@ export function useProjectItems() {
 				to: "/projects/$project_id/pipelines",
 				params: { project_id: projectId.project_id },
 			}).pathname,
-			icon: GitBranch,
+			icon: getEntityIcon("pipeline"),
 		},
 		{
 			title: "Runs",
 			url: "#",
-			icon: PlayCircle,
+			icon: getEntityIcon("run"),
 		},
 		{
 			title: "Artifacts",
 			url: "#",
-			icon: Activity,
+			icon: getEntityIcon("artifact"),
 		},
 	];
 

@@ -1,18 +1,18 @@
+import { CreateProjectForm } from "./form";
+import { Button } from "@/components/ui/button";
 import {
 	ResponsiveDialog,
 	ResponsiveDialogBody,
+	ResponsiveDialogClose,
 	ResponsiveDialogContent,
 	ResponsiveDialogDescription,
+	ResponsiveDialogFooter,
 	ResponsiveDialogHeader,
 	ResponsiveDialogTitle,
 	ResponsiveDialogTrigger,
-	ResponsiveDialogFooter,
-	ResponsiveDialogClose,
 } from "@/components/ui/responsive-dialog";
-import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
-import { CreateProjectForm } from "./form";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 const FORM_ID = "create-project-form";
 

@@ -7,15 +7,11 @@ type Props = {
 
 export function UserListSearchbar({ searchValue, onChange }: Props) {
 	return (
-		<div className="flex items-center justify-between">
-			<div>
-				<DebouncedInput
-					debounceMs={500}
-					placeholder="Search"
-					value={searchValue}
-					onChange={onChange}
-				/>
-			</div>
-		</div>
+		<DebouncedInput
+			debounceMs={500}
+			placeholder="Search"
+			value={searchValue}
+			onChange={onChange}
+		/>
 	);
 }

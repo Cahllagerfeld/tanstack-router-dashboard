@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Project } from "@/domain/projects";
-import { Link } from "@tanstack/react-router";
-import { Hash } from "lucide-react";
 import { ProjectActions } from "./project-actions";
 import { SetProjectCommand } from "./set-project-command";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Project } from "@/domain/projects";
+import { Link } from "@tanstack/react-router";
+import { Hash } from "lucide-react";
 
 type Props = {
 	project: Project;

@@ -1,5 +1,5 @@
-import { DebouncedInput } from "@/components/debounced-input";
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
+import { DebouncedInput } from "@/components/debounced-input";
 
 type Props = {
 	value: string;

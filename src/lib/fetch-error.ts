@@ -1,5 +1,6 @@
-import { isArray, isString } from "es-toolkit/compat";
 import { isRecord } from "./type-guards";
+import { isArray, isString } from "es-toolkit/compat";
+
 export class FetchError extends Error {
 	public status: number;
 	public statusText: string;

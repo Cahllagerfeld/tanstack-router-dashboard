@@ -1,5 +1,3 @@
-import { ChevronsUpDown, LogOut } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -20,6 +18,7 @@ import { useLogoutUser } from "@/data/session/logout";
 import { userQueries } from "@/data/user";
 import { getAvatarUrl } from "@/lib/avatar";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { ChevronsUpDown, LogOut } from "lucide-react";
 
 export function NavUser() {
 	const { data } = useSuspenseQuery(userQueries.currentUser());
