@@ -17,6 +17,8 @@ export function DebouncedInput({
 
 	// Update local state when value prop changes
 	useEffect(() => {
+		// The local value must follow the controlled value after a debounced update.
+		// oxlint-disable-next-line react/set-state-in-effect
 		setLocalValue(value);
 	}, [value]);
 
