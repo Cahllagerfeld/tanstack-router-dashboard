@@ -88,10 +88,10 @@ importers:
         specifier: 1.168.34
         version: 1.168.34(@tanstack/react-router@1.170.31(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(rolldown@1.2.5)(supports-color@10.2.2)(vite@8.2.1(@types/node@26.2.0)(jiti@2.7.0))
       '@trivago/prettier-plugin-sort-imports':
-        specifier: ^6.0.2
+        specifier: 6.0.2
         version: 6.0.2(prettier@3.9.6)(supports-color@10.2.2)
       '@types/node':
-        specifier: ^26.2.0
+        specifier: 26.2.0
         version: 26.2.0
       '@types/react':
         specifier: 19.2.18
