@@ -1,7 +1,7 @@
-import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/hooks/use-copy";
 import { cn } from "@/lib/utils";
+import { Check, Copy } from "lucide-react";
 
 interface CopyButtonProps {
 	value: string;

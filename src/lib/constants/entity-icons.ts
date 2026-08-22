@@ -3,9 +3,9 @@ import {
 	FolderKanban,
 	History,
 	Layers,
+	type LucideIcon,
 	Package,
 	Workflow,
-	type LucideIcon,
 } from "lucide-react";
 
 export type EntityKind =

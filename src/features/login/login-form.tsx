@@ -1,3 +1,4 @@
+import { useLoginForm } from "./hooks/use-login-form";
 import { Button } from "@/components/ui/button";
 import {
 	Field,
@@ -7,7 +8,6 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Controller } from "react-hook-form";
-import { useLoginForm } from "./hooks/use-login-form";
 
 export function LoginForm() {
 	const { handleLogin, form } = useLoginForm();

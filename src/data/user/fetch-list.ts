@@ -1,7 +1,7 @@
+import { apiClient } from "../api-client";
 import { userFromApi } from "@/domain/users";
 import { expectData } from "@/lib/fetch-error";
 import type { UserListQueryParams } from "@/types/user";
-import { apiClient } from "../api-client";
 
 export async function fetchUserList(params: UserListQueryParams) {
 	const response = await apiClient.GET("/api/v1/users", {

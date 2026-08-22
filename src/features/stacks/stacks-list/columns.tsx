@@ -1,6 +1,6 @@
-import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Stack } from "@/domain/stacks";
 import type { ColumnDef } from "@tanstack/react-table";

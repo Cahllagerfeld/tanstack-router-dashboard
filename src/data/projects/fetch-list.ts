@@ -1,7 +1,7 @@
+import { apiClient } from "../api-client";
 import { projectFromApi } from "@/domain/projects";
 import { expectData } from "@/lib/fetch-error";
 import type { ProjectListQueries } from "@/types/projects";
-import { apiClient } from "../api-client";
 
 export async function fetchProjectList(params: ProjectListQueries) {
 	const response = await apiClient.GET("/api/v1/projects", {

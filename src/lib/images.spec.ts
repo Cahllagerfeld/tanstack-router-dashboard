@@ -1,11 +1,10 @@
+import { getIllustrationUrl } from "./images";
 import { describe, expect, it, vi } from "vitest";
 
 // Mock the storage base URL used by images.ts
 vi.mock("./constants/storage", () => ({
 	S3_BASE_URL: "https://example.test",
 }));
-
-import { getIllustrationUrl } from "./images";
 
 describe("getIllustrationUrl", () => {
 	it("uses the configured S3_BASE_URL and correct path/extension", () => {

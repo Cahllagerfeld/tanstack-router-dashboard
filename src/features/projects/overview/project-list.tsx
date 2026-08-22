@@ -1,9 +1,9 @@
+import { ProjectItem } from "./project-item";
+import { ProjectListNoItemsFallback } from "./project-list-no-items-fallback";
 import { projectQueries } from "@/data/projects";
 import { Pagination } from "@/features/pagination";
 import type { ProjectListQueries } from "@/types/projects";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ProjectItem } from "./project-item";
-import { ProjectListNoItemsFallback } from "./project-list-no-items-fallback";
 
 type Props = {
 	queries: ProjectListQueries;

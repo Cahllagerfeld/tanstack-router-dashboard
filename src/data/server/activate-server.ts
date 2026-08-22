@@ -1,12 +1,12 @@
+import { apiClient } from "../api-client";
+import { loginUserRequest } from "../session/login";
 import { expectData } from "@/lib/fetch-error";
 import type { ApiClientError } from "@/types/api";
 import type {
 	ApiServerActivationResult,
 	ServerActivation,
 } from "@/types/server";
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
-import { apiClient } from "../api-client";
-import { loginUserRequest } from "../session/login";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 async function activateServer(bodyData: ServerActivation) {
 	const response = await apiClient.PUT("/api/v1/activate", {

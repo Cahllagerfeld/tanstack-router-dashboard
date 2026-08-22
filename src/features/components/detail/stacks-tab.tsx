@@ -2,8 +2,8 @@ import { DataTableViewOptions } from "@/components/tables/columns-visibility-tog
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
 import { TableToolbar } from "@/components/tables/table-toolbar";
-import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { stackQueries } from "@/data/stacks";
+import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	type ColumnSizingState,

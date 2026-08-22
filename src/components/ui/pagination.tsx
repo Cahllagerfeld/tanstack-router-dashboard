@@ -1,3 +1,6 @@
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { type LinkComponent, createLink } from "@tanstack/react-router";
 import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
@@ -6,10 +9,6 @@ import {
 	MoreHorizontalIcon,
 } from "lucide-react";
 import * as React from "react";
-
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { createLink, type LinkComponent } from "@tanstack/react-router";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
 	return (

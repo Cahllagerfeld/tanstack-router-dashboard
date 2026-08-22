@@ -1,7 +1,7 @@
-import { queryOptions } from "@tanstack/react-query";
-import type { ComponentsListQueryParams } from "@/types/components";
 import { fetchComponentDetail } from "./fetch-detail";
 import { fetchComponentList } from "./fetch-list";
+import type { ComponentsListQueryParams } from "@/types/components";
+import { queryOptions } from "@tanstack/react-query";
 
 const baseKey = "components" as const;
 

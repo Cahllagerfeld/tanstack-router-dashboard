@@ -1,6 +1,5 @@
-import { describe, expect, it } from "vitest";
-
 import { getPageNumbers } from "./page-numbers";
+import { describe, expect, it } from "vitest";
 
 describe("getPageNumbers", () => {
 	describe("small pagination (≤3 pages)", () => {

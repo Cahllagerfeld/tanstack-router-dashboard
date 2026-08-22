@@ -1,3 +1,8 @@
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../../components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import {
@@ -17,11 +22,6 @@ import { Filter, Trash2 } from "lucide-react";
 import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../components/ui/popover";
 
 type Props = {
 	filter?: ComponentType;
