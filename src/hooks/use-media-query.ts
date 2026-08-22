@@ -1,19 +1,26 @@
 import * as React from "react";
 
-export function useMediaQuery(query: string) {
-	const [value, setValue] = React.useState(false);
+const MOBILE_BREAKPOINT = 768;
 
-	React.useEffect(() => {
-		function onChange(event: MediaQueryListEvent) {
-			setValue(event.matches);
-		}
+let mql: MediaQueryList | undefined;
 
-		const result = matchMedia(query);
-		result.addEventListener("change", onChange);
-		setValue(result.matches);
+function getMql() {
+	if (!mql) {
+		mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+	}
+	return mql;
+}
 
-		return () => result.removeEventListener("change", onChange);
-	}, [query]);
+export function useIsMobile() {
+	return React.useSyncExternalStore(subscribe, getSnapshot, () => false);
+}
 
-	return value;
+function getSnapshot() {
+	return getMql().matches;
+}
+
+function subscribe(callback: () => void) {
+	const mql = getMql();
+	mql.addEventListener("change", callback);
+	return () => mql.removeEventListener("change", callback);
 }
