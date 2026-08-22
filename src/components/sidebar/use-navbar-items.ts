@@ -59,11 +59,13 @@ export function useProjectItems() {
 			title: "Runs",
 			url: "#",
 			icon: getEntityIcon("run"),
+			disabled: true,
 		},
 		{
 			title: "Artifacts",
 			url: "#",
 			icon: getEntityIcon("artifact"),
+			disabled: true,
 		},
 	];
 

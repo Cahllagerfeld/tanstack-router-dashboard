@@ -1,4 +1,5 @@
 import { projectQueries } from "@/data/projects";
+import { ProjectNotFound } from "@/features/projects/detail/project-not-found";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
@@ -17,6 +18,6 @@ export const Route = createFileRoute(
 			meta: [{ title: `Project ${loaderData.project.name}` }],
 		};
 	},
-	notFoundComponent: () => <p>Project Not Found</p>,
+	notFoundComponent: ProjectNotFound,
 	component: Outlet,
 });
