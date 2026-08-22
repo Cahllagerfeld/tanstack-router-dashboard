@@ -1,7 +1,8 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import type { NavbarItem } from "@/types/navbar";
-import { Settings } from "lucide-react";
+import { useParams, useRouter } from "@tanstack/react-router";
+import { Frame, Settings } from "lucide-react";
 
 const unscopedNavMain: NavbarItem[] = [
 	{
@@ -27,32 +28,46 @@ const unscopedNavMain: NavbarItem[] = [
 	},
 ];
 
-const projectPreviewNavMain: NavbarItem[] = [
-	{
-		title: "Project Overview",
-		url: "#",
-		icon: getEntityIcon("project"),
-	},
-	{
-		title: "Pipelines",
-		url: "#",
-		icon: getEntityIcon("pipeline"),
-	},
-	{
-		title: "Runs",
-		url: "#",
-		icon: getEntityIcon("run"),
-	},
-	{
-		title: "Artifacts",
-		url: "#",
-		icon: getEntityIcon("artifact"),
-	},
-];
-
 export function useNavbarItems() {
 	const navItems = useSidebarItems(unscopedNavMain);
-	const projectPreviewItems = useSidebarItems(projectPreviewNavMain);
+	return { navItems };
+}
 
-	return { navItems, projectPreviewItems };
+export function useProjectItems() {
+	const { buildLocation } = useRouter();
+	const projectId = useParams({
+		from: "/(private)/_sidebar/projects/$project_id",
+	});
+	const projectPreviewNavMain: NavbarItem[] = [
+		{
+			title: "Project Overview",
+			url: buildLocation({
+				to: "/projects/$project_id",
+				params: { project_id: projectId.project_id },
+			}).pathname,
+			icon: Frame,
+		},
+		{
+			title: "Pipelines",
+			url: buildLocation({
+				to: "/projects/$project_id/pipelines",
+				params: { project_id: projectId.project_id },
+			}).pathname,
+			icon: getEntityIcon("pipeline"),
+		},
+		{
+			title: "Runs",
+			url: "#",
+			icon: getEntityIcon("run"),
+			disabled: true,
+		},
+		{
+			title: "Artifacts",
+			url: "#",
+			icon: getEntityIcon("artifact"),
+			disabled: true,
+		},
+	];
+
+	return useSidebarItems(projectPreviewNavMain);
 }
