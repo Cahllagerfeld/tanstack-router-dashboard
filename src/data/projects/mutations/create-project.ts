@@ -40,7 +40,9 @@ export function useCreateProject(
 		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
 			toast.success(
-				m.projects_notification_created({ displayName: data.displayName })
+				m.projects_notification_created({
+					displayName: data.displayName ?? data.name,
+				})
 			);
 			navigate({
 				to: "/projects/$project_id",
