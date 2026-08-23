@@ -38,8 +38,8 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"@inlang/cli": "^3.3.3",
-		"@inlang/paraglide-js": "^2.24.1",
+		"@inlang/cli": "3.3.3",
+		"@inlang/paraglide-js": "2.24.1",
 		"@rolldown/plugin-babel": "0.2.3",
 		"@tailwindcss/vite": "4.3.3",
 		"@tanstack/router-devtools": "1.167.1",

@@ -73,10 +73,10 @@ importers:
         version: 4.4.3
     devDependencies:
       '@inlang/cli':
-        specifier: ^3.3.3
+        specifier: 3.3.3
         version: 3.3.3
       '@inlang/paraglide-js':
-        specifier: ^2.24.1
+        specifier: 2.24.1
         version: 2.24.1(typescript@7.0.2)(vite@8.2.2(@types/node@26.2.0)(jiti@2.7.0))
       '@rolldown/plugin-babel':
         specifier: 0.2.3
