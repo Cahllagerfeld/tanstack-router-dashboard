@@ -1,9 +1,9 @@
+import type { ObjectRendererProps } from "./types";
+import { ValueRenderer } from "./value-renderer";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { snakeCaseToTitleCase } from "@/lib/strings";
 import { cn } from "@/lib/utils";
 import { isArray, isObject } from "es-toolkit/compat";
-import type { ObjectRendererProps } from "./types";
-import { ValueRenderer } from "./value-renderer";
 
 function isComplexValue(value: unknown): boolean {
 	return isArray(value) || isObject(value);

@@ -11,24 +11,26 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as privateRouteRouteImport } from './routes/(private)/route'
 import { Route as privateIndexRouteImport } from './routes/(private)/index'
-import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
 import { Route as privateSidebarRouteRouteImport } from './routes/(private)/_sidebar/route'
-import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
-import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
-import { Route as privateSidebarStacksRouteRouteImport } from './routes/(private)/_sidebar/stacks/route'
-import { Route as privateSidebarSettingsRouteRouteImport } from './routes/(private)/_sidebar/settings/route'
-import { Route as privateSidebarProjectsRouteRouteImport } from './routes/(private)/_sidebar/projects/route'
+import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
 import { Route as privateSidebarComponentsRouteRouteImport } from './routes/(private)/_sidebar/components/route'
-import { Route as privateSidebarStacksIndexRouteImport } from './routes/(private)/_sidebar/stacks/index'
-import { Route as privateSidebarSettingsIndexRouteImport } from './routes/(private)/_sidebar/settings/index'
-import { Route as privateSidebarProjectsIndexRouteImport } from './routes/(private)/_sidebar/projects/index'
+import { Route as privateSidebarProjectsRouteRouteImport } from './routes/(private)/_sidebar/projects/route'
+import { Route as privateSidebarSettingsRouteRouteImport } from './routes/(private)/_sidebar/settings/route'
+import { Route as privateSidebarStacksRouteRouteImport } from './routes/(private)/_sidebar/stacks/route'
+import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
+import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as privateSidebarComponentsIndexRouteImport } from './routes/(private)/_sidebar/components/index'
-import { Route as privateSidebarSettingsMembersRouteImport } from './routes/(private)/_sidebar/settings/members'
-import { Route as privateSidebarSettingsGeneralRouteImport } from './routes/(private)/_sidebar/settings/general'
-import { Route as privateSidebarProjectsProject_idRouteImport } from './routes/(private)/_sidebar/projects/$project_id'
 import { Route as privateSidebarComponentsComponent_idRouteRouteImport } from './routes/(private)/_sidebar/components/$component_id/route'
+import { Route as privateSidebarProjectsIndexRouteImport } from './routes/(private)/_sidebar/projects/index'
+import { Route as privateSidebarProjectsProject_idRouteRouteImport } from './routes/(private)/_sidebar/projects/$project_id/route'
+import { Route as privateSidebarSettingsIndexRouteImport } from './routes/(private)/_sidebar/settings/index'
+import { Route as privateSidebarSettingsGeneralRouteImport } from './routes/(private)/_sidebar/settings/general'
+import { Route as privateSidebarSettingsMembersRouteImport } from './routes/(private)/_sidebar/settings/members'
+import { Route as privateSidebarStacksIndexRouteImport } from './routes/(private)/_sidebar/stacks/index'
 import { Route as privateSidebarComponentsComponent_idIndexRouteImport } from './routes/(private)/_sidebar/components/$component_id/index'
 import { Route as privateSidebarComponentsComponent_idStacksRouteImport } from './routes/(private)/_sidebar/components/$component_id/stacks'
+import { Route as privateSidebarProjectsProject_idIndexRouteImport } from './routes/(private)/_sidebar/projects/$project_id/index'
+import { Route as privateSidebarProjectsProject_idPipelinesRouteImport } from './routes/(private)/_sidebar/projects/$project_id/pipelines'
 
 const privateRouteRoute = privateRouteRouteImport.update({
   id: '/(private)',
@@ -39,35 +41,18 @@ const privateIndexRoute = privateIndexRouteImport.update({
   path: '/',
   getParentRoute: () => privateRouteRoute,
 } as any)
-const publicGridLayoutRouteRoute = publicGridLayoutRouteRouteImport.update({
-  id: '/(public)/_grid-layout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const privateSidebarRouteRoute = privateSidebarRouteRouteImport.update({
   id: '/_sidebar',
   getParentRoute: () => privateRouteRoute,
 } as any)
-const publicGridLayoutServerActivationRoute =
-  publicGridLayoutServerActivationRouteImport.update({
-    id: '/server-activation',
-    path: '/server-activation',
-    getParentRoute: () => publicGridLayoutRouteRoute,
-  } as any)
-const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => publicGridLayoutRouteRoute,
+const publicGridLayoutRouteRoute = publicGridLayoutRouteRouteImport.update({
+  id: '/(public)/_grid-layout',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const privateSidebarStacksRouteRoute =
-  privateSidebarStacksRouteRouteImport.update({
-    id: '/stacks',
-    path: '/stacks',
-    getParentRoute: () => privateSidebarRouteRoute,
-  } as any)
-const privateSidebarSettingsRouteRoute =
-  privateSidebarSettingsRouteRouteImport.update({
-    id: '/settings',
-    path: '/settings',
+const privateSidebarComponentsRouteRoute =
+  privateSidebarComponentsRouteRouteImport.update({
+    id: '/components',
+    path: '/components',
     getParentRoute: () => privateSidebarRouteRoute,
   } as any)
 const privateSidebarProjectsRouteRoute =
@@ -76,29 +61,28 @@ const privateSidebarProjectsRouteRoute =
     path: '/projects',
     getParentRoute: () => privateSidebarRouteRoute,
   } as any)
-const privateSidebarComponentsRouteRoute =
-  privateSidebarComponentsRouteRouteImport.update({
-    id: '/components',
-    path: '/components',
+const privateSidebarSettingsRouteRoute =
+  privateSidebarSettingsRouteRouteImport.update({
+    id: '/settings',
+    path: '/settings',
     getParentRoute: () => privateSidebarRouteRoute,
   } as any)
-const privateSidebarStacksIndexRoute =
-  privateSidebarStacksIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => privateSidebarStacksRouteRoute,
+const privateSidebarStacksRouteRoute =
+  privateSidebarStacksRouteRouteImport.update({
+    id: '/stacks',
+    path: '/stacks',
+    getParentRoute: () => privateSidebarRouteRoute,
   } as any)
-const privateSidebarSettingsIndexRoute =
-  privateSidebarSettingsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => privateSidebarSettingsRouteRoute,
-  } as any)
-const privateSidebarProjectsIndexRoute =
-  privateSidebarProjectsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => privateSidebarProjectsRouteRoute,
+const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => publicGridLayoutRouteRoute,
+} as any)
+const publicGridLayoutServerActivationRoute =
+  publicGridLayoutServerActivationRouteImport.update({
+    id: '/server-activation',
+    path: '/server-activation',
+    getParentRoute: () => publicGridLayoutRouteRoute,
   } as any)
 const privateSidebarComponentsIndexRoute =
   privateSidebarComponentsIndexRouteImport.update({
@@ -106,10 +90,28 @@ const privateSidebarComponentsIndexRoute =
     path: '/',
     getParentRoute: () => privateSidebarComponentsRouteRoute,
   } as any)
-const privateSidebarSettingsMembersRoute =
-  privateSidebarSettingsMembersRouteImport.update({
-    id: '/members',
-    path: '/members',
+const privateSidebarComponentsComponent_idRouteRoute =
+  privateSidebarComponentsComponent_idRouteRouteImport.update({
+    id: '/$component_id',
+    path: '/$component_id',
+    getParentRoute: () => privateSidebarComponentsRouteRoute,
+  } as any)
+const privateSidebarProjectsIndexRoute =
+  privateSidebarProjectsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarProjectsRouteRoute,
+  } as any)
+const privateSidebarProjectsProject_idRouteRoute =
+  privateSidebarProjectsProject_idRouteRouteImport.update({
+    id: '/$project_id',
+    path: '/$project_id',
+    getParentRoute: () => privateSidebarProjectsRouteRoute,
+  } as any)
+const privateSidebarSettingsIndexRoute =
+  privateSidebarSettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
     getParentRoute: () => privateSidebarSettingsRouteRoute,
   } as any)
 const privateSidebarSettingsGeneralRoute =
@@ -118,17 +120,17 @@ const privateSidebarSettingsGeneralRoute =
     path: '/general',
     getParentRoute: () => privateSidebarSettingsRouteRoute,
   } as any)
-const privateSidebarProjectsProject_idRoute =
-  privateSidebarProjectsProject_idRouteImport.update({
-    id: '/$project_id',
-    path: '/$project_id',
-    getParentRoute: () => privateSidebarProjectsRouteRoute,
+const privateSidebarSettingsMembersRoute =
+  privateSidebarSettingsMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => privateSidebarSettingsRouteRoute,
   } as any)
-const privateSidebarComponentsComponent_idRouteRoute =
-  privateSidebarComponentsComponent_idRouteRouteImport.update({
-    id: '/$component_id',
-    path: '/$component_id',
-    getParentRoute: () => privateSidebarComponentsRouteRoute,
+const privateSidebarStacksIndexRoute =
+  privateSidebarStacksIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarStacksRouteRoute,
   } as any)
 const privateSidebarComponentsComponent_idIndexRoute =
   privateSidebarComponentsComponent_idIndexRouteImport.update({
@@ -142,6 +144,18 @@ const privateSidebarComponentsComponent_idStacksRoute =
     path: '/stacks',
     getParentRoute: () => privateSidebarComponentsComponent_idRouteRoute,
   } as any)
+const privateSidebarProjectsProject_idIndexRoute =
+  privateSidebarProjectsProject_idIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarProjectsProject_idRouteRoute,
+  } as any)
+const privateSidebarProjectsProject_idPipelinesRoute =
+  privateSidebarProjectsProject_idPipelinesRouteImport.update({
+    id: '/pipelines',
+    path: '/pipelines',
+    getParentRoute: () => privateSidebarProjectsProject_idRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof privateIndexRoute
@@ -152,7 +166,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/components/$component_id': typeof privateSidebarComponentsComponent_idRouteRouteWithChildren
-  '/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
+  '/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/settings/members': typeof privateSidebarSettingsMembersRoute
   '/components/': typeof privateSidebarComponentsIndexRoute
@@ -160,13 +174,14 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof privateSidebarSettingsIndexRoute
   '/stacks/': typeof privateSidebarStacksIndexRoute
   '/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/components/$component_id/': typeof privateSidebarComponentsComponent_idIndexRoute
+  '/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof privateIndexRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
-  '/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/settings/members': typeof privateSidebarSettingsMembersRoute
   '/components': typeof privateSidebarComponentsIndexRoute
@@ -174,7 +189,9 @@ export interface FileRoutesByTo {
   '/settings': typeof privateSidebarSettingsIndexRoute
   '/stacks': typeof privateSidebarStacksIndexRoute
   '/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/components/$component_id': typeof privateSidebarComponentsComponent_idIndexRoute
+  '/projects/$project_id': typeof privateSidebarProjectsProject_idIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -189,7 +206,7 @@ export interface FileRoutesById {
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
   '/(private)/_sidebar/components/$component_id': typeof privateSidebarComponentsComponent_idRouteRouteWithChildren
-  '/(private)/_sidebar/projects/$project_id': typeof privateSidebarProjectsProject_idRoute
+  '/(private)/_sidebar/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/(private)/_sidebar/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/(private)/_sidebar/settings/members': typeof privateSidebarSettingsMembersRoute
   '/(private)/_sidebar/components/': typeof privateSidebarComponentsIndexRoute
@@ -197,7 +214,9 @@ export interface FileRoutesById {
   '/(private)/_sidebar/settings/': typeof privateSidebarSettingsIndexRoute
   '/(private)/_sidebar/stacks/': typeof privateSidebarStacksIndexRoute
   '/(private)/_sidebar/components/$component_id/stacks': typeof privateSidebarComponentsComponent_idStacksRoute
+  '/(private)/_sidebar/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/(private)/_sidebar/components/$component_id/': typeof privateSidebarComponentsComponent_idIndexRoute
+  '/(private)/_sidebar/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -218,13 +237,14 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/stacks/'
     | '/components/$component_id/stacks'
+    | '/projects/$project_id/pipelines'
     | '/components/$component_id/'
+    | '/projects/$project_id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/server-activation'
-    | '/projects/$project_id'
     | '/settings/general'
     | '/settings/members'
     | '/components'
@@ -232,7 +252,9 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stacks'
     | '/components/$component_id/stacks'
+    | '/projects/$project_id/pipelines'
     | '/components/$component_id'
+    | '/projects/$project_id'
   id:
     | '__root__'
     | '/(private)'
@@ -254,7 +276,9 @@ export interface FileRouteTypes {
     | '/(private)/_sidebar/settings/'
     | '/(private)/_sidebar/stacks/'
     | '/(private)/_sidebar/components/$component_id/stacks'
+    | '/(private)/_sidebar/projects/$project_id/pipelines'
     | '/(private)/_sidebar/components/$component_id/'
+    | '/(private)/_sidebar/projects/$project_id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -278,13 +302,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateIndexRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(public)/_grid-layout': {
-      id: '/(public)/_grid-layout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof publicGridLayoutRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(private)/_sidebar': {
       id: '/(private)/_sidebar'
       path: ''
@@ -292,32 +309,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarRouteRouteImport
       parentRoute: typeof privateRouteRoute
     }
-    '/(public)/_grid-layout/server-activation': {
-      id: '/(public)/_grid-layout/server-activation'
-      path: '/server-activation'
-      fullPath: '/server-activation'
-      preLoaderRoute: typeof publicGridLayoutServerActivationRouteImport
-      parentRoute: typeof publicGridLayoutRouteRoute
+    '/(public)/_grid-layout': {
+      id: '/(public)/_grid-layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof publicGridLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/(public)/_grid-layout/login': {
-      id: '/(public)/_grid-layout/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof publicGridLayoutLoginRouteImport
-      parentRoute: typeof publicGridLayoutRouteRoute
-    }
-    '/(private)/_sidebar/stacks': {
-      id: '/(private)/_sidebar/stacks'
-      path: '/stacks'
-      fullPath: '/stacks'
-      preLoaderRoute: typeof privateSidebarStacksRouteRouteImport
-      parentRoute: typeof privateSidebarRouteRoute
-    }
-    '/(private)/_sidebar/settings': {
-      id: '/(private)/_sidebar/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof privateSidebarSettingsRouteRouteImport
+    '/(private)/_sidebar/components': {
+      id: '/(private)/_sidebar/components'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof privateSidebarComponentsRouteRouteImport
       parentRoute: typeof privateSidebarRouteRoute
     }
     '/(private)/_sidebar/projects': {
@@ -327,33 +330,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarProjectsRouteRouteImport
       parentRoute: typeof privateSidebarRouteRoute
     }
-    '/(private)/_sidebar/components': {
-      id: '/(private)/_sidebar/components'
-      path: '/components'
-      fullPath: '/components'
-      preLoaderRoute: typeof privateSidebarComponentsRouteRouteImport
+    '/(private)/_sidebar/settings': {
+      id: '/(private)/_sidebar/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof privateSidebarSettingsRouteRouteImport
       parentRoute: typeof privateSidebarRouteRoute
     }
-    '/(private)/_sidebar/stacks/': {
-      id: '/(private)/_sidebar/stacks/'
-      path: '/'
-      fullPath: '/stacks/'
-      preLoaderRoute: typeof privateSidebarStacksIndexRouteImport
-      parentRoute: typeof privateSidebarStacksRouteRoute
+    '/(private)/_sidebar/stacks': {
+      id: '/(private)/_sidebar/stacks'
+      path: '/stacks'
+      fullPath: '/stacks'
+      preLoaderRoute: typeof privateSidebarStacksRouteRouteImport
+      parentRoute: typeof privateSidebarRouteRoute
     }
-    '/(private)/_sidebar/settings/': {
-      id: '/(private)/_sidebar/settings/'
-      path: '/'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof privateSidebarSettingsIndexRouteImport
-      parentRoute: typeof privateSidebarSettingsRouteRoute
+    '/(public)/_grid-layout/login': {
+      id: '/(public)/_grid-layout/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof publicGridLayoutLoginRouteImport
+      parentRoute: typeof publicGridLayoutRouteRoute
     }
-    '/(private)/_sidebar/projects/': {
-      id: '/(private)/_sidebar/projects/'
-      path: '/'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof privateSidebarProjectsIndexRouteImport
-      parentRoute: typeof privateSidebarProjectsRouteRoute
+    '/(public)/_grid-layout/server-activation': {
+      id: '/(public)/_grid-layout/server-activation'
+      path: '/server-activation'
+      fullPath: '/server-activation'
+      preLoaderRoute: typeof publicGridLayoutServerActivationRouteImport
+      parentRoute: typeof publicGridLayoutRouteRoute
     }
     '/(private)/_sidebar/components/': {
       id: '/(private)/_sidebar/components/'
@@ -362,11 +365,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarComponentsIndexRouteImport
       parentRoute: typeof privateSidebarComponentsRouteRoute
     }
-    '/(private)/_sidebar/settings/members': {
-      id: '/(private)/_sidebar/settings/members'
-      path: '/members'
-      fullPath: '/settings/members'
-      preLoaderRoute: typeof privateSidebarSettingsMembersRouteImport
+    '/(private)/_sidebar/components/$component_id': {
+      id: '/(private)/_sidebar/components/$component_id'
+      path: '/$component_id'
+      fullPath: '/components/$component_id'
+      preLoaderRoute: typeof privateSidebarComponentsComponent_idRouteRouteImport
+      parentRoute: typeof privateSidebarComponentsRouteRoute
+    }
+    '/(private)/_sidebar/projects/': {
+      id: '/(private)/_sidebar/projects/'
+      path: '/'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof privateSidebarProjectsIndexRouteImport
+      parentRoute: typeof privateSidebarProjectsRouteRoute
+    }
+    '/(private)/_sidebar/projects/$project_id': {
+      id: '/(private)/_sidebar/projects/$project_id'
+      path: '/$project_id'
+      fullPath: '/projects/$project_id'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idRouteRouteImport
+      parentRoute: typeof privateSidebarProjectsRouteRoute
+    }
+    '/(private)/_sidebar/settings/': {
+      id: '/(private)/_sidebar/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof privateSidebarSettingsIndexRouteImport
       parentRoute: typeof privateSidebarSettingsRouteRoute
     }
     '/(private)/_sidebar/settings/general': {
@@ -376,19 +400,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarSettingsGeneralRouteImport
       parentRoute: typeof privateSidebarSettingsRouteRoute
     }
-    '/(private)/_sidebar/projects/$project_id': {
-      id: '/(private)/_sidebar/projects/$project_id'
-      path: '/$project_id'
-      fullPath: '/projects/$project_id'
-      preLoaderRoute: typeof privateSidebarProjectsProject_idRouteImport
-      parentRoute: typeof privateSidebarProjectsRouteRoute
+    '/(private)/_sidebar/settings/members': {
+      id: '/(private)/_sidebar/settings/members'
+      path: '/members'
+      fullPath: '/settings/members'
+      preLoaderRoute: typeof privateSidebarSettingsMembersRouteImport
+      parentRoute: typeof privateSidebarSettingsRouteRoute
     }
-    '/(private)/_sidebar/components/$component_id': {
-      id: '/(private)/_sidebar/components/$component_id'
-      path: '/$component_id'
-      fullPath: '/components/$component_id'
-      preLoaderRoute: typeof privateSidebarComponentsComponent_idRouteRouteImport
-      parentRoute: typeof privateSidebarComponentsRouteRoute
+    '/(private)/_sidebar/stacks/': {
+      id: '/(private)/_sidebar/stacks/'
+      path: '/'
+      fullPath: '/stacks/'
+      preLoaderRoute: typeof privateSidebarStacksIndexRouteImport
+      parentRoute: typeof privateSidebarStacksRouteRoute
     }
     '/(private)/_sidebar/components/$component_id/': {
       id: '/(private)/_sidebar/components/$component_id/'
@@ -403,6 +427,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/components/$component_id/stacks'
       preLoaderRoute: typeof privateSidebarComponentsComponent_idStacksRouteImport
       parentRoute: typeof privateSidebarComponentsComponent_idRouteRoute
+    }
+    '/(private)/_sidebar/projects/$project_id/': {
+      id: '/(private)/_sidebar/projects/$project_id/'
+      path: '/'
+      fullPath: '/projects/$project_id/'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idIndexRouteImport
+      parentRoute: typeof privateSidebarProjectsProject_idRouteRoute
+    }
+    '/(private)/_sidebar/projects/$project_id/pipelines': {
+      id: '/(private)/_sidebar/projects/$project_id/pipelines'
+      path: '/pipelines'
+      fullPath: '/projects/$project_id/pipelines'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idPipelinesRouteImport
+      parentRoute: typeof privateSidebarProjectsProject_idRouteRoute
     }
   }
 }
@@ -442,15 +480,33 @@ const privateSidebarComponentsRouteRouteWithChildren =
     privateSidebarComponentsRouteRouteChildren,
   )
 
+interface privateSidebarProjectsProject_idRouteRouteChildren {
+  privateSidebarProjectsProject_idPipelinesRoute: typeof privateSidebarProjectsProject_idPipelinesRoute
+  privateSidebarProjectsProject_idIndexRoute: typeof privateSidebarProjectsProject_idIndexRoute
+}
+
+const privateSidebarProjectsProject_idRouteRouteChildren: privateSidebarProjectsProject_idRouteRouteChildren =
+  {
+    privateSidebarProjectsProject_idPipelinesRoute:
+      privateSidebarProjectsProject_idPipelinesRoute,
+    privateSidebarProjectsProject_idIndexRoute:
+      privateSidebarProjectsProject_idIndexRoute,
+  }
+
+const privateSidebarProjectsProject_idRouteRouteWithChildren =
+  privateSidebarProjectsProject_idRouteRoute._addFileChildren(
+    privateSidebarProjectsProject_idRouteRouteChildren,
+  )
+
 interface privateSidebarProjectsRouteRouteChildren {
-  privateSidebarProjectsProject_idRoute: typeof privateSidebarProjectsProject_idRoute
+  privateSidebarProjectsProject_idRouteRoute: typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   privateSidebarProjectsIndexRoute: typeof privateSidebarProjectsIndexRoute
 }
 
 const privateSidebarProjectsRouteRouteChildren: privateSidebarProjectsRouteRouteChildren =
   {
-    privateSidebarProjectsProject_idRoute:
-      privateSidebarProjectsProject_idRoute,
+    privateSidebarProjectsProject_idRouteRoute:
+      privateSidebarProjectsProject_idRouteRouteWithChildren,
     privateSidebarProjectsIndexRoute: privateSidebarProjectsIndexRoute,
   }
 

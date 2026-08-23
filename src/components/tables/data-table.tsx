@@ -1,3 +1,4 @@
+import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import {
 	Table,
 	TableBody,
@@ -6,15 +7,19 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { User } from "@/domain/users";
-import { flexRender, type Table as TableType } from "@tanstack/react-table";
+import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
+import type { ReactTable, RowData } from "@tanstack/react-table";
 
-type UserTableProps = {
-	table: TableType<User>;
+export type DataTableProps<TData extends RowData> = {
+	table: ReactTable<DataTableFeatures, TData>;
 };
 
-export function UserTable({ table }: UserTableProps) {
+export function DataTable<TData extends RowData>({
+	table,
+}: DataTableProps<TData>) {
 	"use no memo";
+
 	return (
 		<div className="rounded-md border">
 			<Table className="w-full min-w-[800px] table-fixed">
@@ -24,22 +29,24 @@ export function UserTable({ table }: UserTableProps) {
 							{headerGroup.headers.map((header) => (
 								<TableHead
 									key={header.id}
-									className={`truncate ${header.column.getCanResize() ? "relative pr-3" : undefined} `}
+									className={cn(
+										"truncate",
+										header.column.columnDef.meta?.className,
+										header.column.getCanResize() && "relative pr-3"
+									)}
 									style={{ width: `${header.getSize()}px` }}
 								>
-									{header.isPlaceholder
-										? null
-										: flexRender(
-												header.column.columnDef.header,
-												header.getContext()
-											)}
+									{header.isPlaceholder ? null : (
+										<table.FlexRender header={header} />
+									)}
 									{!header.isPlaceholder && header.column.getCanResize() && (
 										<div
 											role="separator"
 											aria-orientation="vertical"
-											className={`hover:bg-primary/20 absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none bg-transparent select-none ${
-												header.column.getIsResizing() ? "bg-primary/40" : ""
-											}`}
+											className={cn(
+												"hover:bg-primary/20 absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none bg-transparent select-none",
+												header.column.getIsResizing() && "bg-primary/40"
+											)}
 											onDoubleClick={() => header.column.resetSize()}
 											onMouseDown={header.getResizeHandler()}
 											onTouchStart={header.getResizeHandler()}
@@ -55,15 +62,18 @@ export function UserTable({ table }: UserTableProps) {
 						table.getRowModel().rows.map((row) => (
 							<TableRow
 								key={row.id}
-								data-state={row.getIsSelected() && "selected"}
+								data-state={row.getIsSelected() ? "selected" : undefined}
 							>
 								{row.getVisibleCells().map((cell) => (
 									<TableCell
-										className="truncate"
+										className={cn(
+											"truncate",
+											cell.column.columnDef.meta?.className
+										)}
 										key={cell.id}
 										style={{ width: `${cell.column.getSize()}px` }}
 									>
-										{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										<table.FlexRender cell={cell} />
 									</TableCell>
 								))}
 							</TableRow>
@@ -74,7 +84,7 @@ export function UserTable({ table }: UserTableProps) {
 								colSpan={table.getAllColumns().length}
 								className="h-24 text-center"
 							>
-								No results.
+								{m.components_table_no_results()}
 							</TableCell>
 						</TableRow>
 					)}

@@ -7,7 +7,7 @@ import {
 import { ProjectList } from "@/features/projects/overview/project-list";
 import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
-import { ProjectListQueries } from "@/types/projects";
+import type { ProjectListQueries } from "@/types/projects";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { z } from "zod";

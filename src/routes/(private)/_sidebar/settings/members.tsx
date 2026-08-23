@@ -7,7 +7,7 @@ import {
 import { UserListSearchbar } from "@/features/users/list/searchbar";
 import { UserList } from "@/features/users/list/user-list";
 import { UserListSkeleton } from "@/features/users/list/user-list-skeleton";
-import { UserListQueryParams } from "@/types/user";
+import type { UserListQueryParams } from "@/types/user";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { z } from "zod";
@@ -59,12 +59,16 @@ function RouteComponent() {
 					Manage your team members and their access to your server.
 				</p>
 			</div>
-			<UserListSearchbar
-				searchValue={getFilterValue(name ?? "")}
-				onChange={setSearchValue}
-			/>
 			<Suspense fallback={<UserListSkeleton />}>
-				<UserList queries={queries} />
+				<UserList
+					queries={queries}
+					toolbarStart={
+						<UserListSearchbar
+							searchValue={getFilterValue(name ?? "")}
+							onChange={setSearchValue}
+						/>
+					}
+				/>
 			</Suspense>
 		</div>
 	);

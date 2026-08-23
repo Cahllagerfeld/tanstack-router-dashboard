@@ -1,3 +1,4 @@
+import { DeleteProjectAlert } from "../delete/delete-project-alert";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { DeleteProjectAlert } from "../delete/delete-project-alert";
 
 type Props = {
 	projectId: string;

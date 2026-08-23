@@ -1,7 +1,9 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
-import { ComponentTable } from "@/features/components/components-list/component-table";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { typeFilterSchema } from "@/features/filters/type";
 import { TypeFilter } from "@/features/filters/type-filter";
@@ -9,11 +11,10 @@ import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-	ColumnSizingState,
-	getCoreRowModel,
-	RowSelectionState,
-	useReactTable,
-	VisibilityState,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	type RowSelectionState,
+	useTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -47,15 +48,17 @@ function RouteComponent() {
 		componentQueries.list({ size, page, type })
 	);
 
-	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [columnVisibility, setColumnVisibility] =
+		useState<ColumnVisibilityState>({});
 	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-	const table = useReactTable({
+	const table = useTable({
+		features,
 		data: data.items,
 		columns: columns,
-		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id,
+		manualPagination: true,
 		onColumnVisibilityChange: setColumnVisibility,
 		onColumnSizingChange: setColumnSizing,
 		onRowSelectionChange: setRowSelection,
@@ -82,11 +85,15 @@ function RouteComponent() {
 					{m.components_list_description()}
 				</p>
 			</div>
-			<div className="flex items-center gap-2">
-				<TypeFilter queryName="type" filter={type} />
-				<DataTableViewOptions table={table} />
-			</div>
-			<ComponentTable table={table} />
+			<TableToolbar>
+				<TableToolbar.Start>
+					<TypeFilter queryName="type" filter={type} />
+				</TableToolbar.Start>
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
+			<DataTable table={table} />
 		</div>
 	);
 }

@@ -1,17 +1,14 @@
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { StackTable } from "@/features/stacks/stacks-list/stack-table";
-import {
-	stackCreatedAtColumn,
-	stackCreatedByColumn,
-	stackNameColumn,
-} from "@/features/stacks/stacks-list/columns";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
 import { stackQueries } from "@/data/stacks";
+import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
-	ColumnSizingState,
-	getCoreRowModel,
-	useReactTable,
-	VisibilityState,
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	useTable,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 
@@ -24,19 +21,18 @@ export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
 		stackQueries.list({ component_id: componentId })
 	);
 
-	const columns = useMemo(
-		() => [stackNameColumn, stackCreatedByColumn, stackCreatedAtColumn],
-		[]
-	);
+	const columns = useMemo(() => createStackColumns(), []);
 
-	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+	const [columnVisibility, setColumnVisibility] =
+		useState<ColumnVisibilityState>({});
 	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 
-	const table = useReactTable({
+	const table = useTable({
+		features,
 		data: data.items,
 		columns,
-		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id,
+		manualPagination: true,
 		onColumnVisibilityChange: setColumnVisibility,
 		onColumnSizingChange: setColumnSizing,
 		columnResizeMode: "onChange",
@@ -55,10 +51,12 @@ export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
 
 	return (
 		<div className="space-y-2">
-			<div className="flex items-center justify-end gap-2">
-				<DataTableViewOptions table={table} />
-			</div>
-			<StackTable table={table} />
+			<TableToolbar>
+				<TableToolbar.End>
+					<DataTableViewOptions table={table} />
+				</TableToolbar.End>
+			</TableToolbar>
+			<DataTable table={table} />
 		</div>
 	);
 }

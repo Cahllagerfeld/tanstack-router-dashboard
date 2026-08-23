@@ -1,3 +1,6 @@
+import { Avatar, AvatarImage } from "../ui/avatar";
+import { ProjectSwitcher } from "./project-switcher";
+import { useNavbarItems, useProjectItems } from "./use-navbar-items";
 import { NavMain } from "@/components/sidebar/nav-main";
 import { NavUser } from "@/components/sidebar/nav-user";
 import {
@@ -14,15 +17,12 @@ import { useIsProjectRoute } from "@/hooks/use-is-project-route";
 import { getAvatarUrl } from "@/lib/avatar";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { ProjectSwitcher } from "./project-switcher";
-import { useNavbarItems } from "./use-navbar-items";
 
 export function UnscopedSidebar({
 	...props
 }: React.ComponentProps<typeof Sidebar>) {
 	const isProjectRoute = useIsProjectRoute();
-	const { navItems, projectPreviewItems } = useNavbarItems();
+	const { navItems } = useNavbarItems();
 
 	return (
 		<Sidebar variant="inset" {...props}>
@@ -31,9 +31,7 @@ export function UnscopedSidebar({
 			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={navItems} label="Server" />
-				{isProjectRoute && (
-					<NavMain items={projectPreviewItems} label="Project (Preview)" />
-				)}
+				{isProjectRoute && <ProjectSidebarItems />}
 			</SidebarContent>
 			<SidebarFooter>
 				<NavUser />
@@ -69,4 +67,9 @@ function UnscopedSidebarHeader() {
 			</SidebarMenuItem>
 		</SidebarMenu>
 	);
+}
+
+function ProjectSidebarItems() {
+	const projectPreviewItems = useProjectItems();
+	return <NavMain items={projectPreviewItems} label="Project (Preview)" />;
 }

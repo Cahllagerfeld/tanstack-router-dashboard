@@ -1,4 +1,4 @@
-import { Box } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
 	Empty,
 	EmptyContent,
@@ -7,15 +7,17 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from "@/components/ui/empty";
-import { Button } from "@/components/ui/button";
+import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { Link } from "@tanstack/react-router";
+
+const ComponentIcon = getEntityIcon("component");
 
 export function ComponentNotFound() {
 	return (
 		<Empty className="border border-dashed">
 			<EmptyHeader>
 				<EmptyMedia variant="icon">
-					<Box />
+					<ComponentIcon />
 				</EmptyMedia>
 				<EmptyTitle>Component Not Found</EmptyTitle>
 				<EmptyDescription>

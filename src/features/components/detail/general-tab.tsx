@@ -1,6 +1,6 @@
 import { CopyButton } from "@/components/copy-button";
 import DisplayDate from "@/components/display-date";
-import { KeyValueList, type KeyValueItem } from "@/components/key-value-list";
+import { type KeyValueItem, KeyValueList } from "@/components/key-value-list";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { ObjectRenderer } from "@/components/object-renderer";
 import { Badge } from "@/components/ui/badge";

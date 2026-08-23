@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -14,7 +15,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { NavbarItem } from "@/types/navbar";
+import type { NavbarItem } from "@/types/navbar";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 
@@ -36,13 +37,29 @@ export function NavMain({
 							<SidebarMenuItem>
 								<SidebarMenuButton
 									isActive={item.isActive}
+									disabled={item.disabled}
 									render={
-										<Link to={item.url}>
+										item.disabled ? undefined : (
+											<Link to={item.url}>
+												<item.icon />
+												<span>{item.title}</span>
+											</Link>
+										)
+									}
+								>
+									{item.disabled && (
+										<>
 											<item.icon />
 											<span>{item.title}</span>
-										</Link>
-									}
-								></SidebarMenuButton>
+											<Badge
+												variant="outline"
+												className="ml-auto hidden shrink-0 px-1.5 text-[10px] group-data-[collapsible=icon]:hidden sm:inline-flex"
+											>
+												Under construction
+											</Badge>
+										</>
+									)}
+								</SidebarMenuButton>
 								{item.items?.length ? (
 									<>
 										<CollapsibleTrigger

@@ -1,3 +1,8 @@
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../../components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import {
@@ -10,18 +15,13 @@ import {
 } from "@/components/ui/select";
 import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
-import { ComponentType } from "@/types/components";
+import type { ComponentType } from "@/types/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { Filter, Trash2 } from "lucide-react";
-import { ComponentPropsWithoutRef, useState } from "react";
+import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../components/ui/popover";
 
 type Props = {
 	filter?: ComponentType;

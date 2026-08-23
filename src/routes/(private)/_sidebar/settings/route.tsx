@@ -1,8 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-	createFileRoute,
 	Link,
 	Outlet,
+	createFileRoute,
 	useMatchRoute,
 } from "@tanstack/react-router";
 
