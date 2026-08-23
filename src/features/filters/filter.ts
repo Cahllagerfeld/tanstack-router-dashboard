@@ -1,3 +1,4 @@
+import { m } from "@/paraglide/messages";
 import { z } from "zod";
 
 export const FILTER_OPTIONS = [
@@ -40,7 +41,6 @@ export const filterSchema = z.string().refine(
 		return hasNonEmptyValue;
 	},
 	{
-		message:
-			"Filter must be in the format 'option:value' where option is one of the valid filter options",
+		message: m.filters_validation_invalid_format(),
 	}
 );

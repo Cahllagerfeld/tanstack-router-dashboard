@@ -1,5 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { serverQueries } from "@/data/server";
+import { m } from "@/paraglide/messages";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -28,7 +29,7 @@ export const Route = createRootRouteWithContext<{
 	component: RootLayout,
 	head: () => {
 		return {
-			meta: [{ title: "Dashboard" }],
+			meta: [{ title: m.common_app_title() }],
 		};
 	},
 });

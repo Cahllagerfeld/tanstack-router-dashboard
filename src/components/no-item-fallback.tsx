@@ -1,3 +1,4 @@
+import { m } from "@/paraglide/messages";
 import { type LucideIcon, PlusCircle } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -10,8 +11,8 @@ type Props = {
 
 export function NoItemFallback({
 	icon: Icon = PlusCircle,
-	title = "No items found",
-	subtitle = "Get started by creating a new item.",
+	title = m.common_empty_items_title(),
+	subtitle = m.common_empty_items_description(),
 	cta,
 }: Props) {
 	return (

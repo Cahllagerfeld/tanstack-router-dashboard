@@ -3,6 +3,7 @@ import { apiClient } from "../../api-client";
 import type { Project } from "@/domain/projects";
 import { projectFromApi } from "@/domain/projects";
 import { expectData } from "@/lib/fetch-error";
+import { m } from "@/paraglide/messages";
 import type { ApiClientError } from "@/types/api";
 import type { ApiCreateProject } from "@/types/projects";
 import {
@@ -38,7 +39,9 @@ export function useCreateProject(
 		mutationFn: createProject,
 		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
-			toast.success(`Project ${data.displayName} created`);
+			toast.success(
+				m.projects_notification_created({ displayName: data.displayName })
+			);
 			navigate({
 				to: "/projects/$project_id",
 				params: { project_id: data.name },

@@ -1,5 +1,6 @@
 import { serverKeys } from "@/data/server";
 import { useServerActivation } from "@/data/server/activate-server";
+import { m } from "@/paraglide/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -15,18 +16,18 @@ import { z } from "zod";
 
 const passwordStepSchema = z
 	.object({
-		username: z.string().trim().min(1),
-		password: z
-			.string()
-			.trim()
-			.min(8, "Password must be at least 8 characters"),
+		username: z.string().trim().min(1, m.server_activation_username_required()),
+		password: z.string().trim().min(8, m.server_activation_password_minimum()),
 		confirmPassword: z.string().trim(),
 	})
 	.refine(
 		(data) => {
 			return data.password === data.confirmPassword;
 		},
-		{ path: ["confirmPassword"], message: "Passwords do not match" }
+		{
+			path: ["confirmPassword"],
+			message: m.server_activation_password_mismatch(),
+		}
 	);
 type PasswordForm = z.infer<typeof passwordStepSchema>;
 
@@ -45,7 +46,7 @@ export function usePasswordStep() {
 
 	const { mutate } = useServerActivation({
 		onSuccess: async () => {
-			toast.success("Server activated!");
+			toast.success(m.server_activation_success());
 			await queryClient.invalidateQueries({
 				queryKey: serverKeys.info(),
 				refetchType: "all",
@@ -54,7 +55,7 @@ export function usePasswordStep() {
 		},
 		onError: (e) => {
 			console.error(e);
-			toast.error("Failed to activate server");
+			toast.error(m.server_activation_failed());
 		},
 	});
 

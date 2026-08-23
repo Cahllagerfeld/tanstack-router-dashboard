@@ -6,6 +6,7 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { m } from "@/paraglide/messages";
 import { Controller } from "react-hook-form";
 
 export function PasswordStep() {
@@ -24,7 +25,7 @@ export function PasswordStep() {
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
 							<FieldLabel htmlFor="server-activation-username">
-								Username
+								{m.common_field_username()}
 							</FieldLabel>
 							<Input
 								{...field}
@@ -41,7 +42,7 @@ export function PasswordStep() {
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
 							<FieldLabel htmlFor="server-activation-password">
-								Password
+								{m.common_field_password()}
 							</FieldLabel>
 							<Input
 								{...field}
@@ -59,7 +60,7 @@ export function PasswordStep() {
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
 							<FieldLabel htmlFor="server-activation-confirm-password">
-								Confirm Password
+								{m.common_field_confirm_password()}
 							</FieldLabel>
 							<Input
 								{...field}

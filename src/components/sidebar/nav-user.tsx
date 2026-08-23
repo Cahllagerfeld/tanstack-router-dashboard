@@ -17,6 +17,7 @@ import {
 import { useLogoutUser } from "@/data/session/logout";
 import { userQueries } from "@/data/user";
 import { getAvatarUrl } from "@/lib/avatar";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
@@ -89,7 +90,7 @@ export function NavUser() {
 						<DropdownMenuSeparator />
 						<DropdownMenuItem onClick={() => logout.mutate()}>
 							<LogOut />
-							Log out
+							{m.common_action_logout()}
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

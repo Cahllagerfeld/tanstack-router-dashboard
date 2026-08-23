@@ -1,3 +1,5 @@
+import { getLocale } from "@/paraglide/runtime";
+
 export default function DisplayDate({
 	date,
 	short = false,
@@ -5,7 +7,9 @@ export default function DisplayDate({
 	date: Date;
 	short?: boolean;
 }) {
-	const formattedDate = short ? formatShortDate(date) : date.toLocaleString();
+	const formattedDate = short
+		? formatShortDate(date)
+		: date.toLocaleString(getLocale());
 
 	return <>{formattedDate}</>;
 }
@@ -22,7 +26,8 @@ function formatShortDate(date: Date) {
 		hour12: false,
 	};
 
-	const formattedDate = date.toLocaleDateString("en-US", dateOptions);
-	const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
+	const locale = getLocale();
+	const formattedDate = date.toLocaleDateString(locale, dateOptions);
+	const formattedTime = date.toLocaleTimeString(locale, timeOptions);
 	return `${formattedDate} ${formattedTime}`;
 }

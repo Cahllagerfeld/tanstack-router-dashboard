@@ -7,6 +7,7 @@ import {
 	FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { m } from "@/paraglide/messages";
 import { Controller } from "react-hook-form";
 
 export function LoginForm() {
@@ -24,7 +25,9 @@ export function LoginForm() {
 					control={form.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor="login-username">Username</FieldLabel>
+							<FieldLabel htmlFor="login-username">
+								{m.common_field_username()}
+							</FieldLabel>
 							<Input
 								{...field}
 								id="login-username"
@@ -39,7 +42,9 @@ export function LoginForm() {
 					control={form.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor="login-password">Password</FieldLabel>
+							<FieldLabel htmlFor="login-password">
+								{m.common_field_password()}
+							</FieldLabel>
 							<Input
 								{...field}
 								id="login-password"
@@ -51,7 +56,7 @@ export function LoginForm() {
 					)}
 				/>
 			</FieldGroup>
-			<Button className="w-full">Login</Button>
+			<Button className="w-full">{m.common_action_login()}</Button>
 		</form>
 	);
 }

@@ -5,6 +5,7 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from "@/components/ui/empty";
+import { m } from "@/paraglide/messages";
 import { createFileRoute } from "@tanstack/react-router";
 import { Construction } from "lucide-react";
 
@@ -21,11 +22,8 @@ function RouteComponent() {
 				<EmptyMedia variant="icon">
 					<Construction />
 				</EmptyMedia>
-				<EmptyTitle>Project overview is under construction</EmptyTitle>
-				<EmptyDescription>
-					This Project overview will bring the most important Project details
-					together in one place.
-				</EmptyDescription>
+				<EmptyTitle>{m.projects_overview_title()}</EmptyTitle>
+				<EmptyDescription>{m.projects_overview_description()}</EmptyDescription>
 			</EmptyHeader>
 		</Empty>
 	);

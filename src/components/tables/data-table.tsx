@@ -84,7 +84,7 @@ export function DataTable<TData extends RowData>({
 								colSpan={table.getAllColumns().length}
 								className="h-24 text-center"
 							>
-								{m.components_table_no_results()}
+								{m.common_table_no_results()}
 							</TableCell>
 						</TableRow>
 					)}

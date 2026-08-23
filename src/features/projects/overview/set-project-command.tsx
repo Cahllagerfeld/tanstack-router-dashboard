@@ -1,4 +1,5 @@
 import { useCopy } from "@/hooks/use-copy";
+import { m } from "@/paraglide/messages";
 import { Check, Copy } from "lucide-react";
 
 export function SetProjectCommand({ projectId }: { projectId: string }) {
@@ -12,7 +13,7 @@ export function SetProjectCommand({ projectId }: { projectId: string }) {
 				{copied ? (
 					<>
 						<Check className="stroke-muted-foreground size-3 shrink-0" />
-						<p className="sr-only">copied successfully</p>
+						<p className="sr-only">{m.projects_copy_success()}</p>
 					</>
 				) : (
 					<button
@@ -20,7 +21,7 @@ export function SetProjectCommand({ projectId }: { projectId: string }) {
 						onClick={() => copyToClipboard(loginCommand)}
 					>
 						<Copy className="stroke-muted-foreground size-3 shrink-0" />
-						<p className="sr-only">Copy tenantUrl</p>
+						<p className="sr-only">{m.projects_copy_command()}</p>
 					</button>
 				)}
 			</div>

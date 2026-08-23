@@ -1,25 +1,23 @@
+import { m } from "@/paraglide/messages";
 import { z } from "zod";
 
 export const createProjectSchema = z.object({
 	name: z
 		.string()
 		.trim()
-		.min(1, "Name is required")
-		.max(50, "Name must be less than 50 characters")
-		.regex(
-			/^[a-z0-9_-]+$/,
-			"Name must contain only lowercase letters, numbers, underscores, and hyphens"
-		),
+		.min(1, m.projects_validation_name_required())
+		.max(50, m.projects_validation_name_max())
+		.regex(/^[a-z0-9_-]+$/, m.projects_validation_name_format()),
 	displayName: z
 		.string()
 		.trim()
-		.min(1, "Display name is required")
-		.max(255, "Display name must be less than 255 characters"),
+		.min(1, m.projects_validation_display_name_required())
+		.max(255, m.projects_validation_display_name_max()),
 
 	description: z
 		.string()
 		.trim()
-		.max(255, "Description must be less than 255 characters"),
+		.max(255, m.projects_validation_description_max()),
 });
 
 export type CreateProjectForm = z.infer<typeof createProjectSchema>;

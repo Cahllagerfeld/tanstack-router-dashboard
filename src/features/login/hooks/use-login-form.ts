@@ -1,5 +1,6 @@
 import { useLoginUser } from "@/data/session/login";
 import { userKeys, userQueries } from "@/data/user";
+import { m } from "@/paraglide/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
@@ -8,8 +9,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const loginSchema = z.object({
-	username: z.string().trim().min(1, "Username is required"),
-	password: z.string().trim().min(1, "Password is required"),
+	username: z.string().trim().min(1, m.auth_validation_username_required()),
+	password: z.string().trim().min(1, m.auth_validation_password_required()),
 });
 
 type LoginFormType = z.infer<typeof loginSchema>;

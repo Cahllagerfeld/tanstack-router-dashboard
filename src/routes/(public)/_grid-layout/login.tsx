@@ -6,6 +6,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { LoginForm } from "@/features/login/login-form";
+import { m } from "@/paraglide/messages";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
@@ -16,7 +17,7 @@ const querySchema = z.object({
 export const Route = createFileRoute("/(public)/_grid-layout/login")({
 	validateSearch: querySchema,
 	head: () => ({
-		meta: [{ title: "Login" }],
+		meta: [{ title: m.auth_route_title() }],
 	}),
 	component: RouteComponent,
 });
@@ -25,8 +26,8 @@ function RouteComponent() {
 	return (
 		<Card className="mx-auto md:w-[400px]">
 			<CardHeader>
-				<CardTitle className="text-2xl">Login</CardTitle>
-				<CardDescription>Use your credentials to log in.</CardDescription>
+				<CardTitle className="text-2xl">{m.auth_login_title()}</CardTitle>
+				<CardDescription>{m.auth_login_description()}</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<LoginForm />

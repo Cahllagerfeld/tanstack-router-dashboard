@@ -20,6 +20,7 @@ import { serverQueries } from "@/data/server";
 import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
 import { getIllustrationUrl } from "@/lib/images";
 import { setProjectToLocalStorage } from "@/lib/projects";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
@@ -81,7 +82,7 @@ export function ProjectSwitcher() {
 						>
 							<DropdownMenuGroup>
 								<DropdownMenuLabel className="text-muted-foreground text-xs">
-									Projects
+									{m.projects_navigation_label()}
 								</DropdownMenuLabel>
 								{projectData.items.map((project, index) => (
 									<DropdownMenuItem
@@ -116,7 +117,7 @@ export function ProjectSwitcher() {
 									<Plus className="size-4" />
 								</div>
 								<div className="text-muted-foreground font-medium">
-									Create Project
+									{m.projects_create_title()}
 								</div>
 							</DropdownMenuItem>
 						</DropdownMenuContent>

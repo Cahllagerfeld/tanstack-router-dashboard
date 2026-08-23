@@ -7,6 +7,7 @@ import {
 import { UserListSearchbar } from "@/features/users/list/searchbar";
 import { UserList } from "@/features/users/list/user-list";
 import { UserListSkeleton } from "@/features/users/list/user-list-skeleton";
+import { m } from "@/paraglide/messages";
 import type { UserListQueryParams } from "@/types/user";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
@@ -25,10 +26,10 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/members")({
 			queryClient.ensureQueryData(userQueries.list({ name, page })),
 			queryClient.ensureQueryData(userQueries.currentUser()),
 		]);
-		return { crumb: "Members" };
+		return { crumb: m.settings_members_title() };
 	},
 	head: () => ({
-		meta: [{ title: "Members" }],
+		meta: [{ title: m.settings_members_title() }],
 	}),
 	component: RouteComponent,
 });
@@ -54,9 +55,9 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Members</h1>
+				<h1 className="text-2xl font-bold">{m.settings_members_title()}</h1>
 				<p className="text-muted-foreground text-sm">
-					Manage your team members and their access to your server.
+					{m.settings_members_description()}
 				</p>
 			</div>
 			<Suspense fallback={<UserListSkeleton />}>

@@ -15,6 +15,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
@@ -55,7 +56,7 @@ export function NavMain({
 												variant="outline"
 												className="ml-auto hidden shrink-0 px-1.5 text-[10px] group-data-[collapsible=icon]:hidden sm:inline-flex"
 											>
-												Under construction
+												{m.common_navigation_under_construction()}
 											</Badge>
 										</>
 									)}
@@ -66,7 +67,9 @@ export function NavMain({
 											render={
 												<SidebarMenuAction className="data-[state=open]:rotate-90">
 													<ChevronRight />
-													<span className="sr-only">Toggle</span>
+													<span className="sr-only">
+														{m.common_navigation_toggle()}
+													</span>
 												</SidebarMenuAction>
 											}
 										></CollapsibleTrigger>

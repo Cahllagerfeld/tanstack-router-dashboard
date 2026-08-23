@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
+import { m } from "@/paraglide/messages";
 
 interface ComponentGeneralTabProps {
 	component: Component;
@@ -27,12 +28,12 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 	const basicInfoItems: KeyValueItem[] = [
 		{
 			key: "name",
-			label: "Name",
+			label: m.common_label_name(),
 			value: component.name,
 		},
 		{
 			key: "id",
-			label: "ID",
+			label: m.common_label_id(),
 			value: (
 				<span className="inline-flex items-center gap-1">
 					<code className="bg-muted rounded px-1.5 py-0.5 text-xs">
@@ -44,7 +45,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		},
 		{
 			key: "type",
-			label: "Type",
+			label: m.common_label_type(),
 			value: type ? (
 				<Badge variant="secondary">{snakeCaseToTitleCase(type)}</Badge>
 			) : (
@@ -53,7 +54,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		},
 		{
 			key: "flavor",
-			label: "Flavor",
+			label: m.common_label_flavor(),
 			value: flavor ? (
 				<div className="flex items-center gap-2">
 					{flavor.logoUrl && (
@@ -67,17 +68,17 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		},
 		{
 			key: "created",
-			label: "Created",
+			label: m.common_label_created(),
 			value: created ? <DisplayDate date={created} /> : <NotAvailableTag />,
 		},
 		{
 			key: "updated",
-			label: "Updated",
+			label: m.common_label_updated(),
 			value: updated ? <DisplayDate date={updated} /> : <NotAvailableTag />,
 		},
 		{
 			key: "user",
-			label: "Created by",
+			label: m.common_label_created_by(),
 			value: user?.name || <NotAvailableTag />,
 		},
 	];
@@ -94,7 +95,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 			<div className="grid gap-6 @3xl:grid-cols-2">
 				<Card>
 					<CardHeader>
-						<CardTitle>Basic Information</CardTitle>
+						<CardTitle>{m.components_detail_basic_information()}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						<KeyValueList items={basicInfoItems} />
@@ -103,14 +104,14 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 
 				<Card>
 					<CardHeader>
-						<CardTitle>Configuration</CardTitle>
+						<CardTitle>{m.components_detail_configuration()}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{hasConfiguration ? (
 							<ObjectRenderer data={configuration} />
 						) : (
 							<p className="text-muted-foreground text-sm">
-								No configuration available
+								{m.components_detail_no_configuration()}
 							</p>
 						)}
 					</CardContent>
@@ -118,14 +119,14 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 
 				<Card>
 					<CardHeader>
-						<CardTitle>Environment Variables</CardTitle>
+						<CardTitle>{m.components_detail_environment_variables()}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{hasEnvironment ? (
 							<ObjectRenderer data={environment} />
 						) : (
 							<p className="text-muted-foreground text-sm">
-								No environment variables configured
+								{m.components_detail_no_environment_variables()}
 							</p>
 						)}
 					</CardContent>
@@ -133,7 +134,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 
 				<Card>
 					<CardHeader>
-						<CardTitle>Secret Keys</CardTitle>
+						<CardTitle>{m.components_detail_secret_keys()}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{hasSecrets ? (
@@ -144,14 +145,14 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 											{secret}
 										</code>
 										<span className="text-muted-foreground text-xs">
-											(masked in configuration)
+											{m.components_detail_masked_in_configuration()}
 										</span>
 									</li>
 								))}
 							</ul>
 						) : (
 							<p className="text-muted-foreground text-sm">
-								No secrets configured
+								{m.components_detail_no_secrets()}
 							</p>
 						)}
 					</CardContent>

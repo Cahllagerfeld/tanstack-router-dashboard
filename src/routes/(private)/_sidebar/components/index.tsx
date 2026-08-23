@@ -35,7 +35,7 @@ export const Route = createFileRoute("/(private)/_sidebar/components/")({
 		);
 	},
 	head: () => ({
-		meta: [{ title: "Components" }],
+		meta: [{ title: m.components_list_title() }],
 	}),
 	component: RouteComponent,
 });

@@ -1,5 +1,6 @@
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 import { DebouncedInput } from "@/components/debounced-input";
+import { m } from "@/paraglide/messages";
 
 type Props = {
 	value: string;
@@ -12,7 +13,7 @@ export function ProjectSearchbar({ value, onChange }: Props) {
 			<div>
 				<DebouncedInput
 					debounceMs={500}
-					placeholder="Search"
+					placeholder={m.common_search_placeholder()}
 					value={value}
 					onChange={onChange}
 				/>

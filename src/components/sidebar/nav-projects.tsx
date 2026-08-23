@@ -14,6 +14,7 @@ import {
 	useSidebar,
 } from "@/components/ui/sidebar";
 import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
+import { m } from "@/paraglide/messages";
 import { Link } from "@tanstack/react-router";
 import { type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -31,7 +32,7 @@ export function NavProjects({
 	return (
 		<>
 			<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-				<SidebarGroupLabel>Projects</SidebarGroupLabel>
+				<SidebarGroupLabel>{m.projects_navigation_label()}</SidebarGroupLabel>
 				<SidebarMenu>
 					{projects.map((item) => (
 						<SidebarMenuItem key={item.name}>
@@ -67,7 +68,7 @@ export function ProjectMenuDropdown({ projectId }: { projectId: string }) {
 					render={
 						<SidebarMenuAction showOnHover>
 							<MoreHorizontal />
-							<span className="sr-only">More</span>
+							<span className="sr-only">{m.common_navigation_more()}</span>
 						</SidebarMenuAction>
 					}
 				></DropdownMenuTrigger>
@@ -78,7 +79,7 @@ export function ProjectMenuDropdown({ projectId }: { projectId: string }) {
 				>
 					<DropdownMenuItem onClick={() => setDeleteOpen(true)}>
 						<Trash2 className="text-muted-foreground" />
-						<span>Delete Project</span>
+						<span>{m.projects_navigation_delete()}</span>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

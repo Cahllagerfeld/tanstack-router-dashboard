@@ -1,35 +1,38 @@
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
+import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
 import { useParams, useRouter } from "@tanstack/react-router";
 import { Frame, Settings } from "lucide-react";
 
-const unscopedNavMain: NavbarItem[] = [
-	{
-		title: "Projects",
-		url: "/projects",
-		icon: getEntityIcon("project"),
-	},
-	{
-		title: "Components",
-		url: "/components",
-		icon: getEntityIcon("component"),
-	},
-	{
-		title: "Stacks",
-		url: "/stacks",
-		icon: getEntityIcon("stack"),
-	},
-	{
-		title: "Settings",
-		url: "/settings/general",
-		icon: Settings,
-		activePathPrefix: "/settings",
-	},
-];
+function getUnscopedNavMain(): NavbarItem[] {
+	return [
+		{
+			title: m.projects_navigation_label(),
+			url: "/projects",
+			icon: getEntityIcon("project"),
+		},
+		{
+			title: m.components_navigation_label(),
+			url: "/components",
+			icon: getEntityIcon("component"),
+		},
+		{
+			title: m.stacks_navigation_label(),
+			url: "/stacks",
+			icon: getEntityIcon("stack"),
+		},
+		{
+			title: m.settings_navigation_label(),
+			url: "/settings/general",
+			icon: Settings,
+			activePathPrefix: "/settings",
+		},
+	];
+}
 
 export function useNavbarItems() {
-	const navItems = useSidebarItems(unscopedNavMain);
+	const navItems = useSidebarItems(getUnscopedNavMain());
 	return { navItems };
 }
 
@@ -40,7 +43,7 @@ export function useProjectItems() {
 	});
 	const projectPreviewNavMain: NavbarItem[] = [
 		{
-			title: "Project Overview",
+			title: m.common_navigation_project_overview(),
 			url: buildLocation({
 				to: "/projects/$project_id",
 				params: { project_id: projectId.project_id },
@@ -48,7 +51,7 @@ export function useProjectItems() {
 			icon: Frame,
 		},
 		{
-			title: "Pipelines",
+			title: m.common_navigation_pipelines(),
 			url: buildLocation({
 				to: "/projects/$project_id/pipelines",
 				params: { project_id: projectId.project_id },
@@ -56,13 +59,13 @@ export function useProjectItems() {
 			icon: getEntityIcon("pipeline"),
 		},
 		{
-			title: "Runs",
+			title: m.common_navigation_runs(),
 			url: "#",
 			icon: getEntityIcon("run"),
 			disabled: true,
 		},
 		{
-			title: "Artifacts",
+			title: m.common_navigation_artifacts(),
 			url: "#",
 			icon: getEntityIcon("artifact"),
 			disabled: true,

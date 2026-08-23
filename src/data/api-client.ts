@@ -1,4 +1,5 @@
 import { FetchError, throwFetchErrorFromResponse } from "@/lib/fetch-error";
+import { m } from "@/paraglide/messages";
 import type { paths } from "@/types/core";
 import createClient, { type Middleware } from "openapi-fetch";
 
@@ -26,7 +27,7 @@ const errorHandlingMiddleware: Middleware = {
 		return new FetchError({
 			status: 0,
 			statusText: "REQUEST_FAILED",
-			message: "Request failed before receiving a response",
+			message: m.common_error_request_failed(),
 		});
 	},
 };

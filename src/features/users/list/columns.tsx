@@ -6,6 +6,7 @@ import type { DataTableFeatures } from "@/components/tables/data-table-features"
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { User } from "@/domain/users";
+import { m } from "@/paraglide/messages";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export function useUserListColumns(
@@ -28,20 +29,20 @@ export function useUserListColumns(
 					onCheckedChange={(checked) =>
 						table.toggleAllPageRowsSelected(checked)
 					}
-					aria-label="Select all"
+					aria-label={m.common_table_select_all()}
 				/>
 			),
 			cell: ({ row }) => (
 				<Checkbox
 					checked={row.getIsSelected()}
 					onCheckedChange={(checked) => row.toggleSelected(checked)}
-					aria-label="Select row"
+					aria-label={m.common_table_select_row()}
 				/>
 			),
 			enableHiding: false,
 		},
 		{
-			header: "Name",
+			header: m.users_table_name(),
 			accessorKey: "name",
 			enableHiding: true,
 			cell: ({ row }) => {
@@ -50,14 +51,16 @@ export function useUserListColumns(
 				return (
 					<div className="flex items-center gap-2">
 						<p>{username}</p>
-						{isAdmin && <Badge variant="outline">Admin</Badge>}
+						{isAdmin && (
+							<Badge variant="outline">{m.users_status_admin()}</Badge>
+						)}
 					</div>
 				);
 			},
 		},
 		{
 			id: "status",
-			header: "Status",
+			header: m.users_table_status(),
 			accessorFn: (row) => row.isActive,
 			enableHiding: true,
 			cell: ({ row }) => {
@@ -67,7 +70,7 @@ export function useUserListColumns(
 		},
 		{
 			id: "created",
-			header: "Created",
+			header: m.users_table_created(),
 			accessorFn: (row) => row.created,
 			enableHiding: true,
 			cell: ({ row }) => {

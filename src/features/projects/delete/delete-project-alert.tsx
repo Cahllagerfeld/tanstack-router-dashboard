@@ -9,6 +9,7 @@ import {
 	ResponsiveAlertDialogTitle,
 } from "@/components/ui/responsive-alert-dialog";
 import { useDeleteProject } from "@/data/projects/mutations/delete-project";
+import { m } from "@/paraglide/messages";
 import type { Dispatch, SetStateAction } from "react";
 
 type Props = {
@@ -29,21 +30,22 @@ export function DeleteProjectAlert({ projectId, open, setOpen }: Props) {
 			<ResponsiveAlertDialogContent>
 				<ResponsiveAlertDialogHeader>
 					<ResponsiveAlertDialogTitle>
-						Are you absolutely sure?
+						{m.projects_delete_title()}
 					</ResponsiveAlertDialogTitle>
 					<ResponsiveAlertDialogDescription>
-						This action cannot be undone. This will permanently delete your
-						project and remove all associated data.
+						{m.projects_delete_description()}
 					</ResponsiveAlertDialogDescription>
 				</ResponsiveAlertDialogHeader>
 				<ResponsiveAlertDialogFooter className="max-md:py-2">
-					<ResponsiveAlertDialogCancel>Cancel</ResponsiveAlertDialogCancel>
+					<ResponsiveAlertDialogCancel>
+						{m.common_action_cancel()}
+					</ResponsiveAlertDialogCancel>
 					<ResponsiveAlertDialogAction
 						variant="destructive"
 						disabled={isPending}
 						onClick={() => mutate({ projectId })}
 					>
-						{isPending ? "Deleting..." : "Delete"}
+						{isPending ? m.projects_delete_pending() : m.common_action_delete()}
 					</ResponsiveAlertDialogAction>
 				</ResponsiveAlertDialogFooter>
 			</ResponsiveAlertDialogContent>
