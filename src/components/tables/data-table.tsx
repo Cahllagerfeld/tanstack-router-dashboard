@@ -8,6 +8,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 
 export type DataTableProps<TData extends RowData> = {
@@ -83,7 +84,7 @@ export function DataTable<TData extends RowData>({
 								colSpan={table.getAllColumns().length}
 								className="h-24 text-center"
 							>
-								No results.
+								{m.components_table_no_results()}
 							</TableCell>
 						</TableRow>
 					)}
