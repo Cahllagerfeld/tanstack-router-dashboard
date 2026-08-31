@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useCopy } from "@/hooks/use-copy";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import { Check, Copy } from "lucide-react";
 
 interface CopyButtonProps {
@@ -17,7 +18,9 @@ export function CopyButton({ value, className }: CopyButtonProps) {
 			size="icon"
 			className={cn("size-6", className)}
 			onClick={() => copyToClipboard(value)}
-			aria-label={copied ? "Copied" : "Copy to clipboard"}
+			aria-label={
+				copied ? m.common_action_copy_success() : m.common_action_copy()
+			}
 		>
 			{copied ? (
 				<Check className="size-3.5 text-green-500" />

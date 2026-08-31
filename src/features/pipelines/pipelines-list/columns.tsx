@@ -2,12 +2,13 @@ import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import type { Pipeline } from "@/domain/pipelines";
+import { m } from "@/paraglide/messages";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 	return [
 		{
-			header: "Name",
+			header: m.pipelines_table_name(),
 			accessorKey: "name",
 			enableHiding: true,
 			cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
@@ -16,7 +17,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 			},
 		},
 		{
-			header: "Description",
+			header: m.pipelines_table_description(),
 			accessorKey: "description",
 			enableHiding: true,
 			cell: ({ row }) => {
@@ -30,7 +31,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 		},
 		{
 			id: "created",
-			header: "Created at",
+			header: m.pipelines_table_created_at(),
 			accessorKey: "created",
 			enableHiding: true,
 			cell: ({ row }) => {

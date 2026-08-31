@@ -9,6 +9,8 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { m } from "@/paraglide/messages";
+import { getLocale } from "@/paraglide/runtime";
 import {
 	isArray,
 	isBoolean,
@@ -38,7 +40,7 @@ export function ValueRenderer({
 	if (isBoolean(value)) {
 		return (
 			<Badge variant={value ? "default" : "secondary"}>
-				{value ? "True" : "False"}
+				{value ? m.common_boolean_true() : m.common_boolean_false()}
 			</Badge>
 		);
 	}
@@ -53,13 +55,21 @@ export function ValueRenderer({
 
 	// Number
 	if (isNumber(value)) {
-		return <span className="font-mono text-sm">{value.toLocaleString()}</span>;
+		return (
+			<span className="font-mono text-sm">
+				{value.toLocaleString(getLocale())}
+			</span>
+		);
 	}
 
 	// Array - collapsible
 	if (isArray(value)) {
 		if (value.length === 0) {
-			return <span className="text-muted-foreground text-sm">Empty array</span>;
+			return (
+				<span className="text-muted-foreground text-sm">
+					{m.common_value_empty_array()}
+				</span>
+			);
 		}
 
 		return (
@@ -67,7 +77,7 @@ export function ValueRenderer({
 				<CollapsibleTrigger className="group flex items-center gap-1 text-sm hover:underline">
 					<ChevronRight className="size-4 transition-transform group-data-[state=open]:rotate-90" />
 					<span className="text-muted-foreground">
-						Array ({value.length} {value.length === 1 ? "item" : "items"})
+						{m.common_value_array_count({ count: value.length })}
 					</span>
 				</CollapsibleTrigger>
 				<CollapsibleContent className="mt-2">
@@ -93,7 +103,9 @@ export function ValueRenderer({
 		const keys = Object.keys(value);
 		if (keys.length === 0) {
 			return (
-				<span className="text-muted-foreground text-sm">Empty object</span>
+				<span className="text-muted-foreground text-sm">
+					{m.common_value_empty_object()}
+				</span>
 			);
 		}
 
@@ -102,7 +114,7 @@ export function ValueRenderer({
 				<CollapsibleTrigger className="group flex items-center gap-1 text-sm hover:underline">
 					<ChevronRight className="size-4 transition-transform group-data-[state=open]:rotate-90" />
 					<span className="text-muted-foreground">
-						Object ({keys.length} {keys.length === 1 ? "key" : "keys"})
+						{m.common_value_object_count({ count: keys.length })}
 					</span>
 				</CollapsibleTrigger>
 				<CollapsibleContent className="mt-2">
@@ -117,5 +129,9 @@ export function ValueRenderer({
 	}
 
 	// Fallback for complex values at max depth
-	return <span className="text-muted-foreground text-sm">[Complex value]</span>;
+	return (
+		<span className="text-muted-foreground text-sm">
+			{m.common_value_complex()}
+		</span>
+	);
 }

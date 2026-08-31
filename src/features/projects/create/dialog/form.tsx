@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import type { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { Controller } from "react-hook-form";
 
@@ -37,7 +38,7 @@ export function CreateProjectForm({
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
 								<FieldLabel htmlFor="create-project-display-name">
-									Display Name
+									{m.projects_form_display_name()}
 								</FieldLabel>
 								<Input
 									{...field}
@@ -56,7 +57,7 @@ export function CreateProjectForm({
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
 								<FieldLabel htmlFor="create-project-name">
-									Project Name
+									{m.projects_form_name()}
 								</FieldLabel>
 								<Input
 									{...field}
@@ -75,7 +76,7 @@ export function CreateProjectForm({
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
 								<FieldLabel htmlFor="create-project-description">
-									Description (optional)
+									{m.projects_form_description_optional()}
 								</FieldLabel>
 								<Input
 									{...field}

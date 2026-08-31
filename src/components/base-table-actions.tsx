@@ -4,6 +4,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { m } from "@/paraglide/messages";
 import { MoreHorizontal } from "lucide-react";
 import type { PropsWithChildren } from "react";
 
@@ -14,7 +15,7 @@ export function BaseTableActions({ children }: PropsWithChildren) {
 				render={
 					<Button variant="ghost" size="icon">
 						<MoreHorizontal />
-						<span className="sr-only">Open menu</span>
+						<span className="sr-only">{m.common_navigation_open_menu()}</span>
 					</Button>
 				}
 			/>

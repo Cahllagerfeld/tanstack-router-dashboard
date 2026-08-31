@@ -6,6 +6,7 @@ import { pipelineQueries } from "@/data/pipelines";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { Pagination } from "@/features/pagination";
 import { usePipelineColumns } from "@/features/pipelines/pipelines-list/columns";
+import { m } from "@/paraglide/messages";
 import { type PipelineListQueryParams } from "@/types/pipelines";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -38,7 +39,7 @@ export const Route = createFileRoute(
 		await queryClient.ensureQueryData(pipelineQueries.list(queryParams));
 		return {
 			queryParams,
-			crumb: "Pipelines",
+			crumb: m.pipelines_navigation_label(),
 		};
 	},
 	component: RouteComponent,
@@ -82,10 +83,9 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Pipelines</h1>
+				<h1 className="text-2xl font-bold">{m.pipelines_list_title()}</h1>
 				<p className="text-muted-foreground text-sm">
-					Pipelines define reusable, versioned sequences of machine learning
-					steps.
+					{m.pipelines_list_description()}
 				</p>
 			</div>
 			<TableToolbar>

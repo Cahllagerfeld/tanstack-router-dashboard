@@ -7,6 +7,7 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from "@/components/ui/empty";
+import { m } from "@/paraglide/messages";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { AlertCircle, RefreshCw } from "lucide-react";
 
@@ -20,10 +21,9 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 				>
 					<AlertCircle className="size-7" />
 				</EmptyMedia>
-				<EmptyTitle>Something went wrong</EmptyTitle>
+				<EmptyTitle>{m.common_error_title()}</EmptyTitle>
 				<EmptyDescription>
-					An unexpected error occurred. This has been logged automatically. Try
-					again or contact support if the issue persists.
+					{m.common_error_try_again_description()}
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
@@ -32,7 +32,7 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 				</div>
 				<Button onClick={reset}>
 					<RefreshCw className="size-4" />
-					Try again
+					{m.common_action_try_again()}
 				</Button>
 			</EmptyContent>
 		</Empty>

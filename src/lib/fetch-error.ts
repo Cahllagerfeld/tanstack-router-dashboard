@@ -1,4 +1,5 @@
 import { isRecord } from "./type-guards";
+import { m } from "@/paraglide/messages";
 import { isArray, isString } from "es-toolkit/compat";
 
 export class FetchError extends Error {
@@ -58,7 +59,7 @@ function getErrorMessage(errorData: unknown): string {
 			return arrayMessage;
 		}
 
-		return "Unknown error";
+		return m.common_error_unknown();
 	}
 
 	if (isRecord(errorData)) {
@@ -82,7 +83,7 @@ function getErrorMessage(errorData: unknown): string {
 		}
 	}
 
-	return "Error while fetching data";
+	return m.common_error_fetch();
 }
 
 type ApiResult<T, E> = {
@@ -95,7 +96,7 @@ export function expectOptionalData<T, E>(
 	result: ApiResult<T, E>
 ): T | undefined {
 	if (result.error !== undefined) {
-		throw new Error("Error while unwrapping data");
+		throw new Error(m.common_error_unwrapping());
 	}
 
 	return result.data;
@@ -107,5 +108,5 @@ export function expectData<T, E>(result: ApiResult<T, E>): T {
 		return data;
 	}
 
-	throw new Error("Error while unwrapping data");
+	throw new Error(m.common_error_unwrapping());
 }

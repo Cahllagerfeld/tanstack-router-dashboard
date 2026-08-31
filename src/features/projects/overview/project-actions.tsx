@@ -7,6 +7,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { m } from "@/paraglide/messages";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -28,7 +29,7 @@ export function ProjectActions({ projectId }: Props) {
 					render={
 						<Button variant="ghost" className="z-10" size="icon">
 							<MoreHorizontal className="size-5" />
-							<span className="sr-only">Open project actions</span>
+							<span className="sr-only">{m.projects_actions_open()}</span>
 						</Button>
 					}
 				></DropdownMenuTrigger>
@@ -36,7 +37,7 @@ export function ProjectActions({ projectId }: Props) {
 					<DropdownMenuGroup>
 						<DropdownMenuItem onClick={() => setDeleteAlertOpen(true)}>
 							<Trash2 />
-							Delete
+							{m.common_action_delete()}
 						</DropdownMenuItem>
 					</DropdownMenuGroup>
 				</DropdownMenuContent>

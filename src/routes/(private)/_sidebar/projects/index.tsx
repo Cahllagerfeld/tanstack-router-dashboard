@@ -7,6 +7,7 @@ import {
 import { ProjectList } from "@/features/projects/overview/project-list";
 import { ProjectListSkeleton } from "@/features/projects/overview/project-list-skeleton";
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
+import { m } from "@/paraglide/messages";
 import type { ProjectListQueries } from "@/types/projects";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
@@ -24,7 +25,7 @@ export const Route = createFileRoute("/(private)/_sidebar/projects/")({
 		await queryClient.ensureQueryData(projectQueries.list({ name, page }));
 	},
 	head: () => ({
-		meta: [{ title: "Projects" }],
+		meta: [{ title: m.projects_list_title() }],
 	}),
 	component: RouteComponent,
 });
@@ -53,9 +54,9 @@ function RouteComponent() {
 	return (
 		<div className="flex h-full flex-col space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Projects</h1>
+				<h1 className="text-2xl font-bold">{m.projects_list_title()}</h1>
 				<p className="text-muted-foreground text-sm">
-					Projects allow you to organize your MLOps resources.
+					{m.projects_list_description()}
 				</p>
 			</div>
 			<ProjectSearchbar

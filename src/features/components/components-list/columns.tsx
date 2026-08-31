@@ -4,6 +4,7 @@ import type { DataTableFeatures } from "@/components/tables/data-table-features"
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Component } from "@/domain/components";
 import { snakeCaseToTitleCase } from "@/lib/strings";
+import { m } from "@/paraglide/messages";
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -28,20 +29,20 @@ export function useComponentColumns(): ColumnDef<
 					onCheckedChange={(checked) =>
 						table.toggleAllPageRowsSelected(checked)
 					}
-					aria-label="Select all"
+					aria-label={m.common_table_select_all()}
 				/>
 			),
 			cell: ({ row }) => (
 				<Checkbox
 					checked={row.getIsSelected()}
 					onCheckedChange={(checked) => row.toggleSelected(checked)}
-					aria-label="Select row"
+					aria-label={m.common_table_select_row()}
 				/>
 			),
 			enableHiding: false,
 		},
 		{
-			header: "Name",
+			header: m.components_table_name(),
 			accessorKey: "name",
 			enableHiding: true,
 			cell: ({ row }) => (
@@ -58,7 +59,7 @@ export function useComponentColumns(): ColumnDef<
 			},
 		},
 		{
-			header: "Type",
+			header: m.components_table_type(),
 			enableHiding: true,
 			accessorFn: (row) => row.type,
 			cell: ({ row }) => {
@@ -71,7 +72,7 @@ export function useComponentColumns(): ColumnDef<
 			},
 		},
 		{
-			header: "Flavor",
+			header: m.components_table_flavor(),
 			accessorFn: (row) => row.flavor?.name,
 			enableHiding: true,
 			cell: ({ row }) => {
@@ -98,7 +99,7 @@ export function useComponentColumns(): ColumnDef<
 			},
 		},
 		{
-			header: "Created at",
+			header: m.components_table_created_at(),
 			enableHiding: true,
 			accessorFn: (row) => row.created,
 			meta: {

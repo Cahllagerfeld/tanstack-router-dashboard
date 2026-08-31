@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
@@ -26,7 +27,9 @@ export function SecretValue({
 				size="icon"
 				className="size-6"
 				onClick={() => setRevealed(!revealed)}
-				aria-label={revealed ? "Hide value" : "Show value"}
+				aria-label={
+					revealed ? m.common_action_hide_value() : m.common_action_show_value()
+				}
 			>
 				{revealed ? (
 					<EyeOff className="size-3.5" />

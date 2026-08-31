@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
+import { m } from "@/paraglide/messages";
 import type { ComponentType } from "@/types/components";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
@@ -70,14 +71,14 @@ export function TypeFilter({ filter }: Props) {
 				}
 			>
 				<Filter />
-				{getComponentTypeLabel(filter) || "Type"}
+				{getComponentTypeLabel(filter)}
 			</PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">
-					<div>Type</div>
+					<div>{m.components_filter_type()}</div>
 					<Button size="icon" variant="ghost" onClick={handleClearFilter}>
 						<Trash2 />
-						<span className="sr-only">Clear Filter</span>
+						<span className="sr-only">{m.components_filter_clear()}</span>
 					</Button>
 				</div>
 				<form
@@ -101,7 +102,7 @@ export function TypeFilter({ filter }: Props) {
 						)}
 					/>
 					<Button className="w-full" type="submit">
-						Apply
+						{m.common_action_apply()}
 					</Button>
 				</form>
 			</PopoverContent>
@@ -117,7 +118,7 @@ export function TypeSelect({
 			<SelectTrigger className="w-full">
 				<SelectValue>
 					{(value: ComponentType | null) =>
-						value ? getComponentTypeLabel(value) : "Select a type..."
+						value ? getComponentTypeLabel(value) : m.components_filter_select()
 					}
 				</SelectValue>
 			</SelectTrigger>

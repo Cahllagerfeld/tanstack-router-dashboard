@@ -16,6 +16,13 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 All application-owned user-facing strings must use Paraglide messages and have both English and German translations. Do not add hard-coded user-facing copy.
 
+- Translate labels, headings, descriptions, button text, accessibility text, validation messages, notifications, and route metadata.
+- Keep user-entered values, arbitrary API data, and raw API error details unchanged; translate only application-owned labels and wrappers around them.
+- Add flat, semantic, lowercase `snake_case` keys. Use `common_<category>_<intent>` only for invariant short copy; otherwise use the owning surface, such as `projects_<surface>_<purpose>`.
+- Reuse a message key only when its meaning and translation are invariant across contexts; otherwise add an owner-specific key.
+- Keep dynamic values, pluralization, grammar, and locale-sensitive dates, times, quantities, and numbers inside Paraglide messages or locale-aware formatters. Do not concatenate translated fragments.
+- Keep `messages/en.json` and `messages/de.json` key-complete and run the localization policy test when adding copy.
+
 ### UI primitives
 
 If a shadcn primitive exists for the UI element needed, always use the shadcn one. Do not build a custom equivalent when a shadcn component already covers it. If not installed, install it.

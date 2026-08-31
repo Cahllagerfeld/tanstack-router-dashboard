@@ -1,4 +1,5 @@
 import { DebouncedInput } from "@/components/debounced-input";
+import { m } from "@/paraglide/messages";
 
 type Props = {
 	searchValue: string;
@@ -9,7 +10,7 @@ export function UserListSearchbar({ searchValue, onChange }: Props) {
 	return (
 		<DebouncedInput
 			debounceMs={500}
-			placeholder="Search"
+			placeholder={m.users_search_placeholder()}
 			value={searchValue}
 			onChange={onChange}
 		/>

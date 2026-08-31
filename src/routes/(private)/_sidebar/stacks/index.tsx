@@ -5,6 +5,7 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/(private)/_sidebar/stacks/")({
 		);
 	},
 	head: () => ({
-		meta: [{ title: "Stacks" }],
+		meta: [{ title: m.stacks_list_title() }],
 	}),
 	component: RouteComponent,
 });
@@ -70,9 +71,9 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">Stacks</h1>
+				<h1 className="text-2xl font-bold">{m.stacks_list_title()}</h1>
 				<p className="text-muted-foreground text-sm">
-					Stacks are collections of components that work together.
+					{m.stacks_list_description()}
 				</p>
 			</div>
 			<TableToolbar>

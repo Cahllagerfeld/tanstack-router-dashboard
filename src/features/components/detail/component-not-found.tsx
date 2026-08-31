@@ -8,6 +8,7 @@ import {
 	EmptyTitle,
 } from "@/components/ui/empty";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
+import { m } from "@/paraglide/messages";
 import { Link } from "@tanstack/react-router";
 
 const ComponentIcon = getEntityIcon("component");
@@ -19,15 +20,17 @@ export function ComponentNotFound() {
 				<EmptyMedia variant="icon">
 					<ComponentIcon />
 				</EmptyMedia>
-				<EmptyTitle>Component Not Found</EmptyTitle>
+				<EmptyTitle>{m.components_not_found_title()}</EmptyTitle>
 				<EmptyDescription>
-					The component you are looking for does not exist.
+					{m.components_not_found_description()}
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
 				<Button
 					size="sm"
-					render={<Link to="/components">Go to Components</Link>}
+					render={
+						<Link to="/components">{m.components_not_found_go_to_list()}</Link>
+					}
 				></Button>
 			</EmptyContent>
 		</Empty>

@@ -1,13 +1,14 @@
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 import { NoItemFallback } from "@/components/no-item-fallback";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
+import { m } from "@/paraglide/messages";
 
 export function ProjectListNoItemsFallback() {
 	return (
 		<NoItemFallback
 			icon={getEntityIcon("project")}
-			title="No projects found"
-			subtitle="Create a new project to get started"
+			title={m.projects_empty_title()}
+			subtitle={m.projects_empty_description()}
 			cta={<CreateProjectDialogWithTrigger />}
 		/>
 	);

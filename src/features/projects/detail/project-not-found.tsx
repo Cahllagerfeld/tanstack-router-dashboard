@@ -8,6 +8,7 @@ import {
 	EmptyTitle,
 } from "@/components/ui/empty";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
+import { m } from "@/paraglide/messages";
 import { Link } from "@tanstack/react-router";
 
 const ProjectIcon = getEntityIcon("project");
@@ -19,13 +20,16 @@ export function ProjectNotFound() {
 				<EmptyMedia variant="icon">
 					<ProjectIcon />
 				</EmptyMedia>
-				<EmptyTitle>Project Not Found</EmptyTitle>
+				<EmptyTitle>{m.projects_detail_not_found_title()}</EmptyTitle>
 				<EmptyDescription>
-					The Project you are looking for does not exist.
+					{m.projects_detail_not_found_description()}
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<Button size="sm" render={<Link to="/projects">Go to Projects</Link>} />
+				<Button
+					size="sm"
+					render={<Link to="/projects">{m.projects_detail_go_to_list()}</Link>}
+				/>
 			</EmptyContent>
 		</Empty>
 	);

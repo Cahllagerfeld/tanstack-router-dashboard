@@ -4,6 +4,7 @@ import { ComponentDetailSkeleton } from "@/features/components/detail/component-
 import { ComponentHeader } from "@/features/components/detail/component-header";
 import { ComponentNotFound } from "@/features/components/detail/component-not-found";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	Link,
@@ -23,9 +24,13 @@ export const Route = createFileRoute(
 	},
 	head({ loaderData }) {
 		if (!loaderData?.component)
-			return { meta: [{ title: "Component Not Found" }] };
+			return { meta: [{ title: m.components_not_found_title() }] };
 		return {
-			meta: [{ title: `Component ${loaderData.component.name}` }],
+			meta: [
+				{
+					title: m.components_route_title({ name: loaderData.component.name }),
+				},
+			],
 		};
 	},
 	notFoundComponent: ComponentNotFound,
@@ -56,7 +61,7 @@ function RouteComponent() {
 						value="general"
 						render={
 							<Link to="/components/$component_id" params={{ component_id }}>
-								General
+								{m.components_detail_tab_general()}
 							</Link>
 						}
 					></TabsTrigger>
@@ -68,7 +73,7 @@ function RouteComponent() {
 								to="/components/$component_id/stacks"
 								params={{ component_id }}
 							>
-								Stacks
+								{m.components_detail_tab_stacks()}
 							</Link>
 						}
 					></TabsTrigger>

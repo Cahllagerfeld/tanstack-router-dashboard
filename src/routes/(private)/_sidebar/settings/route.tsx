@@ -1,4 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { m } from "@/paraglide/messages";
 import {
 	Link,
 	Outlet,
@@ -7,7 +8,7 @@ import {
 } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings")({
-	loader: () => ({ crumb: "Settings" }),
+	loader: () => ({ crumb: m.settings_navigation_label() }),
 	component: SettingsLayout,
 });
 
@@ -20,16 +21,20 @@ function SettingsLayout() {
 	return (
 		<div className="space-y-6">
 			<Tabs value={activeTab} className="w-full">
-				<TabsList aria-label="Settings sections">
+				<TabsList aria-label={m.settings_tabs_label()}>
 					<TabsTrigger
 						nativeButton={false}
 						value="general"
-						render={<Link to="/settings/general">General</Link>}
+						render={
+							<Link to="/settings/general">{m.settings_tab_general()}</Link>
+						}
 					/>
 					<TabsTrigger
 						nativeButton={false}
 						value="members"
-						render={<Link to="/settings/members">Members</Link>}
+						render={
+							<Link to="/settings/members">{m.settings_tab_members()}</Link>
+						}
 					/>
 				</TabsList>
 				<div>

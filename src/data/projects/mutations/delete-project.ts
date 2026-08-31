@@ -1,6 +1,7 @@
 import { projectKeys } from "..";
 import { apiClient } from "@/data/api-client";
 import { FetchError } from "@/lib/fetch-error";
+import { m } from "@/paraglide/messages";
 import {
 	type UseMutationOptions,
 	useMutation,
@@ -36,7 +37,7 @@ export function useDeleteProject(
 		},
 		onSuccess: (data, variables, onMutateResult, context) => {
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
-			toast.success(`Project deleted`);
+			toast.success(m.projects_notification_deleted());
 			navigate({
 				to: "/projects",
 			});

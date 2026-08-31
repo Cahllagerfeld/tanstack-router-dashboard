@@ -9,6 +9,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { m } from "@/paraglide/messages";
 import type { ReactTable, RowData } from "@tanstack/react-table";
 import { Columns3 } from "lucide-react";
 
@@ -26,16 +27,22 @@ export function DataTableViewOptions<TData extends RowData>({
 				}
 			>
 				<Columns3 />
-				Columns
+				{m.common_table_columns()}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-[150px]">
 				<DropdownMenuGroup>
-					<DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+					<DropdownMenuLabel>
+						{m.common_table_toggle_columns()}
+					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					{table
 						.getAllColumns()
 						.filter((column) => column.getCanHide())
 						.map((column) => {
+							const header = column.columnDef.header;
+							const label =
+								typeof header === "string" ? header : m.common_table_column();
+
 							return (
 								<DropdownMenuCheckboxItem
 									key={column.id}
@@ -43,7 +50,7 @@ export function DataTableViewOptions<TData extends RowData>({
 									checked={column.getIsVisible()}
 									onCheckedChange={(value) => column.toggleVisibility(!!value)}
 								>
-									{column.id}
+									{label}
 								</DropdownMenuCheckboxItem>
 							);
 						})}

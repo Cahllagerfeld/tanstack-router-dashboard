@@ -15,6 +15,7 @@ import {
 import { serverQueries } from "@/data/server";
 import { useIsProjectRoute } from "@/hooks/use-is-project-route";
 import { getAvatarUrl } from "@/lib/avatar";
+import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 
@@ -30,7 +31,7 @@ export function UnscopedSidebar({
 				{isProjectRoute ? <ProjectSwitcher /> : <UnscopedSidebarHeader />}
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={navItems} label="Server" />
+				<NavMain items={navItems} label={m.common_navigation_server()} />
 				{isProjectRoute && <ProjectSidebarItems />}
 			</SidebarContent>
 			<SidebarFooter>
@@ -71,5 +72,10 @@ function UnscopedSidebarHeader() {
 
 function ProjectSidebarItems() {
 	const projectPreviewItems = useProjectItems();
-	return <NavMain items={projectPreviewItems} label="Project (Preview)" />;
+	return (
+		<NavMain
+			items={projectPreviewItems}
+			label={m.common_navigation_project_preview()}
+		/>
+	);
 }

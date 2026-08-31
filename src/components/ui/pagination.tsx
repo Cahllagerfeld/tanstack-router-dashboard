@@ -1,5 +1,6 @@
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { m } from "@/paraglide/messages";
 import { type LinkComponent, createLink } from "@tanstack/react-router";
 import {
 	ChevronLeftIcon,
@@ -14,7 +15,7 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
 	return (
 		<nav
 			role="navigation"
-			aria-label="pagination"
+			aria-label={m.common_pagination_label()}
 			data-slot="pagination"
 			className={cn("mx-auto flex w-full justify-center", className)}
 			{...props}
@@ -70,13 +71,15 @@ function BasicPaginationLink({
 const PaginationPrevious: PaginationLinkProps = (props) => {
 	return (
 		<PaginationLink
-			aria-label="Go to previous page"
+			aria-label={m.common_pagination_previous_label()}
 			size="default"
 			className={cn("gap-1 px-2.5 sm:pl-2.5", props.className)}
 			{...props}
 		>
 			<ChevronLeftIcon />
-			<span className="hidden sm:block">Previous</span>
+			<span className="hidden sm:block">
+				{m.common_pagination_previous_text()}
+			</span>
 		</PaginationLink>
 	);
 };
@@ -84,13 +87,13 @@ const PaginationPrevious: PaginationLinkProps = (props) => {
 const PaginationFirst: PaginationLinkProps = (props) => {
 	return (
 		<PaginationLink
-			aria-label="Go to first page"
+			aria-label={m.common_pagination_first_label()}
 			size="default"
 			className={cn("gap-1 pl-2.5", props.className)}
 			{...props}
 		>
 			<ChevronsLeft />
-			<span>First</span>
+			<span>{m.common_pagination_first_text()}</span>
 		</PaginationLink>
 	);
 };
@@ -98,12 +101,12 @@ const PaginationFirst: PaginationLinkProps = (props) => {
 const PaginationNext: PaginationLinkProps = (props) => {
 	return (
 		<PaginationLink
-			aria-label="Go to next page"
+			aria-label={m.common_pagination_next_label()}
 			size="default"
 			className={cn("gap-1 px-2.5 sm:pr-2.5", props.className)}
 			{...props}
 		>
-			<span className="hidden sm:block">Next</span>
+			<span className="hidden sm:block">{m.common_pagination_next_text()}</span>
 			<ChevronRightIcon />
 		</PaginationLink>
 	);
@@ -112,12 +115,12 @@ const PaginationNext: PaginationLinkProps = (props) => {
 const PaginationLast: PaginationLinkProps = (props) => {
 	return (
 		<PaginationLink
-			aria-label="Go to last page"
+			aria-label={m.common_pagination_last_label()}
 			size="default"
 			className={cn("gap-1 pl-2.5", props.className)}
 			{...props}
 		>
-			<span>Last</span>
+			<span>{m.common_pagination_last_text()}</span>
 			<ChevronsRight />
 		</PaginationLink>
 	);
@@ -135,7 +138,7 @@ function PaginationEllipsis({
 			{...props}
 		>
 			<MoreHorizontalIcon className="size-4" />
-			<span className="sr-only">More pages</span>
+			<span className="sr-only">{m.common_pagination_more()}</span>
 		</span>
 	);
 }
