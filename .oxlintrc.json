@@ -17,7 +17,7 @@
 			{
 				"patterns": [
 					{
-						"group": ["@/modules/*/*", "@/modules/*/**"],
+						"regex": "^@/modules/[^/]+/.+",
 						"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
 					}
 				]
@@ -33,28 +33,8 @@
 					{
 						"patterns": [
 							{
-								"group": [
-									"@/app",
-									"@/app/**",
-									"@/components",
-									"@/components/**",
-									"@/data",
-									"@/data/**",
-									"@/domain",
-									"@/domain/**",
-									"@/features",
-									"@/features/**",
-									"@/hooks",
-									"@/hooks/**",
-									"@/lib",
-									"@/lib/**",
-									"@/modules/**",
-									"@/routes",
-									"@/routes/**",
-									"@/types",
-									"@/types/**"
-								],
-								"message": "Shared is domain-neutral infrastructure and cannot depend on App, Routes, capability modules, or their legacy migration inputs."
+								"regex": "^@/(?:app|components|data|domain|features|hooks|lib|modules|routes|types)(?:/|$)",
+								"message": "Shared cannot depend on application-owned code or its legacy migration inputs."
 							}
 						]
 					}
@@ -63,15 +43,7 @@
 		},
 		{
 			"files": [
-				"src/app/**/*.{ts,tsx}",
-				"src/components/**/*.{ts,tsx}",
-				"src/domain/**/*.{ts,tsx}",
-				"src/features/**/*.{ts,tsx}",
-				"src/hooks/**/*.{ts,tsx}",
-				"src/lib/**/*.{ts,tsx}",
-				"src/modules/**/*.{ts,tsx}",
-				"src/routes/**/*.{ts,tsx}",
-				"src/types/**/*.{ts,tsx}"
+				"src/{app,components,domain,features,hooks,lib,routes,types}/**/*.{ts,tsx}"
 			],
 			"rules": {
 				"no-restricted-imports": [
@@ -79,87 +51,12 @@
 					{
 						"patterns": [
 							{
-								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"regex": "^@/modules/[^/]+/.+",
 								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
 							},
 							{
-								"group": ["@/shared/api/generated"],
-								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and capability data boundaries."
-							}
-						]
-					}
-				]
-			}
-		},
-		{
-			"files": ["src/modules/**/*.{ts,tsx}"],
-			"rules": {
-				"no-restricted-imports": [
-					"error",
-					{
-						"patterns": [
-							{
-								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
-								"message": "Capability modules cannot depend on App or Routes."
-							},
-							{
-								"group": ["@/modules/*/*", "@/modules/*/**"],
-								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
-							},
-							{
-								"group": ["@/shared/api/generated"],
-								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and capability data boundaries."
-							}
-						]
-					}
-				]
-			}
-		},
-		{
-			"files": ["src/modules/*/domain/**/*.{ts,tsx}"],
-			"rules": {
-				"no-restricted-imports": [
-					"error",
-					{
-						"patterns": [
-							{
-								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
-								"message": "Capability domain code cannot depend on App or Routes."
-							},
-							{
-								"group": ["@/modules/*/*", "@/modules/*/**"],
-								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
-							},
-							{
-								"group": [
-									"@/shared/api",
-									"@/shared/api/**",
-									"@/shared/components",
-									"@/shared/components/**",
-									"@/shared/hooks",
-									"@/shared/hooks/**"
-								],
-								"message": "Capability domain code may consume only domain-neutral Shared utilities, not UI or API transport infrastructure."
-							}
-						]
-					}
-				]
-			}
-		},
-		{
-			"files": ["src/modules/*/data/**/*.{ts,tsx}"],
-			"rules": {
-				"no-restricted-imports": [
-					"error",
-					{
-						"patterns": [
-							{
-								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
-								"message": "Capability data boundaries cannot depend on App or Routes."
-							},
-							{
-								"group": ["@/modules/*/*", "@/modules/*/**"],
-								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+								"regex": "^@/shared/api/generated$",
+								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and data boundaries."
 							}
 						]
 					}
@@ -202,7 +99,7 @@
 					{
 						"patterns": [
 							{
-								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"regex": "^@/modules/[^/]+/.+",
 								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
 							}
 						]
