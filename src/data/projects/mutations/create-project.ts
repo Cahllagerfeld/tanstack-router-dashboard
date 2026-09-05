@@ -16,7 +16,7 @@ import type { ApiCreateProject } from "@/types/projects";
 import { projectKeys } from "..";
 import { apiClient } from "../../api-client";
 
-async function createProject(payload: ApiCreateProject) {
+export async function createProject(payload: ApiCreateProject) {
 	const project = await apiClient.POST("/api/v1/projects", {
 		method: "POST",
 		body: payload,

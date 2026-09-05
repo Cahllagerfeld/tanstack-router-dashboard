@@ -35,6 +35,21 @@ Always handle forms with Zod schemas, React Hook Form (`useForm` + `zodResolver`
 
 Do not mix business logic with display. Keep components presentational and easy to test: put mutations, form setup, validation handlers, and side effects in hooks or providers; leave UI components to render props/state and call actions. Prefer the existing pattern of a display component plus a dedicated hook (e.g. `form.tsx` + `use-*-form.ts`). Cover the business logic with unit tests.
 
+### Testing
+
+Add tests alongside new feature development and bug fixes. For the existing test backlog, work risk-first in small, independently green slices rather than pursuing one test per file or 100% coverage.
+
+- Test application-owned behavior at the highest practical existing seam. Prefer Node tests for business logic, data functions, mutations, query contracts, domain mappers, schemas, error handling, loader utilities, and side-effect orchestration.
+- Use Vitest Browser only when DOM behavior matters, such as forms, dialogs, validation feedback, visibility controls, filters, tables, and other meaningful user interactions.
+- Mock external boundaries such as the API client, navigation, storage, and notifications at the module boundary. Do not add MSW unless the project's testing strategy is explicitly revisited.
+- Cover the normal path plus credible failures and meaningful boundary conditions. Add an edge-case test when it represents a realistic user or API state, protects a security or data-loss boundary, or reproduces a defect.
+- Assert observable behavior, outputs, side effects, and contracts. Avoid implementation-detail assertions, broad DOM snapshots, duplicate assertions across layers, and abstractions introduced before setup is demonstrably repeated.
+- Do not add route-level tests or a router test harness under the current strategy. Extract and test reusable non-route business logic only when doing so improves the production design independently of the test.
+- It is acceptable to leave generated code, shadcn primitives, type-only modules, re-export barrels, trivial route wiring, static skeletons, and display-only components without direct tests.
+- Do not add coverage tooling or percentage thresholds merely to drive the number upward. The stopping condition is meaningful protection of identified high-risk behavior, not universal file coverage.
+- Behavior-preserving refactors are allowed when needed to create a clean test seam. Fix clear defects discovered during test work and add regression coverage; escalate ambiguous product behavior instead of encoding an assumption.
+- Keep the complete CI test suite comfortably below roughly three minutes. Treat slow startup and flaky browser tests as defects.
+
 ### Temp files
 
 If the agent creates any temporary files while working, clean them up afterwards. Do not leave temp files in the workspace.

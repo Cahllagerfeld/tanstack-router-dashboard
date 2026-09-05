@@ -9,28 +9,12 @@ import {
 	colors,
 	uniqueNamesGenerator,
 } from "unique-names-generator";
-import { z } from "zod";
 
 import { serverKeys } from "@/data/server";
 import { useServerActivation } from "@/data/server/activate-server";
 import { m } from "@/paraglide/messages";
 
-const passwordStepSchema = z
-	.object({
-		username: z.string().trim().min(1, m.server_activation_username_required()),
-		password: z.string().trim().min(8, m.server_activation_password_minimum()),
-		confirmPassword: z.string().trim(),
-	})
-	.refine(
-		(data) => {
-			return data.password === data.confirmPassword;
-		},
-		{
-			path: ["confirmPassword"],
-			message: m.server_activation_password_mismatch(),
-		}
-	);
-type PasswordForm = z.infer<typeof passwordStepSchema>;
+import { type PasswordForm, passwordStepSchema } from "./schema";
 
 export function usePasswordStep() {
 	const queryClient = useQueryClient();

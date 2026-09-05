@@ -3,18 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { useLoginUser } from "@/data/session/login";
 import { userKeys, userQueries } from "@/data/user";
-import { m } from "@/paraglide/messages";
 
-const loginSchema = z.object({
-	username: z.string().trim().min(1, m.auth_validation_username_required()),
-	password: z.string().trim().min(1, m.auth_validation_password_required()),
-});
-
-type LoginFormType = z.infer<typeof loginSchema>;
+import { type LoginFormType, loginSchema } from "../schema";
 
 export function useLoginForm() {
 	const { next } = useSearch({ from: "/(public)/_grid-layout/login" });
@@ -37,8 +30,7 @@ export function useLoginForm() {
 			router.navigate({ to: next ?? "/" });
 		},
 		onError: (err) => {
-			// @ts-expect-error - detail is an array
-			toast.error(err.data.detail[1]);
+			toast.error(err.message);
 		},
 	});
 
