@@ -1,15 +1,15 @@
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
+import { Button } from "@/shared/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/dropdown-menu";
 
 import { DeleteProjectAlert } from "../delete/delete-project-alert";
 

@@ -1,10 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { pipelineFromApi } from "@/domain/pipelines";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient, expectData } from "@/shared/api";
 import { type PipelineListQueryParams } from "@/types/pipelines";
-
-import { apiClient } from "../api-client";
 
 const baseKey = "pipelines" as const;
 

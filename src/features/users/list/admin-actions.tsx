@@ -1,8 +1,8 @@
 import { Trash2 } from "lucide-react";
 
-import { BaseTableActions } from "@/components/base-table-actions";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { m } from "@/paraglide/messages";
+import { BaseTableActions } from "@/shared/components/base-table-actions";
+import { DropdownMenuItem } from "@/shared/components/ui/dropdown-menu";
 
 export function AdminActions() {
 	return (

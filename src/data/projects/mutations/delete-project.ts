@@ -6,9 +6,8 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import { apiClient } from "@/data/api-client";
-import { expectOptionalData, FetchError } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
+import { apiClient, expectOptionalData, FetchError } from "@/shared/api";
 
 import { projectKeys } from "..";
 

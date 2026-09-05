@@ -9,7 +9,7 @@ const { put, loginUserRequest } = vi.hoisted(() => ({
 	loginUserRequest: vi.fn(),
 }));
 
-vi.mock("../api-client", () => ({
+vi.mock("@/shared/api/client", () => ({
 	apiClient: { PUT: put },
 }));
 

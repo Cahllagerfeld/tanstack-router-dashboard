@@ -1,8 +1,214 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "react"],
+	"plugins": ["typescript", "unicorn", "oxc", "react", "import"],
 	"categories": {
 		"correctness": "error"
 	},
-	"rules": {}
+	"rules": {
+		"import/no-cycle": [
+			"error",
+			{
+				"ignoreExternal": true,
+				"ignoreTypes": false
+			}
+		],
+		"no-restricted-imports": [
+			"error",
+			{
+				"patterns": [
+					{
+						"group": ["@/modules/*/*", "@/modules/*/**"],
+						"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+					}
+				]
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["src/shared/**/*.{ts,tsx}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": [
+									"@/app",
+									"@/app/**",
+									"@/components",
+									"@/components/**",
+									"@/data",
+									"@/data/**",
+									"@/domain",
+									"@/domain/**",
+									"@/features",
+									"@/features/**",
+									"@/hooks",
+									"@/hooks/**",
+									"@/lib",
+									"@/lib/**",
+									"@/modules/**",
+									"@/routes",
+									"@/routes/**",
+									"@/types",
+									"@/types/**"
+								],
+								"message": "Shared is domain-neutral infrastructure and cannot depend on App, Routes, capability modules, or their legacy migration inputs."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": [
+				"src/app/**/*.{ts,tsx}",
+				"src/components/**/*.{ts,tsx}",
+				"src/domain/**/*.{ts,tsx}",
+				"src/features/**/*.{ts,tsx}",
+				"src/hooks/**/*.{ts,tsx}",
+				"src/lib/**/*.{ts,tsx}",
+				"src/modules/**/*.{ts,tsx}",
+				"src/routes/**/*.{ts,tsx}",
+				"src/types/**/*.{ts,tsx}"
+			],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							},
+							{
+								"group": ["@/shared/api/generated"],
+								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and capability data boundaries."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["src/modules/**/*.{ts,tsx}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
+								"message": "Capability modules cannot depend on App or Routes."
+							},
+							{
+								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							},
+							{
+								"group": ["@/shared/api/generated"],
+								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and capability data boundaries."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["src/modules/*/domain/**/*.{ts,tsx}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
+								"message": "Capability domain code cannot depend on App or Routes."
+							},
+							{
+								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							},
+							{
+								"group": [
+									"@/shared/api",
+									"@/shared/api/**",
+									"@/shared/components",
+									"@/shared/components/**",
+									"@/shared/hooks",
+									"@/shared/hooks/**"
+								],
+								"message": "Capability domain code may consume only domain-neutral Shared utilities, not UI or API transport infrastructure."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["src/modules/*/data/**/*.{ts,tsx}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["@/app", "@/app/**", "@/routes", "@/routes/**"],
+								"message": "Capability data boundaries cannot depend on App or Routes."
+							},
+							{
+								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": [
+				"src/shared/components/object-renderer/object-renderer.tsx",
+				"src/shared/components/object-renderer/value-renderer.tsx"
+			],
+			"rules": {
+				"import/no-cycle": "off"
+			}
+		},
+		{
+			"files": [
+				"src/domain/components.ts",
+				"src/domain/flavors.ts",
+				"src/domain/mappers.spec.ts",
+				"src/domain/pipelines.spec.ts",
+				"src/domain/pipelines.ts",
+				"src/domain/projects.ts",
+				"src/domain/runs.spec.ts",
+				"src/domain/runs.ts",
+				"src/domain/stacks.ts",
+				"src/domain/users.ts",
+				"src/types/components.ts",
+				"src/types/pipelines.ts",
+				"src/types/projects.ts",
+				"src/types/runs.ts",
+				"src/types/server.ts",
+				"src/types/session.ts",
+				"src/types/stacks.ts",
+				"src/types/user.ts"
+			],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"group": ["@/modules/*/*", "@/modules/*/**"],
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							}
+						]
+					}
+				]
+			}
+		}
+	]
 }

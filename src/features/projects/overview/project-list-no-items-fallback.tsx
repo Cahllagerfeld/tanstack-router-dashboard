@@ -1,6 +1,6 @@
-import { NoItemFallback } from "@/components/no-item-fallback";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
+import { NoItemFallback } from "@/shared/components/no-item-fallback";
 
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 

@@ -22,6 +22,18 @@ Canonical defaults: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-
 
 Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
+### Application architecture
+
+Follow the capability-module architecture in `docs/architecture/capability-modules.md`.
+
+- Assign every handwritten production file to exactly one owner: App, Routes, a capability module, or Shared. Prefer the capability that owns the behavior; reuse alone does not make code Shared.
+- App composes providers, the authenticated shell, global failures, and workflows spanning peer modules. Routes are thin TanStack Router adapters. Modules own vertical capabilities. Shared contains only domain-neutral infrastructure with no natural capability owner.
+- App and Routes may depend on module public APIs and Shared. Modules may depend on Shared and peer modules only through their public APIs. Shared must not import App, Routes, or modules; modules must not import App or Routes. Cycles are forbidden.
+- Every module exposes a deliberate public entry point. External consumers import that entry point and never module internals. Same-module internals may import each other directly.
+- Domain code stays pure and transport-independent. Generated OpenAPI contracts, the base client, and generic transport/error handling live in Shared API infrastructure; only module data boundaries may consume generated contracts.
+- Subdirectories express real responsibilities; do not create empty or one-file scaffolding merely to match a template.
+- Generated output, shadcn-owned primitives, and mandatory TanStack route declarations are special cases, not capability owners. Any other exemption or compatibility export must be narrow, documented with a removal ticket, and removed when that ticket migrates its owner.
+
 ### Internationalization
 
 All application-owned user-facing strings must use Paraglide messages and have both English and German translations. Do not add hard-coded user-facing copy.
