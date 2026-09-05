@@ -13,13 +13,15 @@ describe("componentQueries", () => {
 
 	it("includes filters in the Component list identity", () => {
 		expect(
-			componentQueries.list({ project: "project-id", type: "orchestrator" })
-				.queryKey
+			componentQueries.list({
+				project_name_or_id: "project-id",
+				type: "orchestrator",
+			}).queryKey
 		).toEqual([
 			"components",
 			"list",
 			{
-				project: "project-id",
+				project_name_or_id: "project-id",
 				type: "orchestrator",
 				sort_by: "desc:created",
 			},
