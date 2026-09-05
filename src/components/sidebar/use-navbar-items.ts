@@ -61,9 +61,11 @@ export function useProjectItems() {
 		},
 		{
 			title: m.common_navigation_runs(),
-			url: "#",
+			url: buildLocation({
+				to: "/projects/$project_id/runs",
+				params: { project_id: projectId.project_id },
+			}).pathname,
 			icon: getEntityIcon("run"),
-			disabled: true,
 		},
 		{
 			title: m.common_navigation_artifacts(),
