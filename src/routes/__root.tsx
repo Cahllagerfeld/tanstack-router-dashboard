@@ -1,6 +1,3 @@
-import { Toaster } from "@/components/ui/sonner";
-import { serverQueries } from "@/data/server";
-import { m } from "@/paraglide/messages";
 import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -9,6 +6,10 @@ import {
 	createRootRouteWithContext,
 	redirect,
 } from "@tanstack/react-router";
+
+import { Toaster } from "@/components/ui/sonner";
+import { serverQueries } from "@/data/server";
+import { m } from "@/paraglide/messages";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;

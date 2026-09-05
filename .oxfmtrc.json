@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"useTabs": true,
+	"singleQuote": false,
+	"trailingComma": "es5",
+	"printWidth": 80,
+	"sortPackageJson": true,
+	"sortImports": true,
+	"sortTailwindcss": {
+		"stylesheet": "./src/assets/styles/tailwind.css",
+		"functions": ["cn", "clsx", "cva"]
+	},
+	"ignorePatterns": [
+		"node_modules",
+		"dist",
+		"build",
+		".devbox",
+		"src/routeTree.gen.ts",
+		".venv",
+		"pnpm-lock.yaml"
+	]
+}

@@ -1,10 +1,11 @@
+import { describe, expect, it } from "vitest";
+
 import {
 	FILTER_OPTIONS,
 	createFilter,
 	filterSchema,
 	getFilterValue,
 } from "./filter";
-import { describe, expect, it } from "vitest";
 
 describe("createFilter", () => {
 	it("builds the correct Filter string", () => {

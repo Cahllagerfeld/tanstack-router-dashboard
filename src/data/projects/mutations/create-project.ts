@@ -1,11 +1,3 @@
-import { projectKeys } from "..";
-import { apiClient } from "../../api-client";
-import type { Project } from "@/domain/projects";
-import { projectFromApi } from "@/domain/projects";
-import { expectData } from "@/lib/fetch-error";
-import { m } from "@/paraglide/messages";
-import type { ApiClientError } from "@/types/api";
-import type { ApiCreateProject } from "@/types/projects";
 import {
 	type UseMutationOptions,
 	useMutation,
@@ -13,6 +5,16 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+
+import type { Project } from "@/domain/projects";
+import { projectFromApi } from "@/domain/projects";
+import { expectData } from "@/lib/fetch-error";
+import { m } from "@/paraglide/messages";
+import type { ApiClientError } from "@/types/api";
+import type { ApiCreateProject } from "@/types/projects";
+
+import { projectKeys } from "..";
+import { apiClient } from "../../api-client";
 
 async function createProject(payload: ApiCreateProject) {
 	const project = await apiClient.POST("/api/v1/projects", {

@@ -1,5 +1,6 @@
-import { getLocalStorageKey } from "@/lib/localstorage";
 import { describe, expect, it } from "vitest";
+
+import { getLocalStorageKey } from "@/lib/localstorage";
 
 describe("getLocalStorageKey", () => {
 	it("returns the fully-qualified key for SELECTED_PROJECT", () => {

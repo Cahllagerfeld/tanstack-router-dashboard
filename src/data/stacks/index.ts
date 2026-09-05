@@ -1,7 +1,9 @@
+import { queryOptions } from "@tanstack/react-query";
+
+import type { StacksListQueryParams } from "@/types/stacks";
+
 import { fetchStackDetail } from "./fetch-detail";
 import { fetchStackList } from "./fetch-list";
-import type { StacksListQueryParams } from "@/types/stacks";
-import { queryOptions } from "@tanstack/react-query";
 
 const baseKey = "stacks" as const;
 

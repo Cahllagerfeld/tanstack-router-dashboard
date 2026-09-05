@@ -1,11 +1,14 @@
-import { DefaultErrorPage } from "./features/root/global-error-boundary";
-import { routeTree } from "./routeTree.gen";
-import "@/assets/styles/tailwind.css";
-import { Providers } from "@/components/providers";
-import { queryClient } from "@/lib/query-client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
+
+import "@/assets/styles/tailwind.css";
 import ReactDOM from "react-dom/client";
+
+import { Providers } from "@/components/providers";
+import { queryClient } from "@/lib/query-client";
+
+import { DefaultErrorPage } from "./features/root/global-error-boundary";
+import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
 	routeTree,

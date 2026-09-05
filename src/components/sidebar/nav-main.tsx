@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import {
 	Collapsible,
@@ -17,8 +20,6 @@ import {
 } from "@/components/ui/sidebar";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
-import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
 
 export function NavMain({
 	items,

@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import type { PropsWithChildren } from "react";
+
+import { cn } from "@/lib/utils";
 
 type TableToolbarProps = PropsWithChildren<{
 	className?: string;

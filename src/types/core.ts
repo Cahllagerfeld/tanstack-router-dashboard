@@ -6031,7 +6031,8 @@ export type components = {
 			tags?: string[] | null;
 			/** Visualizations of the artifact. */
 			visualizations?:
-				components["schemas"]["ArtifactVisualizationRequest"][] | null;
+				| components["schemas"]["ArtifactVisualizationRequest"][]
+				| null;
 			/** The save type of the artifact version. */
 			save_type: components["schemas"]["ArtifactSaveType"];
 			/** Metadata of the artifact version. */
@@ -6058,10 +6059,12 @@ export type components = {
 			body?: components["schemas"]["ArtifactVersionResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["ArtifactVersionResponseMetadata"] | null;
+				| components["schemas"]["ArtifactVersionResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ArtifactVersionResponseResources"] | null;
+				| components["schemas"]["ArtifactVersionResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -6123,7 +6126,8 @@ export type components = {
 		ArtifactVersionResponseMetadata: {
 			/** Visualizations of the artifact. */
 			visualizations?:
-				components["schemas"]["ArtifactVisualizationResponse"][] | null;
+				| components["schemas"]["ArtifactVisualizationResponse"][]
+				| null;
 			/**
 			 * Metadata of the artifact.
 			 * @default {}
@@ -6186,10 +6190,12 @@ export type components = {
 			body?: components["schemas"]["ArtifactVisualizationResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["ArtifactVisualizationResponseMetadata"] | null;
+				| components["schemas"]["ArtifactVisualizationResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ArtifactVisualizationResponseResources"] | null;
+				| components["schemas"]["ArtifactVisualizationResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -6241,7 +6247,8 @@ export type components = {
 			 * @description Artifact version that owns this visualization, when included.
 			 */
 			artifact_version?:
-				components["schemas"]["ArtifactVersionResponse"] | null;
+				| components["schemas"]["ArtifactVersionResponse"]
+				| null;
 		} & {
 			[key: string]: unknown;
 		};
@@ -6251,7 +6258,10 @@ export type components = {
 		 * @enum {string}
 		 */
 		AuthScheme:
-			"NO_AUTH" | "HTTP_BASIC" | "OAUTH2_PASSWORD_BEARER" | "EXTERNAL";
+			| "NO_AUTH"
+			| "HTTP_BASIC"
+			| "OAUTH2_PASSWORD_BEARER"
+			| "EXTERNAL";
 		/**
 		 * AuthenticationMethodModel
 		 * @description Authentication method specification.
@@ -6507,7 +6517,8 @@ export type components = {
 			metadata?: components["schemas"]["CodeReferenceResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["CodeReferenceResponseResources"] | null;
+				| components["schemas"]["CodeReferenceResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -6604,7 +6615,8 @@ export type components = {
 			metadata?: components["schemas"]["CodeRepositoryResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["CodeRepositoryResponseResources"] | null;
+				| components["schemas"]["CodeRepositoryResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -6965,10 +6977,12 @@ export type components = {
 			body?: components["schemas"]["CuratedVisualizationResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["CuratedVisualizationResponseMetadata"] | null;
+				| components["schemas"]["CuratedVisualizationResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["CuratedVisualizationResponseResources"] | null;
+				| components["schemas"]["CuratedVisualizationResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -7094,7 +7108,8 @@ export type components = {
 			 * @description The service connector for the deployed stack.
 			 */
 			service_connector?:
-				components["schemas"]["ServiceConnectorResponse"] | null;
+				| components["schemas"]["ServiceConnectorResponse"]
+				| null;
 		};
 		/**
 		 * DeploymentRequest
@@ -7590,7 +7605,8 @@ export type components = {
 			metadata?: components["schemas"]["HookInvocationResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["HookInvocationResponseResources"] | null;
+				| components["schemas"]["HookInvocationResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -8222,7 +8238,8 @@ export type components = {
 			metadata?: components["schemas"]["BaseResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ModelVersionArtifactResponseResources"] | null;
+				| components["schemas"]["ModelVersionArtifactResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -8306,7 +8323,8 @@ export type components = {
 		ModelVersionPipelineRunResponse: {
 			/** The body of the resource. */
 			body?:
-				components["schemas"]["ModelVersionPipelineRunResponseBody"] | null;
+				| components["schemas"]["ModelVersionPipelineRunResponseBody"]
+				| null;
 			/** The metadata related to this resource. */
 			metadata?: components["schemas"]["BaseResponseMetadata"] | null;
 			/** The resources related to this resource. */
@@ -9283,7 +9301,8 @@ export type components = {
 			metadata?: components["schemas"]["PipelineBuildResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["PipelineBuildResponseResources"] | null;
+				| components["schemas"]["PipelineBuildResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -10202,7 +10221,8 @@ export type components = {
 			exception_info?: components["schemas"]["ExceptionInfo"] | null;
 			/** Extra information for trigger execution like upstream_run_id etc. */
 			trigger_execution_info?:
-				components["schemas"]["TriggerExecutionInfo"] | null;
+				| components["schemas"]["TriggerExecutionInfo"]
+				| null;
 		};
 		/**
 		 * PipelineRunResponseResources
@@ -10213,7 +10233,8 @@ export type components = {
 			user?: components["schemas"]["UserResponse"] | null;
 			snapshot?: components["schemas"]["PipelineSnapshotResponse"] | null;
 			source_snapshot?:
-				components["schemas"]["PipelineSnapshotResponse"] | null;
+				| components["schemas"]["PipelineSnapshotResponse"]
+				| null;
 			/** The stack that was used for this run. */
 			stack?: components["schemas"]["StackResponse"] | null;
 			/** The pipeline this run belongs to. */
@@ -10245,7 +10266,8 @@ export type components = {
 			parent_run?: components["schemas"]["PipelineRunResponse"] | null;
 			/** The active pending wait condition associated with this run. */
 			active_wait_condition?:
-				components["schemas"]["RunWaitConditionResponse"] | null;
+				| components["schemas"]["RunWaitConditionResponse"]
+				| null;
 			/** Pipeline output artifact versions keyed by output name. */
 			outputs?: {
 				[key: string]: components["schemas"]["ArtifactVersionResponse"];
@@ -10377,10 +10399,12 @@ export type components = {
 			body?: components["schemas"]["PipelineSnapshotResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["PipelineSnapshotResponseMetadata"] | null;
+				| components["schemas"]["PipelineSnapshotResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["PipelineSnapshotResponseResources"] | null;
+				| components["schemas"]["PipelineSnapshotResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -11049,7 +11073,8 @@ export type components = {
 		ResourcePoolSubjectPolicyResponse: {
 			/** The body of the resource. */
 			body?:
-				components["schemas"]["ResourcePoolSubjectPolicyResponseBody"] | null;
+				| components["schemas"]["ResourcePoolSubjectPolicyResponseBody"]
+				| null;
 			/** The metadata related to this resource. */
 			metadata?:
 				| components["schemas"]["ResourcePoolSubjectPolicyResponseMetadata"]
@@ -11156,10 +11181,12 @@ export type components = {
 			body?: components["schemas"]["ResourceRequestResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["ResourceRequestResponseMetadata"] | null;
+				| components["schemas"]["ResourceRequestResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ResourceRequestResponseResources"] | null;
+				| components["schemas"]["ResourceRequestResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -11521,7 +11548,8 @@ export type components = {
 			user?: components["schemas"]["UserResponse"] | null;
 			/** The snapshot that is the source of the template. */
 			source_snapshot?:
-				components["schemas"]["PipelineSnapshotResponse"] | null;
+				| components["schemas"]["PipelineSnapshotResponse"]
+				| null;
 			/** The pipeline associated with the template. */
 			pipeline?: components["schemas"]["PipelineResponse"] | null;
 			/** The pipeline build associated with the template. */
@@ -11644,10 +11672,12 @@ export type components = {
 			body?: components["schemas"]["RunWaitConditionResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["RunWaitConditionResponseMetadata"] | null;
+				| components["schemas"]["RunWaitConditionResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["RunWaitConditionResponseResources"] | null;
+				| components["schemas"]["RunWaitConditionResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -12260,7 +12290,13 @@ export type components = {
 		 * @enum {string}
 		 */
 		SecretsStoreType:
-			"none" | "sql" | "aws" | "gcp" | "azure" | "hashicorp" | "custom";
+			| "none"
+			| "sql"
+			| "aws"
+			| "gcp"
+			| "azure"
+			| "hashicorp"
+			| "custom";
 		/**
 		 * ServerActivationRequest
 		 * @description Model for activating the server.
@@ -12407,7 +12443,8 @@ export type components = {
 			metadata?: components["schemas"]["ServerSettingsResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ServerSettingsResponseResources"] | null;
+				| components["schemas"]["ServerSettingsResponseResources"]
+				| null;
 		};
 		/**
 		 * ServerSettingsResponseBody
@@ -12512,7 +12549,8 @@ export type components = {
 			metadata?: components["schemas"]["ServiceAccountResponseMetadata"] | null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ServiceAccountResponseResources"] | null;
+				| components["schemas"]["ServiceAccountResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -12618,7 +12656,8 @@ export type components = {
 			name: string;
 			/** The type of service connector. */
 			connector_type:
-				string | components["schemas"]["ServiceConnectorTypeModel"];
+				| string
+				| components["schemas"]["ServiceConnectorTypeModel"];
 			/**
 			 * The service connector instance description.
 			 * @default
@@ -12676,7 +12715,8 @@ export type components = {
 			name?: string | null;
 			/** The type of service connector. */
 			connector_type:
-				string | components["schemas"]["ServiceConnectorTypeModel"];
+				| string
+				| components["schemas"]["ServiceConnectorTypeModel"];
 			/** The list of resources that the service connector instance can give access to. Contains one entry for every resource type that the connector is configured for. */
 			resources?: components["schemas"]["ServiceConnectorTypedResourcesModel"][];
 			/** A global error message describing why the service connector instance could not authenticate to the remote service. */
@@ -12691,10 +12731,12 @@ export type components = {
 			body?: components["schemas"]["ServiceConnectorResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["ServiceConnectorResponseMetadata"] | null;
+				| components["schemas"]["ServiceConnectorResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ServiceConnectorResponseResources"] | null;
+				| components["schemas"]["ServiceConnectorResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -12732,7 +12774,8 @@ export type components = {
 			description: string;
 			/** The type of service connector. */
 			connector_type:
-				string | components["schemas"]["ServiceConnectorTypeModel"];
+				| string
+				| components["schemas"]["ServiceConnectorTypeModel"];
 			/** The authentication method that the connector instance uses to access the resources. */
 			auth_method: string;
 			/** The type(s) of resource that the connector instance can be used to gain access to. */
@@ -12870,7 +12913,9 @@ export type components = {
 			name?: string | null;
 			/** The type of service connector. */
 			connector_type?:
-				string | components["schemas"]["ServiceConnectorTypeModel"] | null;
+				| string
+				| components["schemas"]["ServiceConnectorTypeModel"]
+				| null;
 			/** The service connector instance description. */
 			description?: string | null;
 			/** The authentication method that the connector instance uses to access the resources. */
@@ -13340,7 +13385,8 @@ export type components = {
 			 * @default []
 			 */
 			service_connectors: (
-				string | components["schemas"]["ServiceConnectorInfo"]
+				| string
+				| components["schemas"]["ServiceConnectorInfo"]
 			)[];
 		};
 		/**
@@ -13940,7 +13986,11 @@ export type components = {
 		 * @enum {string}
 		 */
 		StepRunInputArtifactType:
-			"step_output" | "manual" | "external" | "lazy" | "override";
+			| "step_output"
+			| "manual"
+			| "external"
+			| "lazy"
+			| "override";
 		/**
 		 * StepRunInputResponse
 		 * @description Response model for step run inputs.
@@ -13950,10 +14000,12 @@ export type components = {
 			body?: components["schemas"]["ArtifactVersionResponseBody"] | null;
 			/** The metadata related to this resource. */
 			metadata?:
-				components["schemas"]["ArtifactVersionResponseMetadata"] | null;
+				| components["schemas"]["ArtifactVersionResponseMetadata"]
+				| null;
 			/** The resources related to this resource. */
 			resources?:
-				components["schemas"]["ArtifactVersionResponseResources"] | null;
+				| components["schemas"]["ArtifactVersionResponseResources"]
+				| null;
 			/**
 			 * The unique resource id.
 			 * Format: uuid
@@ -14177,7 +14229,8 @@ export type components = {
 			};
 			/** The resource request of the step run. */
 			resource_request?:
-				components["schemas"]["ResourceRequestResponse"] | null;
+				| components["schemas"]["ResourceRequestResponse"]
+				| null;
 		} & {
 			[key: string]: unknown;
 		};
@@ -14649,7 +14702,8 @@ export type components = {
 			last_error_type?: string | null;
 			/** @description Severity level of the latest error. */
 			last_error_severity?:
-				components["schemas"]["TriggerDispatchErrorSeverity"] | null;
+				| components["schemas"]["TriggerDispatchErrorSeverity"]
+				| null;
 			/**
 			 * Last Error Stack Trace
 			 * @description Stack trace accompanying the last error
@@ -24483,7 +24537,8 @@ export interface operations {
 		requestBody?: {
 			content: {
 				"application/json":
-					components["schemas"]["ServiceConnectorInfo"] | null;
+					| components["schemas"]["ServiceConnectorInfo"]
+					| null;
 			};
 		};
 		responses: {
@@ -30709,7 +30764,8 @@ export interface operations {
 		requestBody?: {
 			content: {
 				"application/json":
-					components["schemas"]["PipelineRunConfiguration"] | null;
+					| components["schemas"]["PipelineRunConfiguration"]
+					| null;
 			};
 		};
 		responses: {

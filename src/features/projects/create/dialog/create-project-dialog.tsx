@@ -1,4 +1,6 @@
-import { CreateProjectForm } from "./form";
+import { Plus } from "lucide-react";
+import { type Dispatch, type SetStateAction, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	ResponsiveDialog,
@@ -12,8 +14,8 @@ import {
 	ResponsiveDialogTrigger,
 } from "@/components/ui/responsive-dialog";
 import { m } from "@/paraglide/messages";
-import { Plus } from "lucide-react";
-import { type Dispatch, type SetStateAction, useState } from "react";
+
+import { CreateProjectForm } from "./form";
 
 const FORM_ID = "create-project-form";
 

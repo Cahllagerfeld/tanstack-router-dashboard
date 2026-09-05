@@ -1,3 +1,7 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Suspense } from "react";
+import { z } from "zod";
+
 import { projectQueries } from "@/data/projects";
 import {
 	createFilter,
@@ -9,9 +13,6 @@ import { ProjectListSkeleton } from "@/features/projects/overview/project-list-s
 import { ProjectSearchbar } from "@/features/projects/overview/searchbar";
 import { m } from "@/paraglide/messages";
 import type { ProjectListQueries } from "@/types/projects";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Suspense } from "react";
-import { z } from "zod";
 
 const querySchema = z.object({
 	name: filterSchema.optional().catch(undefined),
@@ -55,7 +56,7 @@ function RouteComponent() {
 		<div className="flex h-full flex-col space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">{m.projects_list_title()}</h1>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{m.projects_list_description()}
 				</p>
 			</div>

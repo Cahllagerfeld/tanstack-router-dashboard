@@ -1,5 +1,6 @@
-import { userQueries } from "@/data/user";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
+
+import { userQueries } from "@/data/user";
 
 export const Route = createFileRoute("/(private)")({
 	component: PrivateLayout,

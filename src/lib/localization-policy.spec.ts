@@ -1,11 +1,13 @@
+import { readFileSync, readdirSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { describe, expect, it } from "vitest";
+
 import {
 	checkLocalizationPolicy,
 	type LocalizationSourceFile,
 } from "./localization-policy";
-import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
 
 const repositoryRoot = resolve(
 	dirname(fileURLToPath(import.meta.url)),

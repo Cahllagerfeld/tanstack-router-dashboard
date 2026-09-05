@@ -1,9 +1,10 @@
+import { useParams, useRouter } from "@tanstack/react-router";
+import { Frame, Settings } from "lucide-react";
+
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
-import { useParams, useRouter } from "@tanstack/react-router";
-import { Frame, Settings } from "lucide-react";
 
 function getUnscopedNavMain(): NavbarItem[] {
 	return [

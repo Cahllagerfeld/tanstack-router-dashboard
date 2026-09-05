@@ -1,5 +1,6 @@
-import { ComponentHeaderSkeleton } from "./component-header";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { ComponentHeaderSkeleton } from "./component-header";
 
 export function ComponentDetailSkeleton() {
 	return (

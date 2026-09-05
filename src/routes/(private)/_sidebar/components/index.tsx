@@ -1,3 +1,13 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+	type ColumnSizingState,
+	type ColumnVisibilityState,
+	type RowSelectionState,
+	useTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
+
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
@@ -8,15 +18,6 @@ import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { typeFilterSchema } from "@/features/filters/type";
 import { TypeFilter } from "@/features/filters/type-filter";
 import { m } from "@/paraglide/messages";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import {
-	type ColumnSizingState,
-	type ColumnVisibilityState,
-	type RowSelectionState,
-	useTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
 
 const querySchema = commonFilterSchema.extend({
 	type: typeFilterSchema.catch(undefined),
@@ -81,7 +82,7 @@ function RouteComponent() {
 		<div className="space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">{m.components_list_title()}</h1>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{m.components_list_description()}
 				</p>
 			</div>

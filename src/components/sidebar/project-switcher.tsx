@@ -1,4 +1,8 @@
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { ChevronsUpDown, Plus } from "lucide-react";
+import { useState } from "react";
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -21,10 +25,8 @@ import { CreateProjectDialog } from "@/features/projects/create/dialog/create-pr
 import { getIllustrationUrl } from "@/lib/images";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "@tanstack/react-router";
-import { ChevronsUpDown, Plus } from "lucide-react";
-import { useState } from "react";
+
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
@@ -81,7 +83,7 @@ export function ProjectSwitcher() {
 							sideOffset={4}
 						>
 							<DropdownMenuGroup>
-								<DropdownMenuLabel className="text-muted-foreground text-xs">
+								<DropdownMenuLabel className="text-xs text-muted-foreground">
 									{m.projects_navigation_label()}
 								</DropdownMenuLabel>
 								{projectData.items.map((project, index) => (
@@ -113,10 +115,10 @@ export function ProjectSwitcher() {
 								onClick={() => setProjectDialogOpen(true)}
 								className="gap-2 p-2"
 							>
-								<div className="bg-background flex size-6 items-center justify-center rounded-md border">
+								<div className="flex size-6 items-center justify-center rounded-md border bg-background">
 									<Plus className="size-4" />
 								</div>
-								<div className="text-muted-foreground font-medium">
+								<div className="font-medium text-muted-foreground">
 									{m.projects_create_title()}
 								</div>
 							</DropdownMenuItem>
