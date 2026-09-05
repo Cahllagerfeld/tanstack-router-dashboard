@@ -1,5 +1,5 @@
+import { parseBackendDate } from "@/lib/dates";
 import type { components } from "@/shared/api/generated";
-import { parseBackendDate } from "@/shared/lib/dates";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 
 export type Run = {

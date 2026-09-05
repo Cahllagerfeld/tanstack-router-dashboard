@@ -32,6 +32,12 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 - Subdirectories express real responsibilities; do not create empty or one-file scaffolding merely to match a template.
 - Generated output, shadcn-owned primitives, and mandatory TanStack route declarations are special cases, not capability owners. Any other exemption or compatibility export must be narrow, documented with a removal ticket, and removed when that ticket migrates its owner.
 
+Temporary migration exceptions:
+
+- Existing generated-contract imports in Project domain/types are removed by #556; Session, Server Activation, and Users imports by #557; Stack and Component imports by #558; Pipeline imports by #559; and Run plus mixed mapper-test imports by #560.
+- The existing recursive Object Renderer file cycle is removed by #560.
+- These exceptions permit only the imports already listed in `.oxlintrc.json`; they do not permit new transport dependencies, upward Shared dependencies, or module deep imports.
+
 ### Internationalization
 
 All application-owned user-facing strings must use Paraglide messages and have both English and German translations. Do not add hard-coded user-facing copy.
