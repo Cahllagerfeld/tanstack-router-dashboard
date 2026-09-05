@@ -24,8 +24,6 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 ### Application architecture
 
-Follow the capability-module architecture in `docs/architecture/capability-modules.md`.
-
 - Assign every handwritten production file to exactly one owner: App, Routes, a capability module, or Shared. Prefer the capability that owns the behavior; reuse alone does not make code Shared.
 - App composes providers, the authenticated shell, global failures, and workflows spanning peer modules. Routes are thin TanStack Router adapters. Modules own vertical capabilities. Shared contains only domain-neutral infrastructure with no natural capability owner.
 - App and Routes may depend on module public APIs and Shared. Modules may depend on Shared and peer modules only through their public APIs. Shared must not import App, Routes, or modules; modules must not import App or Routes. Cycles are forbidden.
