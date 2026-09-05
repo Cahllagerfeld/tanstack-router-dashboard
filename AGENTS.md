@@ -1,5 +1,15 @@
 ## Agent skills
 
+### Project toolchain
+
+This repository uses devenv. Run project-provided tools through devenv:
+
+- `devenv shell -- gh ...`
+- `devenv shell -- node ...`
+- `devenv shell -- pnpm ...`
+
+Do not assume these tools are installed globally.
+
 ### Issue tracker
 
 GitHub Issues via `gh`; external PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
