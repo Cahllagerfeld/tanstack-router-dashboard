@@ -20,6 +20,12 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 			},
 		},
 		{
+			header: m.runs_table_pipeline(),
+			accessorKey: "pipelineName",
+			enableHiding: true,
+			cell: ({ row }) => row.original.pipelineName || <NotAvailableTag />,
+		},
+		{
 			header: m.runs_table_status(),
 			accessorKey: "status",
 			enableHiding: true,
@@ -28,12 +34,6 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 				if (!status) return <NotAvailableTag />;
 				return <Badge variant="secondary">{formatRunStatus(status)}</Badge>;
 			},
-		},
-		{
-			header: m.runs_table_pipeline(),
-			accessorKey: "pipelineName",
-			enableHiding: true,
-			cell: ({ row }) => row.original.pipelineName || <NotAvailableTag />,
 		},
 		{
 			header: m.runs_table_stack(),
