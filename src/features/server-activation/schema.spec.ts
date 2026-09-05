@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { m } from "@/paraglide/messages";
 
-import { passwordStepSchema } from "./use-password-step";
+import { passwordStepSchema } from "./schema";
 
 describe("passwordStepSchema", () => {
 	it("normalizes matching activation credentials", () => {

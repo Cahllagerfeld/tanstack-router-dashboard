@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { m } from "@/paraglide/messages";
 
-import { loginSchema } from "./use-login-form";
+import { loginSchema } from "./schema";
 
 describe("loginSchema", () => {
 	it("normalizes credentials before login", () => {

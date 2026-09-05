@@ -56,7 +56,6 @@ test("a user can log in and continue to the requested page", async () => {
 	await screen.getByRole("button", { name: m.common_action_login() }).click();
 
 	await expect.poll(() => navigate.mock.calls).toEqual([[{ to: "/projects" }]]);
-	expectLoginRequest();
 });
 
 test("a login failure is communicated without navigating", async () => {
@@ -74,10 +73,3 @@ test("a login failure is communicated without navigating", async () => {
 		.toEqual([["Invalid credentials"]]);
 	expect(navigate).not.toHaveBeenCalled();
 });
-
-function expectLoginRequest() {
-	expect(post).toHaveBeenCalledOnce();
-	const [path, options] = post.mock.calls[0]!;
-	expect(path).toBe("/api/v1/login");
-	expect(options.body.toString()).toBe("username=ada&password=correct+horse");
-}

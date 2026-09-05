@@ -32,6 +32,7 @@ export default defineConfig({
 				extends: true,
 				optimizeDeps: {
 					include: [
+						"@base-ui/react/alert-dialog",
 						"@base-ui/react/collapsible",
 						"@base-ui/react/input",
 						"@base-ui/react/merge-props",
@@ -41,6 +42,7 @@ export default defineConfig({
 						"es-toolkit",
 						"es-toolkit/compat",
 						"sonner",
+						"vaul",
 					],
 				},
 				test: {

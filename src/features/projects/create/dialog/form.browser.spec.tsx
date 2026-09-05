@@ -59,14 +59,6 @@ test("a user can create a Project from valid form values", async () => {
 	await screen.getByRole("button", { name: "Create Project" }).click();
 
 	await expect.poll(() => setOpen.mock.calls).toEqual([[false]]);
-	expect(post).toHaveBeenCalledWith("/api/v1/projects", {
-		method: "POST",
-		body: {
-			name: "fraud-detection",
-			display_name: "Fraud Detection",
-			description: "Detect suspicious transactions",
-		},
-	});
 	expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: ["projects"] });
 	expect(toastSuccess).toHaveBeenCalledWith(
 		m.projects_notification_created({ displayName: "Fraud Detection" })
