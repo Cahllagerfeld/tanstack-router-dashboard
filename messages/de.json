@@ -8,7 +8,7 @@
 	"common_action_apply": "Anwenden",
 	"common_action_cancel": "Abbrechen",
 	"common_action_close": "Schließen",
-	"common_action_copy": "In Zwischenablage kopieren",
+	"common_action_copy": "In die Zwischenablage kopieren",
 	"common_action_copy_success": "Kopiert",
 	"common_action_delete": "Löschen",
 	"common_action_hide_value": "Wert ausblenden",
@@ -19,10 +19,10 @@
 	"common_app_title": "Dashboard",
 	"common_boolean_false": "Falsch",
 	"common_boolean_true": "Wahr",
-	"common_empty_items_description": "Beginnen Sie, indem Sie ein neues Element erstellen.",
+	"common_empty_items_description": "Erstellen Sie zunächst ein neues Element.",
 	"common_empty_items_title": "Keine Elemente gefunden",
 	"common_error_fetch": "Fehler beim Abrufen der Daten",
-	"common_error_request_failed": "Anfrage konnte vor dem Empfang einer Antwort nicht verarbeitet werden",
+	"common_error_request_failed": "Die Anfrage ist fehlgeschlagen, bevor eine Antwort empfangen wurde",
 	"common_error_title": "Etwas ist schiefgelaufen",
 	"common_error_try_again_description": "Ein unerwarteter Fehler ist aufgetreten. Er wurde automatisch protokolliert. Versuchen Sie es erneut oder kontaktieren Sie den Support, wenn das Problem weiterhin besteht.",
 	"common_error_unknown": "Unbekannter Fehler",
@@ -42,7 +42,6 @@
 	"common_navigation_breadcrumb": "Brotkrümelnavigation",
 	"common_navigation_sidebar_description": "Zeigt die mobile Seitenleiste an.",
 	"common_navigation_sidebar_title": "Seitenleiste",
-	"common_navigation_toggle": "Umschalten",
 	"common_navigation_toggle_sidebar": "Seitenleiste umschalten",
 	"common_navigation_under_construction": "Im Aufbau",
 	"common_pagination_first_label": "Zur ersten Seite",
@@ -65,11 +64,15 @@
 	"common_table_toggle_columns": "Spalten umschalten",
 	"common_value_array_count": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "Array ({count} Element)",
-				"countPlural=other": "Array ({count} Elemente)"
+				"countPlural=one": "Array ({formattedCount} Element)",
+				"countPlural=other": "Array ({formattedCount} Elemente)"
 			}
 		}
 	],
@@ -78,11 +81,15 @@
 	"common_value_empty_object": "Leeres Objekt",
 	"common_value_object_count": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "Objekt ({count} Schlüssel)",
-				"countPlural=other": "Objekt ({count} Schlüssel)"
+				"countPlural=one": "Objekt ({formattedCount} Schlüssel)",
+				"countPlural=other": "Objekt ({formattedCount} Schlüssel)"
 			}
 		}
 	],
@@ -110,7 +117,8 @@
 	"components_table_flavor": "Flavor",
 	"components_table_name": "Name",
 	"components_table_type": "Typ",
-	"filters_validation_invalid_format": "Der Filter muss das Format 'option:wert' haben, wobei die Option eine gültige Filteroption sein muss",
+	"filters_validation_invalid_format": "Der Filter muss das Format 'option:value' haben; option muss eine der gültigen Filteroptionen sein",
+	"navigation_submenu_toggle": "Untermenü {title} ein- oder ausblenden",
 	"common_navigation_artifacts": "Artefakte",
 	"common_navigation_pipelines": "Pipelines",
 	"common_navigation_project_overview": "Projektübersicht",
