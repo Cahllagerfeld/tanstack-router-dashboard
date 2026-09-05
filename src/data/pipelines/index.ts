@@ -1,10 +1,26 @@
 import { queryOptions } from "@tanstack/react-query";
 
+import { pipelineFromApi } from "@/domain/pipelines";
+import { expectData } from "@/lib/fetch-error";
 import { type PipelineListQueryParams } from "@/types/pipelines";
 
-import { fetchPipelineList } from "./fetch-list";
+import { apiClient } from "../api-client";
 
 const baseKey = "pipelines" as const;
+
+async function fetchPipelineList(params: PipelineListQueryParams) {
+	const response = await apiClient.GET("/api/v1/pipelines", {
+		params: {
+			query: params,
+		},
+	});
+	const data = expectData(response);
+
+	return {
+		...data,
+		items: data.items.map(pipelineFromApi),
+	};
+}
 
 export const pipelineKeys = {
 	all: [baseKey] as const,
