@@ -30,6 +30,19 @@ export default defineConfig({
 			},
 			{
 				extends: true,
+				optimizeDeps: {
+					include: [
+						"@base-ui/react/collapsible",
+						"@base-ui/react/input",
+						"@base-ui/react/merge-props",
+						"@base-ui/react/use-render",
+						"@tanstack/react-query",
+						"@tanstack/react-router",
+						"es-toolkit",
+						"es-toolkit/compat",
+						"sonner",
+					],
+				},
 				test: {
 					name: "browser",
 					include: browserTests,

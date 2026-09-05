@@ -9,7 +9,7 @@ import { useLoginUser } from "@/data/session/login";
 import { userKeys, userQueries } from "@/data/user";
 import { m } from "@/paraglide/messages";
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
 	username: z.string().trim().min(1, m.auth_validation_username_required()),
 	password: z.string().trim().min(1, m.auth_validation_password_required()),
 });
@@ -37,8 +37,7 @@ export function useLoginForm() {
 			router.navigate({ to: next ?? "/" });
 		},
 		onError: (err) => {
-			// @ts-expect-error - detail is an array
-			toast.error(err.data.detail[1]);
+			toast.error(err.message);
 		},
 	});
 

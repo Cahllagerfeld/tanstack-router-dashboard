@@ -58,7 +58,9 @@ export function LoginForm() {
 					)}
 				/>
 			</FieldGroup>
-			<Button className="w-full">{m.common_action_login()}</Button>
+			<Button type="submit" className="w-full">
+				{m.common_action_login()}
+			</Button>
 		</form>
 	);
 }

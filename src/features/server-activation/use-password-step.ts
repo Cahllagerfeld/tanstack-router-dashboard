@@ -15,7 +15,7 @@ import { serverKeys } from "@/data/server";
 import { useServerActivation } from "@/data/server/activate-server";
 import { m } from "@/paraglide/messages";
 
-const passwordStepSchema = z
+export const passwordStepSchema = z
 	.object({
 		username: z.string().trim().min(1, m.server_activation_username_required()),
 		password: z.string().trim().min(8, m.server_activation_password_minimum()),
