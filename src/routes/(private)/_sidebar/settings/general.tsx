@@ -1,5 +1,6 @@
-import { m } from "@/paraglide/messages";
 import { createFileRoute } from "@tanstack/react-router";
+
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 	loader: () => ({ crumb: m.settings_general_title() }),
@@ -14,7 +15,7 @@ function RouteComponent() {
 		<div className="space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">{m.settings_general_title()}</h1>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{m.settings_general_description()}
 				</p>
 			</div>

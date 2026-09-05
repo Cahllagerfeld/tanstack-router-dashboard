@@ -1,11 +1,12 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { m } from "@/paraglide/messages";
 import {
 	Link,
 	Outlet,
 	createFileRoute,
 	useMatchRoute,
 } from "@tanstack/react-router";
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings")({
 	loader: () => ({ crumb: m.settings_navigation_label() }),

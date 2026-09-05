@@ -1,4 +1,6 @@
-import { useCreateProjectForm } from "./use-create-project-form";
+import type { Dispatch, HTMLAttributes, SetStateAction } from "react";
+import { Controller } from "react-hook-form";
+
 import {
 	Field,
 	FieldError,
@@ -9,8 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
-import type { Dispatch, HTMLAttributes, SetStateAction } from "react";
-import { Controller } from "react-hook-form";
+
+import { useCreateProjectForm } from "./use-create-project-form";
 
 export function CreateProjectForm({
 	className,

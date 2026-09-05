@@ -1,3 +1,6 @@
+import type { ReactTable, RowData } from "@tanstack/react-table";
+import { Columns3 } from "lucide-react";
+
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { m } from "@/paraglide/messages";
-import type { ReactTable, RowData } from "@tanstack/react-table";
-import { Columns3 } from "lucide-react";
 
 export function DataTableViewOptions<TData extends RowData>({
 	table,

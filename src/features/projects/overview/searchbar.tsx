@@ -1,6 +1,7 @@
-import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 import { DebouncedInput } from "@/components/debounced-input";
 import { m } from "@/paraglide/messages";
+
+import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 
 type Props = {
 	value: string;

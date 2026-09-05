@@ -1,7 +1,3 @@
-import { projectKeys } from "..";
-import { apiClient } from "@/data/api-client";
-import { FetchError } from "@/lib/fetch-error";
-import { m } from "@/paraglide/messages";
 import {
 	type UseMutationOptions,
 	useMutation,
@@ -9,6 +5,12 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+
+import { apiClient } from "@/data/api-client";
+import { FetchError } from "@/lib/fetch-error";
+import { m } from "@/paraglide/messages";
+
+import { projectKeys } from "..";
 
 interface DeleteProjectParams {
 	projectId: string;

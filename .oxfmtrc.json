@@ -7,7 +7,7 @@
 	"sortPackageJson": true,
 	"sortImports": true,
 	"sortTailwindcss": {
-		"stylesheet": "src/assets/styles/tailwind.css",
+		"stylesheet": "./src/assets/styles/tailwind.css",
 		"functions": ["cn", "clsx", "cva"]
 	},
 	"ignorePatterns": [

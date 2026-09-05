@@ -1,4 +1,5 @@
-import { usePasswordStep } from "./use-password-step";
+import { Controller } from "react-hook-form";
+
 import {
 	Field,
 	FieldError,
@@ -7,7 +8,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { m } from "@/paraglide/messages";
-import { Controller } from "react-hook-form";
+
+import { usePasswordStep } from "./use-password-step";
 
 export function PasswordStep() {
 	const { form, activationHandler } = usePasswordStep();

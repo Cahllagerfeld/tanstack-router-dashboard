@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -23,7 +25,6 @@ import {
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import * as React from "react";
 
 // Context for sharing viewport state
 type ResponsiveAlertDialogContextValue = {

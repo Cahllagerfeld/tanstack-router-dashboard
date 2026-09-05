@@ -1,3 +1,5 @@
+import type { ReactTable, RowData } from "@tanstack/react-table";
+
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import {
 	Table,
@@ -9,7 +11,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
-import type { ReactTable, RowData } from "@tanstack/react-table";
 
 export type DataTableProps<TData extends RowData> = {
 	table: ReactTable<DataTableFeatures, TData>;
@@ -44,7 +45,7 @@ export function DataTable<TData extends RowData>({
 											role="separator"
 											aria-orientation="vertical"
 											className={cn(
-												"hover:bg-primary/20 absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none bg-transparent select-none",
+												"absolute top-0 right-0 h-full w-1 cursor-col-resize touch-none bg-transparent select-none hover:bg-primary/20",
 												header.column.getIsResizing() && "bg-primary/40"
 											)}
 											onDoubleClick={() => header.column.resetSize()}

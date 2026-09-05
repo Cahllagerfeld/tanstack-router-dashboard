@@ -1,6 +1,8 @@
-import { isRecord } from "./type-guards";
-import { m } from "@/paraglide/messages";
 import { isArray, isString } from "es-toolkit/compat";
+
+import { m } from "@/paraglide/messages";
+
+import { isRecord } from "./type-guards";
 
 export class FetchError extends Error {
 	public status: number;

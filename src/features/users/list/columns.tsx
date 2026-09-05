@@ -1,5 +1,5 @@
-import { AdminActions } from "./admin-actions";
-import { IsActiveBadge } from "./is-active-badge";
+import type { ColumnDef } from "@tanstack/react-table";
+
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { User } from "@/domain/users";
 import { m } from "@/paraglide/messages";
-import type { ColumnDef } from "@tanstack/react-table";
+
+import { AdminActions } from "./admin-actions";
+import { IsActiveBadge } from "./is-active-badge";
 
 export function useUserListColumns(
 	isAdmin: boolean

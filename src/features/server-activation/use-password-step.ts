@@ -1,6 +1,3 @@
-import { serverKeys } from "@/data/server";
-import { useServerActivation } from "@/data/server/activate-server";
-import { m } from "@/paraglide/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -13,6 +10,10 @@ import {
 	uniqueNamesGenerator,
 } from "unique-names-generator";
 import { z } from "zod";
+
+import { serverKeys } from "@/data/server";
+import { useServerActivation } from "@/data/server/activate-server";
+import { m } from "@/paraglide/messages";
 
 const passwordStepSchema = z
 	.object({

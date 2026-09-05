@@ -1,3 +1,7 @@
+import { Link } from "@tanstack/react-router";
+import { type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
+import { useState } from "react";
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,9 +19,6 @@ import {
 } from "@/components/ui/sidebar";
 import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
 import { m } from "@/paraglide/messages";
-import { Link } from "@tanstack/react-router";
-import { type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
-import { useState } from "react";
 
 export function NavProjects({
 	projects,

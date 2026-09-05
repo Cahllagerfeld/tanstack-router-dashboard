@@ -1,8 +1,10 @@
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../components/ui/popover";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "@tanstack/react-router";
+import { Filter, Trash2 } from "lucide-react";
+import { type ComponentPropsWithoutRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Field, FieldError } from "@/components/ui/field";
 import {
@@ -17,12 +19,12 @@ import { getComponentTypeLabel } from "@/features/filters/components";
 import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { m } from "@/paraglide/messages";
 import type { ComponentType } from "@/types/components";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
-import { Filter, Trash2 } from "lucide-react";
-import { type ComponentPropsWithoutRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "../../components/ui/popover";
 
 type Props = {
 	filter?: ComponentType;
@@ -66,7 +68,7 @@ export function TypeFilter({ filter }: Props) {
 					<Button
 						data-state={filter ? "active" : "inactive"}
 						variant="outline"
-						className="data-[state=active]:border-primary h-8"
+						className="h-8 data-[state=active]:border-primary"
 					></Button>
 				}
 			>

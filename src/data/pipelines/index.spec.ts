@@ -1,5 +1,6 @@
-import { pipelineKeys, pipelineQueries } from "./index";
 import { describe, expect, it } from "vitest";
+
+import { pipelineKeys, pipelineQueries } from "./index";
 
 describe("pipelineQueries", () => {
 	it("uses an isolated cache namespace", () => {

@@ -1,6 +1,12 @@
-import { ObjectRenderer } from "./object-renderer";
-import type { ValueRendererProps } from "./types";
-import { isSensitiveKey } from "./types";
+import {
+	isArray,
+	isBoolean,
+	isNumber,
+	isObject,
+	isString,
+} from "es-toolkit/compat";
+import { ChevronRight } from "lucide-react";
+
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { SecretValue } from "@/components/secret-value";
 import { Badge } from "@/components/ui/badge";
@@ -11,14 +17,10 @@ import {
 } from "@/components/ui/collapsible";
 import { m } from "@/paraglide/messages";
 import { getLocale } from "@/paraglide/runtime";
-import {
-	isArray,
-	isBoolean,
-	isNumber,
-	isObject,
-	isString,
-} from "es-toolkit/compat";
-import { ChevronRight } from "lucide-react";
+
+import { ObjectRenderer } from "./object-renderer";
+import type { ValueRendererProps } from "./types";
+import { isSensitiveKey } from "./types";
 
 export function ValueRenderer({
 	value,
@@ -66,7 +68,7 @@ export function ValueRenderer({
 	if (isArray(value)) {
 		if (value.length === 0) {
 			return (
-				<span className="text-muted-foreground text-sm">
+				<span className="text-sm text-muted-foreground">
 					{m.common_value_empty_array()}
 				</span>
 			);
@@ -103,7 +105,7 @@ export function ValueRenderer({
 		const keys = Object.keys(value);
 		if (keys.length === 0) {
 			return (
-				<span className="text-muted-foreground text-sm">
+				<span className="text-sm text-muted-foreground">
 					{m.common_value_empty_object()}
 				</span>
 			);
@@ -130,7 +132,7 @@ export function ValueRenderer({
 
 	// Fallback for complex values at max depth
 	return (
-		<span className="text-muted-foreground text-sm">
+		<span className="text-sm text-muted-foreground">
 			{m.common_value_complex()}
 		</span>
 	);

@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 
 export interface KeyValueItem {
 	key: string;
@@ -22,7 +23,7 @@ export function KeyValueList({ items, className }: KeyValueListProps) {
 		>
 			{items.map((item) => (
 				<div key={item.key} className="contents">
-					<dt className="text-muted-foreground text-sm font-medium">
+					<dt className="text-sm font-medium text-muted-foreground">
 						{item.label}
 					</dt>
 					<dd className="text-sm">{item.value}</dd>

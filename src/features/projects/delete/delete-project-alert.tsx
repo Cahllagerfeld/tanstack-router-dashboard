@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react";
+
 import {
 	ResponsiveAlertDialog,
 	ResponsiveAlertDialogAction,
@@ -10,7 +12,6 @@ import {
 } from "@/components/ui/responsive-alert-dialog";
 import { useDeleteProject } from "@/data/projects/mutations/delete-project";
 import { m } from "@/paraglide/messages";
-import type { Dispatch, SetStateAction } from "react";
 
 type Props = {
 	projectId: string;

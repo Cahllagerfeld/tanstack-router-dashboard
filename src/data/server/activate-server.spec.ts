@@ -1,6 +1,8 @@
-import { activateAndLogin } from "./activate-server";
-import type { ServerActivation } from "@/types/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import type { ServerActivation } from "@/types/server";
+
+import { activateAndLogin } from "./activate-server";
 
 const { put, loginUserRequest } = vi.hoisted(() => ({
 	put: vi.fn(),

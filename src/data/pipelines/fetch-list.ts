@@ -1,7 +1,8 @@
-import { apiClient } from "../api-client";
 import { pipelineFromApi } from "@/domain/pipelines";
 import { expectData } from "@/lib/fetch-error";
 import { type PipelineListQueryParams } from "@/types/pipelines";
+
+import { apiClient } from "../api-client";
 
 export async function fetchPipelineList(params: PipelineListQueryParams) {
 	const response = await apiClient.GET("/api/v1/pipelines", {

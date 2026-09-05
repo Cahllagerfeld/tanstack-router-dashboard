@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 import { Button } from "@/components/ui/button";
 import {
 	Empty,
@@ -9,7 +11,6 @@ import {
 } from "@/components/ui/empty";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
-import { Link } from "@tanstack/react-router";
 
 const ProjectIcon = getEntityIcon("project");
 

@@ -1,9 +1,11 @@
-import { ProjectActions } from "./project-actions";
-import { SetProjectCommand } from "./set-project-command";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Project } from "@/domain/projects";
 import { Link } from "@tanstack/react-router";
 import { Hash } from "lucide-react";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Project } from "@/domain/projects";
+
+import { ProjectActions } from "./project-actions";
+import { SetProjectCommand } from "./set-project-command";
 
 type Props = {
 	project: Project;
@@ -17,11 +19,11 @@ export function ProjectItem({ project }: Props) {
 					<CardTitle className="truncate text-xl font-semibold">
 						{project.displayName}
 					</CardTitle>
-					<div className="text-muted-foreground flex items-center gap-0.5 text-sm">
+					<div className="flex items-center gap-0.5 text-sm text-muted-foreground">
 						<Hash
 							width={16}
 							height={16}
-							className="stroke-muted-foreground shrink-0"
+							className="shrink-0 stroke-muted-foreground"
 						/>
 						<p className="truncate">{project.name}</p>
 					</div>
