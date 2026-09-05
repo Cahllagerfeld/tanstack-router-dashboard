@@ -4,12 +4,46 @@ import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vite";
+
+const excludedTestPaths = [
+	"node_modules/**/*",
+	"build/**/*",
+	"dist/**/*",
+	"e2e-tests/**/*",
+];
+const browserTests = ["**/*.browser.spec.{ts,tsx}"];
 
 // https://vite.dev/config/
 export default defineConfig({
 	test: {
-		exclude: ["node_modules/**/*", "build/**/*", "dist/**/*", "e2e-tests/**/*"],
+		projects: [
+			{
+				extends: true,
+				test: {
+					name: "server",
+					environment: "node",
+					include: ["**/*.{spec,test}.{ts,tsx}"],
+					exclude: [...excludedTestPaths, ...browserTests],
+				},
+			},
+			{
+				extends: true,
+				test: {
+					name: "browser",
+					include: browserTests,
+					exclude: excludedTestPaths,
+					setupFiles: ["./src/test/browser.setup.ts"],
+					browser: {
+						enabled: true,
+						headless: true,
+						provider: playwright(),
+						instances: [{ browser: "chromium" }],
+					},
+				},
+			},
+		],
 	},
 	resolve: {
 		tsconfigPaths: true,
