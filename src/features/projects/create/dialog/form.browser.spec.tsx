@@ -1,23 +1,62 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { expect, test, vi } from "vitest";
+import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
+import { FetchError } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
 
 import { CreateProjectForm } from "./form";
 
-const { navigate, post, setOpen, toastSuccess } = vi.hoisted(() => ({
-	navigate: vi.fn(),
-	post: vi.fn(),
-	setOpen: vi.fn(),
-	toastSuccess: vi.fn(),
-}));
+const { navigate, post, setOpen, toastError, toastSuccess } = vi.hoisted(
+	() => ({
+		navigate: vi.fn(),
+		post: vi.fn(),
+		setOpen: vi.fn(),
+		toastError: vi.fn(),
+		toastSuccess: vi.fn(),
+	})
+);
 
 vi.mock("@/data/api-client", () => ({ apiClient: { POST: post } }));
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => navigate }));
 vi.mock("sonner", () => ({
-	toast: { error: vi.fn(), success: toastSuccess },
+	toast: { error: toastError, success: toastSuccess },
 }));
+
+beforeEach(() => {
+	vi.clearAllMocks();
+});
+
+async function renderProjectForm() {
+	const queryClient = new QueryClient({
+		defaultOptions: { mutations: { retry: false } },
+	});
+	const invalidateQueries = vi.spyOn(queryClient, "invalidateQueries");
+	const screen = await render(
+		<QueryClientProvider client={queryClient}>
+			<CreateProjectForm id="create-project" setOpen={setOpen} />
+			<button type="submit" form="create-project">
+				Create Project
+			</button>
+		</QueryClientProvider>
+	);
+
+	return { invalidateQueries, screen };
+}
+
+async function fillValidProject(
+	screen: Awaited<ReturnType<typeof renderProjectForm>>["screen"]
+) {
+	await screen
+		.getByRole("textbox", { name: m.projects_form_display_name() })
+		.fill("Fraud Detection");
+	await screen
+		.getByRole("textbox", { name: m.projects_form_name() })
+		.fill("fraud-detection");
+	await screen
+		.getByRole("textbox", { name: m.projects_form_description_optional() })
+		.fill("Detect suspicious transactions");
+}
 
 test("a user can create a Project from valid form values", async () => {
 	post.mockResolvedValue({
@@ -34,28 +73,8 @@ test("a user can create a Project from valid form values", async () => {
 		error: undefined,
 		response: new Response(),
 	});
-	const queryClient = new QueryClient({
-		defaultOptions: { mutations: { retry: false } },
-	});
-	const invalidateQueries = vi.spyOn(queryClient, "invalidateQueries");
-	const screen = await render(
-		<QueryClientProvider client={queryClient}>
-			<CreateProjectForm id="create-project" setOpen={setOpen} />
-			<button type="submit" form="create-project">
-				Create Project
-			</button>
-		</QueryClientProvider>
-	);
-
-	await screen
-		.getByRole("textbox", { name: m.projects_form_display_name() })
-		.fill("Fraud Detection");
-	await screen
-		.getByRole("textbox", { name: m.projects_form_name() })
-		.fill("fraud-detection");
-	await screen
-		.getByRole("textbox", { name: m.projects_form_description_optional() })
-		.fill("Detect suspicious transactions");
+	const { invalidateQueries, screen } = await renderProjectForm();
+	await fillValidProject(screen);
 	await screen.getByRole("button", { name: "Create Project" }).click();
 
 	await expect.poll(() => setOpen.mock.calls).toEqual([[false]]);
@@ -67,4 +86,38 @@ test("a user can create a Project from valid form values", async () => {
 		to: "/projects/$project_id",
 		params: { project_id: "fraud-detection" },
 	});
+});
+
+test("invalid Project values show feedback without creating a Project", async () => {
+	const { screen } = await renderProjectForm();
+
+	await screen.getByRole("button", { name: "Create Project" }).click();
+
+	await expect
+		.element(screen.getByText(m.projects_validation_name_required()))
+		.toBeVisible();
+	await expect
+		.element(screen.getByText(m.projects_validation_display_name_required()))
+		.toBeVisible();
+	expect(post).not.toHaveBeenCalled();
+});
+
+test("a failed Project creation keeps the form open and communicates the error", async () => {
+	post.mockRejectedValue(
+		new FetchError({
+			status: 409,
+			statusText: "Conflict",
+			message: "A Project with this name already exists",
+		})
+	);
+	const { screen } = await renderProjectForm();
+	await fillValidProject(screen);
+
+	await screen.getByRole("button", { name: "Create Project" }).click();
+
+	await expect
+		.poll(() => toastError.mock.calls)
+		.toEqual([["A Project with this name already exists"]]);
+	expect(setOpen).not.toHaveBeenCalledWith(false);
+	expect(navigate).not.toHaveBeenCalled();
 });
