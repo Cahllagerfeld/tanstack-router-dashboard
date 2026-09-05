@@ -1,11 +1,37 @@
 import { queryOptions } from "@tanstack/react-query";
 
+import { stackFromApi } from "@/domain/stacks";
+import { expectData } from "@/lib/fetch-error";
 import type { StacksListQueryParams } from "@/types/stacks";
 
-import { fetchStackDetail } from "./fetch-detail";
-import { fetchStackList } from "./fetch-list";
+import { apiClient } from "../api-client";
 
 const baseKey = "stacks" as const;
+
+async function fetchStackList(params: StacksListQueryParams) {
+	const response = await apiClient.GET("/api/v1/stacks", {
+		params: {
+			query: params,
+		},
+	});
+	const data = expectData(response);
+
+	return {
+		...data,
+		items: data.items.map(stackFromApi),
+	};
+}
+
+async function fetchStackDetail(stackId: string) {
+	const response = await apiClient.GET("/api/v1/stacks/{stack_id}", {
+		params: {
+			path: {
+				stack_id: stackId,
+			},
+		},
+	});
+	return stackFromApi(expectData(response));
+}
 
 export const stackKeys = {
 	all: [baseKey] as const,

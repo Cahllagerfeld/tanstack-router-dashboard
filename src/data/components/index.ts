@@ -1,11 +1,37 @@
 import { queryOptions } from "@tanstack/react-query";
 
+import { componentFromApi } from "@/domain/components";
+import { expectData } from "@/lib/fetch-error";
 import type { ComponentsListQueryParams } from "@/types/components";
 
-import { fetchComponentDetail } from "./fetch-detail";
-import { fetchComponentList } from "./fetch-list";
+import { apiClient } from "../api-client";
 
 const baseKey = "components" as const;
+
+async function fetchComponentList(params: ComponentsListQueryParams) {
+	const response = await apiClient.GET("/api/v1/components", {
+		params: {
+			query: params,
+		},
+	});
+	const data = expectData(response);
+
+	return {
+		...data,
+		items: data.items.map(componentFromApi),
+	};
+}
+
+async function fetchComponentDetail(componentId: string) {
+	const response = await apiClient.GET("/api/v1/components/{component_id}", {
+		params: {
+			path: {
+				component_id: componentId,
+			},
+		},
+	});
+	return componentFromApi(expectData(response));
+}
 
 export const componentKeys = {
 	all: [baseKey] as const,
