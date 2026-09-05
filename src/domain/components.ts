@@ -1,6 +1,6 @@
 import { parseBackendDate } from "@/lib/dates";
+import type { components } from "@/shared/api/generated";
 import type { ComponentType } from "@/types/components";
-import type { components } from "@/types/core";
 
 import type { Flavor } from "./flavors";
 import { flavorFromApi } from "./flavors";

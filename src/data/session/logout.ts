@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import { expectData } from "@/lib/fetch-error";
+import { apiClient, expectData } from "@/shared/api";
 
-import { apiClient } from "../api-client";
 import { userKeys } from "../user";
 
 export async function logoutUserRequest() {

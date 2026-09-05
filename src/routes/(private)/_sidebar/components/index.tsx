@@ -8,16 +8,16 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
-import { TableToolbar } from "@/components/tables/table-toolbar";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { typeFilterSchema } from "@/features/filters/type";
 import { TypeFilter } from "@/features/filters/type-filter";
 import { m } from "@/paraglide/messages";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { features } from "@/shared/components/tables/data-table-features";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 
 const querySchema = commonFilterSchema.extend({
 	type: typeFilterSchema.catch(undefined),

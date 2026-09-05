@@ -3,6 +3,10 @@ import { Link } from "@tanstack/react-router";
 
 import { NavMain } from "@/components/sidebar/nav-main";
 import { NavUser } from "@/components/sidebar/nav-user";
+import { serverQueries } from "@/data/server";
+import { useIsProjectRoute } from "@/hooks/use-is-project-route";
+import { m } from "@/paraglide/messages";
+import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import {
 	Sidebar,
 	SidebarContent,
@@ -11,13 +15,9 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { serverQueries } from "@/data/server";
-import { useIsProjectRoute } from "@/hooks/use-is-project-route";
-import { getAvatarUrl } from "@/lib/avatar";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/sidebar";
+import { getAvatarUrl } from "@/shared/lib/avatar";
 
-import { Avatar, AvatarImage } from "../ui/avatar";
 import { ProjectSwitcher } from "./project-switcher";
 import { useNavbarItems, useProjectItems } from "./use-navbar-items";
 
