@@ -69,7 +69,9 @@ export function NavMain({
 												<SidebarMenuAction className="data-[state=open]:rotate-90">
 													<ChevronRight />
 													<span className="sr-only">
-														{m.common_navigation_toggle()}
+														{m.navigation_submenu_toggle({
+															title: item.title,
+														})}
 													</span>
 												</SidebarMenuAction>
 											}

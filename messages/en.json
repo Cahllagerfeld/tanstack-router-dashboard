@@ -42,7 +42,6 @@
 	"common_navigation_breadcrumb": "Breadcrumb",
 	"common_navigation_sidebar_description": "Displays the mobile sidebar.",
 	"common_navigation_sidebar_title": "Sidebar",
-	"common_navigation_toggle": "Toggle",
 	"common_navigation_toggle_sidebar": "Toggle Sidebar",
 	"common_navigation_under_construction": "Under construction",
 	"common_pagination_first_label": "Go to first page",
@@ -65,11 +64,15 @@
 	"common_table_toggle_columns": "Toggle columns",
 	"common_value_array_count": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "Array ({count} item)",
-				"countPlural=other": "Array ({count} items)"
+				"countPlural=one": "Array ({formattedCount} item)",
+				"countPlural=other": "Array ({formattedCount} items)"
 			}
 		}
 	],
@@ -78,11 +81,15 @@
 	"common_value_empty_object": "Empty object",
 	"common_value_object_count": [
 		{
-			"declarations": ["input count", "local countPlural = count: plural"],
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
 			"selectors": ["countPlural"],
 			"match": {
-				"countPlural=one": "Object ({count} key)",
-				"countPlural=other": "Object ({count} keys)"
+				"countPlural=one": "Object ({formattedCount} key)",
+				"countPlural=other": "Object ({formattedCount} keys)"
 			}
 		}
 	],
@@ -111,6 +118,7 @@
 	"components_table_name": "Name",
 	"components_table_type": "Type",
 	"filters_validation_invalid_format": "Filter must be in the format 'option:value' where option is one of the valid filter options",
+	"navigation_submenu_toggle": "Toggle {title} submenu",
 	"common_navigation_artifacts": "Artifacts",
 	"common_navigation_pipelines": "Pipelines",
 	"common_navigation_project_overview": "Project Overview",
