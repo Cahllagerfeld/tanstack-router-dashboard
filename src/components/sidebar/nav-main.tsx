@@ -1,3 +1,6 @@
+import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import {
 	Collapsible,
@@ -17,8 +20,6 @@ import {
 } from "@/components/ui/sidebar";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
-import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
 
 export function NavMain({
 	items,
@@ -68,7 +69,9 @@ export function NavMain({
 												<SidebarMenuAction className="data-[state=open]:rotate-90">
 													<ChevronRight />
 													<span className="sr-only">
-														{m.common_navigation_toggle()}
+														{m.navigation_submenu_toggle({
+															title: item.title,
+														})}
 													</span>
 												</SidebarMenuAction>
 											}

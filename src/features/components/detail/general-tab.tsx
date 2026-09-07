@@ -36,7 +36,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 			label: m.common_label_id(),
 			value: (
 				<span className="inline-flex items-center gap-1">
-					<code className="bg-muted rounded px-1.5 py-0.5 text-xs">
+					<code className="rounded bg-muted px-1.5 py-0.5 text-xs">
 						{component.id}
 					</code>
 					<CopyButton value={component.id} />
@@ -110,7 +110,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 						{hasConfiguration ? (
 							<ObjectRenderer data={configuration} />
 						) : (
-							<p className="text-muted-foreground text-sm">
+							<p className="text-sm text-muted-foreground">
 								{m.components_detail_no_configuration()}
 							</p>
 						)}
@@ -125,7 +125,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 						{hasEnvironment ? (
 							<ObjectRenderer data={environment} />
 						) : (
-							<p className="text-muted-foreground text-sm">
+							<p className="text-sm text-muted-foreground">
 								{m.components_detail_no_environment_variables()}
 							</p>
 						)}
@@ -141,17 +141,17 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 							<ul className="space-y-2">
 								{secrets.map((secret) => (
 									<li key={secret} className="flex items-center gap-2">
-										<code className="bg-muted rounded px-1.5 py-0.5 text-xs">
+										<code className="rounded bg-muted px-1.5 py-0.5 text-xs">
 											{secret}
 										</code>
-										<span className="text-muted-foreground text-xs">
+										<span className="text-xs text-muted-foreground">
 											{m.components_detail_masked_in_configuration()}
 										</span>
 									</li>
 								))}
 							</ul>
 						) : (
-							<p className="text-muted-foreground text-sm">
+							<p className="text-sm text-muted-foreground">
 								{m.components_detail_no_secrets()}
 							</p>
 						)}

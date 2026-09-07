@@ -1,3 +1,7 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Suspense } from "react";
+import { z } from "zod";
+
 import { userQueries } from "@/data/user";
 import {
 	createFilter,
@@ -9,9 +13,6 @@ import { UserList } from "@/features/users/list/user-list";
 import { UserListSkeleton } from "@/features/users/list/user-list-skeleton";
 import { m } from "@/paraglide/messages";
 import type { UserListQueryParams } from "@/types/user";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Suspense } from "react";
-import { z } from "zod";
 
 const querySchema = z.object({
 	name: filterSchema.optional().catch(undefined),
@@ -56,7 +57,7 @@ function RouteComponent() {
 		<div className="space-y-4">
 			<div>
 				<h1 className="text-2xl font-bold">{m.settings_members_title()}</h1>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{m.settings_members_description()}
 				</p>
 			</div>

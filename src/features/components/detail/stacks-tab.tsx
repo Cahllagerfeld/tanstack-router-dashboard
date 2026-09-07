@@ -1,9 +1,3 @@
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
-import { TableToolbar } from "@/components/tables/table-toolbar";
-import { stackQueries } from "@/data/stacks";
-import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	type ColumnSizingState,
@@ -11,6 +5,13 @@ import {
 	useTable,
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
+
+import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
+import { stackQueries } from "@/data/stacks";
+import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 
 interface ComponentStacksTabProps {
 	componentId: string;

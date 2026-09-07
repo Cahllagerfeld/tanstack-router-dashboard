@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -21,7 +23,6 @@ import {
 } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import * as React from "react";
 
 // Context for sharing viewport state
 type ResponsiveDialogContextValue = {

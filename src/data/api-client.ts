@@ -1,7 +1,8 @@
+import createClient, { type Middleware } from "openapi-fetch";
+
 import { FetchError, throwFetchErrorFromResponse } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
 import type { paths } from "@/types/core";
-import createClient, { type Middleware } from "openapi-fetch";
 
 const defaultHeaders = {
 	"Content-Type": "application/json",

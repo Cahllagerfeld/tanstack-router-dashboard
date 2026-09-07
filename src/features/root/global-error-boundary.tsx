@@ -1,3 +1,6 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
+import { AlertCircle, RefreshCw } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
 	Empty,
@@ -8,8 +11,6 @@ import {
 	EmptyTitle,
 } from "@/components/ui/empty";
 import { m } from "@/paraglide/messages";
-import type { ErrorComponentProps } from "@tanstack/react-router";
-import { AlertCircle, RefreshCw } from "lucide-react";
 
 export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 	return (
@@ -17,7 +18,7 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 			<EmptyHeader className="max-w-md">
 				<EmptyMedia
 					variant="icon"
-					className="bg-destructive/10 text-destructive ring-destructive/20 size-14 rounded-full ring-1"
+					className="size-14 rounded-full bg-destructive/10 text-destructive ring-1 ring-destructive/20"
 				>
 					<AlertCircle className="size-7" />
 				</EmptyMedia>
@@ -27,7 +28,7 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 				</EmptyDescription>
 			</EmptyHeader>
 			<EmptyContent>
-				<div className="border-border text-muted-foreground bg-muted/30 w-full max-w-lg rounded-lg border px-4 py-2 text-left font-mono text-xs">
+				<div className="w-full max-w-lg rounded-lg border border-border bg-muted/30 px-4 py-2 text-left font-mono text-xs text-muted-foreground">
 					{error.message}
 				</div>
 				<Button onClick={reset}>

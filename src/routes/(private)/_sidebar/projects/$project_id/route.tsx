@@ -1,8 +1,9 @@
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+
 import { projectQueries } from "@/data/projects";
 import { ProjectNotFound } from "@/features/projects/detail/project-not-found";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { m } from "@/paraglide/messages";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/projects/$project_id"

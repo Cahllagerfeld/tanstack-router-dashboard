@@ -1,5 +1,6 @@
-import type { NavbarItem } from "@/types/navbar";
 import { useLocation } from "@tanstack/react-router";
+
+import type { NavbarItem } from "@/types/navbar";
 
 export function useSidebarItems(items: NavbarItem[]) {
 	const location = useLocation();

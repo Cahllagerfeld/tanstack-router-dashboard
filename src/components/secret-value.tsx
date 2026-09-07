@@ -1,8 +1,9 @@
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
 interface SecretValueProps {
 	value: string;

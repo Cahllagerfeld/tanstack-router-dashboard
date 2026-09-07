@@ -1,5 +1,6 @@
-import { m } from "@/paraglide/messages";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
+
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/(private)/_sidebar/components")({
 	loader: () => {

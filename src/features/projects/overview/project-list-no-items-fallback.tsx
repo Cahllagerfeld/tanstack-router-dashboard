@@ -1,7 +1,8 @@
-import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 import { NoItemFallback } from "@/components/no-item-fallback";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
+
+import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 
 export function ProjectListNoItemsFallback() {
 	return (

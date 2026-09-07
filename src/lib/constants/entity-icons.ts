@@ -9,7 +9,12 @@ import {
 } from "lucide-react";
 
 export type EntityKind =
-	"project" | "component" | "stack" | "pipeline" | "run" | "artifact";
+	| "project"
+	| "component"
+	| "stack"
+	| "pipeline"
+	| "run"
+	| "artifact";
 
 export const ENTITY_ICONS = {
 	project: FolderKanban,

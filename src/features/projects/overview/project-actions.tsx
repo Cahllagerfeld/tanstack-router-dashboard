@@ -1,4 +1,6 @@
-import { DeleteProjectAlert } from "../delete/delete-project-alert";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -8,8 +10,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { m } from "@/paraglide/messages";
-import { MoreHorizontal, Trash2 } from "lucide-react";
-import { useState } from "react";
+
+import { DeleteProjectAlert } from "../delete/delete-project-alert";
 
 type Props = {
 	projectId: string;

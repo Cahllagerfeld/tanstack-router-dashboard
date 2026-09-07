@@ -1,3 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
+
 import {
 	Card,
 	CardContent,
@@ -7,8 +10,6 @@ import {
 } from "@/components/ui/card";
 import { LoginForm } from "@/features/login/login-form";
 import { m } from "@/paraglide/messages";
-import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 
 const querySchema = z.object({
 	next: z.string().optional(),

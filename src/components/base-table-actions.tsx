@@ -1,3 +1,6 @@
+import { MoreHorizontal } from "lucide-react";
+import type { PropsWithChildren } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -5,8 +8,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { m } from "@/paraglide/messages";
-import { MoreHorizontal } from "lucide-react";
-import type { PropsWithChildren } from "react";
 
 export function BaseTableActions({ children }: PropsWithChildren) {
 	return (

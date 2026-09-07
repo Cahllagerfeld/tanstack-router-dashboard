@@ -1,6 +1,7 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
 import { projectQueries } from "@/data/projects";
 import { getProjectFromLocalStorage } from "@/lib/projects";
-import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(private)/")({
 	loader: async ({ context }) => {

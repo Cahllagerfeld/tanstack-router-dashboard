@@ -1,9 +1,11 @@
-import type { ObjectRendererProps } from "./types";
-import { ValueRenderer } from "./value-renderer";
+import { isArray, isObject } from "es-toolkit/compat";
+
 import { NotAvailableTag } from "@/components/not-available-tag";
 import { snakeCaseToTitleCase } from "@/lib/strings";
 import { cn } from "@/lib/utils";
-import { isArray, isObject } from "es-toolkit/compat";
+
+import type { ObjectRendererProps } from "./types";
+import { ValueRenderer } from "./value-renderer";
 
 function isComplexValue(value: unknown): boolean {
 	return isArray(value) || isObject(value);
@@ -42,7 +44,7 @@ export function ObjectRenderer({
 		<dl className={cn("space-y-3", depth > 0 && "border-l pl-4", className)}>
 			{sortedEntries.map(([key, value]) => (
 				<div key={key} className="space-y-1">
-					<dt className="text-muted-foreground text-sm font-medium">
+					<dt className="text-sm font-medium text-muted-foreground">
 						{snakeCaseToTitleCase(key)}
 					</dt>
 					<dd>

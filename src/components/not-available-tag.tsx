@@ -1,6 +1,8 @@
-import { Badge } from "./ui/badge";
-import { m } from "@/paraglide/messages";
 import type { ComponentProps } from "react";
+
+import { m } from "@/paraglide/messages";
+
+import { Badge } from "./ui/badge";
 
 type Props = ComponentProps<typeof Badge>;
 

@@ -1,10 +1,11 @@
+import type { ColumnDef } from "@tanstack/react-table";
+
 import DisplayDate from "@/components/display-date";
 import { NotAvailableTag } from "@/components/not-available-tag";
 import type { DataTableFeatures } from "@/components/tables/data-table-features";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { Stack } from "@/domain/stacks";
 import { m } from "@/paraglide/messages";
-import type { ColumnDef } from "@tanstack/react-table";
 
 export function createStackSelectColumn(): ColumnDef<DataTableFeatures, Stack> {
 	return {

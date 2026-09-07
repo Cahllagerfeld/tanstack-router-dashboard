@@ -1,6 +1,8 @@
-import { pipelineFromApi } from "./pipelines";
-import type { components } from "@/types/core";
 import { describe, expect, it } from "vitest";
+
+import type { components } from "@/types/core";
+
+import { pipelineFromApi } from "./pipelines";
 
 describe("pipelineFromApi", () => {
 	it("exposes the fields needed by the Pipeline table", () => {

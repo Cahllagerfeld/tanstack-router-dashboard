@@ -1,3 +1,5 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -10,7 +12,6 @@ import {
 import { serverQueries } from "@/data/server";
 import { PasswordStep } from "@/features/server-activation/password-step";
 import { m } from "@/paraglide/messages";
-import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
 	"/(public)/_grid-layout/server-activation"

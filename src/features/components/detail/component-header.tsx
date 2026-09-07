@@ -25,7 +25,7 @@ export function ComponentHeader({ component }: ComponentHeaderProps) {
 				)}
 			</div>
 
-			<div className="text-muted-foreground flex items-center gap-1 text-sm">
+			<div className="flex items-center gap-1 text-sm text-muted-foreground">
 				<span>{component.id}</span>
 				<CopyButton value={component.id} />
 			</div>

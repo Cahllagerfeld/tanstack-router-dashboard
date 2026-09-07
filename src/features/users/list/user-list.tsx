@@ -1,11 +1,3 @@
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
-import { TableToolbar } from "@/components/tables/table-toolbar";
-import { userQueries } from "@/data/user";
-import { Pagination } from "@/features/pagination";
-import { useUserListColumns } from "@/features/users/list/columns";
-import type { UserListQueryParams } from "@/types/user";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	type ColumnSizingState,
@@ -15,6 +7,15 @@ import {
 } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 import { useState } from "react";
+
+import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/components/tables/data-table";
+import { features } from "@/components/tables/data-table-features";
+import { TableToolbar } from "@/components/tables/table-toolbar";
+import { userQueries } from "@/data/user";
+import { Pagination } from "@/features/pagination";
+import { useUserListColumns } from "@/features/users/list/columns";
+import type { UserListQueryParams } from "@/types/user";
 
 type Props = {
 	queries: UserListQueryParams;

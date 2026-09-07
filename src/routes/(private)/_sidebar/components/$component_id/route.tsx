@@ -1,10 +1,3 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { componentQueries } from "@/data/components";
-import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
-import { ComponentHeader } from "@/features/components/detail/component-header";
-import { ComponentNotFound } from "@/features/components/detail/component-not-found";
-import { ensureQueryDataOr404 } from "@/lib/loader-utils";
-import { m } from "@/paraglide/messages";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	Link,
@@ -12,6 +5,14 @@ import {
 	createFileRoute,
 	useMatchRoute,
 } from "@tanstack/react-router";
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { componentQueries } from "@/data/components";
+import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
+import { ComponentHeader } from "@/features/components/detail/component-header";
+import { ComponentNotFound } from "@/features/components/detail/component-not-found";
+import { ensureQueryDataOr404 } from "@/lib/loader-utils";
+import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/components/$component_id"

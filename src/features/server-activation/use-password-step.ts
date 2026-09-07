@@ -1,6 +1,3 @@
-import { serverKeys } from "@/data/server";
-import { useServerActivation } from "@/data/server/activate-server";
-import { m } from "@/paraglide/messages";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -12,24 +9,12 @@ import {
 	colors,
 	uniqueNamesGenerator,
 } from "unique-names-generator";
-import { z } from "zod";
 
-const passwordStepSchema = z
-	.object({
-		username: z.string().trim().min(1, m.server_activation_username_required()),
-		password: z.string().trim().min(8, m.server_activation_password_minimum()),
-		confirmPassword: z.string().trim(),
-	})
-	.refine(
-		(data) => {
-			return data.password === data.confirmPassword;
-		},
-		{
-			path: ["confirmPassword"],
-			message: m.server_activation_password_mismatch(),
-		}
-	);
-type PasswordForm = z.infer<typeof passwordStepSchema>;
+import { serverKeys } from "@/data/server";
+import { useServerActivation } from "@/data/server/activate-server";
+import { m } from "@/paraglide/messages";
+
+import { type PasswordForm, passwordStepSchema } from "./schema";
 
 export function usePasswordStep() {
 	const queryClient = useQueryClient();

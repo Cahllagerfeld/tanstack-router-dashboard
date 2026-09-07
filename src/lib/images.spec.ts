@@ -1,5 +1,6 @@
-import { getIllustrationUrl } from "./images";
 import { describe, expect, it, vi } from "vitest";
+
+import { getIllustrationUrl } from "./images";
 
 // Mock the storage base URL used by images.ts
 vi.mock("./constants/storage", () => ({

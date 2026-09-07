@@ -1,4 +1,3 @@
-import { getEntityIcon } from "./entity-icons";
 import {
 	Box,
 	FolderKanban,
@@ -8,6 +7,8 @@ import {
 	Workflow,
 } from "lucide-react";
 import { describe, expect, it } from "vitest";
+
+import { getEntityIcon } from "./entity-icons";
 
 describe("getEntityIcon", () => {
 	it("maps project to FolderKanban", () => {

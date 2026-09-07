@@ -1,5 +1,6 @@
-import { isFetchError } from "@/lib/fetch-error";
 import { notFound } from "@tanstack/react-router";
+
+import { isFetchError } from "@/lib/fetch-error";
 
 /**
  * Wraps a query promise and throws TanStack Router's notFound()

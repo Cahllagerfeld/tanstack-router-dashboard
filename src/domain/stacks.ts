@@ -1,7 +1,8 @@
-import type { User } from "./users";
-import { userFromApi } from "./users";
 import { parseBackendDate } from "@/lib/dates";
 import type { components } from "@/types/core";
+
+import type { User } from "./users";
+import { userFromApi } from "./users";
 
 export type Stack = {
 	id: string;
