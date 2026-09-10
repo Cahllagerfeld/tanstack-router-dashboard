@@ -13,6 +13,8 @@ import {
 import { m } from "@/paraglide/messages";
 
 export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
+	const errorMessage = error instanceof Error ? error.message : String(error);
+
 	return (
 		<Empty>
 			<EmptyHeader className="max-w-md">
@@ -29,7 +31,7 @@ export function DefaultErrorPage({ error, reset }: ErrorComponentProps) {
 			</EmptyHeader>
 			<EmptyContent>
 				<div className="w-full max-w-lg rounded-lg border border-border bg-muted/30 px-4 py-2 text-left font-mono text-xs text-muted-foreground">
-					{error.message}
+					{errorMessage}
 				</div>
 				<Button onClick={reset}>
 					<RefreshCw className="size-4" />
