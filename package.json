@@ -64,5 +64,5 @@
 		"vitest": "5.0.0",
 		"vitest-browser-react": "2.3.0"
 	},
-	"packageManager": "pnpm@12.3.4"
+	"packageManager": "pnpm@12.4.0"
 }
