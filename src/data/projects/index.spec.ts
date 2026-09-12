@@ -4,7 +4,7 @@ import { projectKeys, projectQueries } from "./index";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
-vi.mock("../api-client", () => ({ apiClient: { GET: get } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { GET: get } }));
 
 describe("projectQueries", () => {
 	beforeEach(() => {

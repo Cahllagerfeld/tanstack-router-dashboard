@@ -1,6 +1,9 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { Button } from "@/components/ui/button";
+import { serverQueries } from "@/data/server";
+import { PasswordStep } from "@/features/server-activation/password-step";
+import { m } from "@/paraglide/messages";
+import { Button } from "@/shared/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,10 +11,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
-import { serverQueries } from "@/data/server";
-import { PasswordStep } from "@/features/server-activation/password-step";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/card";
 
 export const Route = createFileRoute(
 	"/(public)/_grid-layout/server-activation"

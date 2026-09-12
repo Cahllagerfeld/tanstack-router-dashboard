@@ -6,7 +6,7 @@ import { deleteProject } from "./delete-project";
 
 const { deleteRequest } = vi.hoisted(() => ({ deleteRequest: vi.fn() }));
 
-vi.mock("@/data/api-client", () => ({
+vi.mock("@/shared/api/client", () => ({
 	apiClient: { DELETE: deleteRequest },
 }));
 

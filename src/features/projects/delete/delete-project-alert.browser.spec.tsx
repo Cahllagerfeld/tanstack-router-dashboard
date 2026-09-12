@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
-import { FetchError } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
+import { FetchError } from "@/shared/api";
 
 import { DeleteProjectAlert } from "./delete-project-alert";
 
@@ -16,7 +16,7 @@ const { deleteRequest, navigate, setOpen, toastError, toastSuccess } =
 		toastSuccess: vi.fn(),
 	}));
 
-vi.mock("@/data/api-client", () => ({
+vi.mock("@/shared/api/client", () => ({
 	apiClient: { DELETE: deleteRequest },
 }));
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => navigate }));

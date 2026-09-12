@@ -1,5 +1,5 @@
 import { parseBackendDate } from "@/lib/dates";
-import type { components } from "@/types/core";
+import type { components } from "@/shared/api/generated";
 
 import type { User } from "./users";
 import { userFromApi } from "./users";

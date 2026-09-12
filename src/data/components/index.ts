@@ -1,10 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { componentFromApi } from "@/domain/components";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient, expectData } from "@/shared/api";
 import type { ComponentsListQueryParams } from "@/types/components";
-
-import { apiClient } from "../api-client";
 
 const baseKey = "components" as const;
 

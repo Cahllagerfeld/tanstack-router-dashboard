@@ -1,5 +1,5 @@
-import { snakeCaseToTitleCase } from "@/lib/strings";
 import { m } from "@/paraglide/messages";
+import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import type { ComponentType } from "@/types/components";
 
 export function getComponentTypeLabel(type?: ComponentType) {

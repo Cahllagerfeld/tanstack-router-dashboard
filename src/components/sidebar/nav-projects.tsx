@@ -2,12 +2,14 @@ import { Link } from "@tanstack/react-router";
 import { type LucideIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
+import { m } from "@/paraglide/messages";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -16,9 +18,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
-import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/sidebar";
 
 export function NavProjects({
 	projects,

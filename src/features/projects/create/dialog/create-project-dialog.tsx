@@ -1,7 +1,8 @@
 import { Plus } from "lucide-react";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { m } from "@/paraglide/messages";
+import { Button } from "@/shared/components/ui/button";
 import {
 	ResponsiveDialog,
 	ResponsiveDialogBody,
@@ -12,8 +13,7 @@ import {
 	ResponsiveDialogHeader,
 	ResponsiveDialogTitle,
 	ResponsiveDialogTrigger,
-} from "@/components/ui/responsive-dialog";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/responsive-dialog";
 
 import { CreateProjectForm } from "./form";
 

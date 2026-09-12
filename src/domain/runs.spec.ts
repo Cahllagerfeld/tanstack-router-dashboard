@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { components } from "@/types/core";
+import type { components } from "@/shared/api/generated";
 
 import { formatRunIndex, formatRunStatus, runFromApi } from "./runs";
 

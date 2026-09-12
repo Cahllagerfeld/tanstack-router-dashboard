@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { components as ApiComponents } from "@/types/core";
+import type { components as ApiComponents } from "@/shared/api/generated";
 
 import { componentFromApi } from "./components";
 import { flavorFromApi } from "./flavors";

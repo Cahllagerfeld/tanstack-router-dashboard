@@ -1,5 +1,5 @@
-import { DebouncedInput } from "@/components/debounced-input";
 import { m } from "@/paraglide/messages";
+import { DebouncedInput } from "@/shared/components/debounced-input";
 
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 

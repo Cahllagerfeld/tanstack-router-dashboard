@@ -6,13 +6,13 @@ import {
 	useMatchRoute,
 } from "@tanstack/react-router";
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { componentQueries } from "@/data/components";
 import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
 import { ComponentHeader } from "@/features/components/detail/component-header";
 import { ComponentNotFound } from "@/features/components/detail/component-not-found";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { m } from "@/paraglide/messages";
+import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/components/$component_id"

@@ -8,15 +8,15 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
-import { TableToolbar } from "@/components/tables/table-toolbar";
 import { pipelineQueries } from "@/data/pipelines";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { Pagination } from "@/features/pagination";
 import { usePipelineColumns } from "@/features/pipelines/pipelines-list/columns";
 import { m } from "@/paraglide/messages";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { features } from "@/shared/components/tables/data-table-features";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { type PipelineListQueryParams } from "@/types/pipelines";
 
 const querySchema = commonFilterSchema;

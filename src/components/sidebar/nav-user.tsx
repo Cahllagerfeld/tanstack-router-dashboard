@@ -1,7 +1,14 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLogoutUser } from "@/data/session/logout";
+import { userQueries } from "@/data/user";
+import { m } from "@/paraglide/messages";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@/shared/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,17 +17,14 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
-import { useLogoutUser } from "@/data/session/logout";
-import { userQueries } from "@/data/user";
-import { getAvatarUrl } from "@/lib/avatar";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/sidebar";
+import { getAvatarUrl } from "@/shared/lib/avatar";
 
 export function NavUser() {
 	const { data } = useSuspenseQuery(userQueries.currentUser());

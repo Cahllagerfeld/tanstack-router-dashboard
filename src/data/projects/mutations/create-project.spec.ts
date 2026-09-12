@@ -4,7 +4,7 @@ import { createProject } from "./create-project";
 
 const { post } = vi.hoisted(() => ({ post: vi.fn() }));
 
-vi.mock("../../api-client", () => ({ apiClient: { POST: post } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { POST: post } }));
 
 describe("createProject", () => {
 	beforeEach(() => {
