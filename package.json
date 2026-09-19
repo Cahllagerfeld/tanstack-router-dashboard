@@ -40,7 +40,7 @@
 		"zod": "^4.5.4"
 	},
 	"devDependencies": {
-		"@inlang/cli": "3.3.6",
+		"@inlang/cli": "3.3.7",
 		"@inlang/paraglide-js": "2.25.3",
 		"@rolldown/plugin-babel": "0.2.4",
 		"@tailwindcss/vite": "4.3.3",
