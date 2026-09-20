@@ -1,7 +1,8 @@
 import { isNotFound } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
-import { FetchError } from "./fetch-error";
+import { FetchError } from "@/shared/api";
+
 import { ensureQueryDataOr404 } from "./loader-utils";
 
 describe("ensureQueryDataOr404", () => {

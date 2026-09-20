@@ -1,8 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Hash } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Project } from "@/domain/projects";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@/shared/components/ui/card";
 
 import { ProjectActions } from "./project-actions";
 import { SetProjectCommand } from "./set-project-command";

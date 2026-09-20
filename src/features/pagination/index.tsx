@@ -8,7 +8,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 	Pagination as PaginationPrimitive,
-} from "@/components/ui/pagination";
+} from "@/shared/components/ui/pagination";
 
 import { getPageNumbers } from "./page-numbers";
 

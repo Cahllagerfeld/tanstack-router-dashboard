@@ -1,4 +1,4 @@
-import type { components } from "@/types/core";
+import type { components } from "@/shared/api/generated";
 
 export type Project = {
 	id: string;

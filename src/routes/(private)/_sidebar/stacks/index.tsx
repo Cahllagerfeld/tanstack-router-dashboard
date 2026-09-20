@@ -8,14 +8,14 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
-import { TableToolbar } from "@/components/tables/table-toolbar";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
 import { m } from "@/paraglide/messages";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { features } from "@/shared/components/tables/data-table-features";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 
 const querySchema = commonFilterSchema;
 

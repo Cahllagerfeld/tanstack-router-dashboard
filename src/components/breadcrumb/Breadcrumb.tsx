@@ -8,7 +8,7 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "@/shared/components/ui/breadcrumb";
 
 export function BreadcrumbsContainer() {
 	const matches = useMatches();

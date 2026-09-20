@@ -1,7 +1,7 @@
 import { Check, Copy } from "lucide-react";
 
-import { useCopy } from "@/hooks/use-copy";
 import { m } from "@/paraglide/messages";
+import { useCopy } from "@/shared/hooks/use-copy";
 
 export function SetProjectCommand({ projectId }: { projectId: string }) {
 	const [copied, copyToClipboard] = useCopy();

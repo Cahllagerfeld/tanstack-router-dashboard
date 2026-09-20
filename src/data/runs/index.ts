@@ -1,10 +1,8 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { runFromApi } from "@/domain/runs";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient, expectData } from "@/shared/api";
 import type { ProjectRunListQueryParams } from "@/types/runs";
-
-import { apiClient } from "../api-client";
 
 const baseKey = "runs" as const;
 

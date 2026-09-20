@@ -15,7 +15,7 @@ async function generateTypes(baseUrl) {
 	});
 
 	log("Writing output to file...", "📝");
-	fs.writeFileSync("./src/types/core.ts", astToString(output));
+	fs.writeFileSync("./src/shared/api/generated.ts", astToString(output));
 
 	log("Script completed successfully.", "✅");
 }

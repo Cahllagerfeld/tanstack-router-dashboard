@@ -1,8 +1,111 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "react"],
+	"plugins": ["typescript", "unicorn", "oxc", "react", "import"],
 	"categories": {
 		"correctness": "error"
 	},
-	"rules": {}
+	"rules": {
+		"import/no-cycle": [
+			"error",
+			{
+				"ignoreExternal": true,
+				"ignoreTypes": false
+			}
+		],
+		"no-restricted-imports": [
+			"error",
+			{
+				"patterns": [
+					{
+						"regex": "^@/modules/[^/]+/.+",
+						"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+					}
+				]
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["src/shared/**/*.{ts,tsx}"],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"regex": "^@/(?:app|components|data|domain|features|hooks|lib|modules|routes|types)(?:/|$)",
+								"message": "Shared cannot depend on application-owned code or its legacy migration inputs."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": [
+				"src/{app,components,domain,features,hooks,lib,routes,types}/**/*.{ts,tsx}"
+			],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"regex": "^@/modules/[^/]+/.+",
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							},
+							{
+								"regex": "^@/shared/api/generated$",
+								"message": "Generated transport contracts may be consumed only by Shared API infrastructure and data boundaries."
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": [
+				"src/shared/components/object-renderer/object-renderer.tsx",
+				"src/shared/components/object-renderer/value-renderer.tsx"
+			],
+			"rules": {
+				"import/no-cycle": "off"
+			}
+		},
+		{
+			"files": [
+				"src/domain/components.ts",
+				"src/domain/flavors.ts",
+				"src/domain/mappers.spec.ts",
+				"src/domain/pipelines.spec.ts",
+				"src/domain/pipelines.ts",
+				"src/domain/projects.ts",
+				"src/domain/runs.spec.ts",
+				"src/domain/runs.ts",
+				"src/domain/stacks.ts",
+				"src/domain/users.ts",
+				"src/types/components.ts",
+				"src/types/pipelines.ts",
+				"src/types/projects.ts",
+				"src/types/runs.ts",
+				"src/types/server.ts",
+				"src/types/session.ts",
+				"src/types/stacks.ts",
+				"src/types/user.ts"
+			],
+			"rules": {
+				"no-restricted-imports": [
+					"error",
+					{
+						"patterns": [
+							{
+								"regex": "^@/modules/[^/]+/.+",
+								"message": "Import another capability through @/modules/<capability>, its public API. Same-module internals should use relative imports."
+							}
+						]
+					}
+				]
+			}
+		}
+	]
 }

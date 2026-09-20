@@ -2,13 +2,13 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
 import { UnscopedSidebar } from "@/components/sidebar/sidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/shared/components/ui/scroll-area";
+import { Separator } from "@/shared/components/ui/separator";
 import {
 	SidebarInset,
 	SidebarProvider,
 	SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 
 export const Route = createFileRoute("/(private)/_sidebar")({
 	component: RouteComponent,

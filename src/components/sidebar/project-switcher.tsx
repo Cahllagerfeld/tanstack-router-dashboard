@@ -3,6 +3,13 @@ import { useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 
+import { projectQueries } from "@/data/projects";
+import { serverQueries } from "@/data/server";
+import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
+import { getIllustrationUrl } from "@/lib/images";
+import { setProjectToLocalStorage } from "@/lib/projects";
+import { m } from "@/paraglide/messages";
+import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,21 +19,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuShortcut,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	useSidebar,
-} from "@/components/ui/sidebar";
-import { projectQueries } from "@/data/projects";
-import { serverQueries } from "@/data/server";
-import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
-import { getIllustrationUrl } from "@/lib/images";
-import { setProjectToLocalStorage } from "@/lib/projects";
-import { m } from "@/paraglide/messages";
-
-import { Avatar, AvatarImage } from "../ui/avatar";
+} from "@/shared/components/ui/sidebar";
 
 export function ProjectSwitcher() {
 	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
