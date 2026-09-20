@@ -2,4 +2,3 @@ allowBuilds:
   lefthook: true
 
 blockExoticSubdeps: true
-minimumReleaseAge: 4320
