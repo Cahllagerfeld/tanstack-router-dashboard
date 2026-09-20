@@ -10,6 +10,10 @@ This repository uses devenv. Run project-provided tools through devenv:
 
 Do not assume these tools are installed globally.
 
+### Linting
+
+After making changes, run `devenv shell -- pnpm lint` and fix all errors.
+
 ### Issue tracker
 
 GitHub Issues via `gh`; external PRs are not a triage surface. See `docs/agents/issue-tracker.md`.

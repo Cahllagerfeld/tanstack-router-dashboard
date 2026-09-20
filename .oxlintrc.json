@@ -1,8 +1,39 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"jsPlugins": ["@shadcn/lint"],
 	"plugins": ["typescript", "unicorn", "oxc", "react"],
 	"categories": {
 		"correctness": "error"
 	},
-	"rules": {}
+	"rules": {
+		"shadcn/no-unknown-classes": "warn",
+		"shadcn/no-raw-colors": "error",
+		"shadcn/no-arbitrary-values": ["error", { "allow": ["layout"] }],
+		"shadcn/no-restyle": [
+			"error",
+			{
+				"allow": ["layout"],
+				"contracts": [
+					{
+						"pattern": "^CardTitle$",
+						"allow": ["layout", "typography"]
+					},
+					{
+						"pattern": "^Card(Content|Header|Footer)$",
+						"allow": ["layout", "spacing"]
+					},
+					{ "pattern": "^Avatar$", "allow": ["layout", "size-*"] }
+				]
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["src/components/ui/**"],
+			"rules": {
+				"shadcn/no-restyle": "off",
+				"shadcn/no-arbitrary-values": "off"
+			}
+		}
+	]
 }

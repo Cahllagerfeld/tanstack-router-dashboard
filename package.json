@@ -43,6 +43,7 @@
 		"@inlang/cli": "3.3.7",
 		"@inlang/paraglide-js": "2.25.3",
 		"@rolldown/plugin-babel": "0.2.4",
+		"@shadcn/lint": "^0.1.1",
 		"@tailwindcss/vite": "4.3.3",
 		"@tanstack/router-devtools": "1.167.2",
 		"@tanstack/router-plugin": "1.168.38",
