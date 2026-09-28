@@ -231,8 +231,8 @@ importers:
         version: 4.6.5
     devDependencies:
       '@inlang/cli':
-        specifier: 3.3.7
-        version: 3.3.7
+        specifier: 3.3.8
+        version: 3.3.8
       '@inlang/paraglide-js':
         specifier: 2.25.4
         version: 2.25.4(typescript@7.0.2)(vite@8.3.1(@types/node@26.6.2)(jiti@2.7.0))
@@ -581,8 +581,8 @@ packages:
       zod:
         optional: true
 
-  '@inlang/cli@3.3.7':
-    resolution: {integrity: sha512-n1E7pvuHRaDfhjLIi058fjHnqOze3UwCZFGKYA8TBwkQbVRL3o3KSjbf8y/AF3y/x/euvpXTnkuGIcR9iOhcnQ==}
+  '@inlang/cli@3.3.8':
+    resolution: {integrity: sha512-cA0eqT4h8ZALq98nuDZEUgufyzoMjQ8kbqgGJKfWp3bRLT48RKhz9DCsCkucx17V1lD/ZNZ0ubHoQFKoAgotQg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -3051,7 +3051,7 @@ snapshots:
       valibot: 1.5.0(typescript@7.0.2)
       zod: 4.6.5
 
-  '@inlang/cli@3.3.7':
+  '@inlang/cli@3.3.8':
     dependencies:
       '@inlang/sdk': 3.0.6
       esbuild-wasm: 0.19.12
