@@ -2,8 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 
-import { FetchError } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
+import { FetchError } from "@/shared/api";
 
 import { CreateProjectForm } from "./form";
 
@@ -17,7 +17,7 @@ const { navigate, post, setOpen, toastError, toastSuccess } = vi.hoisted(
 	})
 );
 
-vi.mock("@/data/api-client", () => ({ apiClient: { POST: post } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { POST: post } }));
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => navigate }));
 vi.mock("sonner", () => ({
 	toast: { error: toastError, success: toastSuccess },

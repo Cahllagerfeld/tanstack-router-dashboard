@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { useCreateProject } from "@/data/projects/mutations/create-project";
-import { isFetchError } from "@/lib/fetch-error";
+import { isFetchError } from "@/shared/api";
 
 import { type CreateProjectForm, createProjectSchema } from "./schema";
 

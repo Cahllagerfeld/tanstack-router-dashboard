@@ -1,5 +1,5 @@
 import { parseBackendDate } from "@/lib/dates";
-import { type components } from "@/types/core";
+import { type components } from "@/shared/api/generated";
 
 export type Pipeline = {
 	id: string;

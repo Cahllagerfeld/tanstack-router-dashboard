@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
+import { m } from "@/paraglide/messages";
+import { Badge } from "@/shared/components/ui/badge";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@/shared/components/ui/collapsible";
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -17,8 +18,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
-} from "@/components/ui/sidebar";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/sidebar";
 import type { NavbarItem } from "@/types/navbar";
 
 export function NavMain({

@@ -1,6 +1,4 @@
-import { expectData } from "@/lib/fetch-error";
-
-import { apiClient } from "../api-client";
+import { apiClient, expectData } from "@/shared/api";
 
 export async function fetchServerInfo() {
 	const response = await apiClient.GET("/api/v1/info");

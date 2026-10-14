@@ -1,11 +1,11 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
-import DisplayDate from "@/components/display-date";
-import { NotAvailableTag } from "@/components/not-available-tag";
-import type { DataTableFeatures } from "@/components/tables/data-table-features";
-import { Badge } from "@/components/ui/badge";
 import { formatRunIndex, formatRunStatus, type Run } from "@/domain/runs";
 import { m } from "@/paraglide/messages";
+import DisplayDate from "@/shared/components/display-date";
+import { NotAvailableTag } from "@/shared/components/not-available-tag";
+import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import { Badge } from "@/shared/components/ui/badge";
 
 export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 	return [

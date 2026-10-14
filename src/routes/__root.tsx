@@ -7,9 +7,9 @@ import {
 	redirect,
 } from "@tanstack/react-router";
 
-import { Toaster } from "@/components/ui/sonner";
 import { serverQueries } from "@/data/server";
 import { m } from "@/paraglide/messages";
+import { Toaster } from "@/shared/components/ui/sonner";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;

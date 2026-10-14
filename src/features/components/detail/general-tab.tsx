@@ -1,13 +1,21 @@
-import { CopyButton } from "@/components/copy-button";
-import DisplayDate from "@/components/display-date";
-import { type KeyValueItem, KeyValueList } from "@/components/key-value-list";
-import { NotAvailableTag } from "@/components/not-available-tag";
-import { ObjectRenderer } from "@/components/object-renderer";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Component } from "@/domain/components";
-import { snakeCaseToTitleCase } from "@/lib/strings";
 import { m } from "@/paraglide/messages";
+import { CopyButton } from "@/shared/components/copy-button";
+import DisplayDate from "@/shared/components/display-date";
+import {
+	type KeyValueItem,
+	KeyValueList,
+} from "@/shared/components/key-value-list";
+import { NotAvailableTag } from "@/shared/components/not-available-tag";
+import { ObjectRenderer } from "@/shared/components/object-renderer";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@/shared/components/ui/card";
+import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 
 interface ComponentGeneralTabProps {
 	component: Component;

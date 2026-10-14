@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Construction } from "lucide-react";
 
+import { m } from "@/paraglide/messages";
 import {
 	Empty,
 	EmptyDescription,
 	EmptyHeader,
 	EmptyMedia,
 	EmptyTitle,
-} from "@/components/ui/empty";
-import { m } from "@/paraglide/messages";
+} from "@/shared/components/ui/empty";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/projects/$project_id/"
