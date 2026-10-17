@@ -231,8 +231,8 @@ importers:
         version: 4.6.7
     devDependencies:
       '@inlang/cli':
-        specifier: 3.4.2
-        version: 3.4.2
+        specifier: 3.4.3
+        version: 3.4.3
       '@inlang/paraglide-js':
         specifier: 2.27.0
         version: 2.27.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
@@ -580,8 +580,8 @@ packages:
       zod:
         optional: true
 
-  '@inlang/cli@3.4.2':
-    resolution: {integrity: sha512-NXvY3qL4eYt39Evf4sWs/e56p6SXVIgb22Q115YV7RYU/8D3cVaDBvUlg4jyUiwJyojzBCIO3o0Lxu4KR+XhWA==}
+  '@inlang/cli@3.4.3':
+    resolution: {integrity: sha512-S0M5X5R7V6HYI50UZWuBDJ7bv5uebINC3TuNfdBBuUK6jiUq5Ljj0Uxadb+rMexotoslcIQoNA7/zbpOg/paGw==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -602,6 +602,10 @@ packages:
 
   '@inlang/sdk@4.0.2':
     resolution: {integrity: sha512-IiOiQpybiV2HrguH+2eG+9Pqsm8AuUBtjHpgl3rnwXkE9x1p+mAC5YqVVRlquGLELXxFiu90zvgFXdYnt4X3LA==}
+    engines: {node: '>=20.0.0'}
+
+  '@inlang/sdk@4.0.3':
+    resolution: {integrity: sha512-ajOudqasLcSU1AI00oDhL2zd3u5I4cq5vwn3yu4nnFqEM1sZDgAFK5AY8jID7sh5Lomk+obrCiwpPR3omKPITw==}
     engines: {node: '>=20.0.0'}
 
   '@internationalized/number@3.6.9':
@@ -3026,9 +3030,9 @@ snapshots:
       valibot: 1.5.0(typescript@7.0.2)
       zod: 4.6.7
 
-  '@inlang/cli@3.4.2':
+  '@inlang/cli@3.4.3':
     dependencies:
-      '@inlang/sdk': 4.0.2
+      '@inlang/sdk': 4.0.3
       esbuild-wasm: 0.19.12
 
   '@inlang/paraglide-js@2.27.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))':
@@ -3051,6 +3055,13 @@ snapshots:
       comment-json: 4.6.2
 
   '@inlang/sdk@4.0.2':
+    dependencies:
+      '@lix-js/sdk': 0.19.0
+      '@sinclair/typebox': 0.31.30
+      kysely: 0.28.17
+      uuid: 14.0.3
+
+  '@inlang/sdk@4.0.3':
     dependencies:
       '@lix-js/sdk': 0.19.0
       '@sinclair/typebox': 0.31.30
