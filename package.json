@@ -41,7 +41,7 @@
 	},
 	"devDependencies": {
 		"@inlang/cli": "3.4.3",
-		"@inlang/paraglide-js": "2.27.0",
+		"@inlang/paraglide-js": "2.28.0",
 		"@rolldown/plugin-babel": "0.2.4",
 		"@tailwindcss/vite": "4.3.3",
 		"@tanstack/router-devtools": "1.167.2",
