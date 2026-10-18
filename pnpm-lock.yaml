@@ -234,8 +234,8 @@ importers:
         specifier: 3.4.4
         version: 3.4.4
       '@inlang/paraglide-js':
-        specifier: 2.28.0
-        version: 2.28.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
+        specifier: 2.29.0
+        version: 2.29.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
       '@rolldown/plugin-babel':
         specifier: 0.2.4
         version: 0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@8.0.7)(rolldown@1.2.13)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))
@@ -585,8 +585,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  '@inlang/paraglide-js@2.28.0':
-    resolution: {integrity: sha512-nUiHkotCaZHgUIJV55TU6nSdOL9tkT/bCftVkKKY+cMprm0U8SKg5iI3SGI56F4sZu6qvxF1m+CzosqGPqFDWw==}
+  '@inlang/paraglide-js@2.29.0':
+    resolution: {integrity: sha512-1yBsi2ycRLRLOsZJRFf4wk6kycUOohoqrVyZye85D1fRHcd6IfhRAQWpGZPSJI5prgslpe3oHE8gOVXZr9aTww==}
     hasBin: true
     peerDependencies:
       eslint: ^9.0.0 || ^10.0.0
@@ -3037,7 +3037,7 @@ snapshots:
       '@inlang/sdk': 4.0.4
       esbuild-wasm: 0.19.12
 
-  '@inlang/paraglide-js@2.28.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))':
+  '@inlang/paraglide-js@2.29.0(typescript@7.0.2)(vite@8.3.4(@types/node@26.6.5)(jiti@2.7.0))':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
       '@inlang/sdk': 4.0.4
