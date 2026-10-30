@@ -1,37 +1,34 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
-import { UnscopedSidebar } from "@/components/sidebar/sidebar";
+import { AppRail } from "@/components/sidebar/app-rail";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import {
-	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { projectQueries } from "@/data/projects";
 
 export const Route = createFileRoute("/(private)/_sidebar")({
+	loader: async ({ context: { queryClient } }) => {
+		await queryClient.ensureQueryData(projectQueries.allList());
+	},
 	component: RouteComponent,
 });
 
 function RouteComponent() {
 	return (
-		<SidebarProvider>
-			<UnscopedSidebar />
-			<SidebarInset className="overflow-x-hidden">
-				<ScrollArea className="h-full">
-					<header className="flex h-16 shrink-0 items-center gap-2">
-						<div className="flex items-center gap-2 px-4">
-							<SidebarTrigger className="-ml-1" />
-							<Separator orientation="vertical" className="mr-2" />
-							<BreadcrumbsContainer />
-						</div>
-					</header>
-					<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+		<div className="flex h-dvh min-h-0 w-full overflow-hidden bg-window-background">
+			<AppRail />
+			<main
+				data-slot="app-inset"
+				className="m-1 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border bg-background shadow-sm"
+			>
+				<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+					<BreadcrumbsContainer />
+				</header>
+				<ScrollArea className="min-h-0 flex-1">
+					<div className="flex flex-1 flex-col">
 						<Outlet />
 					</div>
 				</ScrollArea>
-			</SidebarInset>
-		</SidebarProvider>
+			</main>
+		</div>
 	);
 }

@@ -22,11 +22,7 @@ export function DataTableViewOptions<TData extends RowData>({
 	"use no memo";
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<Button variant="outline" size="sm" className="hidden h-8 lg:flex" />
-				}
-			>
+			<DropdownMenuTrigger render={<Button variant="outline" />}>
 				<Columns3 />
 				{m.common_table_columns()}
 			</DropdownMenuTrigger>

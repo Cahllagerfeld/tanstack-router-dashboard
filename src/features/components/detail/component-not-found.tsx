@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import { ContentInset } from "@/components/content-inset";
 import { Button } from "@/components/ui/button";
 import {
 	Empty,
@@ -16,24 +17,28 @@ const ComponentIcon = getEntityIcon("component");
 
 export function ComponentNotFound() {
 	return (
-		<Empty className="border border-dashed">
-			<EmptyHeader>
-				<EmptyMedia variant="icon">
-					<ComponentIcon />
-				</EmptyMedia>
-				<EmptyTitle>{m.components_not_found_title()}</EmptyTitle>
-				<EmptyDescription>
-					{m.components_not_found_description()}
-				</EmptyDescription>
-			</EmptyHeader>
-			<EmptyContent>
-				<Button
-					size="sm"
-					render={
-						<Link to="/components">{m.components_not_found_go_to_list()}</Link>
-					}
-				></Button>
-			</EmptyContent>
-		</Empty>
+		<ContentInset>
+			<Empty className="border border-dashed">
+				<EmptyHeader>
+					<EmptyMedia variant="icon">
+						<ComponentIcon />
+					</EmptyMedia>
+					<EmptyTitle>{m.components_not_found_title()}</EmptyTitle>
+					<EmptyDescription>
+						{m.components_not_found_description()}
+					</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent>
+					<Button
+						size="sm"
+						render={
+							<Link to="/infra/components">
+								{m.components_not_found_go_to_list()}
+							</Link>
+						}
+					></Button>
+				</EmptyContent>
+			</Empty>
+		</ContentInset>
 	);
 }

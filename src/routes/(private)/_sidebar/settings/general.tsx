@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { ContentInset } from "@/components/content-inset";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
@@ -12,13 +13,11 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 
 function RouteComponent() {
 	return (
-		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">{m.settings_general_title()}</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.settings_general_description()}
-				</p>
-			</div>
-		</div>
+		<ContentInset>
+			<h1 className="text-2xl font-bold">{m.settings_general_title()}</h1>
+			<p className="text-sm text-muted-foreground">
+				{m.settings_general_description()}
+			</p>
+		</ContentInset>
 	);
 }

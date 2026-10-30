@@ -1,28 +1,22 @@
-import { useParams, useRouter } from "@tanstack/react-router";
-import { Frame, Settings } from "lucide-react";
+import { useLocation, useRouter } from "@tanstack/react-router";
+import { Settings } from "lucide-react";
 
-import { useSidebarItems } from "@/hooks/use-sidebar-items";
+import { useActiveProject } from "@/hooks/use-active-project";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
 
-function getUnscopedNavMain(): NavbarItem[] {
+function getInfraItem(): NavbarItem {
+	return {
+		title: m.infra_navigation_label(),
+		url: "/infra/stacks",
+		icon: getEntityIcon("stack"),
+		activePathPrefix: "/infra",
+	};
+}
+
+function getFooterItems(): NavbarItem[] {
 	return [
-		{
-			title: m.projects_navigation_label(),
-			url: "/projects",
-			icon: getEntityIcon("project"),
-		},
-		{
-			title: m.components_navigation_label(),
-			url: "/components",
-			icon: getEntityIcon("component"),
-		},
-		{
-			title: m.stacks_navigation_label(),
-			url: "/stacks",
-			icon: getEntityIcon("stack"),
-		},
 		{
 			title: m.settings_navigation_label(),
 			url: "/settings/general",
@@ -32,48 +26,71 @@ function getUnscopedNavMain(): NavbarItem[] {
 	];
 }
 
-export function useNavbarItems() {
-	const navItems = useSidebarItems(getUnscopedNavMain());
-	return { navItems };
-}
-
-export function useProjectItems() {
+function useProjectItems(): NavbarItem[] {
 	const { buildLocation } = useRouter();
-	const projectId = useParams({
-		from: "/(private)/_sidebar/projects/$project_id",
-	});
-	const projectPreviewNavMain: NavbarItem[] = [
-		{
-			title: m.common_navigation_project_overview(),
-			url: buildLocation({
-				to: "/projects/$project_id",
-				params: { project_id: projectId.project_id },
-			}).pathname,
-			icon: Frame,
-		},
+	const { activeProject } = useActiveProject();
+
+	if (!activeProject) return [];
+
+	const params = { project_id: activeProject.name };
+	const pipelinesUrl = buildLocation({
+		to: "/projects/$project_id/pipelines",
+		params,
+	}).pathname;
+	const runsUrl = buildLocation({
+		to: "/projects/$project_id/runs",
+		params,
+	}).pathname;
+
+	return [
 		{
 			title: m.common_navigation_pipelines(),
-			url: buildLocation({
-				to: "/projects/$project_id/pipelines",
-				params: { project_id: projectId.project_id },
-			}).pathname,
+			url: pipelinesUrl,
 			icon: getEntityIcon("pipeline"),
+			activePathPrefix: pipelinesUrl,
 		},
 		{
 			title: m.common_navigation_runs(),
-			url: buildLocation({
-				to: "/projects/$project_id/runs",
-				params: { project_id: projectId.project_id },
-			}).pathname,
+			url: runsUrl,
 			icon: getEntityIcon("run"),
+			activePathPrefix: runsUrl,
+		},
+		{
+			title: m.common_navigation_models(),
+			url: "#models",
+			icon: getEntityIcon("model"),
+			disabled: true,
 		},
 		{
 			title: m.common_navigation_artifacts(),
-			url: "#",
+			url: "#artifacts",
 			icon: getEntityIcon("artifact"),
 			disabled: true,
 		},
+		{
+			title: m.common_navigation_deployments(),
+			url: "#deployments",
+			icon: getEntityIcon("deployment"),
+			disabled: true,
+		},
 	];
+}
 
-	return useSidebarItems(projectPreviewNavMain);
+function withActiveState(items: NavbarItem[], pathname: string) {
+	return items.map((item) => ({
+		...item,
+		isActive: item.activePathPrefix
+			? pathname.startsWith(item.activePathPrefix)
+			: item.url === pathname,
+	}));
+}
+
+export function useNavbarItems() {
+	const { pathname } = useLocation();
+	const projectItems = useProjectItems();
+
+	return {
+		navItems: withActiveState([...projectItems, getInfraItem()], pathname),
+		footerItems: withActiveState(getFooterItems(), pathname),
+	};
 }

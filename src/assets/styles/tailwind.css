@@ -4,7 +4,9 @@
 
 @import "./shadcn.css";
 
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/rethink-sans";
+
+@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -13,6 +15,7 @@
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
 
+	--color-window-background: var(--window-background);
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 
@@ -55,7 +58,8 @@
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
-	--font-sans: "Inter Variable", sans-serif;
+	--font-sans: "Rethink Sans Variable", sans-serif;
+	--font-mono: "JetBrains Mono Variable", monospace;
 	--radius-xl: calc(var(--radius) + 4px);
 	--radius-2xl: calc(var(--radius) + 8px);
 	--radius-3xl: calc(var(--radius) + 12px);
@@ -63,6 +67,7 @@
 }
 
 :root {
+	--window-background: oklch(0.949119 0 0);
 	--radius: 0.625rem;
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.145 0 0);
@@ -98,6 +103,7 @@
 }
 
 .dark {
+	--window-background: oklch(0.260325 0 0);
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
@@ -151,5 +157,9 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+	}
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
 	}
 }

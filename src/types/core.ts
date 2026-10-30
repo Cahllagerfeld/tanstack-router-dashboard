@@ -1097,10 +1097,6 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The requested log model.
-		 *
-		 *     Raises:
-		 *         IllegalOperationError: If the logs are not associated
-		 *             with a pipeline run or step run before fetching.
 		 */
 		get: operations["get_logs_api_v1_logs__logs_id__get"];
 		/**
@@ -1115,6 +1111,42 @@ export type paths = {
 		 *         The updated log model.
 		 */
 		put: operations["update_logs_api_v1_logs__logs_id__put"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/logs/{logs_id}/entries": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Logs Entries
+		 * @description Return a page of log entries.
+		 *
+		 *     Args:
+		 *         logs_id: ID of the log stream to read.
+		 *         start: Read from the oldest or newest end of the stream. Defaults
+		 *             to the log store's choice. Pages always use chronological order.
+		 *         limit: Maximum entries to return. Defaults to the log store's page size.
+		 *         before: Cursor towards older entries, from a previous response.
+		 *         after: Cursor towards newer entries, from a previous response.
+		 *             Mutually exclusive with `before`. Unsupported directions return 400.
+		 *         filter_: Filters to apply while retrieving the entries.
+		 *
+		 *     Returns:
+		 *         A page of log entries.
+		 *
+		 *     Raises:
+		 *         ValueError: If runner logs have no associated pipeline run.
+		 */
+		get: operations["get_logs_entries_api_v1_logs__logs_id__entries_get"];
+		put?: never;
 		post?: never;
 		delete?: never;
 		options?: never;
@@ -1821,6 +1853,38 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
+	"/api/v1/pipeline_snapshots/prune": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Prune Pipeline Snapshots
+		 * @description Counts or deletes old anonymous snapshots that nothing references.
+		 *
+		 *     Deleting can take a long time on large databases, so it is scheduled as a
+		 *     maintenance task and the request only returns the task ID.
+		 *
+		 *     Args:
+		 *         prune_request: Which snapshots to prune and whether to delete
+		 *             them or only count them.
+		 *         auth_context: Authentication context.
+		 *
+		 *     Returns:
+		 *         The number of eligible snapshots for a dry run, or the ID of the
+		 *         task deleting them.
+		 */
+		post: operations["prune_pipeline_snapshots_api_v1_pipeline_snapshots_prune_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/api/v1/pipeline_snapshots/{snapshot_id}/download-token": {
 		parameters: {
 			query?: never;
@@ -2172,9 +2236,7 @@ export type paths = {
 		};
 		/**
 		 * Run Logs
-		 * @description Get log entries for efficient pagination.
-		 *
-		 *     This endpoint returns the log entries.
+		 * @description Get the log entries of a pipeline run.
 		 *
 		 *     Args:
 		 *         run_id: ID of the pipeline run.
@@ -3111,8 +3173,9 @@ export type paths = {
 		 *         The updated API key.
 		 *
 		 *     Raises:
-		 *         IllegalOperationError: If the service account was created via external
-		 *             authentication.
+		 *         IllegalOperationError: If an externally managed service account's key
+		 *             or a deprecated workspace key in Pro is updated beyond its active
+		 *             status.
 		 */
 		put: operations["update_api_key_api_v1_service_accounts__service_account_id__api_keys__api_key_name_or_id__put"];
 		post?: never;
@@ -3939,6 +4002,7 @@ export type paths = {
 		 *
 		 *     Args:
 		 *         step_run_id: ID of the step.
+		 *         heartbeat_request: Optional heartbeat request body.
 		 *         auth_context: Authorization/Authentication context.
 		 *
 		 *     Returns:
@@ -4013,7 +4077,7 @@ export type paths = {
 		};
 		/**
 		 * Get Step Logs
-		 * @description Get log entries for a step.
+		 * @description Get the log entries of a step run.
 		 *
 		 *     Args:
 		 *         step_id: ID of the step for which to get the logs.
@@ -5233,173 +5297,6 @@ export type paths = {
 		patch?: never;
 		trace?: never;
 	};
-	"/api/v1/resource_pools": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Resource Pools
-		 * @description Get a list of all resource pools.
-		 *
-		 *     Args:
-		 *         resource_pool_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         List of resource pools matching the filter criteria.
-		 */
-		get: operations["list_resource_pools_api_v1_resource_pools_get"];
-		put?: never;
-		/**
-		 * Create Resource Pool
-		 * @description Creates a resource pool.
-		 *
-		 *     Args:
-		 *         resource_pool: Resource pool to register.
-		 *
-		 *     Returns:
-		 *         The created resource pool.
-		 */
-		post: operations["create_resource_pool_api_v1_resource_pools_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/resource_pools/{resource_pool_id}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * Get Resource Pool
-		 * @description Returns the requested resource pool.
-		 *
-		 *     Args:
-		 *         resource_pool_id: ID of the resource pool.
-		 *         hydrate: Flag deciding whether to hydrate the output model(s)
-		 *             by including metadata fields in the response.
-		 *
-		 *     Returns:
-		 *         The requested resource pool.
-		 */
-		get: operations["get_resource_pool_api_v1_resource_pools__resource_pool_id__get"];
-		/**
-		 * Update Resource Pool
-		 * @description Updates a resource pool.
-		 *
-		 *     Args:
-		 *         resource_pool_id: ID of the resource pool.
-		 *         resource_pool_update: Resource pool to use to update.
-		 *
-		 *     Returns:
-		 *         Updated resource pool.
-		 */
-		put: operations["update_resource_pool_api_v1_resource_pools__resource_pool_id__put"];
-		post?: never;
-		/**
-		 * Delete Resource Pool
-		 * @description Deletes a resource pool.
-		 *
-		 *     Args:
-		 *         resource_pool_id: ID of the resource pool.
-		 */
-		delete: operations["delete_resource_pool_api_v1_resource_pools__resource_pool_id__delete"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/resource_pool_subject_policies": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * List Resource Pool Subject Policies
-		 * @description List resource pool subject policies.
-		 *
-		 *     Args:
-		 *         policy_filter_model: Filter model used for pagination and filtering.
-		 *         hydrate: Whether to include metadata in the response.
-		 *
-		 *     Returns:
-		 *         Matching policies.
-		 */
-		get: operations["list_resource_pool_subject_policies_api_v1_resource_pool_subject_policies_get"];
-		put?: never;
-		/**
-		 * Create Resource Pool Subject Policy
-		 * @description Create a resource pool subject policy.
-		 *
-		 *     Args:
-		 *         policy: Policy request payload.
-		 *
-		 *     Returns:
-		 *         The created policy.
-		 */
-		post: operations["create_resource_pool_subject_policy_api_v1_resource_pool_subject_policies_post"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/v1/resource_pool_subject_policies/{policy_id}": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/**
-		 * Get Resource Pool Subject Policy
-		 * @description Get a resource pool subject policy.
-		 *
-		 *     Args:
-		 *         policy_id: Policy ID.
-		 *         hydrate: Whether to include metadata in the response.
-		 *
-		 *     Returns:
-		 *         The requested policy.
-		 */
-		get: operations["get_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__get"];
-		/**
-		 * Update Resource Pool Subject Policy
-		 * @description Update a resource pool subject policy.
-		 *
-		 *     Args:
-		 *         policy_id: Policy ID.
-		 *         policy_update: Update payload.
-		 *
-		 *     Returns:
-		 *         The updated policy.
-		 */
-		put: operations["update_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__put"];
-		post?: never;
-		/**
-		 * Delete Resource Pool Subject Policy
-		 * @description Delete a resource pool subject policy.
-		 *
-		 *     Args:
-		 *         policy_id: Policy ID.
-		 */
-		delete: operations["delete_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__delete"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	"/api/v1/resource_requests": {
 		parameters: {
 			query?: never;
@@ -5412,8 +5309,8 @@ export type paths = {
 		 * @description Get a list of all resource requests.
 		 *
 		 *     Args:
-		 *         resource_request_filter_model: Filter model used for pagination, sorting,
-		 *             filtering.
+		 *         resource_request_filter_model: Filter model used for pagination,
+		 *             sorting, filtering.
 		 *         hydrate: Flag deciding whether to hydrate the output model(s)
 		 *             by including metadata fields in the response.
 		 *
@@ -5451,14 +5348,60 @@ export type paths = {
 		get: operations["get_resource_request_api_v1_resource_requests__resource_request_id__get"];
 		put?: never;
 		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/resource_requests/{resource_request_id}/renew": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
 		/**
-		 * Delete Resource Request
-		 * @description Deletes a resource request.
+		 * Renew Resource Request
+		 * @description Renew a resource request lease.
 		 *
 		 *     Args:
 		 *         resource_request_id: ID of the resource request.
+		 *         renewal_request: Renewed lease expiration timestamp.
+		 *
+		 *     Returns:
+		 *         The renewed resource request.
 		 */
-		delete: operations["delete_resource_request_api_v1_resource_requests__resource_request_id__delete"];
+		post: operations["renew_resource_request_api_v1_resource_requests__resource_request_id__renew_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/resource_requests/{resource_request_id}/release": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Release Resource Request
+		 * @description Release a resource request on behalf of its owner.
+		 *
+		 *     Args:
+		 *         resource_request_id: ID of the resource request.
+		 *
+		 *     Returns:
+		 *         The released resource request.
+		 */
+		post: operations["release_resource_request_api_v1_resource_requests__resource_request_id__release_post"];
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -5533,6 +5476,9 @@ export type paths = {
 		 *
 		 *     Returns:
 		 *         The updated trigger object.
+		 *
+		 *     Raises:
+		 *         IllegalOperationError: If the update changes the trigger type.
 		 */
 		put: operations["update_trigger_api_v1_triggers__trigger_id__put"];
 		post?: never;
@@ -5570,6 +5516,7 @@ export type paths = {
 		 *
 		 *     Raises:
 		 *         IllegalOperationError: If the trigger is already attached to the snapshot.
+		 *         KeyError: If the trigger and snapshot belong to different projects.
 		 */
 		put: operations["attach_trigger_to_snapshot_api_v1_triggers__trigger_id__pipeline_snapshots__snapshot_id__put"];
 		post?: never;
@@ -5632,6 +5579,180 @@ export type paths = {
 		get: operations["list_supported_events_api_v1_supported_events_get"];
 		put?: never;
 		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/webhooks": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * List Webhooks
+		 * @description List webhooks.
+		 *
+		 *     Args:
+		 *         filter_model: The webhook filters.
+		 *         hydrate: Whether to include intake statistics.
+		 *
+		 *     Returns:
+		 *         A page of webhooks.
+		 */
+		get: operations["list_webhooks_api_v1_webhooks_get"];
+		put?: never;
+		/**
+		 * Create Webhook
+		 * @description Create a project-scoped webhook.
+		 *
+		 *     Args:
+		 *         webhook: The webhook creation request.
+		 *
+		 *     Returns:
+		 *         The created webhook and any generated signing secret.
+		 *
+		 *     Raises:
+		 *         HTTPException: If the webhook provider type is unsupported.
+		 */
+		post: operations["create_webhook_api_v1_webhooks_post"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/webhooks/{webhook_id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Webhook
+		 * @description Get a webhook.
+		 *
+		 *     Args:
+		 *         webhook_id: The webhook ID.
+		 *         hydrate: Whether to include intake statistics.
+		 *
+		 *     Returns:
+		 *         The webhook.
+		 */
+		get: operations["get_webhook_api_v1_webhooks__webhook_id__get"];
+		/**
+		 * Update Webhook
+		 * @description Update a webhook.
+		 *
+		 *     Args:
+		 *         webhook_id: The webhook ID.
+		 *         update: The webhook update.
+		 *
+		 *     Returns:
+		 *         The updated webhook.
+		 */
+		put: operations["update_webhook_api_v1_webhooks__webhook_id__put"];
+		post?: never;
+		/**
+		 * Delete Webhook
+		 * @description Delete a webhook and its signing secret.
+		 *
+		 *     Args:
+		 *         webhook_id: The webhook ID.
+		 */
+		delete: operations["delete_webhook_api_v1_webhooks__webhook_id__delete"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/webhooks/{webhook_id}/events/raw": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Get Raw Webhook Event
+		 * @description Get the retained raw body for a consumed webhook event.
+		 *
+		 *     The delivery ID is a query parameter because provider-defined IDs may not
+		 *     be safe path segments. The response is an extensible envelope so headers
+		 *     can be added in a future API version without changing its shape.
+		 *
+		 *     Args:
+		 *         webhook_id: The webhook ID.
+		 *         delivery_id: The provider or ZenML delivery ID.
+		 *
+		 *     Returns:
+		 *         The raw event envelope in the form ``{"body": {...}}``.
+		 */
+		get: operations["get_raw_webhook_event_api_v1_webhooks__webhook_id__events_raw_get"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/webhooks/{webhook_id}/secret": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		/**
+		 * Rotate Webhook Secret
+		 * @description Rotate a webhook signing secret.
+		 *
+		 *     Args:
+		 *         webhook_id: The webhook ID.
+		 *         request: The secret rotation request.
+		 *
+		 *     Returns:
+		 *         The newly active signing secret.
+		 */
+		put: operations["rotate_webhook_secret_api_v1_webhooks__webhook_id__secret_put"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/v1/webhooks/{webhook_type}/{webhook_id}/events": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Receive Webhook Event
+		 * @description Authenticate and accept a provider webhook event.
+		 *
+		 *     Args:
+		 *         webhook_type: The provider type from the public endpoint path.
+		 *         webhook_id: The webhook ID.
+		 *         request: The raw HTTP request.
+		 *
+		 *     Returns:
+		 *         An empty accepted response.
+		 *
+		 *     Raises:
+		 *         HTTPException: If required provider metadata is malformed.
+		 */
+		post: operations["receive_webhook_event_api_v1_webhooks__webhook_type___webhook_id__events_post"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -7729,12 +7850,7 @@ export type components = {
 		};
 		/**
 		 * LogEntry
-		 * @description A structured log entry with parsed information.
-		 *
-		 *     This is used in two distinct ways:
-		 *         1. If we are using the artifact log store, we save the
-		 *         entries as JSON-serialized LogEntry's in the artifact store.
-		 *         2. When queried, the server returns logs as a list of LogEntry's.
+		 * @description A structured log entry for storage and API responses.
 		 */
 		LogEntry: {
 			/**
@@ -7766,7 +7882,7 @@ export type components = {
 			filename?: string | null;
 			/**
 			 * Lineno
-			 * @description The fileno that generated this log entry
+			 * @description The source line number
 			 */
 			lineno?: number | null;
 			/**
@@ -7784,7 +7900,7 @@ export type components = {
 			/**
 			 * Id
 			 * Format: uuid
-			 * @description The unique identifier of the log entry
+			 * @description Entry identifier. Chunks share an ID and have distinct chunk_index values.
 			 */
 			id?: string;
 		};
@@ -7800,6 +7916,27 @@ export type components = {
 		 * @enum {string}
 		 */
 		LogicalOperators: "or" | "and";
+		/**
+		 * LogsEntriesResponse
+		 * @description A page of log entries with backend continuation cursors.
+		 */
+		LogsEntriesResponse: {
+			/**
+			 * Items
+			 * @description Log entries, ordered from oldest to newest.
+			 */
+			items?: components["schemas"]["LogEntry"][];
+			/**
+			 * Before
+			 * @description Cursor for older entries, or None when continuation in this direction is unavailable.
+			 */
+			before?: string | null;
+			/**
+			 * After
+			 * @description Cursor for newer entries, or None when continuation in this direction is unavailable.
+			 */
+			after?: string | null;
+		};
 		/**
 		 * LogsRequest
 		 * @description Request model for logs.
@@ -7880,10 +8017,26 @@ export type components = {
 			uri?: string | null;
 			/** The source of the logs file */
 			source: string;
+			/**
+			 * Step ID to associate the logs with.
+			 * @description When this is set, pipeline_run_id should be set to None.
+			 */
+			step_run_id?: string | null;
+			/**
+			 * Pipeline run ID to associate the logs with.
+			 * @description When this is set, step_run_id should be set to None.
+			 */
+			pipeline_run_id?: string | null;
+			/** The artifact store ID that collected these logs */
+			artifact_store_id?: string | null;
+			/** The log store ID that collected these logs */
+			log_store_id?: string | null;
+			/** The hook invocation ID to associate the logs with. */
+			hook_invocation_id?: string | null;
 		};
 		/**
 		 * LogsResponseMetadata
-		 * @description Response metadata for logs.
+		 * @description Log metadata, including association IDs for older clients.
 		 */
 		LogsResponseMetadata: {
 			/**
@@ -9021,32 +9174,6 @@ export type components = {
 			/** Items */
 			items: components["schemas"]["ProjectResponse"][];
 		};
-		/** Page[ResourcePoolResponse] */
-		Page_ResourcePoolResponse_: {
-			/** Index */
-			index: number;
-			/** Max Size */
-			max_size: number;
-			/** Total Pages */
-			total_pages: number;
-			/** Total */
-			total: number;
-			/** Items */
-			items: components["schemas"]["ResourcePoolResponse"][];
-		};
-		/** Page[ResourcePoolSubjectPolicyResponse] */
-		Page_ResourcePoolSubjectPolicyResponse_: {
-			/** Index */
-			index: number;
-			/** Max Size */
-			max_size: number;
-			/** Total Pages */
-			total_pages: number;
-			/** Total */
-			total: number;
-			/** Items */
-			items: components["schemas"]["ResourcePoolSubjectPolicyResponse"][];
-		};
 		/** Page[ResourceRequestResponse] */
 		Page_ResourceRequestResponse_: {
 			/** Index */
@@ -9190,8 +9317,8 @@ export type components = {
 			/** Items */
 			items: components["schemas"]["TagResponse"][];
 		};
-		/** Page[Union[ScheduleTriggerResponse, PlatformEventTriggerResponse]] */
-		Page_Union_ScheduleTriggerResponse__PlatformEventTriggerResponse__: {
+		/** Page[Union[ScheduleTriggerResponse, PlatformEventTriggerResponse, WebhookTriggerResponse]] */
+		Page_Union_ScheduleTriggerResponse__PlatformEventTriggerResponse__WebhookTriggerResponse__: {
 			/** Index */
 			index: number;
 			/** Max Size */
@@ -9204,6 +9331,7 @@ export type components = {
 			items: (
 				| components["schemas"]["ScheduleTriggerResponse"]
 				| components["schemas"]["PlatformEventTriggerResponse"]
+				| components["schemas"]["WebhookTriggerResponse"]
 			)[];
 		};
 		/** Page[UserResponse] */
@@ -9218,6 +9346,19 @@ export type components = {
 			total: number;
 			/** Items */
 			items: components["schemas"]["UserResponse"][];
+		};
+		/** Page[WebhookResponse] */
+		Page_WebhookResponse_: {
+			/** Index */
+			index: number;
+			/** Max Size */
+			max_size: number;
+			/** Total Pages */
+			total_pages: number;
+			/** Total */
+			total: number;
+			/** Items */
+			items: components["schemas"]["WebhookResponse"][];
 		};
 		/**
 		 * PartialArtifactConfiguration
@@ -10259,6 +10400,7 @@ export type components = {
 			trigger?:
 				| components["schemas"]["ScheduleTriggerResponse"]
 				| components["schemas"]["PlatformEventTriggerResponse"]
+				| components["schemas"]["WebhookTriggerResponse"]
 				| null;
 			/** The original run that was replayed to create this run. */
 			original_run?: components["schemas"]["PipelineRunResponse"] | null;
@@ -10309,6 +10451,40 @@ export type components = {
 			add_logs?: components["schemas"]["LogsRequest"][] | null;
 		};
 		/**
+		 * PipelineSnapshotPruneRequest
+		 * @description Request model for pruning unused pipeline snapshots.
+		 */
+		PipelineSnapshotPruneRequest: {
+			/**
+			 * The project whose snapshots should be pruned.
+			 * Format: uuid
+			 */
+			project: string;
+			/**
+			 * Only snapshots created before this point in time are pruned.
+			 * Format: date-time
+			 */
+			older_than: string;
+			/**
+			 * Whether to delete the eligible snapshots. If false, the eligible snapshots are only counted.
+			 * @default false
+			 */
+			apply: boolean;
+		};
+		/**
+		 * PipelineSnapshotPruneResponse
+		 * @description Response model for pruning unused pipeline snapshots.
+		 */
+		PipelineSnapshotPruneResponse: {
+			/**
+			 * The number of eligible snapshots for a dry run, or the number of deleted snapshots. Unset if the deletion was scheduled in the background.
+			 * @description Deleting a snapshot can make the snapshot it was derived from eligible as well, so the number of eventually deleted snapshots can exceed the count reported by a dry run.
+			 */
+			snapshot_count?: number | null;
+			/** ID of the background task deleting the snapshots. Only set if the deletion was scheduled in the background. */
+			task_id?: string | null;
+		};
+		/**
 		 * PipelineSnapshotRequest
 		 * @description Request model for pipeline snapshots.
 		 */
@@ -10357,7 +10533,10 @@ export type components = {
 			description?: string | null;
 			/** The source code of the pipeline function or class. */
 			source_code?: string | null;
-			/** Whether to replace the existing snapshot with the same name. */
+			/**
+			 * Whether to replace the existing snapshot with the same name.
+			 * @description The superseded snapshot is deleted unless runs, deployments, triggers or other snapshots still reference it, in which case it is archived (kept without a name).
+			 */
 			replace?: boolean | null;
 			/** Tags of the snapshot. */
 			tags?: string[] | null;
@@ -10553,7 +10732,10 @@ export type components = {
 			name?: boolean | string | null;
 			/** The description of the snapshot. */
 			description?: string | null;
-			/** Whether to replace the existing snapshot with the same name. */
+			/**
+			 * Whether to replace the existing snapshot with the same name.
+			 * @description The superseded snapshot is deleted unless runs, deployments, triggers or other snapshots still reference it, in which case it is archived (kept without a name).
+			 */
 			replace?: boolean | null;
 			/** New tags to add to the snapshot. */
 			add_tags?: string[] | null;
@@ -10916,261 +11098,176 @@ export type components = {
 		};
 		/**
 		 * ResourcePoolAllocation
-		 * @description Resource pool allocation.
+		 * @description Allocation grant linked to a resource request.
 		 */
 		ResourcePoolAllocation: {
-			/** The request that is allocated to the resource pool. */
-			request: components["schemas"]["ResourceRequestResponse"];
-			/** The priority of the component in the resource pool. */
-			priority: number | null;
 			/**
-			 * The time the resource pool was allocated.
-			 * Format: date-time
-			 */
-			allocated_at: string;
-		};
-		/**
-		 * ResourcePoolQueueItem
-		 * @description Resource pool queue item.
-		 */
-		ResourcePoolQueueItem: {
-			/** The request that is queued for the resource pool. */
-			request: components["schemas"]["ResourceRequestResponse"];
-			/** The priority of the request in the resource pool. */
-			priority: number;
-		};
-		/**
-		 * ResourcePoolRequest
-		 * @description Request model for resource pool creation.
-		 */
-		ResourcePoolRequest: {
-			/** The id of the user that created this resource. Set automatically by the server. */
-			user?: string | null;
-			/** The name of the resource pool. */
-			name: string;
-			/** The description of the resource pool */
-			description?: string | null;
-			/** The capacity of the resource pool. */
-			capacity: {
-				[key: string]: number;
-			};
-		};
-		/**
-		 * ResourcePoolResponse
-		 * @description Response model for resource pools.
-		 */
-		ResourcePoolResponse: {
-			/** The body of the resource. */
-			body?: components["schemas"]["ResourcePoolResponseBody"] | null;
-			/** The metadata related to this resource. */
-			metadata?: components["schemas"]["ResourcePoolResponseMetadata"] | null;
-			/** The resources related to this resource. */
-			resources?: components["schemas"]["ResourcePoolResponseResources"] | null;
-			/**
-			 * The unique resource id.
+			 * The unique allocation ID.
 			 * Format: uuid
 			 */
 			id: string;
 			/**
-			 * Permission Denied
-			 * @default false
-			 */
-			permission_denied: boolean;
-			/** The name of the resource pool. */
-			name: string;
-		};
-		/**
-		 * ResourcePoolResponseBody
-		 * @description Response body for resource pools.
-		 */
-		ResourcePoolResponseBody: {
-			/**
-			 * The timestamp when this resource was created.
-			 * Format: date-time
-			 */
-			created: string;
-			/**
-			 * The timestamp when this resource was last updated.
-			 * Format: date-time
-			 */
-			updated: string;
-			/** The user id. */
-			user_id?: string | null;
-			/** The number of queued requests for the resource pool. */
-			queue_length: number;
-			/** The capacity of the resource pool. */
-			capacity: {
-				[key: string]: number;
-			};
-			/** The occupied resources of the resource pool. */
-			occupied_resources: {
-				[key: string]: number;
-			};
-		};
-		/**
-		 * ResourcePoolResponseMetadata
-		 * @description Response metadata for resource pools.
-		 */
-		ResourcePoolResponseMetadata: {
-			/**
-			 * The description of the resource pool
-			 * @default
-			 */
-			description: string | null;
-			/**
-			 * The active allocations for the resource pool.
-			 * @default []
-			 */
-			active_requests: components["schemas"]["ResourcePoolAllocation"][];
-			/**
-			 * The queued requests for the resource pool.
-			 * @default []
-			 */
-			queued_requests: components["schemas"]["ResourcePoolQueueItem"][];
-		};
-		/**
-		 * ResourcePoolResponseResources
-		 * @description Response resources for resource pools.
-		 */
-		ResourcePoolResponseResources: {
-			/** The user who created this resource. */
-			user?: components["schemas"]["UserResponse"] | null;
-		} & {
-			[key: string]: unknown;
-		};
-		/**
-		 * ResourcePoolSubjectPolicyRequest
-		 * @description Resource pool subject policy request.
-		 */
-		ResourcePoolSubjectPolicyRequest: {
-			/** The id of the user that created this resource. Set automatically by the server. */
-			user?: string | null;
-			/**
-			 * The ID of the component that is the subject of the policy.
+			 * The allocated resource request ID.
 			 * Format: uuid
 			 */
-			component_id: string;
+			request_id: string;
+			/** The zero-based request demand index this grant satisfies, or None for grant-default allocations. */
+			demand_index?: number | null;
 			/**
-			 * The ID of the resource pool that the policy is attached to.
+			 * The resource pool ID.
 			 * Format: uuid
 			 */
 			pool_id: string;
-			/** The priority of the policy in the resource pool. Higher means preferred. */
+			/** The resource pool name. */
+			pool_name?: string | null;
+			/** The ownership scope of the resource pool. */
+			pool_scope?: components["schemas"]["ResourcePoolScope"] | null;
+			/** The selected resource pool capacity entry ID. */
+			capacity_entry_id?: string | null;
+			/** The selected resource pool capacity entry name. */
+			capacity_entry_name?: string | null;
+			/**
+			 * The allocated resource descriptor ID.
+			 * Format: uuid
+			 */
+			resource_id: string;
+			/** The allocated resource descriptor name. */
+			resource?: string | null;
+			/** The allocated resource descriptor kind. */
+			resource_kind: string;
+			/** The allocated capacity class. */
+			class: string;
+			/** The allocated quantity. */
+			quantity: number;
+			/** The optional unit for the allocated quantity. */
+			unit?: string | null;
+			/** The allocated quantity converted to the descriptor base unit. */
+			base_quantity?: number | null;
+			/**
+			 * The policy that admitted this allocation.
+			 * Format: uuid
+			 */
+			policy_id: string;
+			/** The policy grant that matched the demand, if any. */
+			grant_id?: string | null;
+			/** The priority snapshot for this allocation. */
 			priority: number;
-			/** The resources that are reserved for the policy. */
-			reserved?: {
-				[key: string]: number;
-			} | null;
-			/** The maximum resources that the policy can use. */
-			limit?: {
-				[key: string]: number;
-			} | null;
+			/**
+			 * Whether this allocation uses the priority lane.
+			 * @default false
+			 */
+			priority_lane: boolean;
+			/** The stack component ID selected for this allocation. */
+			component_id?: string | null;
+			/** The external account ID selected for this allocation. */
+			account_id?: string | null;
+			/** The preemption state. */
+			preemption_state: string;
+			/** The preemption reason. */
+			preemption_reason?: string | null;
+			/** The release timestamp. */
+			released_at?: string | null;
+			/** The allocation creation timestamp. */
+			created?: string | null;
+			/** The allocation last update timestamp. */
+			updated?: string | null;
 		};
 		/**
-		 * ResourcePoolSubjectPolicyResponse
-		 * @description Response model for resource pool subject policies.
+		 * ResourcePoolQueueItem
+		 * @description Queue item linked to a resource request.
 		 */
-		ResourcePoolSubjectPolicyResponse: {
-			/** The body of the resource. */
-			body?:
-				| components["schemas"]["ResourcePoolSubjectPolicyResponseBody"]
-				| null;
-			/** The metadata related to this resource. */
-			metadata?:
-				| components["schemas"]["ResourcePoolSubjectPolicyResponseMetadata"]
-				| null;
-			/** The resources related to this resource. */
-			resources?:
-				| components["schemas"]["ResourcePoolSubjectPolicyResponseResources"]
-				| null;
+		ResourcePoolQueueItem: {
 			/**
-			 * The unique resource id.
+			 * The unique queue item ID.
 			 * Format: uuid
 			 */
 			id: string;
 			/**
-			 * Permission Denied
+			 * The queued resource request ID.
+			 * Format: uuid
+			 */
+			request_id: string;
+			/**
+			 * The resource pool ID.
+			 * Format: uuid
+			 */
+			pool_id: string;
+			/** The resource pool name. */
+			pool_name?: string | null;
+			/** The ownership scope of the resource pool. */
+			pool_scope?: components["schemas"]["ResourcePoolScope"] | null;
+			/**
+			 * The resource policy ID.
+			 * Format: uuid
+			 */
+			policy_id: string;
+			/** The priority snapshot for this queue item. */
+			priority: number;
+			/**
+			 * Whether this queue item uses the priority lane.
 			 * @default false
 			 */
-			permission_denied: boolean;
-		};
-		/**
-		 * ResourcePoolSubjectPolicyResponseBody
-		 * @description Response body for resource pool subject policies.
-		 */
-		ResourcePoolSubjectPolicyResponseBody: {
+			priority_lane: boolean;
 			/**
-			 * The timestamp when this resource was created.
+			 * The queue insertion timestamp.
 			 * Format: date-time
 			 */
-			created: string;
+			enqueued_at: string;
+			/** The queue entry creation timestamp. */
+			created?: string | null;
+		};
+		/**
+		 * ResourcePoolScope
+		 * @description Ownership scopes for resource pools.
+		 * @enum {string}
+		 */
+		ResourcePoolScope: "global" | "organization" | "workspace";
+		/**
+		 * ResourceRequestDemand
+		 * @description Resource demand for a Resource Manager-backed request.
+		 */
+		ResourceRequestDemand: {
+			/** The exact resource descriptor ID. */
+			resource_id?: string | null;
+			/** The exact resource descriptor name. */
+			resource?: string | null;
+			/** The optional resource descriptor kind. */
+			kind?: string | null;
+			/** The resource quantity requested. */
+			quantity: number;
+			/** The optional unit for the requested quantity. */
+			unit?: string | null;
+			/** The exact capacity class. */
+			class?: string | null;
+			/** Selector over resource descriptor fields and attributes. */
+			resource_selector?: {
+				[key: string]: unknown;
+			} | null;
+			/** Selector over capacity class fields and attributes. */
+			class_selector?: {
+				[key: string]: unknown;
+			} | null;
+		};
+		/**
+		 * ResourceRequestReclaimTolerance
+		 * @description Caller tolerance for reclaiming lower-priority work on a request.
+		 * @enum {string}
+		 */
+		ResourceRequestReclaimTolerance: "none" | "coordinated" | "any";
+		/**
+		 * ResourceRequestRenewalRequest
+		 * @description Request model for renewing a resource request lease.
+		 */
+		ResourceRequestRenewalRequest: {
 			/**
-			 * The timestamp when this resource was last updated.
+			 * The renewed lease expiration timestamp.
 			 * Format: date-time
 			 */
-			updated: string;
-			/** The user id. */
-			user_id?: string | null;
-			/** The priority of the policy in the resource pool. Higher means preferred. */
-			priority: number;
-			/** The resources that are reserved for the policy. */
-			reserved: {
-				[key: string]: number;
-			};
-			/** The maximum resources that the policy can use. */
-			limit: {
-				[key: string]: number;
-			};
-		};
-		/**
-		 * ResourcePoolSubjectPolicyResponseMetadata
-		 * @description Response metadata for resource pool subject policies.
-		 */
-		ResourcePoolSubjectPolicyResponseMetadata: Record<string, never>;
-		/**
-		 * ResourcePoolSubjectPolicyResponseResources
-		 * @description Response resources for resource pool subject policies.
-		 */
-		ResourcePoolSubjectPolicyResponseResources: {
-			/** The user who created this resource. */
-			user?: components["schemas"]["UserResponse"] | null;
-			/** The component that is requesting the resources. */
-			component: components["schemas"]["ComponentResponse"];
-			/** The resource pool that the policy is attached to. */
-			pool: components["schemas"]["ResourcePoolResponse"];
-		} & {
-			[key: string]: unknown;
-		};
-		/**
-		 * ResourcePoolSubjectPolicyUpdate
-		 * @description Update model for resource pool subject policies.
-		 */
-		ResourcePoolSubjectPolicyUpdate: {
-			/** The priority of the policy in the resource pool. Higher means preferred. */
-			priority: number;
-			/** The resources that are reserved for the policy. */
-			reserved?: {
-				[key: string]: number;
-			} | null;
-			/** The maximum resources that the policy can use. */
-			limit?: {
-				[key: string]: number;
-			} | null;
-		};
-		/**
-		 * ResourcePoolUpdate
-		 * @description Update model for resource pools.
-		 */
-		ResourcePoolUpdate: {
-			/** The description of the resource pool */
-			description?: string | null;
-			/**
-			 * The capacity of the resource pool.
-			 * @description The capacity of the resource pool. Setting a value to 0 will remove the resource from the pool.
-			 */
-			capacity?: {
-				[key: string]: number;
-			} | null;
+			lease_expires_at: string;
+			/** The optional owner-reported runtime state. */
+			runtime_state?:
+				| components["schemas"]["ResourceRequestRuntimeState"]
+				| null;
 		};
 		/**
 		 * ResourceRequestResponse
@@ -11215,16 +11312,59 @@ export type components = {
 			updated: string;
 			/** The user id. */
 			user_id?: string | null;
-			/** The resources requested. */
-			requested_resources: {
-				[key: string]: number;
-			};
+			/** Stack components associated with the request. */
+			component_ids?: string[];
+			/** The step run associated with the resource request. */
+			step_run_id?: string | null;
+			/** The pipeline run associated with the resource request. */
+			pipeline_run_id?: string | null;
+			/** The resource pool selected for the resource request. */
+			pool_id?: string | null;
+			/** The pipeline step name associated with the resource request. */
+			step_name?: string | null;
+			/** The pipeline run name associated with the resource request. */
+			pipeline_run_name?: string | null;
+			/** The project that owns the pipeline run for this request. */
+			project_id?: string | null;
+			/** The resource pool name selected for the resource request. */
+			pool_name?: string | null;
+			/** The ownership scope of the selected resource pool. */
+			pool_scope?: components["schemas"]["ResourcePoolScope"] | null;
+			/** Selector over pool attributes requested for the resource request. */
+			pool_selector?: {
+				[key: string]: unknown;
+			} | null;
+			/** The request-level fallback preemption group selector. */
+			preemption_group?: {
+				[key: string]: unknown;
+			} | null;
+			/** The resource demands requested. */
+			demands?: components["schemas"]["ResourceRequestDemand"][];
 			/** The status of the resource request. */
 			status: components["schemas"]["ResourceRequestStatus"];
+			/**
+			 * The owner-reported runtime state of the request.
+			 * @default unknown
+			 */
+			runtime_state: components["schemas"]["ResourceRequestRuntimeState"];
+			/** The capacity reclaim behavior tolerated by this request. */
+			reclaim_tolerance: components["schemas"]["ResourceRequestReclaimTolerance"];
+			/** The optional lease expiration timestamp. */
+			lease_expires_at?: string | null;
+			/** The deadline for waiting on future time-gated admission routes. */
+			allocation_deadline?: string | null;
+			/** The optional lease renewal timestamp. */
+			renewed_at?: string | null;
+			/** The timestamp when capacity was first granted. */
+			allocated_at?: string | null;
+			/** The timestamp when the request was released. */
+			released_at?: string | null;
+			/** The timestamp when the request first entered a pool queue. */
+			queued_at?: string | null;
 			/** The reason for the status of the resource request. */
 			status_reason?: string | null;
-			/** Whether this request can be preempted. */
-			preemptible: boolean;
+			/** The request that initiated preemption. */
+			preemption_initiated_by_id?: string | null;
 		};
 		/**
 		 * ResourceRequestResponseMetadata
@@ -11238,17 +11378,28 @@ export type components = {
 		ResourceRequestResponseResources: {
 			/** The user who created this resource. */
 			user?: components["schemas"]["UserResponse"] | null;
-			/** The component that is requesting the resources. */
-			component?: components["schemas"]["ComponentResponse"] | null;
-			/** The step run that is requesting the resources. */
-			step_run?: components["schemas"]["StepRunResponse"] | null;
-			/** The pipeline run that is requesting the resources. */
-			pipeline_run?: components["schemas"]["PipelineRunResponse"] | null;
-			/** The pool that the resource request is/was running in. */
-			pool?: components["schemas"]["ResourcePoolResponse"] | null;
+			/** Stack component settings selected for this request. */
+			component_settings?: {
+				[key: string]: unknown;
+			};
+			/** Allocation grants linked to this request. */
+			allocations?: components["schemas"]["ResourcePoolAllocation"][];
+			/** Pool queue memberships linked to this request. */
+			queue_entries?: components["schemas"]["ResourcePoolQueueItem"][];
 		} & {
 			[key: string]: unknown;
 		};
+		/**
+		 * ResourceRequestRuntimeState
+		 * @description Owner-reported runtime states for resource requests.
+		 * @enum {string}
+		 */
+		ResourceRequestRuntimeState:
+			| "unknown"
+			| "pending"
+			| "submitted"
+			| "running"
+			| "idle";
 		/**
 		 * ResourceRequestStatus
 		 * @description Resource request statuses.
@@ -11261,7 +11412,9 @@ export type components = {
 			| "preempted"
 			| "cancelled"
 			| "rejected"
-			| "released";
+			| "released"
+			| "expired"
+			| "no_matching_pool";
 		/**
 		 * ResourceTypeModel
 		 * @description Resource type specification.
@@ -13938,6 +14091,14 @@ export type components = {
 			};
 		};
 		/**
+		 * StepHeartbeatRequest
+		 * @description Light-weight model for Step Heartbeat requests.
+		 */
+		StepHeartbeatRequest: {
+			/** Seconds the server should wait before considering the heartbeat client dead. */
+			heartbeat_liveness_timeout_seconds?: number | null;
+		};
+		/**
 		 * StepHeartbeatResponse
 		 * @description Light-weight model for Step Heartbeat responses.
 		 */
@@ -14085,6 +14246,8 @@ export type components = {
 			dynamic_config?: components["schemas"]["Step-Input"] | null;
 			/** The ID of the component that requested the resources for the step run. */
 			resource_requester?: string | null;
+			/** The runtime mode used to decide resource request semantics. */
+			resource_request_runtime?: components["schemas"]["StepRuntime"] | null;
 		};
 		/**
 		 * StepRunResponse
@@ -14148,6 +14311,8 @@ export type components = {
 			latest_heartbeat?: string | null;
 			/** The ID of the model version that was configured by this step run explicitly. */
 			model_version_id?: string | null;
+			/** The ID of an externally managed resource request for the step run. */
+			resource_request_id?: string | null;
 			/**
 			 * The substitutions of the step run.
 			 * @default {}
@@ -14627,13 +14792,17 @@ export type components = {
 			upstream_run_id?: string | null;
 			/** Upstream Pipeline Ids */
 			upstream_pipeline_ids?: string[];
+			/** Webhook Upstream Event */
+			webhook_upstream_event?: {
+				[key: string]: components["schemas"]["WebhookTriggerExecutionInfo"];
+			} | null;
 		};
 		/**
 		 * TriggerFlavor
 		 * @description Enum representing trigger flavors.
 		 * @enum {string}
 		 */
-		TriggerFlavor: "native schedule" | "platform event";
+		TriggerFlavor: "native schedule" | "platform event" | "webhook";
 		/**
 		 * TriggerResponseMetadata
 		 * @description Response metadata for triggers.
@@ -14656,6 +14825,7 @@ export type components = {
 			 */
 			executable_snapshots: components["schemas"]["PipelineSnapshotResponse"][];
 			latest_run?: components["schemas"]["PipelineRunResponse"] | null;
+			webhook?: components["schemas"]["WebhookResponse"] | null;
 			/** Snapshot Dispatch States */
 			snapshot_dispatch_states?: {
 				[key: string]: components["schemas"]["TriggerSnapshotDispatchState"];
@@ -14731,7 +14901,7 @@ export type components = {
 		 * @description Enum representing fundamental trigger types.
 		 * @enum {string}
 		 */
-		TriggerType: "schedule" | "platform_event";
+		TriggerType: "schedule" | "platform_event" | "webhook";
 		/**
 		 * UserRequest
 		 * @description Request model for users.
@@ -14752,6 +14922,10 @@ export type components = {
 			external_user_id?: string | null;
 			/** The metadata associated with the user. */
 			user_metadata?: {
+				[key: string]: unknown;
+			} | null;
+			/** Claims synchronized from the external OIDC provider. */
+			oidc_claims?: {
 				[key: string]: unknown;
 			} | null;
 			/** The avatar URL for the account. */
@@ -14861,6 +15035,13 @@ export type components = {
 			user_metadata: {
 				[key: string]: unknown;
 			};
+			/**
+			 * Claims synchronized from the external OIDC provider.
+			 * @default {}
+			 */
+			oidc_claims: {
+				[key: string]: unknown;
+			};
 		};
 		/**
 		 * UserResponseResources
@@ -14889,6 +15070,10 @@ export type components = {
 			external_user_id?: string | null;
 			/** The metadata associated with the user. */
 			user_metadata?: {
+				[key: string]: unknown;
+			} | null;
+			/** Claims synchronized from the external OIDC provider. */
+			oidc_claims?: {
 				[key: string]: unknown;
 			} | null;
 			/** The avatar URL for the account. */
@@ -14953,6 +15138,365 @@ export type components = {
 		 * @enum {string}
 		 */
 		VisualizationType: "csv" | "html" | "image" | "markdown" | "json";
+		/**
+		 * WebhookCreateResponse
+		 * @description Created webhook with a generated secret when applicable.
+		 */
+		WebhookCreateResponse: {
+			/** The body of the resource. */
+			body?: components["schemas"]["WebhookResponseBody"] | null;
+			/** The metadata related to this resource. */
+			metadata?: components["schemas"]["WebhookResponseMetadata"] | null;
+			/** The resources related to this resource. */
+			resources?: components["schemas"]["WebhookResponseResources"] | null;
+			/**
+			 * The unique resource id.
+			 * Format: uuid
+			 */
+			id: string;
+			/**
+			 * Permission Denied
+			 * @default false
+			 */
+			permission_denied: boolean;
+			/** Name */
+			name: string;
+			/** Secret */
+			secret?: string | null;
+		};
+		/**
+		 * WebhookRequest
+		 * @description Request model for creating a webhook.
+		 */
+		WebhookRequest: {
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
+			/**
+			 * The project to which this resource belongs.
+			 * Format: uuid
+			 */
+			project: string;
+			/** Name */
+			name: string;
+			/** Webhook Type */
+			webhook_type: string;
+			/**
+			 * Active
+			 * @default true
+			 */
+			active: boolean;
+			/**
+			 * Secret
+			 * @description Optional signing secret. A secret is generated when omitted.
+			 */
+			secret?: string | null;
+		};
+		/**
+		 * WebhookResponse
+		 * @description Response model for a webhook.
+		 */
+		WebhookResponse: {
+			/** The body of the resource. */
+			body?: components["schemas"]["WebhookResponseBody"] | null;
+			/** The metadata related to this resource. */
+			metadata?: components["schemas"]["WebhookResponseMetadata"] | null;
+			/** The resources related to this resource. */
+			resources?: components["schemas"]["WebhookResponseResources"] | null;
+			/**
+			 * The unique resource id.
+			 * Format: uuid
+			 */
+			id: string;
+			/**
+			 * Permission Denied
+			 * @default false
+			 */
+			permission_denied: boolean;
+			/** Name */
+			name: string;
+		};
+		/**
+		 * WebhookResponseBody
+		 * @description Response body for a webhook.
+		 */
+		WebhookResponseBody: {
+			/**
+			 * The timestamp when this resource was created.
+			 * Format: date-time
+			 */
+			created: string;
+			/**
+			 * The timestamp when this resource was last updated.
+			 * Format: date-time
+			 */
+			updated: string;
+			/** The user id. */
+			user_id?: string | null;
+			/**
+			 * The project id.
+			 * Format: uuid
+			 */
+			project_id: string;
+			/** Webhook Type */
+			webhook_type: string;
+			/** Active */
+			active: boolean;
+			/** Endpoint Url */
+			endpoint_url?: string | null;
+		};
+		/**
+		 * WebhookResponseMetadata
+		 * @description Response metadata for a webhook.
+		 */
+		WebhookResponseMetadata: {
+			stats?: components["schemas"]["WebhookStats"];
+		};
+		/**
+		 * WebhookResponseResources
+		 * @description Resources associated with a webhook.
+		 */
+		WebhookResponseResources: {
+			/** The user who created this resource. */
+			user?: components["schemas"]["UserResponse"] | null;
+		} & {
+			[key: string]: unknown;
+		};
+		/**
+		 * WebhookRotateSecretRequest
+		 * @description Request model for rotating a webhook secret.
+		 */
+		WebhookRotateSecretRequest: {
+			/**
+			 * Secret
+			 * @description Optional direct replacement secret.
+			 */
+			secret?: string | null;
+		};
+		/**
+		 * WebhookSecretResponse
+		 * @description One-time response containing a newly active signing secret.
+		 */
+		WebhookSecretResponse: {
+			/**
+			 * Secret
+			 * Format: password
+			 */
+			secret: string;
+		};
+		/**
+		 * WebhookStats
+		 * @description Intake statistics for a webhook.
+		 */
+		WebhookStats: {
+			/**
+			 * Received Count
+			 * @default 0
+			 */
+			received_count: number;
+			/**
+			 * Accepted Count
+			 * @default 0
+			 */
+			accepted_count: number;
+			/**
+			 * Auth Failed Count
+			 * @default 0
+			 */
+			auth_failed_count: number;
+			/**
+			 * Invalid Payload Count
+			 * @default 0
+			 */
+			invalid_payload_count: number;
+			/** Last Received At */
+			last_received_at?: string | null;
+			/** Last Accepted At */
+			last_accepted_at?: string | null;
+			/** Last Error At */
+			last_error_at?: string | null;
+			/** Last Error Summary */
+			last_error_summary?: string | null;
+		};
+		/**
+		 * WebhookTriggerExecutionInfo
+		 * @description Information about the webhook event that triggered a pipeline run.
+		 */
+		WebhookTriggerExecutionInfo: {
+			/**
+			 * Webhook Id
+			 * Format: uuid
+			 */
+			webhook_id: string;
+			/** Delivery Id */
+			delivery_id: string;
+			/** Event Type */
+			event_type?: string | null;
+			/** Event */
+			event?: {
+				[key: string]: unknown;
+			} | null;
+		};
+		/**
+		 * WebhookTriggerRequest
+		 * @description Class representing a webhook trigger request.
+		 */
+		WebhookTriggerRequest: {
+			/**
+			 * Name
+			 * @description The name of the trigger.
+			 */
+			name: string;
+			/**
+			 * Active
+			 * @description Whether the trigger should be active.
+			 * @default true
+			 */
+			active: boolean;
+			/**
+			 * @description discriminator enum property added by openapi-typescript
+			 * @enum {string}
+			 */
+			type: "webhook";
+			/**
+			 * @description How to handle concurrently running triggers (pipeline runs generated from the same trigger & snapshot).
+			 * @default skip
+			 */
+			concurrency: components["schemas"]["TriggerRunConcurrency"];
+			/** The id of the user that created this resource. Set automatically by the server. */
+			user?: string | null;
+			/**
+			 * The project to which this resource belongs.
+			 * Format: uuid
+			 */
+			project: string;
+			/**
+			 * Flavor
+			 * @default webhook
+			 * @constant
+			 */
+			flavor: "webhook";
+			/**
+			 * Webhook Id
+			 * Format: uuid
+			 */
+			webhook_id: string;
+			/** Configuration */
+			configuration: {
+				[key: string]: unknown;
+			};
+		};
+		/**
+		 * WebhookTriggerResponse
+		 * @description Class representing a webhook trigger response.
+		 */
+		WebhookTriggerResponse: {
+			/** The body of the resource. */
+			body?: components["schemas"]["WebhookTriggerResponseBody"] | null;
+			/** The metadata related to this resource. */
+			metadata?: components["schemas"]["TriggerResponseMetadata"] | null;
+			/** The resources related to this resource. */
+			resources?: components["schemas"]["TriggerResponseResources"] | null;
+			/**
+			 * The unique resource id.
+			 * Format: uuid
+			 */
+			id: string;
+			/**
+			 * Permission Denied
+			 * @default false
+			 */
+			permission_denied: boolean;
+		};
+		/**
+		 * WebhookTriggerResponseBody
+		 * @description Class representing a webhook trigger response body.
+		 */
+		WebhookTriggerResponseBody: {
+			/**
+			 * Name
+			 * @description The name of the trigger.
+			 */
+			name: string;
+			/**
+			 * Active
+			 * @description Whether the trigger should be active.
+			 * @default true
+			 */
+			active: boolean;
+			type: components["schemas"]["TriggerType"];
+			/**
+			 * @description How to handle concurrently running triggers (pipeline runs generated from the same trigger & snapshot).
+			 * @default skip
+			 */
+			concurrency: components["schemas"]["TriggerRunConcurrency"];
+			/**
+			 * The timestamp when this resource was created.
+			 * Format: date-time
+			 */
+			created: string;
+			/**
+			 * The timestamp when this resource was last updated.
+			 * Format: date-time
+			 */
+			updated: string;
+			/** The user id. */
+			user_id?: string | null;
+			/**
+			 * The project id.
+			 * Format: uuid
+			 */
+			project_id: string;
+			/** Is Archived */
+			is_archived: boolean;
+			flavor: components["schemas"]["TriggerFlavor"];
+			/** Configuration */
+			configuration: {
+				[key: string]: unknown;
+			};
+			/** Webhook Id */
+			webhook_id?: string | null;
+		};
+		/**
+		 * WebhookTriggerUpdate
+		 * @description Class representing a webhook trigger update.
+		 */
+		WebhookTriggerUpdate: {
+			/**
+			 * Name
+			 * @description The name of the trigger.
+			 */
+			name: string;
+			/**
+			 * Active
+			 * @description Whether the trigger should be active.
+			 * @default true
+			 */
+			active: boolean;
+			/**
+			 * @description discriminator enum property added by openapi-typescript
+			 * @enum {string}
+			 */
+			type: "webhook";
+			/**
+			 * @description How to handle concurrently running triggers (pipeline runs generated from the same trigger & snapshot).
+			 * @default skip
+			 */
+			concurrency: components["schemas"]["TriggerRunConcurrency"];
+			/** Configuration */
+			configuration: {
+				[key: string]: unknown;
+			};
+		};
+		/**
+		 * WebhookUpdate
+		 * @description Request model for updating a webhook.
+		 */
+		WebhookUpdate: {
+			/** Name */
+			name?: string | null;
+			/** Active */
+			active?: boolean | null;
+		};
 		/** _CallStep */
 		_CallStep: {
 			/** Attribute Name */
@@ -18050,6 +18594,109 @@ export interface operations {
 			};
 		};
 	};
+	get_logs_entries_api_v1_logs__logs_id__entries_get: {
+		parameters: {
+			query?: {
+				start?: ("oldest" | "newest") | null;
+				limit?: number | null;
+				before?: string | null;
+				after?: string | null;
+				search?: string | null;
+				level?: components["schemas"]["LoggingLevels"] | null;
+				since?: string | null;
+				until?: string | null;
+			};
+			header?: never;
+			path: {
+				logs_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["LogsEntriesResponse"];
+				};
+			};
+			/** @description Bad Request */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Too Many Requests */
+			429: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Bad Gateway */
+			502: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Service Unavailable */
+			503: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
 	list_models_api_v1_models_get: {
 		parameters: {
 			query?: {
@@ -20320,6 +20967,66 @@ export interface operations {
 			};
 			/** @description Unprocessable Entity */
 			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	prune_pipeline_snapshots_api_v1_pipeline_snapshots_prune_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["PipelineSnapshotPruneRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["PipelineSnapshotPruneResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Too Many Requests */
+			429: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -26132,7 +26839,13 @@ export interface operations {
 			};
 			cookie?: never;
 		};
-		requestBody?: never;
+		requestBody?: {
+			content: {
+				"application/json":
+					| components["schemas"]["StepHeartbeatRequest"]
+					| null;
+			};
+		};
 		responses: {
 			/** @description Successful Response */
 			200: {
@@ -29595,624 +30308,6 @@ export interface operations {
 			};
 		};
 	};
-	list_resource_pools_api_v1_resource_pools_get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | string[] | null;
-				created?: string | string[] | null;
-				updated?: string | string[] | null;
-				scope_user?: string | null;
-				user?: string | string[] | null;
-				name?: string | string[] | null;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["Page_ResourcePoolResponse_"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_resource_pool_api_v1_resource_pools_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ResourcePoolRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	get_resource_pool_api_v1_resource_pools__resource_pool_id__get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-			};
-			header?: never;
-			path: {
-				resource_pool_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	update_resource_pool_api_v1_resource_pools__resource_pool_id__put: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				resource_pool_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ResourcePoolUpdate"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	delete_resource_pool_api_v1_resource_pools__resource_pool_id__delete: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				resource_pool_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": unknown;
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	list_resource_pool_subject_policies_api_v1_resource_pool_subject_policies_get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-				sort_by?: string;
-				logical_operator?: components["schemas"]["LogicalOperators"];
-				page?: number;
-				size?: number;
-				id?: string | string[] | null;
-				created?: string | string[] | null;
-				updated?: string | string[] | null;
-				scope_user?: string | null;
-				user?: string | string[] | null;
-				pool_id?: string | string[] | null;
-				component_id?: string | string[] | null;
-				priority?: number | string | (number | string)[] | null;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["Page_ResourcePoolSubjectPolicyResponse_"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	create_resource_pool_subject_policy_api_v1_resource_pool_subject_policies_post: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ResourcePoolSubjectPolicyRequest"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolSubjectPolicyResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Conflict */
-			409: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	get_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__get: {
-		parameters: {
-			query?: {
-				hydrate?: boolean;
-			};
-			header?: never;
-			path: {
-				policy_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolSubjectPolicyResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	update_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__put: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				policy_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ResourcePoolSubjectPolicyUpdate"];
-			};
-		};
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ResourcePoolSubjectPolicyResponse"];
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
-	delete_resource_pool_subject_policy_api_v1_resource_pool_subject_policies__policy_id__delete: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path: {
-				policy_id: string;
-			};
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Successful Response */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": unknown;
-				};
-			};
-			/** @description Unauthorized */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Forbidden */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Not Found */
-			404: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-			/** @description Unprocessable Entity */
-			422: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ErrorModel"];
-				};
-			};
-		};
-	};
 	list_resource_requests_api_v1_resource_requests_get: {
 		parameters: {
 			query?: {
@@ -30225,17 +30320,18 @@ export interface operations {
 				created?: string | string[] | null;
 				updated?: string | string[] | null;
 				scope_user?: string | null;
-				user?: string | string[] | null;
-				preemptible?: boolean | null;
-				component_id?: string | string[] | null;
-				step_run_id?: string | string[] | null;
-				preemption_initiated_by_id?: string | string[] | null;
-				status?:
-					| components["schemas"]["ResourceRequestStatus"]
+				user?: string | null;
+				project?: string | null;
+				reclaim_tolerance?:
+					| components["schemas"]["ResourceRequestReclaimTolerance"]
 					| string
-					| (components["schemas"]["ResourceRequestStatus"] | string)[]
 					| null;
-				pipeline_run_id?: string | string[] | null;
+				component_id?: string | null;
+				step_run_id?: string | null;
+				preemption_initiated_by_id?: string | null;
+				status?: components["schemas"]["ResourceRequestStatus"] | string | null;
+				pipeline_run_id?: string | null;
+				pool_id?: string | null;
 			};
 			header?: never;
 			path?: never;
@@ -30350,7 +30446,69 @@ export interface operations {
 			};
 		};
 	};
-	delete_resource_request_api_v1_resource_requests__resource_request_id__delete: {
+	renew_resource_request_api_v1_resource_requests__resource_request_id__renew_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				resource_request_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["ResourceRequestRenewalRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ResourceRequestResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Not Found */
+			404: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Unprocessable Entity */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	release_resource_request_api_v1_resource_requests__resource_request_id__release_post: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -30367,7 +30525,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": unknown;
+					"application/json": components["schemas"]["ResourceRequestResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -30441,6 +30599,7 @@ export interface operations {
 					| string
 					| (components["schemas"]["TriggerRunConcurrency"] | string)[]
 					| null;
+				webhook_id?: string | string[] | null;
 				pipeline_id?: string | string[] | null;
 				snapshot_id?: string | string[] | null;
 			};
@@ -30456,7 +30615,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["Page_Union_ScheduleTriggerResponse__PlatformEventTriggerResponse__"];
+					"application/json": components["schemas"]["Page_Union_ScheduleTriggerResponse__PlatformEventTriggerResponse__WebhookTriggerResponse__"];
 				};
 			};
 			/** @description Unauthorized */
@@ -30508,7 +30667,8 @@ export interface operations {
 			content: {
 				"application/json":
 					| components["schemas"]["ScheduleTriggerRequest"]
-					| components["schemas"]["PlatformEventTriggerRequest"];
+					| components["schemas"]["PlatformEventTriggerRequest"]
+					| components["schemas"]["WebhookTriggerRequest"];
 			};
 		};
 		responses: {
@@ -30520,7 +30680,8 @@ export interface operations {
 				content: {
 					"application/json":
 						| components["schemas"]["ScheduleTriggerResponse"]
-						| components["schemas"]["PlatformEventTriggerResponse"];
+						| components["schemas"]["PlatformEventTriggerResponse"]
+						| components["schemas"]["WebhookTriggerResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -30582,7 +30743,8 @@ export interface operations {
 				content: {
 					"application/json":
 						| components["schemas"]["ScheduleTriggerResponse"]
-						| components["schemas"]["PlatformEventTriggerResponse"];
+						| components["schemas"]["PlatformEventTriggerResponse"]
+						| components["schemas"]["WebhookTriggerResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -30636,7 +30798,8 @@ export interface operations {
 			content: {
 				"application/json":
 					| components["schemas"]["ScheduleTriggerUpdate"]
-					| components["schemas"]["PlatformEventTriggerUpdate"];
+					| components["schemas"]["PlatformEventTriggerUpdate"]
+					| components["schemas"]["WebhookTriggerUpdate"];
 			};
 		};
 		responses: {
@@ -30648,7 +30811,8 @@ export interface operations {
 				content: {
 					"application/json":
 						| components["schemas"]["ScheduleTriggerResponse"]
-						| components["schemas"]["PlatformEventTriggerResponse"];
+						| components["schemas"]["PlatformEventTriggerResponse"]
+						| components["schemas"]["WebhookTriggerResponse"];
 				};
 			};
 			/** @description Unauthorized */
@@ -30982,6 +31146,410 @@ export interface operations {
 				};
 				content: {
 					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+		};
+	};
+	list_webhooks_api_v1_webhooks_get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+				sort_by?: string;
+				logical_operator?: components["schemas"]["LogicalOperators"];
+				page?: number;
+				size?: number;
+				id?: string | string[] | null;
+				created?: string | string[] | null;
+				updated?: string | string[] | null;
+				scope_user?: string | null;
+				user?: string | string[] | null;
+				project?: string | null;
+				name?: string | string[] | null;
+				webhook_type?: string | string[] | null;
+				active?: boolean | null;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["Page_WebhookResponse_"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	create_webhook_api_v1_webhooks_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["WebhookRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["WebhookCreateResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	get_webhook_api_v1_webhooks__webhook_id__get: {
+		parameters: {
+			query?: {
+				hydrate?: boolean;
+			};
+			header?: never;
+			path: {
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["WebhookResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	update_webhook_api_v1_webhooks__webhook_id__put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["WebhookUpdate"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["WebhookResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	delete_webhook_api_v1_webhooks__webhook_id__delete: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	get_raw_webhook_event_api_v1_webhooks__webhook_id__events_raw_get: {
+		parameters: {
+			query: {
+				delivery_id: string;
+			};
+			header?: never;
+			path: {
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						[key: string]: unknown;
+					};
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	rotate_webhook_secret_api_v1_webhooks__webhook_id__secret_put: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["WebhookRotateSecretRequest"];
+			};
+		};
+		responses: {
+			/** @description Successful Response */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["WebhookSecretResponse"];
+				};
+			};
+			/** @description Unauthorized */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Forbidden */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["ErrorModel"];
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
+				};
+			};
+		};
+	};
+	receive_webhook_event_api_v1_webhooks__webhook_type___webhook_id__events_post: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				webhook_type: string;
+				webhook_id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description Successful Response */
+			202: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": unknown;
+				};
+			};
+			/** @description Validation Error */
+			422: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": components["schemas"]["HTTPValidationError"];
 				};
 			};
 		};

@@ -1,0 +1,25 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ContentInset } from "@/components/content-inset";
+import { componentQueries } from "@/data/components";
+import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
+
+export const Route = createFileRoute(
+	"/(private)/_sidebar/infra/components/$component_id/"
+)({
+	component: RouteComponent,
+});
+
+function RouteComponent() {
+	const { component_id } = Route.useParams();
+	const { data: component } = useSuspenseQuery(
+		componentQueries.detail(component_id)
+	);
+
+	return (
+		<ContentInset>
+			<ComponentGeneralTab component={component} />
+		</ContentInset>
+	);
+}

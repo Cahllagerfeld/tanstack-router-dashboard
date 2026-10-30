@@ -9,6 +9,7 @@ type Props = {
 export function UserListSearchbar({ searchValue, onChange }: Props) {
 	return (
 		<DebouncedInput
+			className="max-w-xs"
 			debounceMs={500}
 			placeholder={m.users_search_placeholder()}
 			value={searchValue}

@@ -1,10 +1,12 @@
 import {
 	Box,
+	CirclePlay,
+	Cpu,
+	FileBox,
 	FolderKanban,
-	History,
 	Layers,
 	type LucideIcon,
-	Package,
+	Rocket,
 	Workflow,
 } from "lucide-react";
 
@@ -14,15 +16,19 @@ export type EntityKind =
 	| "stack"
 	| "pipeline"
 	| "run"
-	| "artifact";
+	| "model"
+	| "artifact"
+	| "deployment";
 
 export const ENTITY_ICONS = {
 	project: FolderKanban,
 	component: Box,
 	stack: Layers,
 	pipeline: Workflow,
-	run: History,
-	artifact: Package,
+	run: CirclePlay,
+	model: Cpu,
+	artifact: FileBox,
+	deployment: Rocket,
 } as const satisfies Record<EntityKind, LucideIcon>;
 
 export function getEntityIcon(kind: EntityKind): LucideIcon {

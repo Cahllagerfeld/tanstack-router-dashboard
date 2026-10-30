@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import { ContentInset } from "@/components/content-inset";
 import { Button } from "@/components/ui/button";
 import {
 	Empty,
@@ -16,22 +17,26 @@ const ProjectIcon = getEntityIcon("project");
 
 export function ProjectNotFound() {
 	return (
-		<Empty className="border border-dashed">
-			<EmptyHeader>
-				<EmptyMedia variant="icon">
-					<ProjectIcon />
-				</EmptyMedia>
-				<EmptyTitle>{m.projects_detail_not_found_title()}</EmptyTitle>
-				<EmptyDescription>
-					{m.projects_detail_not_found_description()}
-				</EmptyDescription>
-			</EmptyHeader>
-			<EmptyContent>
-				<Button
-					size="sm"
-					render={<Link to="/projects">{m.projects_detail_go_to_list()}</Link>}
-				/>
-			</EmptyContent>
-		</Empty>
+		<ContentInset>
+			<Empty className="border border-dashed">
+				<EmptyHeader>
+					<EmptyMedia variant="icon">
+						<ProjectIcon />
+					</EmptyMedia>
+					<EmptyTitle>{m.projects_detail_not_found_title()}</EmptyTitle>
+					<EmptyDescription>
+						{m.projects_detail_not_found_description()}
+					</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent>
+					<Button
+						size="sm"
+						render={
+							<Link to="/projects">{m.projects_detail_go_to_list()}</Link>
+						}
+					/>
+				</EmptyContent>
+			</Empty>
+		</ContentInset>
 	);
 }
