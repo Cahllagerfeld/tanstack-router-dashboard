@@ -12,52 +12,43 @@ import { DataTableViewOptions } from "@/components/tables/columns-visibility-tog
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
 import { TableToolbar } from "@/components/tables/table-toolbar";
-import { componentQueries } from "@/data/components";
-import { useComponentColumns } from "@/features/components/components-list/columns";
+import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { typeFilterSchema } from "@/features/filters/type";
-import { TypeFilter } from "@/features/filters/type-filter";
+import { useStackColumns } from "@/features/stacks/stacks-list/columns";
 import { m } from "@/paraglide/messages";
 
-const querySchema = commonFilterSchema.extend({
-	type: typeFilterSchema.catch(undefined),
-});
+const querySchema = commonFilterSchema;
 
-export const Route = createFileRoute("/(private)/_sidebar/components/")({
+export const Route = createFileRoute("/(private)/_sidebar/infra/stacks/")({
 	validateSearch: querySchema,
-	loaderDeps: ({ search: { type, page, size } }) => ({ type, page, size }),
-	loader: ({ context: { queryClient }, deps: { type, page, size } }) => {
-		return queryClient.ensureQueryData(
-			componentQueries.list({
-				type,
+	loaderDeps: ({ search: { page, size } }) => ({ page, size }),
+	loader: async ({ context: { queryClient }, deps: { page, size } }) => {
+		await queryClient.ensureQueryData(
+			stackQueries.list({
 				page,
 				size,
 			})
 		);
 	},
 	head: () => ({
-		meta: [{ title: m.components_list_title() }],
+		meta: [{ title: m.stacks_list_title() }],
 	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const columns = useComponentColumns();
-	const { size, page, type } = Route.useSearch();
-
-	const { data } = useSuspenseQuery(
-		componentQueries.list({ size, page, type })
-	);
-
+	const columns = useStackColumns();
+	const { size, page } = Route.useSearch();
 	const [columnVisibility, setColumnVisibility] =
 		useState<ColumnVisibilityState>({});
 	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+	const data = useSuspenseQuery(stackQueries.list({ size, page }));
 
 	const table = useTable({
 		features,
-		data: data.items,
-		columns: columns,
+		data: data.data.items,
+		columns,
 		getRowId: (row) => row.id,
 		manualPagination: true,
 		onColumnVisibilityChange: setColumnVisibility,
@@ -81,15 +72,12 @@ function RouteComponent() {
 	return (
 		<div className="space-y-4">
 			<div>
-				<h1 className="text-2xl font-bold">{m.components_list_title()}</h1>
+				<h1 className="text-2xl font-bold">{m.stacks_list_title()}</h1>
 				<p className="text-sm text-muted-foreground">
-					{m.components_list_description()}
+					{m.stacks_list_description()}
 				</p>
 			</div>
 			<TableToolbar>
-				<TableToolbar.Start>
-					<TypeFilter queryName="type" filter={type} />
-				</TableToolbar.Start>
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
 				</TableToolbar.End>

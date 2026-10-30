@@ -2,6 +2,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 import { projectQueries } from "@/data/projects";
 import { ProjectNotFound } from "@/features/projects/detail/project-not-found";
+import { getIllustrationUrl } from "@/lib/images";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
@@ -19,7 +20,11 @@ export const Route = createFileRoute(
 		);
 		// Links preload on hover, which must not count as opening the Project.
 		if (!preload) setProjectToLocalStorage(project.id);
-		return { project };
+		return {
+			project,
+			crumb: project.displayName ?? project.name,
+			crumbImage: getIllustrationUrl(project.name),
+		};
 	},
 	head({ loaderData }) {
 		if (!loaderData?.project)

@@ -4,7 +4,7 @@ import { stackQueries } from "@/data/stacks";
 import { ComponentStacksTab } from "@/features/components/detail/stacks-tab";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/components/$component_id/stacks"
+	"/(private)/_sidebar/infra/components/$component_id/stacks"
 )({
 	loader: ({ context: { queryClient }, params: { component_id } }) => {
 		return queryClient.ensureQueryData(stackQueries.list({ component_id }));

@@ -36,6 +36,7 @@ export default defineConfig({
 						"@base-ui/react/collapsible",
 						"@base-ui/react/input",
 						"@base-ui/react/merge-props",
+						"@base-ui/react/tabs",
 						"@base-ui/react/use-render",
 						"@tanstack/react-query",
 						"@tanstack/react-router",

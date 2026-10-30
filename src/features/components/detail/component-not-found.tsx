@@ -30,7 +30,9 @@ export function ComponentNotFound() {
 				<Button
 					size="sm"
 					render={
-						<Link to="/components">{m.components_not_found_go_to_list()}</Link>
+						<Link to="/infra/components">
+							{m.components_not_found_go_to_list()}
+						</Link>
 					}
 				></Button>
 			</EmptyContent>

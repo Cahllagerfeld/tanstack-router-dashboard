@@ -15,7 +15,7 @@ import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/components/$component_id"
+	"/(private)/_sidebar/infra/components/$component_id"
 )({
 	loader: async ({ context: { queryClient }, params: { component_id } }) => {
 		const component = await ensureQueryDataOr404(
@@ -43,7 +43,7 @@ function RouteComponent() {
 	const { component_id } = Route.useParams();
 	const matchRoute = useMatchRoute();
 
-	const activeTab = matchRoute({ to: "/components/$component_id/stacks" })
+	const activeTab = matchRoute({ to: "/infra/components/$component_id/stacks" })
 		? "stacks"
 		: "general";
 
@@ -61,7 +61,10 @@ function RouteComponent() {
 						nativeButton={false}
 						value="general"
 						render={
-							<Link to="/components/$component_id" params={{ component_id }}>
+							<Link
+								to="/infra/components/$component_id"
+								params={{ component_id }}
+							>
 								{m.components_detail_tab_general()}
 							</Link>
 						}
@@ -71,7 +74,7 @@ function RouteComponent() {
 						value="stacks"
 						render={
 							<Link
-								to="/components/$component_id/stacks"
+								to="/infra/components/$component_id/stacks"
 								params={{ component_id }}
 							>
 								{m.components_detail_tab_stacks()}

@@ -7,21 +7,13 @@ import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
 
-function getServerItems(): NavbarItem[] {
-	return [
-		{
-			title: m.components_navigation_label(),
-			url: "/components",
-			icon: getEntityIcon("component"),
-			activePathPrefix: "/components",
-		},
-		{
-			title: m.stacks_navigation_label(),
-			url: "/stacks",
-			icon: getEntityIcon("stack"),
-			activePathPrefix: "/stacks",
-		},
-	];
+function getInfraItem(): NavbarItem {
+	return {
+		title: m.infra_navigation_label(),
+		url: "/infra/stacks",
+		icon: getEntityIcon("stack"),
+		activePathPrefix: "/infra",
+	};
 }
 
 function getFooterItems(): NavbarItem[] {
@@ -65,9 +57,21 @@ function useProjectItems(): NavbarItem[] {
 			activePathPrefix: runsUrl,
 		},
 		{
+			title: m.common_navigation_models(),
+			url: "#models",
+			icon: getEntityIcon("model"),
+			disabled: true,
+		},
+		{
 			title: m.common_navigation_artifacts(),
-			url: "#",
+			url: "#artifacts",
 			icon: getEntityIcon("artifact"),
+			disabled: true,
+		},
+		{
+			title: m.common_navigation_deployments(),
+			url: "#deployments",
+			icon: getEntityIcon("deployment"),
 			disabled: true,
 		},
 	];
@@ -75,7 +79,7 @@ function useProjectItems(): NavbarItem[] {
 
 export function useNavbarItems() {
 	const projectItems = useProjectItems();
-	const navItems = useSidebarItems([...projectItems, ...getServerItems()]);
+	const navItems = useSidebarItems([...projectItems, getInfraItem()]);
 	const footerItems = useSidebarItems(getFooterItems());
 	return { navItems, footerItems };
 }

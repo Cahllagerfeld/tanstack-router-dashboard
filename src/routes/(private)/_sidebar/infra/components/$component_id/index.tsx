@@ -5,7 +5,7 @@ import { componentQueries } from "@/data/components";
 import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/components/$component_id/"
+	"/(private)/_sidebar/infra/components/$component_id/"
 )({
 	component: RouteComponent,
 });

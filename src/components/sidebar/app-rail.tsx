@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 
 import { RailUser } from "@/components/sidebar/nav-user";
 import { buttonVariants } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
@@ -21,11 +20,12 @@ export function AppRail() {
 			aria-label={m.common_navigation_main()}
 			className="flex w-14 shrink-0 flex-col items-center gap-2 overflow-y-auto py-3 text-sidebar-foreground"
 		>
-			<RailProjectSwitcher />
-			<Separator className="data-[orientation=horizontal]:w-8" />
-			{navItems.map((item) => (
-				<RailNavLink key={item.url} item={item} />
-			))}
+			<div className="flex flex-col items-center gap-1">
+				<RailProjectSwitcher />
+				{navItems.map((item) => (
+					<RailNavLink key={item.url} item={item} />
+				))}
+			</div>
 			<div className="mt-auto flex flex-col items-center gap-2">
 				{footerItems.map((item) => (
 					<RailNavLink key={item.url} item={item} />
@@ -70,7 +70,7 @@ function RailNavLink({ item }: { item: NavbarItem }) {
 					className={cn(
 						railLinkClassName,
 						item.isActive
-							? "bg-foreground/10 text-foreground hover:bg-foreground/20 dark:hover:bg-foreground/20"
+							? "bg-background text-foreground shadow-xs hover:bg-background dark:hover:bg-background"
 							: "hover:bg-foreground/10 dark:hover:bg-foreground/10"
 					)}
 				>

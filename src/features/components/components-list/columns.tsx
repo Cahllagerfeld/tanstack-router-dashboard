@@ -48,7 +48,7 @@ export function useComponentColumns(): ColumnDef<
 			enableHiding: true,
 			cell: ({ row }) => (
 				<Link
-					to="/components/$component_id"
+					to="/infra/components/$component_id"
 					params={{ component_id: row.original.id }}
 					className="text-primary hover:underline"
 				>

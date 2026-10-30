@@ -11,7 +11,7 @@ import { m } from "@/paraglide/messages";
 import { AppRail } from "./app-rail";
 
 const { location, params } = vi.hoisted(() => ({
-	location: { pathname: "/components" },
+	location: { pathname: "/infra/components" },
 	params: { current: undefined as { project_id: string } | undefined },
 }));
 
@@ -45,7 +45,7 @@ const projects = [
 
 beforeEach(() => {
 	localStorage.clear();
-	location.pathname = "/components";
+	location.pathname = "/infra/components";
 	params.current = undefined;
 });
 
@@ -81,7 +81,7 @@ test("points project entries at the last opened Project from other pages", async
 			"/projects/$project_id/runs".replace("$project_id", "churn")
 		);
 	await expect
-		.element(railLink(m.components_navigation_label()))
+		.element(railLink(m.infra_navigation_label()))
 		.toHaveAttribute("aria-current", "page");
 });
 
@@ -99,11 +99,11 @@ test("marks the project entry for the current page", async () => {
 });
 
 test("keeps sections current on nested routes", async () => {
-	location.pathname = "/components/component-id/stacks";
+	location.pathname = "/infra/components/component-id/stacks";
 	await renderRail();
 
 	await expect
-		.element(railLink(m.components_navigation_label()))
+		.element(railLink(m.infra_navigation_label()))
 		.toHaveAttribute("aria-current", "page");
 });
 
@@ -111,7 +111,7 @@ test("hides project entries while no Project exists", async () => {
 	await renderRail([]);
 
 	await expect
-		.element(railLink(m.components_navigation_label()))
+		.element(railLink(m.infra_navigation_label()))
 		.toBeInTheDocument();
 	await expect
 		.element(railLink(m.common_navigation_runs()))
@@ -122,7 +122,7 @@ test("places settings between the main entries and the user menu", async () => {
 	location.pathname = "/settings/general";
 	await renderRail();
 
-	const stacks = railLink(m.stacks_navigation_label()).element();
+	const stacks = railLink(m.infra_navigation_label()).element();
 	const settings = railLink(m.settings_navigation_label()).element();
 	const userMenu = page
 		.getByRole("button", { name: m.common_navigation_user_menu() })
