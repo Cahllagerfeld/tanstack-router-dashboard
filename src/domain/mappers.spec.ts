@@ -23,6 +23,7 @@ const userResponse = {
 	metadata: {
 		email: "ada@example.test",
 		user_metadata: {},
+		oidc_claims: {},
 	},
 } satisfies ApiComponents["schemas"]["UserResponse"];
 

@@ -31,7 +31,7 @@ function PaginationContent({
 	return (
 		<ul
 			data-slot="pagination-content"
-			className={cn("flex flex-row items-center gap-1", className)}
+			className={cn("flex items-center gap-0.5", className)}
 			{...props}
 		/>
 	);
@@ -74,7 +74,7 @@ const PaginationPrevious: PaginationLinkProps = (props) => {
 		<PaginationLink
 			aria-label={m.common_pagination_previous_label()}
 			size="default"
-			className={cn("gap-1 px-2.5 sm:pl-2.5", props.className)}
+			className={cn("pl-1.5!", props.className)}
 			{...props}
 		>
 			<ChevronLeftIcon />
@@ -104,7 +104,7 @@ const PaginationNext: PaginationLinkProps = (props) => {
 		<PaginationLink
 			aria-label={m.common_pagination_next_label()}
 			size="default"
-			className={cn("gap-1 px-2.5 sm:pr-2.5", props.className)}
+			className={cn("pr-1.5!", props.className)}
 			{...props}
 		>
 			<span className="hidden sm:block">{m.common_pagination_next_text()}</span>
@@ -135,10 +135,13 @@ function PaginationEllipsis({
 		<span
 			aria-hidden
 			data-slot="pagination-ellipsis"
-			className={cn("flex size-9 items-center justify-center", className)}
+			className={cn(
+				"flex size-8 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
+				className
+			)}
 			{...props}
 		>
-			<MoreHorizontalIcon className="size-4" />
+			<MoreHorizontalIcon />
 			<span className="sr-only">{m.common_pagination_more()}</span>
 		</span>
 	);

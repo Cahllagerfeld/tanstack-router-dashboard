@@ -10,7 +10,10 @@ import { RailProjectSwitcher } from "./project-switcher";
 import { RailTooltip } from "./rail-tooltip";
 import { useNavbarItems } from "./use-navbar-items";
 
-const railLinkClassName = buttonVariants({ variant: "ghost", size: "icon-lg" });
+const railLinkClassName = cn(
+	buttonVariants({ variant: "ghost", size: "icon-lg" }),
+	"[&_svg:not([class*='size-'])]:size-5"
+);
 
 export function AppRail() {
 	const { navItems, footerItems } = useNavbarItems();
@@ -20,13 +23,13 @@ export function AppRail() {
 			aria-label={m.common_navigation_main()}
 			className="flex w-14 shrink-0 flex-col items-center gap-2 overflow-y-auto py-3 text-sidebar-foreground"
 		>
-			<div className="flex flex-col items-center gap-1">
+			<div className="flex flex-col items-center gap-3">
 				<RailProjectSwitcher />
 				{navItems.map((item) => (
 					<RailNavLink key={item.url} item={item} />
 				))}
 			</div>
-			<div className="mt-auto flex flex-col items-center gap-2">
+			<div className="mt-auto flex flex-col items-center gap-3">
 				{footerItems.map((item) => (
 					<RailNavLink key={item.url} item={item} />
 				))}

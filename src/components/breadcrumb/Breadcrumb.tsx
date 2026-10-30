@@ -65,8 +65,8 @@ function Crumb({ image, children }: { image?: string; children: ReactNode }) {
 
 	return (
 		<span className="inline-flex items-center gap-1.5">
-			<Avatar className="size-4">
-				<AvatarImage className="rounded-sm" src={image} alt="" />
+			<Avatar className="size-4 rounded-sm">
+				<AvatarImage src={image} alt="" />
 			</Avatar>
 			{children}
 		</span>
