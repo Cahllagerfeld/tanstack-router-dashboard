@@ -1,8 +1,8 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "@tanstack/react-router";
-import { ChevronsUpDown, Plus } from "lucide-react";
-import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Check, Plus, Trash2 } from "lucide-react";
 
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,122 +10,148 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
-	useSidebar,
-} from "@/components/ui/sidebar";
-import { projectQueries } from "@/data/projects";
-import { serverQueries } from "@/data/server";
+import type { Project } from "@/domain/projects";
 import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
+import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
+import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { getIllustrationUrl } from "@/lib/images";
-import { setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { railAvatarClassName, railAvatarTriggerClassName } from "./rail-avatar";
+import { RailTooltip } from "./rail-tooltip";
+import { useProjectSwitcher } from "./use-project-switcher";
 
-export function ProjectSwitcher() {
-	const [projectDialogOpen, setProjectDialogOpen] = useState(false);
-	const navigate = useNavigate();
-	const { data: serverData } = useSuspenseQuery(serverQueries.serverInfo());
-	const { data: projectData } = useSuspenseQuery(projectQueries.list());
-	const { project_id } = useParams({
-		from: "/(private)/_sidebar/projects/$project_id",
-	});
+const ProjectIcon = getEntityIcon("project");
 
-	const activeProject = projectData.items.find(
-		(project) => project.id === project_id || project.name === project_id
-	);
-
-	const displayName = activeProject ? activeProject.displayName : "";
-
-	const { isMobile } = useSidebar();
+export function RailProjectSwitcher() {
+	const {
+		projects,
+		activeProject,
+		createDialogOpen,
+		setCreateDialogOpen,
+		deleteDialogOpen,
+		setDeleteDialogOpen,
+	} = useProjectSwitcher();
+	const label = activeProject
+		? m.projects_switcher_label({ name: getProjectLabel(activeProject) })
+		: m.projects_switcher_select();
 
 	return (
 		<>
 			<CreateProjectDialog
-				open={projectDialogOpen}
-				setOpen={setProjectDialogOpen}
+				open={createDialogOpen}
+				setOpen={setCreateDialogOpen}
 			/>
-			<SidebarMenu>
-				<SidebarMenuItem>
-					<DropdownMenu>
+			{activeProject && (
+				<DeleteProjectAlert
+					projectId={activeProject.id}
+					open={deleteDialogOpen}
+					setOpen={setDeleteDialogOpen}
+				/>
+			)}
+			<DropdownMenu>
+				<RailTooltip
+					label={label}
+					trigger={
 						<DropdownMenuTrigger
 							render={
-								<SidebarMenuButton
-									size="lg"
-									className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+								<Button
+									variant="ghost"
+									size="icon-lg"
+									aria-label={label}
+									className={
+										activeProject
+											? railAvatarTriggerClassName
+											: "hover:bg-foreground/10 dark:hover:bg-foreground/10"
+									}
 								>
-									<Avatar className="size-8 shrink-0">
-										<AvatarImage
-											className="rounded-lg object-cover"
-											src={getIllustrationUrl(activeProject?.name || "")}
-										/>
-									</Avatar>
-									<div className="grid flex-1 text-left text-sm leading-tight">
-										<span className="truncate font-semibold">
-											{displayName}
-										</span>
-										<span className="truncate text-xs">{serverData.name}</span>
-									</div>
-									<ChevronsUpDown className="ml-auto" />
-								</SidebarMenuButton>
+									<ProjectAvatar project={activeProject} />
+								</Button>
 							}
-						></DropdownMenuTrigger>
-						<DropdownMenuContent
-							className="min-w-56 rounded-lg"
-							align="start"
-							side={isMobile ? "bottom" : "right"}
-							sideOffset={4}
-						>
+						/>
+					}
+				/>
+				<DropdownMenuContent
+					className="min-w-56 rounded-lg"
+					align="start"
+					side="right"
+					sideOffset={4}
+				>
+					{activeProject && (
+						<>
 							<DropdownMenuGroup>
 								<DropdownMenuLabel className="text-xs text-muted-foreground">
 									{m.projects_navigation_label()}
 								</DropdownMenuLabel>
-								{projectData.items.map((project, index) => (
+								{projects.map((project) => (
 									<DropdownMenuItem
 										key={project.id}
-										onClick={() => {
-											setProjectToLocalStorage(project.name);
-											navigate({
-												to: "/projects/$project_id",
-												params: { project_id: project.name },
-											});
-										}}
+										render={
+											<Link
+												to="/projects/$project_id/runs"
+												params={{ project_id: project.name }}
+											/>
+										}
+										aria-current={
+											project.id === activeProject.id ? "true" : undefined
+										}
 										className="gap-2 p-2"
 									>
-										<Avatar className="size-6 shrink-0">
-											<AvatarImage
-												className="rounded-md object-cover"
-												src={getIllustrationUrl(project.name)}
-											/>
+										<Avatar className="size-6 shrink-0 rounded-md">
+											<AvatarImage src={getIllustrationUrl(project.name)} />
 										</Avatar>
-
-										<span className="truncate">{project.displayName}</span>
-										<DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+										<span className="truncate">{getProjectLabel(project)}</span>
+										{project.id === activeProject.id && (
+											<Check aria-hidden="true" className="ml-auto" />
+										)}
 									</DropdownMenuItem>
 								))}
 							</DropdownMenuGroup>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem
-								onClick={() => setProjectDialogOpen(true)}
-								className="gap-2 p-2"
-							>
-								<div className="flex size-6 items-center justify-center rounded-md border bg-background">
-									<Plus className="size-4" />
-								</div>
-								<div className="font-medium text-muted-foreground">
-									{m.projects_create_title()}
-								</div>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</SidebarMenuItem>
-			</SidebarMenu>
+						</>
+					)}
+					<DropdownMenuItem
+						onClick={() => setCreateDialogOpen(true)}
+						className="gap-2 p-2"
+					>
+						<div className="flex size-6 items-center justify-center rounded-md border bg-background">
+							<Plus className="size-4" />
+						</div>
+						<div className="font-medium text-muted-foreground">
+							{m.projects_create_title()}
+						</div>
+					</DropdownMenuItem>
+					{activeProject && (
+						<DropdownMenuItem
+							onClick={() => setDeleteDialogOpen(true)}
+							className="gap-2 p-2"
+						>
+							<div className="flex size-6 items-center justify-center">
+								<Trash2 className="size-4 text-muted-foreground" />
+							</div>
+							<div className="font-medium text-muted-foreground">
+								{m.projects_navigation_delete()}
+							</div>
+						</DropdownMenuItem>
+					)}
+				</DropdownMenuContent>
+			</DropdownMenu>
 		</>
 	);
+}
+
+function ProjectAvatar({ project }: { project: Project | undefined }) {
+	if (!project) return <ProjectIcon aria-hidden="true" />;
+
+	return (
+		<Avatar className={railAvatarClassName}>
+			<AvatarImage src={getIllustrationUrl(project.name)} />
+		</Avatar>
+	);
+}
+
+function getProjectLabel(project: Project) {
+	return project.displayName ?? project.name;
 }

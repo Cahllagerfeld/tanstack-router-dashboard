@@ -4,7 +4,7 @@ import { m } from "@/paraglide/messages";
 
 import { CreateProjectDialogWithTrigger } from "../create/dialog/create-project-dialog";
 
-export function ProjectListNoItemsFallback() {
+export function NoProjectsFallback() {
 	return (
 		<NoItemFallback
 			icon={getEntityIcon("project")}

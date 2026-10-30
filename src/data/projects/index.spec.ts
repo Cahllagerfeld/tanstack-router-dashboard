@@ -20,7 +20,7 @@ describe("projectQueries", () => {
 			{
 				name: "contains:fraud",
 				page: 2,
-				size: 10,
+				size: 100,
 				sort_by: "desc:created",
 			},
 		]);
@@ -62,7 +62,7 @@ describe("projectQueries", () => {
 		});
 		expect(get).toHaveBeenCalledWith("/api/v1/projects", {
 			params: {
-				query: { page: 1, size: 10, sort_by: "desc:created" },
+				query: { page: 1, size: 100, sort_by: "desc:created" },
 			},
 		});
 	});

@@ -1,25 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
-import { getProjectFromLocalStorage } from "@/lib/projects";
-
 export const Route = createFileRoute("/(private)/")({
-	loader: async ({ context }) => {
-		const projects = await context.queryClient.ensureQueryData(
-			projectQueries.list()
-		);
-		const { items: projectItems } = projects;
-		const localProjectId = getProjectFromLocalStorage();
-		const selectedProject = projectItems.find(
-			(project) =>
-				project.id === localProjectId || project.name === localProjectId
-		);
-		if (selectedProject) {
-			throw redirect({
-				to: "/projects/$project_id",
-				params: { project_id: selectedProject.name },
-			});
-		}
+	loader: () => {
 		throw redirect({ to: "/projects" });
 	},
 });

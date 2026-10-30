@@ -1,28 +1,31 @@
-import { useParams, useRouter } from "@tanstack/react-router";
-import { Frame, Settings } from "lucide-react";
+import { useRouter } from "@tanstack/react-router";
+import { Settings } from "lucide-react";
 
+import { useActiveProject } from "@/hooks/use-active-project";
 import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
 
-function getUnscopedNavMain(): NavbarItem[] {
+function getServerItems(): NavbarItem[] {
 	return [
-		{
-			title: m.projects_navigation_label(),
-			url: "/projects",
-			icon: getEntityIcon("project"),
-		},
 		{
 			title: m.components_navigation_label(),
 			url: "/components",
 			icon: getEntityIcon("component"),
+			activePathPrefix: "/components",
 		},
 		{
 			title: m.stacks_navigation_label(),
 			url: "/stacks",
 			icon: getEntityIcon("stack"),
+			activePathPrefix: "/stacks",
 		},
+	];
+}
+
+function getFooterItems(): NavbarItem[] {
+	return [
 		{
 			title: m.settings_navigation_label(),
 			url: "/settings/general",
@@ -32,40 +35,34 @@ function getUnscopedNavMain(): NavbarItem[] {
 	];
 }
 
-export function useNavbarItems() {
-	const navItems = useSidebarItems(getUnscopedNavMain());
-	return { navItems };
-}
-
-export function useProjectItems() {
+function useProjectItems(): NavbarItem[] {
 	const { buildLocation } = useRouter();
-	const projectId = useParams({
-		from: "/(private)/_sidebar/projects/$project_id",
-	});
-	const projectPreviewNavMain: NavbarItem[] = [
-		{
-			title: m.common_navigation_project_overview(),
-			url: buildLocation({
-				to: "/projects/$project_id",
-				params: { project_id: projectId.project_id },
-			}).pathname,
-			icon: Frame,
-		},
+	const { activeProject } = useActiveProject();
+
+	if (!activeProject) return [];
+
+	const params = { project_id: activeProject.name };
+	const pipelinesUrl = buildLocation({
+		to: "/projects/$project_id/pipelines",
+		params,
+	}).pathname;
+	const runsUrl = buildLocation({
+		to: "/projects/$project_id/runs",
+		params,
+	}).pathname;
+
+	return [
 		{
 			title: m.common_navigation_pipelines(),
-			url: buildLocation({
-				to: "/projects/$project_id/pipelines",
-				params: { project_id: projectId.project_id },
-			}).pathname,
+			url: pipelinesUrl,
 			icon: getEntityIcon("pipeline"),
+			activePathPrefix: pipelinesUrl,
 		},
 		{
 			title: m.common_navigation_runs(),
-			url: buildLocation({
-				to: "/projects/$project_id/runs",
-				params: { project_id: projectId.project_id },
-			}).pathname,
+			url: runsUrl,
 			icon: getEntityIcon("run"),
+			activePathPrefix: runsUrl,
 		},
 		{
 			title: m.common_navigation_artifacts(),
@@ -74,6 +71,11 @@ export function useProjectItems() {
 			disabled: true,
 		},
 	];
+}
 
-	return useSidebarItems(projectPreviewNavMain);
+export function useNavbarItems() {
+	const projectItems = useProjectItems();
+	const navItems = useSidebarItems([...projectItems, ...getServerItems()]);
+	const footerItems = useSidebarItems(getFooterItems());
+	return { navItems, footerItems };
 }

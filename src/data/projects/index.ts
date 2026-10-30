@@ -8,6 +8,9 @@ import { apiClient } from "../api-client";
 
 const baseKey = "projects" as const;
 
+// The switcher is the only way to reach a Project, so it needs more than one default page.
+const PROJECT_LIST_SIZE = 100;
+
 async function fetchProjectList(params: ProjectListQueries) {
 	const response = await apiClient.GET("/api/v1/projects", {
 		params: {
@@ -50,7 +53,7 @@ export const projectQueries = {
 	list: (params?: ProjectListQueries) => {
 		const mergedParams = {
 			sort_by: "desc:created",
-			size: 10,
+			size: PROJECT_LIST_SIZE,
 			...params,
 		} satisfies ProjectListQueries;
 
