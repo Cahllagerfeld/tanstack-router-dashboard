@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 
-import { RailUser } from "@/components/sidebar/nav-user";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
@@ -8,6 +7,7 @@ import type { NavbarItem } from "@/types/navbar";
 
 import { RailProjectSwitcher } from "./project-switcher";
 import { RailTooltip } from "./rail-tooltip";
+import { RailUser } from "./rail-user";
 import { useNavbarItems } from "./use-navbar-items";
 
 const railLinkClassName = cn(

@@ -17,6 +17,7 @@ import { CreateProjectDialog } from "@/features/projects/create/dialog/create-pr
 import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { getIllustrationUrl } from "@/lib/images";
+import { getProjectLabel } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 
 import { railAvatarClassName, railAvatarTriggerClassName } from "./rail-avatar";
@@ -31,8 +32,8 @@ export function RailProjectSwitcher() {
 		activeProject,
 		createDialogOpen,
 		setCreateDialogOpen,
-		deleteDialogOpen,
-		setDeleteDialogOpen,
+		projectToDelete,
+		setProjectToDelete,
 	} = useProjectSwitcher();
 	const label = activeProject
 		? m.projects_switcher_label({ name: getProjectLabel(activeProject) })
@@ -44,11 +45,10 @@ export function RailProjectSwitcher() {
 				open={createDialogOpen}
 				setOpen={setCreateDialogOpen}
 			/>
-			{activeProject && (
+			{projectToDelete && (
 				<DeleteProjectAlert
-					projectId={activeProject.id}
-					open={deleteDialogOpen}
-					setOpen={setDeleteDialogOpen}
+					project={projectToDelete}
+					onClose={() => setProjectToDelete(null)}
 				/>
 			)}
 			<DropdownMenu>
@@ -79,7 +79,7 @@ export function RailProjectSwitcher() {
 					side="right"
 					sideOffset={4}
 				>
-					{activeProject && (
+					{projects.length > 0 && (
 						<>
 							<DropdownMenuGroup>
 								<DropdownMenuLabel className="text-xs text-muted-foreground">
@@ -95,7 +95,7 @@ export function RailProjectSwitcher() {
 											/>
 										}
 										aria-current={
-											project.id === activeProject.id ? "true" : undefined
+											project.id === activeProject?.id ? "true" : undefined
 										}
 										className="gap-2 p-2"
 									>
@@ -103,7 +103,7 @@ export function RailProjectSwitcher() {
 											<AvatarImage src={getIllustrationUrl(project.name)} />
 										</Avatar>
 										<span className="truncate">{getProjectLabel(project)}</span>
-										{project.id === activeProject.id && (
+										{project.id === activeProject?.id && (
 											<Check aria-hidden="true" className="ml-auto" />
 										)}
 									</DropdownMenuItem>
@@ -125,7 +125,7 @@ export function RailProjectSwitcher() {
 					</DropdownMenuItem>
 					{activeProject && (
 						<DropdownMenuItem
-							onClick={() => setDeleteDialogOpen(true)}
+							onClick={() => setProjectToDelete(activeProject)}
 							className="gap-2 p-2"
 						>
 							<div className="flex size-6 items-center justify-center">
@@ -150,8 +150,4 @@ function ProjectAvatar({ project }: { project: Project | undefined }) {
 			<AvatarImage src={getIllustrationUrl(project.name)} />
 		</Avatar>
 	);
-}
-
-function getProjectLabel(project: Project) {
-	return project.displayName ?? project.name;
 }

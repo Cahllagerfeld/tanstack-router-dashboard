@@ -1,19 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-	type ColumnSizingState,
-	type ColumnVisibilityState,
-	type RowSelectionState,
-	useTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
 
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
 import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
+import { useDataTable } from "@/components/tables/use-data-table";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
@@ -41,34 +34,11 @@ export const Route = createFileRoute("/(private)/_sidebar/infra/stacks/")({
 function RouteComponent() {
 	const columns = useStackColumns();
 	const { size, page } = Route.useSearch();
-	const [columnVisibility, setColumnVisibility] =
-		useState<ColumnVisibilityState>({});
-	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
-	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 	const data = useSuspenseQuery(stackQueries.list({ size, page }));
 
-	const table = useTable({
-		features,
+	const table = useDataTable({
 		data: data.data.items,
 		columns,
-		getRowId: (row) => row.id,
-		manualPagination: true,
-		onColumnVisibilityChange: setColumnVisibility,
-		onColumnSizingChange: setColumnSizing,
-		onRowSelectionChange: setRowSelection,
-		columnResizeMode: "onChange",
-		enableColumnResizing: true,
-		defaultColumn: {
-			enableHiding: false,
-			size: 200,
-			minSize: 150,
-			maxSize: 400,
-		},
-		state: {
-			columnVisibility,
-			columnSizing,
-			rowSelection,
-		},
 	});
 
 	return (

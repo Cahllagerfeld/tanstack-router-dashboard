@@ -2,14 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { getPageRange } from "@/lib/page-range";
+import { getPageRange, type PageRangeInput } from "@/lib/page-range";
 import { m } from "@/paraglide/messages";
 import { getLocale } from "@/paraglide/runtime";
 
-type Page = {
-	index: number;
-	max_size: number;
-	total: number;
+type Page = PageRangeInput & {
 	total_pages: number;
 };
 

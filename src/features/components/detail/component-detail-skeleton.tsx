@@ -1,10 +1,11 @@
+import { ContentInset } from "@/components/content-inset";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { ComponentHeaderSkeleton } from "./component-header";
 
 export function ComponentDetailSkeleton() {
 	return (
-		<div className="space-y-6">
+		<ContentInset className="space-y-6">
 			<ComponentHeaderSkeleton />
 
 			<div className="space-y-6">
@@ -17,6 +18,6 @@ export function ComponentDetailSkeleton() {
 					<Skeleton className="h-[150px]" />
 				</div>
 			</div>
-		</div>
+		</ContentInset>
 	);
 }

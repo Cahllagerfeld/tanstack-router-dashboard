@@ -1,8 +1,7 @@
-import { useRouter } from "@tanstack/react-router";
+import { useLocation, useRouter } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
 
 import { useActiveProject } from "@/hooks/use-active-project";
-import { useSidebarItems } from "@/hooks/use-sidebar-items";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";
@@ -77,9 +76,21 @@ function useProjectItems(): NavbarItem[] {
 	];
 }
 
+function withActiveState(items: NavbarItem[], pathname: string) {
+	return items.map((item) => ({
+		...item,
+		isActive: item.activePathPrefix
+			? pathname.startsWith(item.activePathPrefix)
+			: item.url === pathname,
+	}));
+}
+
 export function useNavbarItems() {
+	const { pathname } = useLocation();
 	const projectItems = useProjectItems();
-	const navItems = useSidebarItems([...projectItems, getInfraItem()]);
-	const footerItems = useSidebarItems(getFooterItems());
-	return { navItems, footerItems };
+
+	return {
+		navItems: withActiveState([...projectItems, getInfraItem()], pathname),
+		footerItems: withActiveState(getFooterItems(), pathname),
+	};
 }

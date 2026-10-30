@@ -10,8 +10,13 @@ const { getItem, removeItem, setItem } = vi.hoisted(() => ({
 
 vi.stubGlobal("localStorage", { getItem, removeItem, setItem });
 
-const { getProjectFromLocalStorage, resolveProject, setProjectToLocalStorage } =
-	await import("./projects");
+const {
+	getProjectFromLocalStorage,
+	getProjectLabel,
+	resolveProject,
+	resolveUnscopedProject,
+	setProjectToLocalStorage,
+} = await import("./projects");
 
 describe("selected Project storage", () => {
 	beforeEach(() => {
@@ -61,5 +66,42 @@ describe("resolveProject", () => {
 
 	it("resolves to nothing without Projects", () => {
 		expect(resolveProject([], "id-1")).toBeUndefined();
+	});
+});
+
+describe("resolveUnscopedProject", () => {
+	const projects = [
+		{ id: "id-1", name: "newest" },
+		{ id: "id-2", name: "older" },
+	] as Project[];
+
+	it("keeps a listed Project whatever the list state", () => {
+		expect(resolveUnscopedProject(projects, "id-2", false)).toBe(projects[1]);
+	});
+
+	it("does not replace a missing Project until the list is current", () => {
+		expect(resolveUnscopedProject(projects, "id-3", false)).toBeUndefined();
+	});
+
+	it("opens the first Project once a current list confirms it is gone", () => {
+		expect(resolveUnscopedProject(projects, "id-3", true)).toBe(projects[0]);
+	});
+
+	it("opens the first Project when nothing was opened yet", () => {
+		expect(resolveUnscopedProject(projects, null, false)).toBe(projects[0]);
+	});
+});
+
+describe("getProjectLabel", () => {
+	it("prefers the display name", () => {
+		expect(
+			getProjectLabel({ id: "id", name: "fraud", displayName: "Fraud" })
+		).toBe("Fraud");
+	});
+
+	it("falls back to the name", () => {
+		expect(
+			getProjectLabel({ id: "id", name: "fraud", displayName: undefined })
+		).toBe("fraud");
 	});
 });

@@ -1,22 +1,37 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "@tanstack/react-router";
+import { useMatch } from "@tanstack/react-router";
 
 import { projectQueries } from "@/data/projects";
-import { getProjectFromLocalStorage, resolveProject } from "@/lib/projects";
+import {
+	getProjectFromLocalStorage,
+	resolveUnscopedProject,
+} from "@/lib/projects";
 
-/** The Project in the URL, otherwise the one the app would open by default. */
+/**
+ * The Project validated by the current Project route, otherwise the one the app
+ * would open by default. A Project route never falls back to another Project.
+ */
 export function useActiveProject() {
-	const { data } = useSuspenseQuery(projectQueries.list());
-	const projectRouteParams = useParams({
+	const { data, isError, isFetching } = useSuspenseQuery(
+		projectQueries.allList()
+	);
+	const projectMatch = useMatch({
 		from: "/(private)/_sidebar/projects/$project_id",
 		shouldThrow: false,
 	});
+	const routeProject =
+		projectMatch?.status === "success"
+			? projectMatch.loaderData?.project
+			: undefined;
 
 	return {
 		projects: data.items,
-		activeProject: resolveProject(
-			data.items,
-			projectRouteParams?.project_id ?? getProjectFromLocalStorage()
-		),
+		activeProject: projectMatch
+			? routeProject
+			: resolveUnscopedProject(
+					data.items,
+					getProjectFromLocalStorage(),
+					!isError && !isFetching
+				),
 	};
 }

@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
-
 import {
 	ResponsiveAlertDialog,
 	ResponsiveAlertDialogAction,
@@ -11,30 +9,34 @@ import {
 	ResponsiveAlertDialogTitle,
 } from "@/components/ui/responsive-alert-dialog";
 import { useDeleteProject } from "@/data/projects/mutations/delete-project";
+import type { Project } from "@/domain/projects";
+import { getProjectLabel } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 
 type Props = {
-	projectId: string;
-	open: boolean;
-	setOpen: Dispatch<SetStateAction<boolean>>;
+	project: Project;
+	onClose: () => void;
 };
 
-export function DeleteProjectAlert({ projectId, open, setOpen }: Props) {
+export function DeleteProjectAlert({ project, onClose }: Props) {
 	const { mutate, isPending } = useDeleteProject({
-		onSuccess: () => {
-			setOpen(false);
-		},
+		onSuccess: onClose,
 	});
 
 	return (
-		<ResponsiveAlertDialog open={open} onOpenChange={setOpen}>
+		<ResponsiveAlertDialog
+			open
+			onOpenChange={(open) => {
+				if (!open) onClose();
+			}}
+		>
 			<ResponsiveAlertDialogContent>
 				<ResponsiveAlertDialogHeader>
 					<ResponsiveAlertDialogTitle>
 						{m.projects_delete_title()}
 					</ResponsiveAlertDialogTitle>
 					<ResponsiveAlertDialogDescription>
-						{m.projects_delete_description()}
+						{m.projects_delete_description({ name: getProjectLabel(project) })}
 					</ResponsiveAlertDialogDescription>
 				</ResponsiveAlertDialogHeader>
 				<ResponsiveAlertDialogFooter className="max-md:py-2">
@@ -44,7 +46,7 @@ export function DeleteProjectAlert({ projectId, open, setOpen }: Props) {
 					<ResponsiveAlertDialogAction
 						variant="destructive"
 						disabled={isPending}
-						onClick={() => mutate({ projectId })}
+						onClick={() => mutate({ projectId: project.id })}
 					>
 						{isPending ? m.projects_delete_pending() : m.common_action_delete()}
 					</ResponsiveAlertDialogAction>

@@ -8,7 +8,7 @@ import { m } from "@/paraglide/messages";
 export const Route = createFileRoute("/(private)/_sidebar/projects/")({
 	loader: async ({ context: { queryClient } }) => {
 		// Not ensureQueryData: a cached list could still contain a just-deleted Project.
-		const { items } = await queryClient.fetchQuery(projectQueries.list());
+		const { items } = await queryClient.fetchQuery(projectQueries.allList());
 		const project = resolveProject(items, getProjectFromLocalStorage());
 		if (project) {
 			throw redirect({

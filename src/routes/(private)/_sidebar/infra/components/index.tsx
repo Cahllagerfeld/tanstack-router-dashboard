@@ -1,19 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-	type ColumnSizingState,
-	type ColumnVisibilityState,
-	type RowSelectionState,
-	useTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
 
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
-import { features } from "@/components/tables/data-table-features";
 import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
+import { useDataTable } from "@/components/tables/use-data-table";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
@@ -51,33 +44,9 @@ function RouteComponent() {
 		componentQueries.list({ size, page, type })
 	);
 
-	const [columnVisibility, setColumnVisibility] =
-		useState<ColumnVisibilityState>({});
-	const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
-	const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-
-	const table = useTable({
-		features,
+	const table = useDataTable({
 		data: data.items,
-		columns: columns,
-		getRowId: (row) => row.id,
-		manualPagination: true,
-		onColumnVisibilityChange: setColumnVisibility,
-		onColumnSizingChange: setColumnSizing,
-		onRowSelectionChange: setRowSelection,
-		columnResizeMode: "onChange",
-		enableColumnResizing: true,
-		defaultColumn: {
-			enableHiding: false,
-			size: 200,
-			minSize: 150,
-			maxSize: 400,
-		},
-		state: {
-			columnVisibility,
-			columnSizing,
-			rowSelection,
-		},
+		columns,
 	});
 
 	return (

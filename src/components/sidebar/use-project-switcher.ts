@@ -1,10 +1,12 @@
 import { useState } from "react";
 
+import type { Project } from "@/domain/projects";
 import { useActiveProject } from "@/hooks/use-active-project";
 
 export function useProjectSwitcher() {
 	const [createDialogOpen, setCreateDialogOpen] = useState(false);
-	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+	// A snapshot: the confirmation keeps its target if the active Project changes.
+	const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 	const { projects, activeProject } = useActiveProject();
 
 	return {
@@ -12,7 +14,7 @@ export function useProjectSwitcher() {
 		activeProject,
 		createDialogOpen,
 		setCreateDialogOpen,
-		deleteDialogOpen,
-		setDeleteDialogOpen,
+		projectToDelete,
+		setProjectToDelete,
 	};
 }

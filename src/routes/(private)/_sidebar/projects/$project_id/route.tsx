@@ -4,7 +4,7 @@ import { projectQueries } from "@/data/projects";
 import { ProjectNotFound } from "@/features/projects/detail/project-not-found";
 import { getIllustrationUrl } from "@/lib/images";
 import { ensureQueryDataOr404 } from "@/lib/loader-utils";
-import { setProjectToLocalStorage } from "@/lib/projects";
+import { getProjectLabel, setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute(
@@ -22,7 +22,7 @@ export const Route = createFileRoute(
 		if (!preload) setProjectToLocalStorage(project.id);
 		return {
 			project,
-			crumb: project.displayName ?? project.name,
+			crumb: getProjectLabel(project),
 			crumbImage: getIllustrationUrl(project.name),
 		};
 	},

@@ -10,9 +10,14 @@ import { m } from "@/paraglide/messages";
 
 import { AppRail } from "./app-rail";
 
-const { location, params } = vi.hoisted(() => ({
+type ProjectMatch = {
+	status: string;
+	loaderData?: { project: (typeof projects)[number] };
+};
+
+const { location, match } = vi.hoisted(() => ({
 	location: { pathname: "/infra/components" },
-	params: { current: undefined as { project_id: string } | undefined },
+	match: { current: undefined as ProjectMatch | undefined },
 }));
 
 vi.mock("@tanstack/react-router", () => ({
@@ -22,8 +27,8 @@ vi.mock("@tanstack/react-router", () => ({
 		</a>
 	),
 	useLocation: () => location,
+	useMatch: () => match.current,
 	useNavigate: () => vi.fn(),
-	useParams: () => params.current,
 	useRouter: () => ({
 		buildLocation: ({
 			to,
@@ -46,14 +51,16 @@ const projects = [
 beforeEach(() => {
 	localStorage.clear();
 	location.pathname = "/infra/components";
-	params.current = undefined;
+	match.current = undefined;
 });
 
 function renderRail(items: typeof projects = projects) {
 	const queryClient = new QueryClient({
 		defaultOptions: { queries: { staleTime: Infinity } },
 	});
-	queryClient.setQueryData(projectQueries.list().queryKey, { items } as never);
+	queryClient.setQueryData(projectQueries.allList().queryKey, {
+		items,
+	} as never);
 	queryClient.setQueryData(userQueries.currentUser().queryKey, {
 		resolvedName: "Ada",
 		email: "ada@example.com",
@@ -86,7 +93,7 @@ test("points project entries at the last opened Project from other pages", async
 });
 
 test("marks the project entry for the current page", async () => {
-	params.current = { project_id: "fraud" };
+	match.current = { status: "success", loaderData: { project: projects[0]! } };
 	location.pathname = "/projects/fraud/pipelines";
 	await renderRail();
 
@@ -96,6 +103,35 @@ test("marks the project entry for the current page", async () => {
 	await expect
 		.element(railLink(m.common_navigation_runs()))
 		.not.toHaveAttribute("aria-current");
+});
+
+test("targets the Project in the URL when the list does not contain it", async () => {
+	match.current = {
+		status: "success",
+		loaderData: {
+			project: { id: "id-3", name: "older", displayName: "Older" },
+		},
+	};
+	location.pathname = "/projects/older/runs";
+	await renderRail();
+
+	await expect
+		.element(railLink(m.common_navigation_runs()))
+		.toHaveAttribute("href", "/projects/older/runs");
+});
+
+test("hides project entries while a Project route has no valid Project", async () => {
+	localStorage.setItem("zenml.projects.selected", "id-2");
+	match.current = { status: "notFound" };
+	location.pathname = "/projects/missing/runs";
+	await renderRail();
+
+	await expect
+		.element(railLink(m.infra_navigation_label()))
+		.toBeInTheDocument();
+	await expect
+		.element(railLink(m.common_navigation_runs()))
+		.not.toBeInTheDocument();
 });
 
 test("keeps sections current on nested routes", async () => {

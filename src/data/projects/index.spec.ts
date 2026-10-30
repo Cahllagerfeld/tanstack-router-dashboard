@@ -67,6 +67,78 @@ describe("projectQueries", () => {
 		});
 	});
 
+	describe("allList", () => {
+		function pageOf(ids: string[], totalPages: number) {
+			return {
+				data: {
+					index: 1,
+					max_size: 100,
+					total: ids.length,
+					total_pages: totalPages,
+					items: ids.map((id) => ({
+						id,
+						name: id,
+						permission_denied: false,
+					})),
+				},
+				error: undefined,
+				response: new Response(),
+			};
+		}
+
+		it("collects every page in order", async () => {
+			get
+				.mockResolvedValueOnce(pageOf(["newest"], 2))
+				.mockResolvedValueOnce(pageOf(["oldest"], 2));
+
+			const { items } = await projectQueries.allList().queryFn!({} as never);
+
+			expect(items.map((project) => project.id)).toEqual(["newest", "oldest"]);
+			expect(get).toHaveBeenLastCalledWith("/api/v1/projects", {
+				params: {
+					query: { page: 2, size: 100, sort_by: "desc:created" },
+				},
+			});
+		});
+
+		it("stops after one request when no Projects exist", async () => {
+			get.mockResolvedValue(pageOf([], 0));
+
+			await expect(
+				projectQueries.allList().queryFn!({} as never)
+			).resolves.toEqual({ items: [] });
+			expect(get).toHaveBeenCalledOnce();
+		});
+
+		it("drops a Project repeated by a shifted page", async () => {
+			get
+				.mockResolvedValueOnce(pageOf(["newest", "shifted"], 2))
+				.mockResolvedValueOnce(pageOf(["shifted", "oldest"], 2));
+
+			const { items } = await projectQueries.allList().queryFn!({} as never);
+
+			expect(items.map((project) => project.id)).toEqual([
+				"newest",
+				"shifted",
+				"oldest",
+			]);
+		});
+
+		it("rejects instead of publishing part of the list", async () => {
+			get
+				.mockResolvedValueOnce(pageOf(["newest"], 2))
+				.mockRejectedValueOnce(new Error("page 2 failed"));
+
+			await expect(
+				projectQueries.allList().queryFn!({} as never)
+			).rejects.toThrow("page 2 failed");
+		});
+
+		it("is covered by Project invalidation", () => {
+			expect(projectQueries.allList().queryKey[0]).toBe(projectKeys.all[0]);
+		});
+	});
+
 	it("isolates Project details and uses the identifier in the request", async () => {
 		get.mockResolvedValue({
 			data: {

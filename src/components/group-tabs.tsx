@@ -21,10 +21,7 @@ export function GroupTabs({
 	if (!activeTab) return null;
 
 	return (
-		<Tabs
-			value={activeTab.to}
-			className="-mx-4 -mt-4 h-11 shrink-0 border-b px-4"
-		>
+		<Tabs value={activeTab.to} className="h-11 shrink-0 border-b px-4">
 			<TabsList
 				variant="line"
 				aria-label={label}

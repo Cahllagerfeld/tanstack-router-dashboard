@@ -6,6 +6,7 @@ import {
 	useMatchRoute,
 } from "@tanstack/react-router";
 
+import { ContentInset } from "@/components/content-inset";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { componentQueries } from "@/data/components";
 import { ComponentDetailSkeleton } from "@/features/components/detail/component-detail-skeleton";
@@ -52,10 +53,9 @@ function RouteComponent() {
 	);
 
 	return (
-		<div className="space-y-6">
-			<ComponentHeader component={component} />
-
-			<Tabs value={activeTab} className="w-full">
+		<Tabs value={activeTab} className="gap-0">
+			<ContentInset className="space-y-6">
+				<ComponentHeader component={component} />
 				<TabsList variant="line">
 					<TabsTrigger
 						nativeButton={false}
@@ -82,11 +82,8 @@ function RouteComponent() {
 						}
 					></TabsTrigger>
 				</TabsList>
-
-				<div className="mt-6">
-					<Outlet />
-				</div>
-			</Tabs>
-		</div>
+			</ContentInset>
+			<Outlet />
+		</Tabs>
 	);
 }

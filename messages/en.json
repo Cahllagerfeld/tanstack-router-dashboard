@@ -123,7 +123,7 @@
 	"projects_create_description": "Create a new project to start collaborating with your team.",
 	"projects_create_submit": "Create Project",
 	"projects_create_title": "Create Project",
-	"projects_delete_description": "This action cannot be undone. This will permanently delete your project and remove all associated data.",
+	"projects_delete_description": "This action cannot be undone. This will permanently delete {name} and remove all associated data.",
 	"runs_list_title": "Runs",
 	"runs_table_author": "Author",
 	"runs_table_created_at": "Created at",

@@ -7,7 +7,7 @@ import { projectQueries } from "@/data/projects";
 
 export const Route = createFileRoute("/(private)/_sidebar")({
 	loader: async ({ context: { queryClient } }) => {
-		await queryClient.ensureQueryData(projectQueries.list());
+		await queryClient.ensureQueryData(projectQueries.allList());
 	},
 	component: RouteComponent,
 });
@@ -24,7 +24,7 @@ function RouteComponent() {
 					<BreadcrumbsContainer />
 				</header>
 				<ScrollArea className="min-h-0 flex-1">
-					<div className="flex flex-1 flex-col gap-4 p-4">
+					<div className="flex flex-1 flex-col">
 						<Outlet />
 					</div>
 				</ScrollArea>

@@ -123,7 +123,7 @@
 	"projects_create_description": "Erstellen Sie ein neues Projekt, um mit Ihrem Team zusammenzuarbeiten.",
 	"projects_create_submit": "Projekt erstellen",
 	"projects_create_title": "Projekt erstellen",
-	"projects_delete_description": "Diese Aktion kann nicht rückgängig gemacht werden. Ihr Projekt und alle zugehörigen Daten werden dauerhaft gelöscht.",
+	"projects_delete_description": "Diese Aktion kann nicht rückgängig gemacht werden. {name} und alle zugehörigen Daten werden dauerhaft gelöscht.",
 	"runs_list_title": "Runs",
 	"runs_table_author": "Autor",
 	"runs_table_created_at": "Erstellt am",
