@@ -10,10 +10,11 @@ import { useState } from "react";
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
+import { TableView } from "@/components/tables/table-view";
 import { runQueries } from "@/data/runs";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { Pagination } from "@/features/pagination";
 import { useRunColumns } from "@/features/runs/runs-list/columns";
 import { m } from "@/paraglide/messages";
 import type { ProjectRunListQueryParams } from "@/types/runs";
@@ -74,20 +75,14 @@ function RouteComponent() {
 	});
 
 	return (
-		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">{m.runs_list_title()}</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.runs_list_description()}
-				</p>
-			</div>
+		<TableView title={m.runs_list_title()}>
 			<TableToolbar>
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-			<Pagination index={runs.index} totalPages={runs.total_pages} />
-		</div>
+			<TableFooter page={runs} />
+		</TableView>
 	);
 }

@@ -11,7 +11,9 @@ import { useState } from "react";
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
+import { TableView } from "@/components/tables/table-view";
 import { componentQueries } from "@/data/components";
 import { useComponentColumns } from "@/features/components/components-list/columns";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
@@ -79,13 +81,7 @@ function RouteComponent() {
 	});
 
 	return (
-		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">{m.components_list_title()}</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.components_list_description()}
-				</p>
-			</div>
+		<TableView title={m.components_list_title()}>
 			<TableToolbar>
 				<TableToolbar.Start>
 					<TypeFilter queryName="type" filter={type} />
@@ -95,6 +91,7 @@ function RouteComponent() {
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-		</div>
+			<TableFooter page={data} />
+		</TableView>
 	);
 }

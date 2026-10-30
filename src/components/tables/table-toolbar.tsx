@@ -8,7 +8,12 @@ type TableToolbarProps = PropsWithChildren<{
 
 function TableToolbarRoot({ children, className }: TableToolbarProps) {
 	return (
-		<div className={cn("flex flex-wrap items-center gap-2", className)}>
+		<div
+			className={cn(
+				"flex h-13 shrink-0 items-center gap-2 border-b px-4",
+				className
+			)}
+		>
 			{children}
 		</div>
 	);

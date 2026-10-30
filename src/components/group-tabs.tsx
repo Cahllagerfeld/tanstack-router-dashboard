@@ -21,14 +21,21 @@ export function GroupTabs({
 	if (!activeTab) return null;
 
 	return (
-		<Tabs value={activeTab.to} className="-mx-4 -mt-4 border-b px-4">
-			<TabsList variant="line" aria-label={label}>
+		<Tabs
+			value={activeTab.to}
+			className="-mx-4 -mt-4 h-11 shrink-0 border-b px-4"
+		>
+			<TabsList
+				variant="line"
+				aria-label={label}
+				className="items-end gap-5 p-0 group-data-horizontal/tabs:h-full"
+			>
 				{tabs.map((tab) => (
 					<TabsTrigger
 						key={tab.to}
 						nativeButton={false}
 						value={tab.to}
-						className="flex-none"
+						className="flex-none px-0 font-normal group-data-horizontal/tabs:after:-bottom-px data-active:font-semibold"
 						render={<Link to={tab.to}>{tab.label}</Link>}
 					/>
 				))}

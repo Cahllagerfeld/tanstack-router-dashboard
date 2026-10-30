@@ -54,24 +54,16 @@ function RouteComponent() {
 	}
 
 	return (
-		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">{m.settings_members_title()}</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.settings_members_description()}
-				</p>
-			</div>
-			<Suspense fallback={<UserListSkeleton />}>
-				<UserList
-					queries={queries}
-					toolbarStart={
-						<UserListSearchbar
-							searchValue={getFilterValue(name ?? "")}
-							onChange={setSearchValue}
-						/>
-					}
-				/>
-			</Suspense>
-		</div>
+		<Suspense fallback={<UserListSkeleton />}>
+			<UserList
+				queries={queries}
+				toolbarStart={
+					<UserListSearchbar
+						searchValue={getFilterValue(name ?? "")}
+						onChange={setSearchValue}
+					/>
+				}
+			/>
+		</Suspense>
 	);
 }

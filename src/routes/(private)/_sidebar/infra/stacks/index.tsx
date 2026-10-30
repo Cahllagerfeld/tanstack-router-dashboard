@@ -11,7 +11,9 @@ import { useState } from "react";
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
+import { TableView } from "@/components/tables/table-view";
 import { stackQueries } from "@/data/stacks";
 import { commonFilterSchema } from "@/features/filters/common-filter-schema";
 import { useStackColumns } from "@/features/stacks/stacks-list/columns";
@@ -70,19 +72,14 @@ function RouteComponent() {
 	});
 
 	return (
-		<div className="space-y-4">
-			<div>
-				<h1 className="text-2xl font-bold">{m.stacks_list_title()}</h1>
-				<p className="text-sm text-muted-foreground">
-					{m.stacks_list_description()}
-				</p>
-			</div>
+		<TableView title={m.stacks_list_title()}>
 			<TableToolbar>
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-		</div>
+			<TableFooter page={data.data} />
+		</TableView>
 	);
 }

@@ -10,6 +10,7 @@ import { DataTableViewOptions } from "@/components/tables/columns-visibility-tog
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
 import { TableToolbar } from "@/components/tables/table-toolbar";
+import { TableView } from "@/components/tables/table-view";
 import { stackQueries } from "@/data/stacks";
 import { createStackColumns } from "@/features/stacks/stacks-list/columns";
 
@@ -51,13 +52,13 @@ export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
 	});
 
 	return (
-		<div className="space-y-2">
+		<TableView className="my-0">
 			<TableToolbar>
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-		</div>
+		</TableView>
 	);
 }

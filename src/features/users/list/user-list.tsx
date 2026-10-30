@@ -11,10 +11,12 @@ import { useState } from "react";
 import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/components/tables/data-table";
 import { features } from "@/components/tables/data-table-features";
+import { TableFooter } from "@/components/tables/table-footer";
 import { TableToolbar } from "@/components/tables/table-toolbar";
+import { TableView } from "@/components/tables/table-view";
 import { userQueries } from "@/data/user";
-import { Pagination } from "@/features/pagination";
 import { useUserListColumns } from "@/features/users/list/columns";
+import { m } from "@/paraglide/messages";
 import type { UserListQueryParams } from "@/types/user";
 
 type Props = {
@@ -62,7 +64,7 @@ export function UserList({ queries, toolbarStart }: Props) {
 	// }
 
 	return (
-		<div className="space-y-4">
+		<TableView title={m.settings_members_title()}>
 			<TableToolbar>
 				{toolbarStart ? (
 					<TableToolbar.Start>{toolbarStart}</TableToolbar.Start>
@@ -72,7 +74,7 @@ export function UserList({ queries, toolbarStart }: Props) {
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-			<Pagination index={userList.index} totalPages={userList.total_pages} />
-		</div>
+			<TableFooter page={userList} />
+		</TableView>
 	);
 }
