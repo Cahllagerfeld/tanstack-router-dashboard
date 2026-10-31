@@ -2,16 +2,22 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { m } from "@/paraglide/messages";
 
-import { activateUser, fetchUserList, inviteUser } from "./requests";
+import {
+	activateUser,
+	deleteUser,
+	fetchUserList,
+	inviteUser,
+} from "./requests";
 
-const { get, post, put } = vi.hoisted(() => ({
+const { deleteRequest, get, post, put } = vi.hoisted(() => ({
+	deleteRequest: vi.fn(),
 	get: vi.fn(),
 	post: vi.fn(),
 	put: vi.fn(),
 }));
 
 vi.mock("@/shared/api/client", () => ({
-	apiClient: { GET: get, POST: post, PUT: put },
+	apiClient: { DELETE: deleteRequest, GET: get, POST: post, PUT: put },
 }));
 
 describe("inviteUser", () => {
@@ -85,6 +91,38 @@ describe("activateUser", () => {
 		});
 
 		await expect(activateUser({ userId: "user-id", body: {} })).rejects.toThrow(
+			m.common_error_unwrapping()
+		);
+	});
+});
+
+describe("deleteUser", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
+	it("deletes the selected user", async () => {
+		deleteRequest.mockResolvedValue({
+			data: undefined,
+			error: undefined,
+			response: new Response(null, { status: 204 }),
+		});
+
+		await expect(deleteUser({ userId: "user-id" })).resolves.toBeUndefined();
+		expect(deleteRequest).toHaveBeenCalledWith(
+			"/api/v1/users/{user_name_or_id}",
+			{ params: { path: { user_name_or_id: "user-id" } } }
+		);
+	});
+
+	it("rejects an unsuccessful deletion", async () => {
+		deleteRequest.mockResolvedValue({
+			data: undefined,
+			error: { detail: "Forbidden" },
+			response: new Response(null, { status: 403 }),
+		});
+
+		await expect(deleteUser({ userId: "user-id" })).rejects.toThrow(
 			m.common_error_unwrapping()
 		);
 	});

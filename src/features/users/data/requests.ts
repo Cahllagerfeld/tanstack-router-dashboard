@@ -1,9 +1,10 @@
 import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
+import { expectData, expectOptionalData } from "@/shared/api/errors";
 import { mapPage } from "@/shared/lib/page";
 
 import type {
 	ActivateUserInput,
+	DeleteUserInput,
 	InviteUserInput,
 	UserListInput,
 } from "../model";
@@ -35,4 +36,11 @@ export async function activateUser({ userId, body }: ActivateUserInput) {
 		}
 	);
 	return userFromApi(expectData(response));
+}
+
+export async function deleteUser({ userId }: DeleteUserInput) {
+	const response = await apiClient.DELETE("/api/v1/users/{user_name_or_id}", {
+		params: { path: { user_name_or_id: userId } },
+	});
+	expectOptionalData(response);
 }

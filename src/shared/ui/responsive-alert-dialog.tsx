@@ -17,7 +17,6 @@ import {
 import { Button } from "@/shared/ui/button";
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
 	DrawerFooter,
@@ -29,6 +28,7 @@ import {
 // Context for sharing viewport state
 type ResponsiveAlertDialogContextValue = {
 	isMobile: boolean;
+	onOpenChange: ((open: boolean) => void) | undefined;
 };
 
 const ResponsiveAlertDialogContext =
@@ -61,7 +61,7 @@ function ResponsiveAlertDialog({
 	const isMobile = useIsMobile();
 
 	return (
-		<ResponsiveAlertDialogContext.Provider value={{ isMobile }}>
+		<ResponsiveAlertDialogContext.Provider value={{ isMobile, onOpenChange }}>
 			{isMobile ? (
 				<Drawer
 					open={open}
@@ -219,15 +219,18 @@ function ResponsiveAlertDialogCancel({
 	className,
 	variant = "outline",
 }: ResponsiveAlertDialogCancelProps) {
-	const { isMobile } = useResponsiveAlertDialog();
+	const { isMobile, onOpenChange } = useResponsiveAlertDialog();
 
+	// A non-dismissible vaul Drawer ignores DrawerClose, so cancelling closes through the owner.
 	if (isMobile) {
 		return (
-			<DrawerClose asChild>
-				<Button variant={variant} className={cn("w-full", className)}>
-					{children}
-				</Button>
-			</DrawerClose>
+			<Button
+				variant={variant}
+				className={cn("w-full", className)}
+				onClick={() => onOpenChange?.(false)}
+			>
+				{children}
+			</Button>
 		);
 	}
 

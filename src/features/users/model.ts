@@ -25,6 +25,10 @@ export type InvitedUser = {
 	activationToken: string | undefined;
 };
 
+export type DeleteUserInput = {
+	userId: string;
+};
+
 export type ActivateUserInput = {
 	userId: string;
 	body: Pick<
