@@ -75,9 +75,7 @@ const legacyPaths = {
 		"src/types/pipelines",
 	],
 	projects: [
-		"src/data/projects/mutations/",
 		"src/domain/mappers",
-		"src/features/projects/create/dialog/",
 		"src/hooks/use-active-project",
 		"src/lib/images",
 		"src/lib/projects",

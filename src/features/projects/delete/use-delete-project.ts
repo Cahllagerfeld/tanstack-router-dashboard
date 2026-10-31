@@ -6,13 +6,12 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import {
-	type DeleteProjectInput,
-	deleteProject,
-	projectKeys,
-} from "@/features/projects";
 import { m } from "@/paraglide/messages";
 import { FetchError } from "@/shared/api/errors";
+
+import { projectKeys } from "../data/queries";
+import { deleteProject } from "../data/requests";
+import type { DeleteProjectInput } from "../model";
 
 export function useDeleteProject(
 	options?: UseMutationOptions<void, FetchError, DeleteProjectInput, unknown>
