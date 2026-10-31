@@ -24,6 +24,8 @@ export class FetchError extends Error {
 	}
 }
 
+export type ApiClientError = FetchError | Error;
+
 export function isFetchError(err: unknown): err is FetchError {
 	return err instanceof FetchError;
 }

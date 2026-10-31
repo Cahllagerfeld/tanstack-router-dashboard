@@ -1,7 +1,7 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 import { loginUserRequest } from "@/features/session";
-import type { ApiClientError } from "@/types/api";
+import type { ApiClientError } from "@/shared/api/errors";
 
 import { activateServer } from "../data/requests";
 import type { ServerActivationInput } from "../model";

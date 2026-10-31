@@ -11,7 +11,7 @@ import {
 
 const repositoryRoot = resolve(
 	dirname(fileURLToPath(import.meta.url)),
-	"../.."
+	"../../.."
 );
 
 function sourceFile(path: string, content: string): LocalizationSourceFile {
@@ -202,14 +202,16 @@ describe("checkLocalizationPolicy", () => {
 
 	it("keeps the repository catalogs and application source compliant", () => {
 		const sourceFiles = collectSourceFiles(join(repositoryRoot, "src"));
+		const en = readCatalog("en");
+		const de = readCatalog("de");
 		const result = checkLocalizationPolicy({
-			catalogs: {
-				en: readCatalog("en"),
-				de: readCatalog("de"),
-			},
+			catalogs: { en, de },
 			sourceFiles,
 		});
 
+		expect(sourceFiles.map(({ path }) => path)).toContain("src/main.tsx");
+		expect(en).toHaveProperty("common_error_unknown");
+		expect(de).toHaveProperty("common_error_unknown");
 		expect(result.issues).toEqual([]);
 	});
 });

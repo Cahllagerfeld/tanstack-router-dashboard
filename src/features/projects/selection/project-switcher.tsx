@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Check, Plus, Trash2 } from "lucide-react";
 
-import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import {
 	railAvatarClassName,
 	railAvatarTriggerClassName,
 } from "@/shared/components/rail/rail-avatar";
 import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
+import { getEntityIcon } from "@/shared/lib/entity-icons";
 import { Avatar, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 import {

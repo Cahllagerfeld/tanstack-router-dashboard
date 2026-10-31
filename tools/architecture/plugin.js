@@ -66,7 +66,7 @@ export default {
 		"dependency-direction": {
 			create: (context) =>
 				importVisitor(context, (importer, target, specifier) => {
-					const layer = LAYERS[forbiddenEdge(importer, target, policy)];
+					const layer = LAYERS[forbiddenEdge(importer, target)];
 					return (
 						layer &&
 						`${layer.label} cannot import "${specifier}". Fix: ${layer.fix}.`
@@ -76,7 +76,7 @@ export default {
 		"dto-funnel": {
 			create: (context) =>
 				importVisitor(context, (importer, target, specifier) => {
-					const fix = dtoFix(importer, target, policy);
+					const fix = dtoFix(importer, target);
 					return fix && `"${specifier}" leaks API types. Fix: ${fix}.`;
 				}),
 		},
@@ -84,7 +84,7 @@ export default {
 			create: (context) =>
 				importVisitor(context, (importer, target, specifier, isType) => {
 					// Type-only imports erase, so they cannot make a model impure.
-					const fix = !isType && modelFix(importer, target, policy);
+					const fix = !isType && modelFix(importer, target);
 					return fix && `A model cannot import "${specifier}". Fix: ${fix}.`;
 				}),
 		},

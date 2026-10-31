@@ -5,7 +5,7 @@ import { fetchUserList } from "./requests";
 
 const baseKey = "users" as const;
 
-export const userKeys = {
+const userKeys = {
 	all: [baseKey] as const,
 	lists: () => [...userKeys.all, "list"] as const,
 	list: (params: UserListInput) => [...userKeys.lists(), params] as const,

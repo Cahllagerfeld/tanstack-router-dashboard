@@ -1,14 +1,14 @@
 import { Link } from "@tanstack/react-router";
 
-import { useNavbarItems } from "@/components/sidebar/use-navbar-items";
 import { RailProjectSwitcher } from "@/features/projects/ui";
 import { m } from "@/paraglide/messages";
 import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
 import { cn } from "@/shared/lib/cn";
 import { buttonVariants } from "@/shared/ui/button";
-import type { NavbarItem } from "@/types/navbar";
 
+import type { NavbarItem } from "./navbar";
 import { RailUser } from "./rail-user";
+import { useNavbarItems } from "./use-navbar-items";
 
 const railLinkClassName = cn(
 	buttonVariants({ variant: "ghost", size: "icon-lg" }),

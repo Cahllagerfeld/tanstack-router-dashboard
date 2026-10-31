@@ -34,9 +34,9 @@ const SHARED = grammar(
 const GENERATED = "src/shared/api/generated";
 const DTO_FILE = /^src\/features\/[^/]+\/data\/dto\.ts$/;
 const DTO_TARGET = /^src\/features\/([^/]+)\/data\/dto$/;
-const MODEL_FILE = /^src\/features\/([^/]+)\/(?:[^/]+\/)?model\.ts$/;
+const MODEL_FILE = /^src\/features\/[^/]+\/(?:[^/]+\/)?model\.ts$/;
 const PURE_TARGET =
-	/^src\/(?:shared\/lib\/.+|lib\/constants\/storage|features\/[^/]+\/(?:[^/]+\/)?model)$/;
+	/^src\/(?:shared\/lib\/.+|features\/[^/]+\/(?:[^/]+\/)?model)$/;
 const APP_FIX =
 	"move it to app/{providers.tsx,query-client.ts,global-error-boundary.tsx,layouts,navigation,workflows/<name>}";
 const SHARED_FIX =
@@ -65,24 +65,13 @@ function featureOf(file) {
 	return match && { owner: match[1], rest: match[2] ?? "" };
 }
 
-function legacyOwner(file, { legacyPaths }) {
-	const matches = Object.entries(legacyPaths).flatMap(([owner, prefixes]) =>
-		prefixes
-			.filter((prefix) => `${file}/`.startsWith(prefix))
-			.map((prefix) => ({ owner, length: prefix.length }))
-	);
-	return matches.sort((a, b) => b.length - a.length)[0]?.owner ?? null;
-}
-
-/** Architecture layer, using the legacy mapping until the code has moved. */
-function layerOf(file, policy) {
+/** Architecture layer, or null for a path outside every layer. */
+function layerOf(file) {
 	if (featureOf(file)) return "feature";
 	const root = /^src\/(app|routes|shared)(?:\/|$)/.exec(file)?.[1];
 	if (root) return root;
 	if (file === "src/main") return "app";
-	if (file === "src/routeTree.gen") return "routes";
-	const owner = legacyOwner(file, policy);
-	return ["app", "shared", null].includes(owner) ? owner : "feature";
+	return file === "src/routeTree.gen" ? "routes" : null;
 }
 
 /** The port that replaces a deep feature import, or null when it is allowed. */
@@ -100,13 +89,13 @@ export function requiredPort(root, importer, target) {
 }
 
 /** The importer's layer when the edge points the wrong way, otherwise null. */
-export function forbiddenEdge(importer, target, policy) {
-	const from = layerOf(importer, policy);
-	return FORBIDDEN[from]?.includes(layerOf(target, policy)) ? from : null;
+export function forbiddenEdge(importer, target) {
+	const from = layerOf(importer);
+	return FORBIDDEN[from]?.includes(layerOf(target)) ? from : null;
 }
 
 /** The fix for an import that breaks the DTO funnel, or null when it is allowed. */
-export function dtoFix(importer, target, policy) {
+export function dtoFix(importer, target) {
 	const owner = DTO_TARGET.exec(target)?.[1];
 	if (owner) {
 		return importer.startsWith(`src/features/${owner}/data/`)
@@ -117,17 +106,14 @@ export function dtoFix(importer, target, policy) {
 	if (DTO_FILE.test(importer) || importer === "src/shared/api/client.ts") {
 		return null;
 	}
-	const legacy = legacyOwner(importer, policy);
-	if (legacy && !policy.enforcedOwners.includes(legacy)) return null;
 	return /^src\/features\/[^/]+\/data\//.test(importer)
 		? `add the alias to ${path.posix.dirname(importer)}/dto.ts and import it from there`
 		: "use a handwritten type from the owning feature's model.ts; generated aliases stay in its data/dto.ts";
 }
 
-/** The fix for an impure import in an enforced model.ts, or null when it is allowed. */
-export function modelFix(importer, target, { enforcedOwners }) {
-	const owner = MODEL_FILE.exec(importer)?.[1];
-	if (!enforcedOwners.includes(owner) || PURE_TARGET.test(target)) return null;
+/** The fix for an impure import in a model.ts, or null when it is allowed. */
+export function modelFix(importer, target) {
+	if (!MODEL_FILE.test(importer) || PURE_TARGET.test(target)) return null;
 	return "keep model.ts pure: use `import type`, pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook";
 }
 
@@ -149,9 +135,6 @@ function featureFix({ owner, rest }, { owners }) {
 /** The fix for a misplaced file, or null when the path is accepted. */
 export function placementFix(file, policy) {
 	if (!file.startsWith("src/")) return null;
-	const owner = legacyOwner(file, policy);
-	if (owner && !policy.enforcedOwners.includes(owner)) return null;
-	if (owner) return `move this legacy path into src/features/${owner}/`;
 	const feature = featureOf(file);
 	if (feature) return featureFix(feature, policy);
 	if (file.startsWith("src/shared/")) return sharedFix(file.slice(11), policy);

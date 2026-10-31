@@ -1,8 +1,8 @@
-import { S3_BASE_URL } from "@/lib/constants/storage";
-
 import type { Project } from "../model";
 
-export function findProject(projects: Project[], idOrName: string | null) {
+const S3_BASE_URL = "https://public-flavor-logos.s3.eu-central-1.amazonaws.com";
+
+function findProject(projects: Project[], idOrName: string | null) {
 	return projects.find(
 		(project) => project.id === idOrName || project.name === idOrName
 	);

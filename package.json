@@ -9,7 +9,7 @@
 	],
 	"scripts": {
 		"build": "vite build && tsc -b",
-		"check:types": "tsc --noEmit",
+		"check:types": "tsc -b",
 		"dev": "vite",
 		"format": "oxfmt .",
 		"generate:types": "node scripts/types.js",

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import { m } from "@/paraglide/messages";
 import { isFetchError } from "@/shared/api/errors";
-import type { ApiClientError } from "@/types/api";
+import type { ApiClientError } from "@/shared/api/errors";
 
 import { projectKeys } from "../data/queries";
 import { createProject } from "../data/requests";

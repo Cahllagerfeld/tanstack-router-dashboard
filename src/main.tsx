@@ -4,9 +4,9 @@ import { StrictMode } from "react";
 import "@/assets/styles/tailwind.css";
 import ReactDOM from "react-dom/client";
 
-import { Providers } from "@/components/providers";
-import { DefaultErrorPage } from "@/features/root/ui";
-import { queryClient } from "@/lib/query-client";
+import { DefaultErrorPage } from "@/app/global-error-boundary";
+import { Providers } from "@/app/providers";
+import { queryClient } from "@/app/query-client";
 
 import { routeTree } from "./routeTree.gen";
 
