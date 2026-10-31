@@ -54,7 +54,7 @@ describe("oxlint with the root configuration", () => {
 
 		expect(guard.status).toBe(1);
 		expect(guard.stderr).toContain("src/misplaced/suppressed.ts:1: remove");
-		expect(guard.stderr).toContain("src/types/api.ts:1: remove");
+		expect(guard.stderr).toContain("src/shared/api/client.ts:1: remove");
 		expect(guard.stderr).not.toContain("src/shared/api/generated.ts");
 	});
 });

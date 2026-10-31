@@ -8,7 +8,7 @@ import { Checkbox } from "@/shared/ui/checkbox";
 
 import type { Stack } from "../model";
 
-export function createStackSelectColumn(): ColumnDef<DataTableFeatures, Stack> {
+function createStackSelectColumn(): ColumnDef<DataTableFeatures, Stack> {
 	return {
 		id: "select",
 		enableResizing: false,

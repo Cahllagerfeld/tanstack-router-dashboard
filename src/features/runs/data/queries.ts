@@ -5,7 +5,7 @@ import { fetchRunList } from "./requests";
 
 const baseKey = "runs" as const;
 
-export const runKeys = {
+const runKeys = {
 	all: [baseKey] as const,
 	lists: () => [...runKeys.all, "list"] as const,
 	list: (params: ProjectRunListInput) => [...runKeys.lists(), params] as const,

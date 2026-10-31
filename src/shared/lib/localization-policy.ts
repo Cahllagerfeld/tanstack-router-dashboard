@@ -1,11 +1,11 @@
-export type LocalizationCatalog = Record<string, unknown>;
+type LocalizationCatalog = Record<string, unknown>;
 
 export type LocalizationSourceFile = {
 	path: string;
 	content: string;
 };
 
-export type LocalizationIssue = {
+type LocalizationIssue = {
 	kind: "catalog" | "jsx-text" | "notification" | "user-facing-attribute";
 	file?: string;
 	line?: number;

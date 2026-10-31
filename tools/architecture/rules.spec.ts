@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,7 +40,7 @@ tester.run("public-feature-imports", plugin.rules["public-feature-imports"], {
 		valid(route, `import { a } from "@/features/stacks";`),
 		valid(route, `import { a } from "@/features/stacks/index";`),
 		valid(route, `import { a } from "../features/stacks/ui.ts";`),
-		valid(route, `import { a } from "@/lib/deep/path";`),
+		valid(route, `import { a } from "@/shared/lib/deep/path";`),
 		valid(route, "const load = (name) => import(`@/features/${name}/x`);"),
 		valid("src/features/stacks/a/b.tsx", `import { a } from "${deep}";`),
 	],
@@ -87,15 +86,15 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 		["src/shared/lib/a.ts", "@/shared/lib/b"],
 		[peer, "@/features/stacks/ui"],
 		[peer, "@/shared/lib/dates"],
-		["src/components/sidebar/use-navbar-items.ts", "@/features/stacks/ui"],
+		["src/app/navigation/use-navbar-items.ts", "@/features/stacks/ui"],
 	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
 	invalid: [
 		...[
 			["src/shared/lib/a.ts", "@/features/stacks"],
 			["src/shared/lib/a.ts", "../../app/providers"],
-			["src/lib/localstorage.ts", "@/routes/route"],
-			["src/lib/localstorage.ts", "@/features/made-up"],
-			["src/lib/localstorage.ts", "@/app"],
+			["src/shared/lib/localstorage.ts", "@/routes/route"],
+			["src/shared/lib/localstorage.ts", "@/features/made-up"],
+			["src/shared/lib/localstorage.ts", "@/app"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, sharedRule(specifier))
 		),
@@ -104,13 +103,13 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/routeTree.gen"],
 			[peer, "@/main"],
 			[peer, "../../../app/navigation/app-rail"],
-			[peer, "../../../components/sidebar/use-navbar-items"],
+			[peer, "../../../app/navigation/use-navbar-items"],
 			[peer, "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))
 		),
 		invalid(
-			"src/lib/localstorage.ts",
+			"src/shared/lib/localstorage.ts",
 			`type A = import("@/features/stacks").A;`,
 			sharedRule("@/features/stacks")
 		),
@@ -139,7 +138,6 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 		["src/features/projects/data/dto.ts", generated],
 		["src/features/runs/data/dto.ts", generated],
 		["src/shared/api/client.ts", "./generated"],
-		["src/types/api-example.ts", generated],
 		["src/features/projects/data/map.ts", "./dto"],
 		["src/features/projects/data/map.spec.ts", "./dto"],
 		["src/features/projects/create/form.tsx", "@/shared/api/client"],
@@ -151,6 +149,7 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 			["src/features/projects/create/form.tsx", toModel],
 			["src/features/runs/list/view.tsx", toModel],
 			["src/domain/runs.ts", toModel],
+			["src/types/api-example.ts", toModel],
 			["src/routes/route.tsx", toModel],
 			["src/shared/lib/dates.ts", toModel],
 		].map(([file, message]) =>
@@ -180,12 +179,11 @@ const impure = (specifier: string) =>
 tester.run("pure-model", plugin.rules["pure-model"], {
 	valid: [
 		["src/features/projects/selection/model.ts", "../model"],
-		["src/features/projects/selection/model.ts", "@/lib/constants/storage"],
+		["src/features/projects/selection/model.ts", "@/shared/lib/localstorage"],
 		["src/features/projects/model.ts", "@/shared/lib/dates"],
 		["src/features/projects/model.ts", "./selection/model"],
 		["src/features/projects/model.spec.ts", "vitest"],
 		["src/features/projects/selection/use-active-project.ts", "react"],
-		["src/features/example/model.ts", "react"],
 	]
 		.map(([file, specifier]) => valid(file, `import "${specifier}";`))
 		.concat(
@@ -206,6 +204,7 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 		"./use-active-project",
 		"../data/queries",
 		"./project-switcher",
+		"@/lib/constants/storage",
 	]
 		.map((specifier) =>
 			invalid(
@@ -219,6 +218,11 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 				"src/features/projects/model.ts",
 				`import { type User } from "@/features/users";`,
 				impure("@/features/users")
+			),
+			invalid(
+				"src/features/example/model.ts",
+				`import { a } from "react";`,
+				impure("react")
 			)
 		),
 });
@@ -259,8 +263,10 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 	],
 });
 
-describe("placement ratchet", () => {
-	const strict = { ...policy, enforcedOwners: ["projects"] };
+const ROOT_FIX =
+	"move it to src/features/<owner>, src/shared, src/app, or src/routes";
+
+describe("placement grammar", () => {
 	const feature = (file: string) => `src/features/projects/${file}`;
 
 	it.each([
@@ -270,8 +276,8 @@ describe("placement ratchet", () => {
 		"create/schema.ts",
 		"create/form.browser.spec.tsx",
 		"empty/no-projects-fallback.tsx",
-	])("accepts %s for an enforced owner", (file) => {
-		expect(placementFix(feature(file), strict)).toBeNull();
+	])("accepts %s for a registered owner", (file) => {
+		expect(placementFix(feature(file), policy)).toBeNull();
 	});
 
 	it.each([
@@ -281,51 +287,64 @@ describe("placement ratchet", () => {
 		"Create/form.tsx",
 		"data/client.ts",
 		"data/view.tsx",
-	])("rejects %s for an enforced owner", (file) => {
-		expect(placementFix(feature(file), strict)).toContain("features/projects/");
+	])("rejects %s for a registered owner", (file) => {
+		expect(placementFix(feature(file), policy)).toContain("features/projects/");
 	});
 
-	it("rejects the named legacy paths of enforced owners only", () => {
-		const legacy = "src/data/example/index.ts";
-		const unenforced = "src/data/other/index.ts";
-		const mapped = {
-			...policy,
-			legacyPaths: {
-				...policy.legacyPaths,
-				example: ["src/data/example/"],
-				other: ["src/data/other/"],
-			},
-		};
-		const enforced = { ...mapped, enforcedOwners: ["example"] };
-
-		expect(placementFix(legacy, mapped)).toBeNull();
-		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
-		expect(placementFix(unenforced, enforced)).toBeNull();
-	});
-
-	it("keeps new work in unenforced owners on target paths", () => {
-		const unenforced = { ...policy, owners: [...policy.owners, "example"] };
+	it("applies the grammar to a newly registered owner", () => {
+		const registered = { ...policy, owners: [...policy.owners, "example"] };
 
 		expect(
-			placementFix("src/features/example/a/b/c.tsx", unenforced)
+			placementFix("src/features/example/index.ts", registered)
+		).toBeNull();
+		expect(
+			placementFix("src/features/example/a/b/c.tsx", registered)
 		).toContain("features/example/");
 	});
 
+	it.each(
+		["components", "data", "domain", "hooks", "lib", "types"].flatMap((root) =>
+			["index.ts", "new-helper.ts", "use-thing.ts", "nested/view.tsx"].map(
+				(file) => `src/${root}/${file}`
+			)
+		)
+	)("rejects any file in the old root: %s", (file) => {
+		expect(placementFix(file, policy)).toBe(ROOT_FIX);
+	});
+
 	it.each([
-		"src/components/ui/button.tsx",
+		"src/components/breadcrumb/breadcrumbs.tsx",
 		"src/components/copy-button.tsx",
+		"src/components/providers.tsx",
 		"src/components/sidebar/app-rail.tsx",
 		"src/components/sidebar/new-item.tsx",
+		"src/components/sidebar/use-navbar-items.ts",
+		"src/components/ui/button.tsx",
 		"src/data/api-client.ts",
 		"src/data/runs/index.ts",
 		"src/domain/runs.ts",
 		"src/hooks/use-copy.ts",
+		"src/lib/constants/entity-icons.ts",
+		"src/lib/constants/storage.ts",
 		"src/lib/dates.ts",
-		"src/lib/new-helper.ts",
+		"src/lib/localization-policy.ts",
+		"src/lib/localstorage.ts",
+		"src/lib/query-client.ts",
+		"src/types/api.ts",
 		"src/types/core.ts",
+		"src/types/navbar.ts",
 		"src/types/runs.ts",
-	])("rejects the moved or new legacy-area path %s", (file) => {
-		expect(placementFix(file, policy)).toContain("move it to");
+	])("rejects the moved path %s", (file) => {
+		expect(placementFix(file, policy)).toBe(ROOT_FIX);
+	});
+
+	it("does not register the former root owner", () => {
+		const former = "root";
+
+		expect(policy.owners).not.toContain(former);
+		expect(placementFix(`src/features/${former}/index.ts`, policy)).toContain(
+			`add "${former}" to owners`
+		);
 	});
 
 	it("requires a registered Shared unit and a closed App area", () => {
@@ -346,27 +365,13 @@ describe("placement ratchet", () => {
 	});
 });
 
-it("treats a legacy path of a feature owner as feature code", () => {
-	const legacy = {
-		...policy,
-		legacyPaths: { ...policy.legacyPaths, example: ["src/data/example/"] },
-	};
+it("gives a path outside every layer no layer", () => {
+	const outside = "src/data/example/index";
 
-	expect(
-		forbiddenEdge("src/data/example/index", "src/app/providers", legacy)
-	).toBe("feature");
-});
-
-it("maps legacy paths only to known owners and existing files", () => {
-	const root = path.resolve(cwd, "../../../..");
-	const areas = [...policy.owners, "app", "shared"];
-	const exists = (prefix: string) =>
-		["", ".ts", ".tsx", ".spec.ts"].some((ext) =>
-			existsSync(path.join(root, `${prefix}${ext}`))
-		);
-
-	for (const [owner, prefixes] of Object.entries(policy.legacyPaths)) {
-		expect(areas).toContain(owner);
-		expect(prefixes.filter((prefix) => !exists(prefix))).toEqual([]);
-	}
+	expect(forbiddenEdge("src/features/runs/model", "src/app/providers")).toBe(
+		"feature"
+	);
+	expect(forbiddenEdge(outside, "src/app/providers")).toBeNull();
+	expect(forbiddenEdge("src/features/runs/model", outside)).toBeNull();
+	expect(forbiddenEdge("src/shared/lib/dates", outside)).toBeNull();
 });

@@ -20,7 +20,7 @@ export type EntityKind =
 	| "artifact"
 	| "deployment";
 
-export const ENTITY_ICONS = {
+const ENTITY_ICONS = {
 	project: FolderKanban,
 	component: Box,
 	stack: Layers,

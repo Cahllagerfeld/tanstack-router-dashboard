@@ -82,9 +82,7 @@ export function TypeFilter({ filter }: Props) {
 	);
 }
 
-export function TypeSelect({
-	...rest
-}: ComponentPropsWithoutRef<typeof Select>) {
+function TypeSelect({ ...rest }: ComponentPropsWithoutRef<typeof Select>) {
 	return (
 		<Select {...rest}>
 			<SelectTrigger className="w-full">
