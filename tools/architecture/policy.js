@@ -20,6 +20,7 @@ const enforcedOwners = [
 	// One per line and alphabetical, so parallel migrations rebase cleanly.
 	"pipelines",
 	"projects",
+	"runs",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */

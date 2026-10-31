@@ -185,7 +185,7 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 		["src/features/projects/model.ts", "./selection/model"],
 		["src/features/projects/model.spec.ts", "vitest"],
 		["src/features/projects/selection/use-active-project.ts", "react"],
-		["src/features/runs/model.ts", "react"],
+		["src/features/example/model.ts", "react"],
 	]
 		.map(([file, specifier]) => valid(file, `import "${specifier}";`))
 		.concat(

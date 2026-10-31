@@ -29,7 +29,7 @@ describe("oxlint with the root configuration", () => {
 		["src/shared/hooks/use-feature.ts", "architecture(dependency-direction)"],
 		["src/misplaced/reported.ts", "architecture(file-placement)"],
 		["src/features/unregistered/index.ts", "architecture(file-placement)"],
-		["src/features/runs/cycle/model.ts", "import(no-cycle)"],
+		["src/features/runs/cycle/storage.ts", "import(no-cycle)"],
 		["src/features/projects/data/requests.ts", "architecture(dto-funnel)"],
 		["src/features/projects/model.ts", "architecture(pure-model)"],
 	])("fails on the violation in %s", (file, code) => {
