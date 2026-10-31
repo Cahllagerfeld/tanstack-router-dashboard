@@ -5,6 +5,7 @@ import { useActiveProject } from "@/features/projects/ui";
 import { m } from "@/paraglide/messages";
 import { getEntityIcon } from "@/shared/lib/entity-icons";
 
+import { appHotkeys } from "./app-hotkeys";
 import type { NavbarItem } from "./navbar";
 
 function getInfraItem(): NavbarItem {
@@ -13,6 +14,7 @@ function getInfraItem(): NavbarItem {
 		url: "/infra/stacks",
 		icon: getEntityIcon("stack"),
 		activePathPrefix: "/infra",
+		hotkey: appHotkeys["navigation.infra"],
 	};
 }
 
@@ -23,6 +25,7 @@ function getFooterItems(): NavbarItem[] {
 			url: "/settings/general",
 			icon: Settings,
 			activePathPrefix: "/settings",
+			hotkey: appHotkeys["navigation.settings"],
 		},
 	];
 }
@@ -49,12 +52,14 @@ function useProjectItems(): NavbarItem[] {
 			url: pipelinesUrl,
 			icon: getEntityIcon("pipeline"),
 			activePathPrefix: pipelinesUrl,
+			hotkey: appHotkeys["navigation.pipelines"],
 		},
 		{
 			title: m.common_navigation_runs(),
 			url: runsUrl,
 			icon: getEntityIcon("run"),
 			activePathPrefix: runsUrl,
+			hotkey: appHotkeys["navigation.runs"],
 		},
 		{
 			title: m.common_navigation_models(),

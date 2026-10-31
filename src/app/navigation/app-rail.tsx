@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import { useKeyboardShortcutsEnabled } from "@/features/keyboard-shortcuts/ui";
 import { RailProjectSwitcher } from "@/features/projects/ui";
 import { m } from "@/paraglide/messages";
 import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
@@ -9,6 +10,7 @@ import { buttonVariants } from "@/shared/ui/button";
 import type { NavbarItem } from "./navbar";
 import { RailUser } from "./rail-user";
 import { useNavbarItems } from "./use-navbar-items";
+import { useRailHotkeys } from "./use-rail-hotkeys";
 
 const railLinkClassName = cn(
 	buttonVariants({ variant: "ghost", size: "icon-lg" }),
@@ -17,6 +19,9 @@ const railLinkClassName = cn(
 
 export function AppRail() {
 	const { navItems, footerItems } = useNavbarItems();
+	const { enabled: hotkeysEnabled } = useKeyboardShortcutsEnabled();
+
+	useRailHotkeys([...navItems, ...footerItems], hotkeysEnabled);
 
 	return (
 		<nav
@@ -26,12 +31,12 @@ export function AppRail() {
 			<div className="flex flex-col items-center gap-3">
 				<RailProjectSwitcher />
 				{navItems.map((item) => (
-					<RailNavLink key={item.url} item={item} />
+					<RailNavLink key={item.url} item={item} showHotkey={hotkeysEnabled} />
 				))}
 			</div>
 			<div className="mt-auto flex flex-col items-center gap-3">
 				{footerItems.map((item) => (
-					<RailNavLink key={item.url} item={item} />
+					<RailNavLink key={item.url} item={item} showHotkey={hotkeysEnabled} />
 				))}
 				<RailUser />
 			</div>
@@ -39,7 +44,13 @@ export function AppRail() {
 	);
 }
 
-function RailNavLink({ item }: { item: NavbarItem }) {
+function RailNavLink({
+	item,
+	showHotkey,
+}: {
+	item: NavbarItem;
+	showHotkey: boolean;
+}) {
 	if (item.disabled) {
 		const label = m.common_navigation_item_under_construction({
 			title: item.title,
@@ -65,6 +76,7 @@ function RailNavLink({ item }: { item: NavbarItem }) {
 	return (
 		<RailTooltip
 			label={item.title}
+			hotkey={showHotkey ? item.hotkey?.defaultHotkey : undefined}
 			trigger={
 				<Link
 					to={item.url}

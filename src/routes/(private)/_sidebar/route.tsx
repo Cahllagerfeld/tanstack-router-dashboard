@@ -1,5 +1,7 @@
+import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
+import { appHotkeys } from "@/app/navigation/app-hotkeys";
 import { AppRail } from "@/app/navigation/app-rail";
 import { BreadcrumbsContainer } from "@/app/navigation/breadcrumbs";
 import { projectQueries } from "@/features/projects";
@@ -14,21 +16,23 @@ export const Route = createFileRoute("/(private)/_sidebar")({
 
 function RouteComponent() {
 	return (
-		<div className="flex h-dvh min-h-0 w-full overflow-hidden bg-window-background">
-			<AppRail />
-			<main
-				data-slot="app-inset"
-				className="m-1 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border bg-background shadow-sm"
-			>
-				<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
-					<BreadcrumbsContainer />
-				</header>
-				<ScrollArea className="min-h-0 flex-1">
-					<div className="flex flex-1 flex-col">
-						<Outlet />
-					</div>
-				</ScrollArea>
-			</main>
-		</div>
+		<HotkeysProvider appHotkeys={appHotkeys}>
+			<div className="flex h-dvh min-h-0 w-full overflow-hidden bg-window-background">
+				<AppRail />
+				<main
+					data-slot="app-inset"
+					className="m-1 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border bg-background shadow-sm"
+				>
+					<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+						<BreadcrumbsContainer />
+					</header>
+					<ScrollArea className="min-h-0 flex-1">
+						<div className="flex flex-1 flex-col">
+							<Outlet />
+						</div>
+					</ScrollArea>
+				</main>
+			</div>
+		</HotkeysProvider>
 	);
 }

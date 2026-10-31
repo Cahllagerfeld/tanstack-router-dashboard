@@ -12,4 +12,10 @@ describe("getLocalStorageKey", () => {
 	it("returns the fully-qualified key for AUTH_USER", () => {
 		expect(getLocalStorageKey("AUTH_USER")).toBe("zenml.auth.user");
 	});
+
+	it("returns the fully-qualified key for KEYBOARD_SHORTCUTS_ENABLED", () => {
+		expect(getLocalStorageKey("KEYBOARD_SHORTCUTS_ENABLED")).toBe(
+			"zenml.keyboard-shortcuts.enabled"
+		);
+	});
 });

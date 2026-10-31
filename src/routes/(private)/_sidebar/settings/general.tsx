@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { KeyboardShortcutsSetting } from "@/features/keyboard-shortcuts/ui";
 import { m } from "@/paraglide/messages";
 import { ContentInset } from "@/shared/components/content-inset";
 
@@ -18,6 +19,9 @@ function RouteComponent() {
 			<p className="text-sm text-muted-foreground">
 				{m.settings_general_description()}
 			</p>
+			<div className="mt-6">
+				<KeyboardShortcutsSetting />
+			</div>
 		</ContentInset>
 	);
 }

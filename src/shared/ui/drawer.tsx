@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
+import { ExclusiveHotkeyScope } from "@/shared/components/exclusive-hotkey-scope";
 import { cn } from "@/shared/lib/cn";
 
 function Drawer({
@@ -60,7 +61,8 @@ function DrawerContent({
 				{...props}
 			>
 				<div className="mx-auto mt-4 hidden h-1.5 w-[100px] shrink-0 rounded-full bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
-				{children}
+				{/* Intentional edit: keep this scope when regenerating the primitive. */}
+				<ExclusiveHotkeyScope>{children}</ExclusiveHotkeyScope>
 			</DrawerPrimitive.Content>
 		</DrawerPortal>
 	);

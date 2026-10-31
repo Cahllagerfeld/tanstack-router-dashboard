@@ -1,3 +1,4 @@
+import type { AppHotkey, HotkeySequence } from "@tanstack/react-hotkeys";
 import type { LucideIcon } from "lucide-react";
 
 export type NavbarItem = {
@@ -8,4 +9,5 @@ export type NavbarItem = {
 	/** When set, item is active if pathname starts with this prefix (e.g. `/settings`). */
 	activePathPrefix?: string;
 	isActive?: boolean;
+	hotkey?: AppHotkey<string, HotkeySequence>;
 };
