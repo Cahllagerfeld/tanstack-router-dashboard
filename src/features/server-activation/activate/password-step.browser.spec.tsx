@@ -5,6 +5,7 @@ import { render } from "vitest-browser-react";
 import { m } from "@/paraglide/messages";
 
 import { serverQueries } from "../data/queries";
+import { fetchServerInfo } from "../data/requests";
 import { PasswordStep } from "./password-step";
 
 const { get, navigate, post, put, toast } = vi.hoisted(() => ({
@@ -30,9 +31,9 @@ function renderPasswordStep() {
 	const queryClient = new QueryClient({
 		defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
 	});
-	const { queryKey, queryFn } = serverQueries.serverInfo();
+	const { queryKey } = serverQueries.serverInfo();
 	// The form observes no query, so the cached entry needs its own fetcher.
-	queryClient.setQueryDefaults(queryKey, { queryFn });
+	queryClient.setQueryDefaults(queryKey, { queryFn: fetchServerInfo });
 	queryClient.setQueryData(queryKey, { active: false } as never);
 	const screen = render(
 		<QueryClientProvider client={queryClient}>
