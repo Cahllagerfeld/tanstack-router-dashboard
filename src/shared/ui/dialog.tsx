@@ -3,6 +3,7 @@ import { XIcon } from "lucide-react";
 import * as React from "react";
 
 import { m } from "@/paraglide/messages";
+import { ExclusiveHotkeyScope } from "@/shared/components/exclusive-hotkey-scope";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
 
@@ -57,7 +58,8 @@ function DialogContent({
 				)}
 				{...props}
 			>
-				{children}
+				{/* Intentional edit: keep this scope when regenerating the primitive. */}
+				<ExclusiveHotkeyScope>{children}</ExclusiveHotkeyScope>
 				{showCloseButton && (
 					<DialogPrimitive.Close
 						data-slot="dialog-close"

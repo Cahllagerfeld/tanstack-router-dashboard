@@ -1,6 +1,7 @@
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
 import * as React from "react";
 
+import { ExclusiveHotkeyScope } from "@/shared/components/exclusive-hotkey-scope";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
 
@@ -38,6 +39,7 @@ function AlertDialogOverlay({
 
 function AlertDialogContent({
 	className,
+	children,
 	size = "default",
 	...props
 }: AlertDialogPrimitive.Popup.Props & {
@@ -54,7 +56,10 @@ function AlertDialogContent({
 					className
 				)}
 				{...props}
-			/>
+			>
+				{/* Intentional edit: keep this scope when regenerating the primitive. */}
+				<ExclusiveHotkeyScope>{children}</ExclusiveHotkeyScope>
+			</AlertDialogPrimitive.Popup>
 		</AlertDialogPortal>
 	);
 }

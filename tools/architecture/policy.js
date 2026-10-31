@@ -2,6 +2,7 @@
 
 const owners = [
 	"components",
+	"keyboard-shortcuts",
 	"pipelines",
 	"projects",
 	"runs",
@@ -19,6 +20,7 @@ const sharedUnits = {
 		"copy-button",
 		"debounced-input",
 		"display-date",
+		"exclusive-hotkey-scope",
 		"group-tabs",
 		"key-value-list",
 		"no-item-fallback",
