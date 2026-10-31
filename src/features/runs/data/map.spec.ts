@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { components } from "@/shared/api/generated";
-
-import { formatRunIndex, formatRunStatus, runFromApi } from "./runs";
+import type { RunDto } from "./dto";
+import { runFromApi } from "./map";
 
 describe("runFromApi", () => {
 	it("maps the fields needed by the Run table", () => {
@@ -37,7 +36,7 @@ describe("runFromApi", () => {
 				tags: [],
 				visualizations: [],
 			},
-		} satisfies components["schemas"]["PipelineRunResponse"];
+		} satisfies RunDto;
 
 		expect(runFromApi(apiRun)).toEqual({
 			id: "run-id",
@@ -66,18 +65,5 @@ describe("runFromApi", () => {
 			authorName: undefined,
 			created: undefined,
 		});
-	});
-});
-
-describe("Run presentation helpers", () => {
-	it("zero-pads Run indexes to at least four digits", () => {
-		expect(formatRunIndex(7)).toBe("#0007");
-		expect(formatRunIndex(12345)).toBe("#12345");
-	});
-
-	it("turns backend status text into a display label", () => {
-		expect(formatRunStatus("retrying_after_failure")).toBe(
-			"Retrying After Failure"
-		);
 	});
 });

@@ -1,1 +1,1 @@
-export { useRunColumns } from "./runs-list/columns";
+export { RunList } from "./list/run-list";

@@ -20,6 +20,7 @@ const enforcedOwners = [
 	// One per line and alphabetical, so parallel migrations rebase cleanly.
 	"pipelines",
 	"projects",
+	"runs",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
@@ -73,7 +74,6 @@ const legacyPaths = {
 	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
 	root: ["src/features/root/"],
-	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
 	"server-activation": [
 		"src/data/server/",
 		"src/features/server-activation/password-step",

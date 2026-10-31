@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { RuleTester } from "oxlint/plugins-dev";
 import { describe, expect, it } from "vitest";
 
-import { placementFix } from "./classify.js";
+import { forbiddenEdge, placementFix } from "./classify.js";
 import plugin from "./plugin.js";
 import { policy } from "./policy.js";
 
@@ -105,7 +105,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/main"],
 			[peer, "../../../app/navigation/app-rail"],
 			[peer, "../../../components/sidebar/use-navbar-items"],
-			["src/data/runs/index.ts", "@/app/providers"],
+			[peer, "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))
 		),
@@ -139,7 +139,6 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 		["src/features/projects/data/dto.ts", generated],
 		["src/features/runs/data/dto.ts", generated],
 		["src/shared/api/client.ts", "./generated"],
-		["src/domain/runs.ts", generated],
 		["src/domain/mappers.spec.ts", generated],
 		["src/features/projects/data/map.ts", "./dto"],
 		["src/features/projects/data/map.spec.ts", "./dto"],
@@ -151,6 +150,7 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 			["src/features/projects/model.ts", toModel],
 			["src/features/projects/create/form.tsx", toModel],
 			["src/features/runs/list/view.tsx", toModel],
+			["src/domain/runs.ts", toModel],
 			["src/routes/route.tsx", toModel],
 			["src/shared/lib/dates.ts", toModel],
 		].map(([file, message]) =>
@@ -185,7 +185,7 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 		["src/features/projects/model.ts", "./selection/model"],
 		["src/features/projects/model.spec.ts", "vitest"],
 		["src/features/projects/selection/use-active-project.ts", "react"],
-		["src/features/runs/model.ts", "react"],
+		["src/features/example/model.ts", "react"],
 	]
 		.map(([file, specifier]) => valid(file, `import "${specifier}";`))
 		.concat(
@@ -286,18 +286,29 @@ describe("placement ratchet", () => {
 	});
 
 	it("rejects the named legacy paths of enforced owners only", () => {
-		const legacy = "src/data/stacks/index.ts";
-		const enforced = { ...policy, enforcedOwners: ["stacks"] };
+		const legacy = "src/data/example/index.ts";
+		const unenforced = "src/data/other/index.ts";
+		const mapped = {
+			...policy,
+			legacyPaths: {
+				...policy.legacyPaths,
+				example: ["src/data/example/"],
+				other: ["src/data/other/"],
+			},
+		};
+		const enforced = { ...mapped, enforcedOwners: ["example"] };
 
-		expect(placementFix(legacy, policy)).toBeNull();
+		expect(placementFix(legacy, mapped)).toBeNull();
 		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
-		expect(placementFix("src/data/runs/index.ts", enforced)).toBeNull();
+		expect(placementFix(unenforced, enforced)).toBeNull();
 	});
 
 	it("keeps new work in unenforced owners on target paths", () => {
-		expect(placementFix("src/features/runs/a/b/c.tsx", policy)).toContain(
-			"features/runs/"
-		);
+		const unenforced = { ...policy, owners: [...policy.owners, "example"] };
+
+		expect(
+			placementFix("src/features/example/a/b/c.tsx", unenforced)
+		).toContain("features/example/");
 	});
 
 	it.each([
@@ -306,10 +317,13 @@ describe("placement ratchet", () => {
 		"src/components/sidebar/app-rail.tsx",
 		"src/components/sidebar/new-item.tsx",
 		"src/data/api-client.ts",
+		"src/data/runs/index.ts",
+		"src/domain/runs.ts",
 		"src/hooks/use-copy.ts",
 		"src/lib/dates.ts",
 		"src/lib/new-helper.ts",
 		"src/types/core.ts",
+		"src/types/runs.ts",
 	])("rejects the moved or new legacy-area path %s", (file) => {
 		expect(placementFix(file, policy)).toContain("move it to");
 	});
@@ -330,6 +344,17 @@ describe("placement ratchet", () => {
 		expect(placementFix("src/shared/misc/a.ts", units)).toContain("move it");
 		expect(placementFix("src/app/misc.ts", units)).toContain("move it");
 	});
+});
+
+it("treats a legacy path of a feature owner as feature code", () => {
+	const legacy = {
+		...policy,
+		legacyPaths: { ...policy.legacyPaths, example: ["src/data/example/"] },
+	};
+
+	expect(
+		forbiddenEdge("src/data/example/index", "src/app/providers", legacy)
+	).toBe("feature");
 });
 
 it("maps legacy paths only to known owners and existing files", () => {
