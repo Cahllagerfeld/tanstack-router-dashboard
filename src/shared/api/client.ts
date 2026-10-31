@@ -9,6 +9,13 @@ const defaultHeaders = {
 	"Source-Context": "kitaru-ui",
 };
 
+/** The query a GET endpoint accepts, read from the API spec. */
+export type ApiQuery<Path extends keyof paths> = paths[Path] extends {
+	get: { parameters: { query?: infer Query } };
+}
+	? NonNullable<Query>
+	: never;
+
 export const apiClient = createClient<paths>({
 	credentials: "include",
 	headers: defaultHeaders,

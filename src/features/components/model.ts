@@ -1,3 +1,5 @@
+import type { ApiQuery } from "@/shared/api/client";
+
 import type { ComponentType } from "./type/model";
 
 export type Flavor = {
@@ -20,26 +22,7 @@ export type Component = {
 	secrets: string[] | undefined;
 };
 
-/** Mirrors the backend's list query, so its field names stay as they are. */
-export type ComponentListInput = {
-	project_name_or_id?: string | null;
-	hydrate?: boolean;
-	sort_by?: string;
-	logical_operator?: "and" | "or";
-	page?: number;
-	size?: number;
-	id?: string | string[] | null;
-	created?: string | string[] | null;
-	updated?: string | string[] | null;
-	scope_user?: string | null;
-	user?: string | string[] | null;
-	scope_type?: string | null;
-	name?: string | string[] | null;
-	flavor?: string | string[] | null;
-	type?: string | string[] | null;
-	connector_id?: string | string[] | null;
-	stack_id?: string | string[] | null;
-};
+export type ComponentListInput = ApiQuery<"/api/v1/components">;
 
 export type ComponentPage = {
 	index: number;

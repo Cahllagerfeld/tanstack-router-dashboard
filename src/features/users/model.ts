@@ -1,3 +1,5 @@
+import type { ApiQuery } from "@/shared/api/client";
+
 /** The administrative account. Session owns who is signed in. */
 export type User = {
 	id: string;
@@ -10,23 +12,7 @@ export type User = {
 	email: string | undefined;
 };
 
-/** Mirrors the backend's list query, so its field names stay as they are. */
-export type UserListInput = {
-	hydrate?: boolean;
-	sort_by?: string;
-	logical_operator?: "and" | "or";
-	page?: number;
-	size?: number;
-	id?: string | string[] | null;
-	created?: string | string[] | null;
-	updated?: string | string[] | null;
-	name?: string | string[] | null;
-	full_name?: string | string[] | null;
-	email?: string | string[] | null;
-	active?: boolean | string | null;
-	email_opted_in?: boolean | string | null;
-	external_user_id?: string | string[] | null;
-};
+export type UserListInput = ApiQuery<"/api/v1/users">;
 
 export type UserPage = {
 	index: number;
