@@ -1,3 +1,4 @@
+import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import type { ReactNode } from "react";
@@ -43,6 +44,7 @@ import {
 	SelectValue,
 } from "@/shared/ui/select";
 
+import { appHotkeys } from "./app-hotkeys";
 import { AppRail } from "./app-rail";
 
 const { navigate } = vi.hoisted(() => ({ navigate: vi.fn() }));
@@ -93,10 +95,12 @@ function renderRail(children?: ReactNode, items: typeof projects = projects) {
 	} as never);
 
 	return render(
-		<QueryClientProvider client={queryClient}>
-			<AppRail />
-			{children}
-		</QueryClientProvider>
+		<HotkeysProvider appHotkeys={appHotkeys}>
+			<QueryClientProvider client={queryClient}>
+				<AppRail />
+				{children}
+			</QueryClientProvider>
+		</HotkeysProvider>
 	);
 }
 
@@ -287,6 +291,19 @@ test("tooltips show keycaps for live items only", async () => {
 	});
 	await railLink(disabledLabel).hover();
 	await expect.poll(tooltipText).toBe(disabledLabel);
+});
+
+test.each([
+	[m.keyboard_shortcuts_go_to_pipelines(), "P"],
+	[m.keyboard_shortcuts_go_to_runs(), "R"],
+	[m.keyboard_shortcuts_go_to_infra(), "I"],
+	[m.keyboard_shortcuts_go_to_settings(), "S"],
+])("the setting lists %s with its key sequence", async (name, key) => {
+	await renderRail(<KeyboardShortcutsSetting />);
+
+	await expect
+		.element(page.getByRole("listitem").filter({ hasText: name }))
+		.toHaveTextContent(`${name}G${m.keyboard_shortcuts_sequence_then()}${key}`);
 });
 
 test("the setting turns shortcuts and keycaps off immediately and persists", async () => {

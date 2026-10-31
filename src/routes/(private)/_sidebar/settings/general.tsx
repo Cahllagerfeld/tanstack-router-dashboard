@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { SettingsSection } from "@/app/layouts/settings-section";
 import { KeyboardShortcutsSetting } from "@/features/keyboard-shortcuts/ui";
 import { m } from "@/paraglide/messages";
-import { ContentInset } from "@/shared/components/content-inset";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 	loader: () => ({ crumb: m.settings_general_title() }),
@@ -14,14 +14,14 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 
 function RouteComponent() {
 	return (
-		<ContentInset>
-			<h1 className="text-2xl font-bold">{m.settings_general_title()}</h1>
-			<p className="text-sm text-muted-foreground">
-				{m.settings_general_description()}
-			</p>
-			<div className="mt-6">
+		<>
+			<h1 className="sr-only">{m.settings_general_title()}</h1>
+			<SettingsSection
+				title={m.settings_general_browser_title()}
+				description={m.settings_general_browser_description()}
+			>
 				<KeyboardShortcutsSetting />
-			</div>
-		</ContentInset>
+			</SettingsSection>
+		</>
 	);
 }
