@@ -17,6 +17,7 @@ const owners = [
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
 const enforcedOwners = [
 	// One per line and alphabetical, so parallel migrations rebase cleanly.
+	"components",
 	"pipelines",
 	"projects",
 	"runs",
