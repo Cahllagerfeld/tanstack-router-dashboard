@@ -117,6 +117,97 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 	],
 });
 
+const generated = "@/shared/api/generated";
+const dtoLeak = (specifier: string, fix: string) =>
+	`"${specifier}" leaks API types. Fix: ${fix}.`;
+const toDto = (owner: string) =>
+	dtoLeak(
+		generated,
+		`add the alias to src/features/${owner}/data/dto.ts and import it from there`
+	);
+const privateDto = (specifier: string) =>
+	dtoLeak(
+		specifier,
+		"keep DTO aliases private: map the value in src/features/projects/data/map.ts and expose a handwritten type from model.ts"
+	);
+
+tester.run("dto-funnel", plugin.rules["dto-funnel"], {
+	valid: [
+		["src/features/projects/data/dto.ts", generated],
+		["src/features/runs/data/dto.ts", generated],
+		["src/shared/api/client.ts", "./generated"],
+		["src/domain/runs.ts", generated],
+		["src/domain/mappers.spec.ts", generated],
+		["src/features/projects/data/map.ts", "./dto"],
+		["src/features/projects/data/map.spec.ts", "./dto"],
+		["src/features/projects/create/form.tsx", "@/shared/api/client"],
+	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
+	invalid: [
+		...[
+			["src/features/projects/data/requests.ts", "projects"],
+			["src/features/projects/model.ts", "projects"],
+			["src/features/projects/create/form.tsx", "projects"],
+			["src/features/runs/list/view.tsx", "runs"],
+			["src/routes/route.tsx", "<owner>"],
+			["src/shared/lib/dates.ts", "<owner>"],
+		].map(([file, owner]) =>
+			invalid(
+				file,
+				`import type { components } from "${generated}";`,
+				toDto(owner)
+			)
+		),
+		invalid(
+			"src/features/projects/data/queries.ts",
+			`type A = import("${generated}").components;`,
+			toDto("projects")
+		),
+		invalid(
+			"src/features/projects/index.ts",
+			`export type { ProjectDto } from "./data/dto";`,
+			privateDto("./data/dto")
+		),
+		invalid(
+			"src/features/projects/create/form.tsx",
+			`import type { ProjectDto } from "../data/dto";`,
+			privateDto("../data/dto")
+		),
+	],
+});
+
+const impure = (specifier: string) =>
+	`A model cannot import "${specifier}". Fix: keep model.ts pure: pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook.`;
+
+tester.run("pure-model", plugin.rules["pure-model"], {
+	valid: [
+		["src/features/projects/selection/model.ts", "../model"],
+		["src/features/projects/selection/model.ts", "@/lib/constants/storage"],
+		["src/features/projects/model.ts", "@/shared/lib/dates"],
+		["src/features/projects/model.ts", "./selection/model"],
+		["src/features/projects/model.spec.ts", "vitest"],
+		["src/features/projects/selection/use-active-project.ts", "react"],
+		["src/features/runs/model.ts", "react"],
+	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
+	invalid: [
+		"react",
+		"@tanstack/react-query",
+		"sonner",
+		"@/shared/api/client",
+		"@/paraglide/messages",
+		"@/shared/ui/button",
+		"./storage",
+		"./use-active-project",
+		"../data/queries",
+		"./project-switcher",
+	].map((specifier) =>
+		invalid(
+			"src/features/projects/selection/model.ts",
+			`import { a } from "${specifier}";`,
+			impure(specifier)
+		)
+	),
+});
+
 const rootFix = (file: string) =>
 	`${file} is not an allowed location. Fix: move it to src/features/<owner>, src/shared, src/app, or src/routes.`;
 

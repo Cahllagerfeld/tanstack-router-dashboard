@@ -16,7 +16,7 @@ const owners = [
 ];
 
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
-const enforcedOwners = [];
+const enforcedOwners = ["projects"];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
@@ -73,7 +73,6 @@ const legacyPaths = {
 		"src/domain/pipelines",
 		"src/types/pipelines",
 	],
-	projects: ["src/domain/mappers"],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
 	"server-activation": [
@@ -96,7 +95,12 @@ const legacyPaths = {
 		"src/types/api",
 	],
 	stacks: ["src/data/stacks/", "src/domain/stacks", "src/types/stacks"],
-	users: ["src/data/user/", "src/domain/users", "src/types/user"],
+	users: [
+		"src/data/user/",
+		"src/domain/mappers",
+		"src/domain/users",
+		"src/types/user",
+	],
 };
 
 export const policy = { owners, enforcedOwners, sharedUnits, legacyPaths };

@@ -1,5 +1,7 @@
 import {
+	dtoFix,
 	forbiddenEdge,
+	modelFix,
 	placementFix,
 	relativePath,
 	requiredPort,
@@ -30,8 +32,9 @@ function importVisitor(context, check) {
 	const importer = relativePath(context.cwd, context.filename);
 	const visit = ({ source }) => {
 		const specifier = literalValue(source);
-		const target = specifier && resolveImport(importer, specifier);
-		if (!target) return;
+		if (!specifier) return;
+		// Bare package names stay as they are, so a rule can match them too.
+		const target = resolveImport(importer, specifier) ?? specifier;
 		const message = check(importer, target, specifier);
 		if (message) context.report({ node: source, message });
 	};
@@ -67,6 +70,20 @@ export default {
 						layer &&
 						`${layer.label} cannot import "${specifier}". Fix: ${layer.fix}.`
 					);
+				}),
+		},
+		"dto-funnel": {
+			create: (context) =>
+				importVisitor(context, (importer, target, specifier) => {
+					const fix = dtoFix(importer, target, policy);
+					return fix && `"${specifier}" leaks API types. Fix: ${fix}.`;
+				}),
+		},
+		"pure-model": {
+			create: (context) =>
+				importVisitor(context, (importer, target, specifier) => {
+					const fix = modelFix(importer, target, policy);
+					return fix && `A model cannot import "${specifier}". Fix: ${fix}.`;
 				}),
 		},
 		"file-placement": {
