@@ -31,7 +31,7 @@ Features share one shape: `index.ts` and `ui.ts` ports when a consumer needs the
 #### Placement procedure
 
 1. Generated output and TanStack declarations keep their designated locations. Create a capability folder only when it has code.
-2. Choose the registered feature owner. Put DTO, HTTP, mapping, and query work in `data/{dto,requests,map,queries}.ts`. Generated imports enter only through `dto.ts`. Public inputs and pure rules go in `model.ts`. DTO aliases stay private.
+2. Choose the registered feature owner. Put DTO, HTTP, mapping, and query work in `data/{dto,requests,map,queries}.ts`. Generated imports enter only through `dto.ts`. Public inputs and pure rules go in `model.ts`. An input that mirrors a request derives from `ApiQuery` or `ApiBody` in `shared/api/client.ts`. DTO aliases stay private.
 3. Name behavior folders in kebab-case, one level deep, such as `create`, `selection`, or `settings`. A behavior folder holds `model.ts`, `schema.ts`, `storage.ts`, `use-*.ts`, descriptive `.tsx` views, and colocated tests; `utils.ts`, `helpers.ts`, and `types.ts` are not allowed. A new behavior needs no registry edit. Add a named data subresource only when real size or responsibility justifies extending the grammar.
 4. Export through the ports described below.
 5. Neutral reusable code goes to Shared. Capability-aware code stays with its owner even when reused. Only a new top-level unit under `shared/components` or `shared/lib` needs a registry entry. `shared/ui` stays generator-owned.

@@ -16,6 +16,16 @@ export type ApiQuery<Path extends keyof paths> = paths[Path] extends {
 	? NonNullable<Query>
 	: never;
 
+/** The JSON body an endpoint accepts, read from the API spec. */
+export type ApiBody<
+	Path extends keyof paths,
+	Method extends keyof paths[Path],
+> = paths[Path][Method] extends {
+	requestBody: { content: { "application/json": infer Body } };
+}
+	? Body
+	: never;
+
 export const apiClient = createClient<paths>({
 	credentials: "include",
 	headers: defaultHeaders,
