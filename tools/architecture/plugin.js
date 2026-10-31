@@ -30,12 +30,13 @@ function literalValue(source) {
 /** Visits imports, re-exports, literal dynamic imports, and TS import forms. */
 function importVisitor(context, check) {
 	const importer = relativePath(context.cwd, context.filename);
-	const visit = ({ source }) => {
+	const visit = ({ source, exportKind, importKind }) => {
 		const specifier = literalValue(source);
 		if (!specifier) return;
 		// Bare package names stay as they are, so a rule can match them too.
 		const target = resolveImport(importer, specifier) ?? specifier;
-		const message = check(importer, target, specifier);
+		const isType = [exportKind, importKind].includes("type");
+		const message = check(importer, target, specifier, isType);
 		if (message) context.report({ node: source, message });
 	};
 	return {
@@ -45,7 +46,7 @@ function importVisitor(context, check) {
 		ImportExpression: visit,
 		TSExternalModuleReference: ({ expression }) =>
 			visit({ source: expression }),
-		TSImportType: visit,
+		TSImportType: ({ source }) => visit({ source, importKind: "type" }),
 	};
 }
 
@@ -81,8 +82,9 @@ export default {
 		},
 		"pure-model": {
 			create: (context) =>
-				importVisitor(context, (importer, target, specifier) => {
-					const fix = modelFix(importer, target, policy);
+				importVisitor(context, (importer, target, specifier, isType) => {
+					// Type-only imports erase, so they cannot make a model impure.
+					const fix = !isType && modelFix(importer, target, policy);
 					return fix && `A model cannot import "${specifier}". Fix: ${fix}.`;
 				}),
 		},

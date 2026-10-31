@@ -128,7 +128,7 @@ export function dtoFix(importer, target, policy) {
 export function modelFix(importer, target, { enforcedOwners }) {
 	const owner = MODEL_FILE.exec(importer)?.[1];
 	if (!enforcedOwners.includes(owner) || PURE_TARGET.test(target)) return null;
-	return "keep model.ts pure: pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook";
+	return "keep model.ts pure: use `import type`, pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook";
 }
 
 function sharedFix(rest, { sharedUnits }) {

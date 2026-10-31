@@ -175,7 +175,7 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 });
 
 const impure = (specifier: string) =>
-	`A model cannot import "${specifier}". Fix: keep model.ts pure: pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook.`;
+	`A model cannot import "${specifier}". Fix: keep model.ts pure: use \`import type\`, pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook.`;
 
 tester.run("pure-model", plugin.rules["pure-model"], {
 	valid: [
@@ -186,7 +186,15 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 		["src/features/projects/model.spec.ts", "vitest"],
 		["src/features/projects/selection/use-active-project.ts", "react"],
 		["src/features/runs/model.ts", "react"],
-	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
+	]
+		.map(([file, specifier]) => valid(file, `import "${specifier}";`))
+		.concat(
+			[
+				`import type { User } from "@/features/users";`,
+				`export type { User } from "@/features/users";`,
+				`type User = import("@/features/users").User;`,
+			].map((code) => valid("src/features/projects/model.ts", code))
+		),
 	invalid: [
 		"react",
 		"@tanstack/react-query",
@@ -198,13 +206,21 @@ tester.run("pure-model", plugin.rules["pure-model"], {
 		"./use-active-project",
 		"../data/queries",
 		"./project-switcher",
-	].map((specifier) =>
-		invalid(
-			"src/features/projects/selection/model.ts",
-			`import { a } from "${specifier}";`,
-			impure(specifier)
+	]
+		.map((specifier) =>
+			invalid(
+				"src/features/projects/selection/model.ts",
+				`import { a } from "${specifier}";`,
+				impure(specifier)
+			)
 		)
-	),
+		.concat(
+			invalid(
+				"src/features/projects/model.ts",
+				`import { type User } from "@/features/users";`,
+				impure("@/features/users")
+			)
+		),
 });
 
 const rootFix = (file: string) =>
