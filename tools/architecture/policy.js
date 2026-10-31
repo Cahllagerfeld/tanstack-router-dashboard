@@ -27,6 +27,7 @@ const sharedUnits = {
 		"not-available-tag",
 		"object-renderer",
 		"rail",
+		"ripple-background",
 		"secret-value",
 		"tables",
 	],
