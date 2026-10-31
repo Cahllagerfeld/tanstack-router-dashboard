@@ -3,6 +3,10 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"sideEffects": [
+		"**/*.css",
+		"./src/main.tsx"
+	],
 	"scripts": {
 		"build": "vite build && tsc -b",
 		"check:types": "tsc --noEmit",

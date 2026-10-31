@@ -8,8 +8,8 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
 import { useDataTable } from "@/components/tables/use-data-table";
 import { stackQueries } from "@/data/stacks";
-import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { useStackColumns } from "@/features/stacks/stacks-list/columns";
+import { commonFilterSchema } from "@/features/filters";
+import { useStackColumns } from "@/features/stacks/ui";
 import { m } from "@/paraglide/messages";
 
 const querySchema = commonFilterSchema;

@@ -5,9 +5,9 @@ import "@/assets/styles/tailwind.css";
 import ReactDOM from "react-dom/client";
 
 import { Providers } from "@/components/providers";
+import { DefaultErrorPage } from "@/features/root/ui";
 import { queryClient } from "@/lib/query-client";
 
-import { DefaultErrorPage } from "./features/root/global-error-boundary";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({

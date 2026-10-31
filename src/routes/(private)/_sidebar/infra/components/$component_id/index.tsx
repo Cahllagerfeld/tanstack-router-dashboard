@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { ContentInset } from "@/components/content-inset";
 import { componentQueries } from "@/data/components";
-import { ComponentGeneralTab } from "@/features/components/detail/general-tab";
+import { ComponentGeneralTab } from "@/features/components/ui";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/infra/components/$component_id/"

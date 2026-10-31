@@ -7,7 +7,7 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
 import { useDataTable } from "@/components/tables/use-data-table";
 import { stackQueries } from "@/data/stacks";
-import { createStackColumns } from "@/features/stacks/stacks-list/columns";
+import { createStackColumns } from "@/features/stacks/ui";
 
 interface ComponentStacksTabProps {
 	componentId: string;

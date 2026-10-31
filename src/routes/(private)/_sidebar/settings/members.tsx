@@ -3,14 +3,12 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { userQueries } from "@/data/user";
+import { createFilter, filterSchema, getFilterValue } from "@/features/filters";
 import {
-	createFilter,
-	filterSchema,
-	getFilterValue,
-} from "@/features/filters/filter";
-import { UserListSearchbar } from "@/features/users/list/searchbar";
-import { UserList } from "@/features/users/list/user-list";
-import { UserListSkeleton } from "@/features/users/list/user-list-skeleton";
+	UserListSearchbar,
+	UserList,
+	UserListSkeleton,
+} from "@/features/users/ui";
 import { m } from "@/paraglide/messages";
 import type { UserListQueryParams } from "@/types/user";
 

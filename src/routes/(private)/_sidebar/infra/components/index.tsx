@@ -8,10 +8,9 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
 import { useDataTable } from "@/components/tables/use-data-table";
 import { componentQueries } from "@/data/components";
-import { useComponentColumns } from "@/features/components/components-list/columns";
-import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { typeFilterSchema } from "@/features/filters/type";
-import { TypeFilter } from "@/features/filters/type-filter";
+import { useComponentColumns } from "@/features/components/ui";
+import { commonFilterSchema, typeFilterSchema } from "@/features/filters";
+import { TypeFilter } from "@/features/filters/ui";
 import { m } from "@/paraglide/messages";
 
 const querySchema = commonFilterSchema.extend({

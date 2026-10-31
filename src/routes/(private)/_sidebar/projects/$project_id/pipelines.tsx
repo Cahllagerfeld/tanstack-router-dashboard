@@ -8,8 +8,8 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
 import { useDataTable } from "@/components/tables/use-data-table";
 import { pipelineQueries } from "@/data/pipelines";
-import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { usePipelineColumns } from "@/features/pipelines/pipelines-list/columns";
+import { commonFilterSchema } from "@/features/filters";
+import { usePipelineColumns } from "@/features/pipelines/ui";
 import { m } from "@/paraglide/messages";
 import { type PipelineListQueryParams } from "@/types/pipelines";
 
