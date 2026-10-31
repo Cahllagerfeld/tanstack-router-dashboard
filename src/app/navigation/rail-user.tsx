@@ -4,6 +4,11 @@ import { LogOut } from "lucide-react";
 import { useLogoutUser } from "@/data/session/logout";
 import { userQueries } from "@/data/user";
 import { m } from "@/paraglide/messages";
+import {
+	railAvatarClassName,
+	railAvatarTriggerClassName,
+} from "@/shared/components/rail/rail-avatar";
+import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
 import { getAvatarUrl } from "@/shared/lib/avatar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
@@ -16,9 +21,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
-
-import { railAvatarClassName, railAvatarTriggerClassName } from "./rail-avatar";
-import { RailTooltip } from "./rail-tooltip";
 
 export function RailUser() {
 	const { data } = useSuspenseQuery(userQueries.currentUser());

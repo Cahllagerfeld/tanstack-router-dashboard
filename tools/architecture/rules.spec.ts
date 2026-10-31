@@ -87,7 +87,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 		["src/shared/lib/a.ts", "@/shared/lib/b"],
 		[peer, "@/features/stacks/ui"],
 		[peer, "@/shared/lib/dates"],
-		["src/components/sidebar/project-switcher.tsx", "@/features/stacks/ui"],
+		["src/components/sidebar/use-navbar-items.ts", "@/features/stacks/ui"],
 	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
 	invalid: [
 		...[
@@ -104,7 +104,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/routeTree.gen"],
 			[peer, "@/main"],
 			[peer, "../../../app/navigation/app-rail"],
-			[peer, "../../../components/sidebar/project-switcher"],
+			[peer, "../../../components/sidebar/use-navbar-items"],
 			["src/data/runs/index.ts", "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))

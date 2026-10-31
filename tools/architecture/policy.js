@@ -31,6 +31,7 @@ const sharedUnits = {
 		"no-item-fallback",
 		"not-available-tag",
 		"object-renderer",
+		"rail",
 		"secret-value",
 		"tables",
 	],
@@ -54,9 +55,7 @@ const legacyPaths = {
 	app: [
 		"src/components/breadcrumb/",
 		"src/components/providers",
-		"src/components/sidebar/project-switcher",
 		"src/components/sidebar/use-navbar-items",
-		"src/components/sidebar/use-project-switcher",
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
@@ -74,12 +73,7 @@ const legacyPaths = {
 		"src/domain/pipelines",
 		"src/types/pipelines",
 	],
-	projects: [
-		"src/domain/mappers",
-		"src/hooks/use-active-project",
-		"src/lib/images",
-		"src/lib/projects",
-	],
+	projects: ["src/domain/mappers"],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
 	"server-activation": [

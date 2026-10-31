@@ -1,7 +1,7 @@
 import { useLocation, useRouter } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
 
-import { useActiveProject } from "@/hooks/use-active-project";
+import { useActiveProject } from "@/features/projects/ui";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import type { NavbarItem } from "@/types/navbar";

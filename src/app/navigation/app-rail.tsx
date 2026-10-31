@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 
-import { RailProjectSwitcher } from "@/components/sidebar/project-switcher";
 import { useNavbarItems } from "@/components/sidebar/use-navbar-items";
+import { RailProjectSwitcher } from "@/features/projects/ui";
 import { m } from "@/paraglide/messages";
+import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
 import { cn } from "@/shared/lib/cn";
 import { buttonVariants } from "@/shared/ui/button";
 import type { NavbarItem } from "@/types/navbar";
 
-import { RailTooltip } from "./rail-tooltip";
 import { RailUser } from "./rail-user";
 
 const railLinkClassName = cn(

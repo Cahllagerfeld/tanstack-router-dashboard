@@ -1,8 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { projectQueries } from "@/features/projects";
+import {
+	getProjectFromLocalStorage,
+	projectQueries,
+	resolveProject,
+} from "@/features/projects";
 import { NoProjectsFallback } from "@/features/projects/ui";
-import { getProjectFromLocalStorage, resolveProject } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/(private)/_sidebar/projects/")({
