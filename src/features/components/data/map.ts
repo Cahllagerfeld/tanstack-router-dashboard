@@ -28,7 +28,6 @@ export function componentFromApi(apiComponent: ComponentDto): Component {
 			: undefined,
 		creatorName: apiComponent.resources?.user?.name ?? undefined,
 		configuration: apiComponent.metadata?.configuration ?? undefined,
-		environment: apiComponent.metadata?.environment ?? undefined,
-		secrets: apiComponent.metadata?.secrets ?? undefined,
+		labels: apiComponent.metadata?.labels ?? undefined,
 	};
 }

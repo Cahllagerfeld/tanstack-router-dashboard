@@ -84,16 +84,10 @@
 			}
 		}
 	],
-	"components_detail_basic_information": "Grundlegende Informationen",
-	"components_detail_configuration": "Konfiguration",
-	"components_detail_environment_variables": "Umgebungsvariablen",
-	"components_detail_masked_in_configuration": "(in der Konfiguration maskiert)",
 	"components_detail_no_configuration": "Keine Konfiguration verfügbar",
-	"components_detail_no_environment_variables": "Keine Umgebungsvariablen konfiguriert",
-	"components_detail_no_secrets": "Keine Geheimnisse konfiguriert",
-	"components_detail_secret_keys": "Geheime Schlüssel",
-	"components_detail_tab_general": "Allgemein",
+	"components_detail_tab_configuration": "Konfiguration",
 	"components_detail_tab_stacks": "Stacks",
+	"components_detail_tabs_label": "Komponentenbereiche",
 	"components_filter_clear": "Filter löschen",
 	"components_filter_select": "Typ auswählen...",
 	"components_filter_type": "Typ",

@@ -57,6 +57,10 @@ Take the first step that fits:
 4. A stateful operation coordinating several owners, with combined failure handling, belongs in `app/workflows`.
 5. A one-way peer import through public ports is allowed when cohesive. If it would close a cycle, compose in the route.
 
+#### Detail Screens
+
+Before building or changing a page for one record, read `docs/agents/detail-screens.md`.
+
 #### Invariants
 
 - Shared imports only Shared and generated Paraglide output. Features import features through ports and Shared, never App or routes.
