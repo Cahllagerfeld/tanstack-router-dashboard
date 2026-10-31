@@ -31,6 +31,12 @@ const SHARED = grammar(
 	"api/(?:client|errors|generated)(?:\\.spec)?\\.ts",
 	`(?:routing|filters)/${KEBAB}(?:${TEST})?\\.tsx?`
 );
+const GENERATED = "src/shared/api/generated";
+const DTO_FILE = /^src\/features\/[^/]+\/data\/dto\.ts$/;
+const DTO_TARGET = /^src\/features\/([^/]+)\/data\/dto$/;
+const MODEL_FILE = /^src\/features\/([^/]+)\/(?:[^/]+\/)?model\.ts$/;
+const PURE_TARGET =
+	/^src\/(?:shared\/lib\/.+|lib\/constants\/storage|features\/[^/]+\/(?:[^/]+\/)?model)$/;
 const APP_FIX =
 	"move it to app/{providers.tsx,query-client.ts,global-error-boundary.tsx,layouts,navigation,workflows/<name>}";
 const SHARED_FIX =
@@ -97,6 +103,32 @@ export function requiredPort(root, importer, target) {
 export function forbiddenEdge(importer, target, policy) {
 	const from = layerOf(importer, policy);
 	return FORBIDDEN[from]?.includes(layerOf(target, policy)) ? from : null;
+}
+
+/** The fix for an import that breaks the DTO funnel, or null when it is allowed. */
+export function dtoFix(importer, target, policy) {
+	const owner = DTO_TARGET.exec(target)?.[1];
+	if (owner) {
+		return importer.startsWith(`src/features/${owner}/data/`)
+			? null
+			: `keep DTO aliases private: map the value in src/features/${owner}/data/map.ts and expose a handwritten type from model.ts`;
+	}
+	if (target !== GENERATED) return null;
+	if (DTO_FILE.test(importer) || importer === "src/shared/api/client.ts") {
+		return null;
+	}
+	const legacy = legacyOwner(importer, policy);
+	if (legacy && !policy.enforcedOwners.includes(legacy)) return null;
+	return /^src\/features\/[^/]+\/data\//.test(importer)
+		? `add the alias to ${path.posix.dirname(importer)}/dto.ts and import it from there`
+		: "use a handwritten type from the owning feature's model.ts; generated aliases stay in its data/dto.ts";
+}
+
+/** The fix for an impure import in an enforced model.ts, or null when it is allowed. */
+export function modelFix(importer, target, { enforcedOwners }) {
+	const owner = MODEL_FILE.exec(importer)?.[1];
+	if (!enforcedOwners.includes(owner) || PURE_TARGET.test(target)) return null;
+	return "keep model.ts pure: use `import type`, pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook";
 }
 
 function sharedFix(rest, { sharedUnits }) {

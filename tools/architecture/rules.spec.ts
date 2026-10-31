@@ -87,14 +87,14 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 		["src/shared/lib/a.ts", "@/shared/lib/b"],
 		[peer, "@/features/stacks/ui"],
 		[peer, "@/shared/lib/dates"],
-		["src/components/sidebar/project-switcher.tsx", "@/features/stacks/ui"],
+		["src/components/sidebar/use-navbar-items.ts", "@/features/stacks/ui"],
 	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
 	invalid: [
 		...[
 			["src/shared/lib/a.ts", "@/features/stacks"],
 			["src/shared/lib/a.ts", "../../app/providers"],
 			["src/lib/localstorage.ts", "@/routes/route"],
-			["src/lib/localstorage.ts", "@/data/projects"],
+			["src/lib/localstorage.ts", "@/data/stacks"],
 			["src/lib/localstorage.ts", "@/app"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, sharedRule(specifier))
@@ -104,7 +104,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/routeTree.gen"],
 			[peer, "@/main"],
 			[peer, "../../../app/navigation/app-rail"],
-			[peer, "../../../components/sidebar/project-switcher"],
+			[peer, "../../../components/sidebar/use-navbar-items"],
 			["src/data/runs/index.ts", "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))
@@ -117,6 +117,112 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 	],
 });
 
+const generated = "@/shared/api/generated";
+const dtoLeak = (specifier: string, fix: string) =>
+	`"${specifier}" leaks API types. Fix: ${fix}.`;
+const toDto = dtoLeak(
+	generated,
+	"add the alias to src/features/projects/data/dto.ts and import it from there"
+);
+const toModel = dtoLeak(
+	generated,
+	"use a handwritten type from the owning feature's model.ts; generated aliases stay in its data/dto.ts"
+);
+const privateDto = (specifier: string) =>
+	dtoLeak(
+		specifier,
+		"keep DTO aliases private: map the value in src/features/projects/data/map.ts and expose a handwritten type from model.ts"
+	);
+
+tester.run("dto-funnel", plugin.rules["dto-funnel"], {
+	valid: [
+		["src/features/projects/data/dto.ts", generated],
+		["src/features/runs/data/dto.ts", generated],
+		["src/shared/api/client.ts", "./generated"],
+		["src/domain/runs.ts", generated],
+		["src/domain/mappers.spec.ts", generated],
+		["src/features/projects/data/map.ts", "./dto"],
+		["src/features/projects/data/map.spec.ts", "./dto"],
+		["src/features/projects/create/form.tsx", "@/shared/api/client"],
+	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
+	invalid: [
+		...[
+			["src/features/projects/data/requests.ts", toDto],
+			["src/features/projects/model.ts", toModel],
+			["src/features/projects/create/form.tsx", toModel],
+			["src/features/runs/list/view.tsx", toModel],
+			["src/routes/route.tsx", toModel],
+			["src/shared/lib/dates.ts", toModel],
+		].map(([file, message]) =>
+			invalid(file, `import type { components } from "${generated}";`, message)
+		),
+		invalid(
+			"src/features/projects/data/queries.ts",
+			`type A = import("${generated}").components;`,
+			toDto
+		),
+		invalid(
+			"src/features/projects/index.ts",
+			`export type { ProjectDto } from "./data/dto";`,
+			privateDto("./data/dto")
+		),
+		invalid(
+			"src/features/projects/create/form.tsx",
+			`import type { ProjectDto } from "../data/dto";`,
+			privateDto("../data/dto")
+		),
+	],
+});
+
+const impure = (specifier: string) =>
+	`A model cannot import "${specifier}". Fix: keep model.ts pure: use \`import type\`, pass the value in as an argument, or move this code to data/, storage.ts, or a use-*.ts hook.`;
+
+tester.run("pure-model", plugin.rules["pure-model"], {
+	valid: [
+		["src/features/projects/selection/model.ts", "../model"],
+		["src/features/projects/selection/model.ts", "@/lib/constants/storage"],
+		["src/features/projects/model.ts", "@/shared/lib/dates"],
+		["src/features/projects/model.ts", "./selection/model"],
+		["src/features/projects/model.spec.ts", "vitest"],
+		["src/features/projects/selection/use-active-project.ts", "react"],
+		["src/features/runs/model.ts", "react"],
+	]
+		.map(([file, specifier]) => valid(file, `import "${specifier}";`))
+		.concat(
+			[
+				`import type { User } from "@/features/users";`,
+				`export type { User } from "@/features/users";`,
+				`type User = import("@/features/users").User;`,
+			].map((code) => valid("src/features/projects/model.ts", code))
+		),
+	invalid: [
+		"react",
+		"@tanstack/react-query",
+		"sonner",
+		"@/shared/api/client",
+		"@/paraglide/messages",
+		"@/shared/ui/button",
+		"./storage",
+		"./use-active-project",
+		"../data/queries",
+		"./project-switcher",
+	]
+		.map((specifier) =>
+			invalid(
+				"src/features/projects/selection/model.ts",
+				`import { a } from "${specifier}";`,
+				impure(specifier)
+			)
+		)
+		.concat(
+			invalid(
+				"src/features/projects/model.ts",
+				`import { type User } from "@/features/users";`,
+				impure("@/features/users")
+			)
+		),
+});
+
 const rootFix = (file: string) =>
 	`${file} is not an allowed location. Fix: move it to src/features/<owner>, src/shared, src/app, or src/routes.`;
 
@@ -126,7 +232,7 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 		"vite.config.ts",
 		"src/routes/(private)/route.tsx",
 		"src/features/stacks/create/form.browser.spec.tsx",
-		"src/data/projects/index.ts",
+		"src/data/stacks/index.ts",
 		"src/features/filters/type/index.ts",
 		"src/shared/ui/button.tsx",
 		"src/shared/api/generated.ts",
@@ -180,11 +286,12 @@ describe("placement ratchet", () => {
 	});
 
 	it("rejects the named legacy paths of enforced owners only", () => {
-		const legacy = "src/data/projects/index.ts";
+		const legacy = "src/data/stacks/index.ts";
+		const enforced = { ...policy, enforcedOwners: ["stacks"] };
 
 		expect(placementFix(legacy, policy)).toBeNull();
-		expect(placementFix(legacy, strict)).toContain("move this legacy path");
-		expect(placementFix("src/data/runs/index.ts", strict)).toBeNull();
+		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
+		expect(placementFix("src/data/runs/index.ts", enforced)).toBeNull();
 	});
 
 	it("keeps new work in unenforced owners on target paths", () => {

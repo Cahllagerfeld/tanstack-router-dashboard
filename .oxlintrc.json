@@ -6,7 +6,9 @@
 	},
 	"rules": {
 		"architecture/dependency-direction": "error",
+		"architecture/dto-funnel": "error",
 		"architecture/file-placement": "error",
+		"architecture/pure-model": "error",
 		"architecture/public-feature-imports": "error",
 		"import/no-cycle": [
 			"error",

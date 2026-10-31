@@ -1,29 +1,11 @@
-import type { Project } from "@/domain/projects";
+import { S3_BASE_URL } from "@/lib/constants/storage";
 
-import { getLocalStorageKey } from "./localstorage";
-
-const activeProjectKey = getLocalStorageKey("SELECTED_PROJECT");
-
-export function setProjectToLocalStorage(project: string | null) {
-	if (project === null) {
-		localStorage.removeItem(activeProjectKey);
-	} else {
-		localStorage.setItem(activeProjectKey, project);
-	}
-}
-
-export function getProjectFromLocalStorage() {
-	return localStorage.getItem(activeProjectKey);
-}
+import type { Project } from "../model";
 
 export function findProject(projects: Project[], idOrName: string | null) {
 	return projects.find(
 		(project) => project.id === idOrName || project.name === idOrName
 	);
-}
-
-export function getProjectLabel(project: Project) {
-	return project.displayName ?? project.name;
 }
 
 /** The Project to open by default: the last opened one, otherwise the first listed. */
@@ -51,4 +33,21 @@ export function resolveUnscopedProject(
 	return isUnconfirmedAbsence
 		? undefined
 		: resolveProject(projects, lastOpenedIdOrName);
+}
+
+function generateNumberFromSalt(salt: string): number {
+	function hashString(str: string): number {
+		let hash = 0;
+		for (let i = 0; i < str.length; i++) {
+			hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+		}
+		return hash;
+	}
+
+	const hash = hashString(salt);
+	return (hash % 49) + 1;
+}
+
+export function getIllustrationUrl(name: string) {
+	return `${S3_BASE_URL}/projects/${generateNumberFromSalt(name)}.jpg`;
 }

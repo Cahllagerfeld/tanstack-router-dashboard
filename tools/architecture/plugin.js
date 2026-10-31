@@ -1,5 +1,7 @@
 import {
+	dtoFix,
 	forbiddenEdge,
+	modelFix,
 	placementFix,
 	relativePath,
 	requiredPort,
@@ -28,11 +30,13 @@ function literalValue(source) {
 /** Visits imports, re-exports, literal dynamic imports, and TS import forms. */
 function importVisitor(context, check) {
 	const importer = relativePath(context.cwd, context.filename);
-	const visit = ({ source }) => {
+	const visit = ({ source, exportKind, importKind }) => {
 		const specifier = literalValue(source);
-		const target = specifier && resolveImport(importer, specifier);
-		if (!target) return;
-		const message = check(importer, target, specifier);
+		if (!specifier) return;
+		// Bare package names stay as they are, so a rule can match them too.
+		const target = resolveImport(importer, specifier) ?? specifier;
+		const isType = [exportKind, importKind].includes("type");
+		const message = check(importer, target, specifier, isType);
 		if (message) context.report({ node: source, message });
 	};
 	return {
@@ -42,7 +46,7 @@ function importVisitor(context, check) {
 		ImportExpression: visit,
 		TSExternalModuleReference: ({ expression }) =>
 			visit({ source: expression }),
-		TSImportType: visit,
+		TSImportType: ({ source }) => visit({ source, importKind: "type" }),
 	};
 }
 
@@ -67,6 +71,21 @@ export default {
 						layer &&
 						`${layer.label} cannot import "${specifier}". Fix: ${layer.fix}.`
 					);
+				}),
+		},
+		"dto-funnel": {
+			create: (context) =>
+				importVisitor(context, (importer, target, specifier) => {
+					const fix = dtoFix(importer, target, policy);
+					return fix && `"${specifier}" leaks API types. Fix: ${fix}.`;
+				}),
+		},
+		"pure-model": {
+			create: (context) =>
+				importVisitor(context, (importer, target, specifier, isType) => {
+					// Type-only imports erase, so they cannot make a model impure.
+					const fix = !isType && modelFix(importer, target, policy);
+					return fix && `A model cannot import "${specifier}". Fix: ${fix}.`;
 				}),
 		},
 		"file-placement": {

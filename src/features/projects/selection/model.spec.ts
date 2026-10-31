@@ -1,47 +1,15 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import type { Project } from "@/domain/projects";
-
-const { getItem, removeItem, setItem } = vi.hoisted(() => ({
-	getItem: vi.fn(),
-	removeItem: vi.fn(),
-	setItem: vi.fn(),
-}));
-
-vi.stubGlobal("localStorage", { getItem, removeItem, setItem });
-
-const {
-	getProjectFromLocalStorage,
-	getProjectLabel,
+import type { Project } from "../model";
+import {
+	getIllustrationUrl,
 	resolveProject,
 	resolveUnscopedProject,
-	setProjectToLocalStorage,
-} = await import("./projects");
+} from "./model";
 
-describe("selected Project storage", () => {
-	beforeEach(() => {
-		vi.clearAllMocks();
-	});
-
-	it("persists and reads the selected Project", () => {
-		getItem.mockReturnValue("fraud-detection");
-
-		setProjectToLocalStorage("fraud-detection");
-
-		expect(setItem).toHaveBeenCalledWith(
-			"zenml.projects.selected",
-			"fraud-detection"
-		);
-		expect(getProjectFromLocalStorage()).toBe("fraud-detection");
-	});
-
-	it("removes the selection when no Project is active", () => {
-		setProjectToLocalStorage(null);
-
-		expect(removeItem).toHaveBeenCalledWith("zenml.projects.selected");
-		expect(setItem).not.toHaveBeenCalled();
-	});
-});
+vi.mock("@/lib/constants/storage", () => ({
+	S3_BASE_URL: "https://example.test",
+}));
 
 describe("resolveProject", () => {
 	const projects = [
@@ -92,16 +60,23 @@ describe("resolveUnscopedProject", () => {
 	});
 });
 
-describe("getProjectLabel", () => {
-	it("prefers the display name", () => {
-		expect(
-			getProjectLabel({ id: "id", name: "fraud", displayName: "Fraud" })
-		).toBe("Fraud");
+describe("getIllustrationUrl", () => {
+	it("uses the configured S3_BASE_URL and correct path/extension", () => {
+		const url = getIllustrationUrl("alpha");
+		expect(url.startsWith("https://example.test/projects/")).toBe(true);
+		expect(url.endsWith(".jpg")).toBe(true);
 	});
 
-	it("falls back to the name", () => {
-		expect(
-			getProjectLabel({ id: "id", name: "fraud", displayName: undefined })
-		).toBe("fraud");
+	it("is deterministic for the same name and number is within 1..49", () => {
+		const first = getIllustrationUrl("alpha");
+		const second = getIllustrationUrl("alpha");
+		expect(first).toBe(second);
+
+		const match = first.match(/\/projects\/(\d+)\.jpg$/);
+		expect(match).not.toBeNull();
+		const n = Number(match?.[1]);
+		expect(Number.isNaN(n)).toBe(false);
+		expect(n).toBeGreaterThanOrEqual(1);
+		expect(n).toBeLessThanOrEqual(49);
 	});
 });

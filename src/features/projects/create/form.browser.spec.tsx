@@ -88,6 +88,23 @@ test("a user can create a Project from valid form values", async () => {
 	});
 });
 
+test("a created Project refreshes, notifies, navigates, then closes the dialog", async () => {
+	post.mockResolvedValue({
+		data: { id: "project-id", name: "fraud", permission_denied: false },
+		error: undefined,
+		response: new Response(),
+	});
+	const { invalidateQueries, screen } = await renderProjectForm();
+	await fillValidProject(screen);
+	await screen.getByRole("button", { name: "Create Project" }).click();
+
+	await expect.poll(() => setOpen.mock.calls).toEqual([[false]]);
+	const order = [invalidateQueries, toastSuccess, navigate, setOpen].map(
+		(mock) => mock.mock.invocationCallOrder[0]!
+	);
+	expect(order).toEqual(order.toSorted((first, second) => first - second));
+});
+
 test("invalid Project values show feedback without creating a Project", async () => {
 	const { screen } = await renderProjectForm();
 

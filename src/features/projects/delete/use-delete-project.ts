@@ -7,38 +7,21 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import { m } from "@/paraglide/messages";
-import { apiClient } from "@/shared/api/client";
-import { expectOptionalData, FetchError } from "@/shared/api/errors";
+import { FetchError } from "@/shared/api/errors";
 
-import { projectKeys } from "..";
-
-interface DeleteProjectParams {
-	projectId: string;
-}
-
-export async function deleteProject({ projectId }: DeleteProjectParams) {
-	const result = await apiClient.DELETE(
-		"/api/v1/projects/{project_name_or_id}",
-		{
-			params: {
-				path: {
-					project_name_or_id: projectId,
-				},
-			},
-		}
-	);
-	expectOptionalData(result);
-}
+import { projectKeys } from "../data/queries";
+import { deleteProject } from "../data/requests";
+import type { DeleteProjectInput } from "../model";
 
 export function useDeleteProject(
-	options?: UseMutationOptions<void, FetchError, DeleteProjectParams, unknown>
+	options?: UseMutationOptions<void, FetchError, DeleteProjectInput, unknown>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, onError, ...rest } = options || {};
-	return useMutation<void, FetchError, DeleteProjectParams, unknown>({
+	return useMutation<void, FetchError, DeleteProjectInput, unknown>({
 		...rest,
-		mutationFn: async ({ projectId }: DeleteProjectParams) => {
+		mutationFn: async ({ projectId }: DeleteProjectInput) => {
 			await deleteProject({ projectId });
 		},
 		onSuccess: (data, variables, onMutateResult, context) => {

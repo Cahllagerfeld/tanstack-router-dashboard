@@ -1,9 +1,12 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
+import {
+	getIllustrationUrl,
+	getProjectLabel,
+	projectQueries,
+	rememberOpenedProject,
+} from "@/features/projects";
 import { ProjectNotFound } from "@/features/projects/ui";
-import { getIllustrationUrl } from "@/lib/images";
-import { getProjectLabel, setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 import { ensureQueryDataOr404 } from "@/shared/routing/loader-utils";
 
@@ -18,8 +21,7 @@ export const Route = createFileRoute(
 		const project = await ensureQueryDataOr404(
 			queryClient.ensureQueryData(projectQueries.detail(project_id))
 		);
-		// Links preload on hover, which must not count as opening the Project.
-		if (!preload) setProjectToLocalStorage(project.id);
+		rememberOpenedProject(project.id, preload);
 		return {
 			project,
 			crumb: getProjectLabel(project),

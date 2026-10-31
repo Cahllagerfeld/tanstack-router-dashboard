@@ -1,11 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMatch } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
-import {
-	getProjectFromLocalStorage,
-	resolveUnscopedProject,
-} from "@/lib/projects";
+import { projectQueries } from "../data/queries";
+import { resolveUnscopedProject } from "./model";
+import { getProjectFromLocalStorage } from "./storage";
 
 /**
  * The Project validated by the current Project route, otherwise the one the app

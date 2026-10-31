@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { projectKeys, projectQueries } from "./index";
+import { projectKeys, projectQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
@@ -23,6 +23,15 @@ describe("projectQueries", () => {
 				size: 100,
 				sort_by: "desc:created",
 			},
+		]);
+	});
+
+	it("keeps the all-list and detail cache identities", () => {
+		expect(projectQueries.allList().queryKey).toEqual(["projects", "all-list"]);
+		expect(projectQueries.detail("project-id").queryKey).toEqual([
+			"projects",
+			"detail",
+			"project-id",
 		]);
 	});
 

@@ -1,6 +1,3 @@
-import { useDeleteProject } from "@/data/projects/mutations/delete-project";
-import type { Project } from "@/domain/projects";
-import { getProjectLabel } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 import {
 	ResponsiveAlertDialog,
@@ -12,6 +9,9 @@ import {
 	ResponsiveAlertDialogHeader,
 	ResponsiveAlertDialogTitle,
 } from "@/shared/ui/responsive-alert-dialog";
+
+import { getProjectLabel, type Project } from "../model";
+import { useDeleteProject } from "./use-delete-project";
 
 type Props = {
 	project: Project;

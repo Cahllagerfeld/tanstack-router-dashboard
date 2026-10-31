@@ -80,6 +80,23 @@ test("a user can confirm Project deletion", async () => {
 	expect(navigate).toHaveBeenCalledWith({ to: "/projects" });
 });
 
+test("a deleted Project refreshes, notifies, navigates, then closes the alert", async () => {
+	deleteRequest.mockResolvedValue({
+		data: undefined,
+		error: undefined,
+		response: new Response(null, { status: 204 }),
+	});
+	const { invalidateQueries, screen } = await renderDeleteAlert();
+
+	await screen.getByRole("button", { name: m.common_action_delete() }).click();
+
+	await expect.poll(() => onClose).toHaveBeenCalledOnce();
+	const order = [invalidateQueries, toastSuccess, navigate, onClose].map(
+		(mock) => mock.mock.invocationCallOrder[0]!
+	);
+	expect(order).toEqual(order.toSorted((first, second) => first - second));
+});
+
 test("a failed deletion keeps the dialog open and communicates the API error", async () => {
 	deleteRequest.mockRejectedValue(
 		new FetchError({

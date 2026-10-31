@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import type { Project } from "@/domain/projects";
-import { useActiveProject } from "@/hooks/use-active-project";
+import type { Project } from "../model";
+import { useActiveProject } from "./use-active-project";
 
 export function useProjectSwitcher() {
 	const [createDialogOpen, setCreateDialogOpen] = useState(false);

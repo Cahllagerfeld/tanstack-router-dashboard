@@ -16,7 +16,7 @@ const owners = [
 ];
 
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
-const enforcedOwners = [];
+const enforcedOwners = ["projects"];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
@@ -31,6 +31,7 @@ const sharedUnits = {
 		"no-item-fallback",
 		"not-available-tag",
 		"object-renderer",
+		"rail",
 		"secret-value",
 		"tables",
 	],
@@ -54,9 +55,7 @@ const legacyPaths = {
 	app: [
 		"src/components/breadcrumb/",
 		"src/components/providers",
-		"src/components/sidebar/project-switcher",
 		"src/components/sidebar/use-navbar-items",
-		"src/components/sidebar/use-project-switcher",
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
@@ -73,16 +72,6 @@ const legacyPaths = {
 		"src/data/pipelines/",
 		"src/domain/pipelines",
 		"src/types/pipelines",
-	],
-	projects: [
-		"src/data/projects/",
-		"src/domain/mappers",
-		"src/domain/projects",
-		"src/features/projects/create/dialog/",
-		"src/hooks/use-active-project",
-		"src/lib/images",
-		"src/lib/projects",
-		"src/types/projects",
 	],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
@@ -106,7 +95,12 @@ const legacyPaths = {
 		"src/types/api",
 	],
 	stacks: ["src/data/stacks/", "src/domain/stacks", "src/types/stacks"],
-	users: ["src/data/user/", "src/domain/users", "src/types/user"],
+	users: [
+		"src/data/user/",
+		"src/domain/mappers",
+		"src/domain/users",
+		"src/types/user",
+	],
 };
 
 export const policy = { owners, enforcedOwners, sharedUnits, legacyPaths };
