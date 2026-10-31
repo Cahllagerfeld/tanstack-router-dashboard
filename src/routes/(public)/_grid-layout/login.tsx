@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
-import { LoginForm } from "@/features/login/ui";
+import { LoginForm } from "@/features/session/ui";
 import { m } from "@/paraglide/messages";
 import {
 	Card,

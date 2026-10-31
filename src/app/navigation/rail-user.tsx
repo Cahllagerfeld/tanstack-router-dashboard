@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
 
-import { useLogoutUser } from "@/data/session/logout";
-import { userQueries } from "@/data/user";
+import { sessionQueries } from "@/features/session";
+import { useLogoutUser } from "@/features/session/ui";
 import { m } from "@/paraglide/messages";
 import {
 	railAvatarClassName,
@@ -23,7 +23,7 @@ import {
 } from "@/shared/ui/dropdown-menu";
 
 export function RailUser() {
-	const { data } = useSuspenseQuery(userQueries.currentUser());
+	const { data } = useSuspenseQuery(sessionQueries.currentIdentity());
 	const logout = useLogoutUser();
 
 	return (

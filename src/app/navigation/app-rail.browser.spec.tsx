@@ -4,8 +4,8 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 
-import { userQueries } from "@/data/user";
 import { projectQueries } from "@/features/projects";
+import { sessionQueries } from "@/features/session";
 import { m } from "@/paraglide/messages";
 
 import { AppRail } from "./app-rail";
@@ -39,7 +39,7 @@ vi.mock("@tanstack/react-router", () => ({
 		}) => ({ pathname: to.replace("$project_id", params.project_id) }),
 	}),
 }));
-vi.mock("@/data/session/logout", () => ({
+vi.mock("@/features/session/ui", () => ({
 	useLogoutUser: () => ({ mutate: vi.fn() }),
 }));
 
@@ -61,7 +61,7 @@ function renderRail(items: typeof projects = projects) {
 	queryClient.setQueryData(projectQueries.allList().queryKey, {
 		items,
 	} as never);
-	queryClient.setQueryData(userQueries.currentUser().queryKey, {
+	queryClient.setQueryData(sessionQueries.currentIdentity().queryKey, {
 		resolvedName: "Ada",
 		email: "ada@example.com",
 	} as never);

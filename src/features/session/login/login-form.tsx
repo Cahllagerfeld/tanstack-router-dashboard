@@ -5,7 +5,7 @@ import { Button } from "@/shared/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field";
 import { Input } from "@/shared/ui/input";
 
-import { useLoginForm } from "./hooks/use-login-form";
+import { useLoginForm } from "./use-login-form";
 
 export function LoginForm() {
 	const { handleLogin, form } = useLoginForm();

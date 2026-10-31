@@ -1,16 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
-
-import { userKeys } from "../user";
-
-export async function logoutUserRequest() {
-	const response = await apiClient.GET("/api/v1/logout", {});
-	const data = expectData(response);
-	return data;
-}
+import { sessionKeys } from "../data/queries";
+import { logoutUserRequest } from "../data/requests";
 
 export function useLogoutUser() {
 	const navigate = useNavigate();
@@ -18,7 +10,9 @@ export function useLogoutUser() {
 	return useMutation<unknown, unknown, void, unknown>({
 		mutationFn: logoutUserRequest,
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: userKeys.current() });
+			await queryClient.invalidateQueries({
+				queryKey: sessionKeys.currentIdentity(),
+			});
 			navigate({ to: "/login" });
 		},
 	});

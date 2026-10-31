@@ -1,13 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { useLoginUser } from "@/data/session/login";
-import { userKeys, userQueries } from "@/data/user";
-
-import { type LoginFormType, loginSchema } from "../schema";
+import { ensureCurrentIdentity, sessionKeys } from "../data/queries";
+import { loginUserRequest } from "../data/requests";
+import { type LoginFormType, loginSchema } from "./schema";
 
 export function useLoginForm() {
 	const { next } = useSearch({ from: "/(public)/_grid-layout/login" });
@@ -22,11 +21,14 @@ export function useLoginForm() {
 		},
 	});
 
-	const { mutate } = useLoginUser({
+	const { mutate } = useMutation({
+		mutationFn: loginUserRequest,
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: userKeys.current() });
+			await queryClient.invalidateQueries({
+				queryKey: sessionKeys.currentIdentity(),
+			});
 			// Ensure cache is warm for guards
-			await queryClient.ensureQueryData(userQueries.currentUser());
+			await ensureCurrentIdentity(queryClient);
 			router.navigate({ to: next ?? "/" });
 		},
 		onError: (err) => {

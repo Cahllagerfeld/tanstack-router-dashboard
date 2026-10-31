@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { userQueries } from "@/data/user";
+import { sessionQueries } from "@/features/session";
 import {
 	UserListSearchbar,
 	UserList,
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/members")({
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {
 		await Promise.all([
 			queryClient.ensureQueryData(userQueries.list({ name, page })),
-			queryClient.ensureQueryData(userQueries.currentUser()),
+			queryClient.ensureQueryData(sessionQueries.currentIdentity()),
 		]);
 		return { crumb: m.settings_members_title() };
 	},
