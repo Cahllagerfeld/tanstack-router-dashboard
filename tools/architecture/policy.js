@@ -20,6 +20,7 @@ const enforcedOwners = [
 	"pipelines",
 	"projects",
 	"runs",
+	"server-activation",
 	"session",
 	"stacks",
 ];
@@ -66,13 +67,6 @@ const legacyPaths = {
 		"src/types/navbar",
 	],
 	root: ["src/features/root/"],
-	"server-activation": [
-		"src/data/server/",
-		"src/features/server-activation/password-step",
-		"src/features/server-activation/schema",
-		"src/features/server-activation/use-password-step",
-		"src/types/server",
-	],
 	shared: [
 		"src/lib/constants/entity-icons",
 		"src/lib/constants/storage",

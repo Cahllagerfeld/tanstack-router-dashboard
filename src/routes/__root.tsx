@@ -7,7 +7,7 @@ import {
 	redirect,
 } from "@tanstack/react-router";
 
-import { serverQueries } from "@/data/server";
+import { serverQueries } from "@/features/server-activation";
 import { m } from "@/paraglide/messages";
 import { Toaster } from "@/shared/ui/sonner";
 

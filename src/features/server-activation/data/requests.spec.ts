@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { fetchServerInfo } from "./info";
+import { fetchServerInfo } from "./requests";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
