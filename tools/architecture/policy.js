@@ -18,19 +18,45 @@ const owners = [
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
 const enforcedOwners = [];
 
-/** Top-level units allowed under src/shared/{components,lib}; #705 registers them. */
-const sharedUnits = { components: [], lib: [] };
+/** Top-level units allowed under src/shared/{components,lib}. */
+const sharedUnits = {
+	components: [
+		"base-table-actions",
+		"content-inset",
+		"copy-button",
+		"debounced-input",
+		"display-date",
+		"group-tabs",
+		"key-value-list",
+		"no-item-fallback",
+		"not-available-tag",
+		"object-renderer",
+		"secret-value",
+		"tables",
+	],
+	lib: [
+		"avatar",
+		"cn",
+		"dates",
+		"page-range",
+		"strings",
+		"table",
+		"type-guards",
+	],
+};
 
 /**
  * Owner to legacy path prefix. A trailing slash names a folder; anything else
  * is a file-stem prefix. The longest prefix wins. `app` and `shared` stand for
- * those areas until #705 and #560 move the code.
+ * those areas until #560 moves the remaining code.
  */
 const legacyPaths = {
 	app: [
 		"src/components/breadcrumb/",
 		"src/components/providers",
-		"src/components/sidebar/",
+		"src/components/sidebar/project-switcher",
+		"src/components/sidebar/use-navbar-items",
+		"src/components/sidebar/use-project-switcher",
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
@@ -73,12 +99,11 @@ const legacyPaths = {
 		"src/types/session",
 	],
 	shared: [
-		"src/components/",
-		"src/data/api-client",
-		"src/hooks/",
-		"src/lib/",
+		"src/lib/constants/entity-icons",
+		"src/lib/constants/storage",
+		"src/lib/localization-policy",
+		"src/lib/localstorage",
 		"src/types/api",
-		"src/types/core",
 	],
 	stacks: ["src/data/stacks/", "src/domain/stacks", "src/types/stacks"],
 	users: ["src/data/user/", "src/domain/users", "src/types/user"],

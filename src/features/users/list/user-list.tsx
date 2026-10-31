@@ -1,15 +1,15 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { TableFooter } from "@/components/tables/table-footer";
-import { TableToolbar } from "@/components/tables/table-toolbar";
-import { TableView } from "@/components/tables/table-view";
-import { useDataTable } from "@/components/tables/use-data-table";
 import { userQueries } from "@/data/user";
 import { useUserListColumns } from "@/features/users/list/columns";
 import { m } from "@/paraglide/messages";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { TableFooter } from "@/shared/components/tables/table-footer";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
+import { TableView } from "@/shared/components/tables/table-view";
+import { useDataTable } from "@/shared/components/tables/use-data-table";
 import type { UserListQueryParams } from "@/types/user";
 
 type Props = {

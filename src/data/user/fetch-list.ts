@@ -1,8 +1,7 @@
 import { userFromApi } from "@/domain/users";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient } from "@/shared/api/client";
+import { expectData } from "@/shared/api/errors";
 import type { UserListQueryParams } from "@/types/user";
-
-import { apiClient } from "../api-client";
 
 export async function fetchUserList(params: UserListQueryParams) {
 	const response = await apiClient.GET("/api/v1/users", {

@@ -26,7 +26,7 @@ describe("oxlint with the root configuration", () => {
 
 	it.each([
 		["src/routes/deep.tsx", "architecture(public-feature-imports)"],
-		["src/lib/uses-feature.ts", "architecture(dependency-direction)"],
+		["src/shared/hooks/use-feature.ts", "architecture(dependency-direction)"],
 		["src/misplaced/reported.ts", "architecture(file-placement)"],
 		["src/features/unregistered/index.ts", "architecture(file-placement)"],
 		["src/features/runs/cycle/model.ts", "import(no-cycle)"],
@@ -53,7 +53,7 @@ describe("oxlint with the root configuration", () => {
 		expect(guard.status).toBe(1);
 		expect(guard.stderr).toContain("src/misplaced/suppressed.ts:1: remove");
 		expect(guard.stderr).toContain("src/types/api.ts:1: remove");
-		expect(guard.stderr).not.toContain("src/types/core.ts");
+		expect(guard.stderr).not.toContain("src/shared/api/generated.ts");
 	});
 });
 

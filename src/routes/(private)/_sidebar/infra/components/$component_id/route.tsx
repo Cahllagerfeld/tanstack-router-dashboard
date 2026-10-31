@@ -6,16 +6,16 @@ import {
 	useMatchRoute,
 } from "@tanstack/react-router";
 
-import { ContentInset } from "@/components/content-inset";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { componentQueries } from "@/data/components";
 import {
 	ComponentDetailSkeleton,
 	ComponentHeader,
 	ComponentNotFound,
 } from "@/features/components/ui";
-import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { m } from "@/paraglide/messages";
+import { ContentInset } from "@/shared/components/content-inset";
+import { ensureQueryDataOr404 } from "@/shared/routing/loader-utils";
+import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/infra/components/$component_id"

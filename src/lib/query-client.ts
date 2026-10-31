@@ -1,6 +1,6 @@
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 
-import { isFetchError } from "./fetch-error";
+import { isFetchError } from "@/shared/api/errors";
 
 export const queryClient = new QueryClient({
 	defaultOptions: {

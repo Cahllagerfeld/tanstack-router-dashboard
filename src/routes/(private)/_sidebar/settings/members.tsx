@@ -3,13 +3,17 @@ import { Suspense } from "react";
 import { z } from "zod";
 
 import { userQueries } from "@/data/user";
-import { createFilter, filterSchema, getFilterValue } from "@/features/filters";
 import {
 	UserListSearchbar,
 	UserList,
 	UserListSkeleton,
 } from "@/features/users/ui";
 import { m } from "@/paraglide/messages";
+import {
+	createFilter,
+	filterSchema,
+	getFilterValue,
+} from "@/shared/filters/filter";
 import type { UserListQueryParams } from "@/types/user";
 
 const querySchema = z.object({

@@ -1,6 +1,6 @@
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { m } from "@/paraglide/messages";
+import { cn } from "@/shared/lib/cn";
+import { Badge } from "@/shared/ui/badge";
 
 export function IsActiveBadge({ isActive }: { isActive: boolean }) {
 	return (

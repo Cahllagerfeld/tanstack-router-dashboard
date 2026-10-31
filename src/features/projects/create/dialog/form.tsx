@@ -1,16 +1,16 @@
 import type { Dispatch, HTMLAttributes, SetStateAction } from "react";
 import { Controller } from "react-hook-form";
 
+import { m } from "@/paraglide/messages";
+import { cn } from "@/shared/lib/cn";
 import {
 	Field,
 	FieldError,
 	FieldGroup,
 	FieldLabel,
 	FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { m } from "@/paraglide/messages";
+} from "@/shared/ui/field";
+import { Input } from "@/shared/ui/input";
 
 import { useCreateProjectForm } from "./use-create-project-form";
 

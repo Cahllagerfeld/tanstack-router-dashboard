@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContentInset } from "@/components/content-inset";
 import { m } from "@/paraglide/messages";
+import { ContentInset } from "@/shared/components/content-inset";
 
 export const Route = createFileRoute("/(private)/_sidebar/settings/general")({
 	loader: () => ({ crumb: m.settings_general_title() }),

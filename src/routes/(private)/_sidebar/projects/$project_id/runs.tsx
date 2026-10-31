@@ -1,16 +1,16 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { TableFooter } from "@/components/tables/table-footer";
-import { TableToolbar } from "@/components/tables/table-toolbar";
-import { TableView } from "@/components/tables/table-view";
-import { useDataTable } from "@/components/tables/use-data-table";
 import { runQueries } from "@/data/runs";
-import { commonFilterSchema } from "@/features/filters";
 import { useRunColumns } from "@/features/runs/ui";
 import { m } from "@/paraglide/messages";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { TableFooter } from "@/shared/components/tables/table-footer";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
+import { TableView } from "@/shared/components/tables/table-view";
+import { useDataTable } from "@/shared/components/tables/use-data-table";
+import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
 import type { ProjectRunListQueryParams } from "@/types/runs";
 
 export const Route = createFileRoute(

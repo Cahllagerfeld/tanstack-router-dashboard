@@ -1,10 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { stackFromApi } from "@/domain/stacks";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient } from "@/shared/api/client";
+import { expectData } from "@/shared/api/errors";
 import type { StacksListQueryParams } from "@/types/stacks";
-
-import { apiClient } from "../api-client";
 
 const baseKey = "stacks" as const;
 

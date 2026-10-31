@@ -3,9 +3,9 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { projectQueries } from "@/data/projects";
 import { ProjectNotFound } from "@/features/projects/ui";
 import { getIllustrationUrl } from "@/lib/images";
-import { ensureQueryDataOr404 } from "@/lib/loader-utils";
 import { getProjectLabel, setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
+import { ensureQueryDataOr404 } from "@/shared/routing/loader-utils";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/projects/$project_id"
