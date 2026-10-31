@@ -24,7 +24,7 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 ### Architecture
 
-Handwritten code has four areas: `src/app`, `src/routes`, `src/features`, and `src/shared`. `tools/architecture/policy.js` registers owners, Shared units, and the migration ratchet. #257 is the full specification, and ADR-0002 records why.
+Handwritten code has four areas: `src/app`, `src/routes`, `src/features`, and `src/shared`. `tools/architecture/policy.js` registers owners and Shared units. #257 is the full specification, and ADR-0002 records why.
 
 Features share one shape: `index.ts` and `ui.ts` ports when a consumer needs them, `model.ts`, `data/{dto,requests,map,queries}.ts`, and behavior folders.
 
@@ -59,11 +59,11 @@ Take the first step that fits:
 
 #### Invariants
 
-- Shared imports only Shared. Features import features through ports and Shared, never App or routes.
+- Shared imports only Shared and generated Paraglide output. Features import features through ports and Shared, never App or routes.
 - Imports form no cycles, including type-only imports. The only exception is the `ObjectRenderer` and `ValueRenderer` recursion.
 - Fix an architecture finding at its cause. `src` adds no suppression directives; the two `react/set-state-in-effect` directives are the only exceptions.
 - Session owns `CurrentIdentity`, Users owns the administrative `User`, and consumers own their embedded summaries.
-- New work goes to target paths, even in an owner that still has legacy paths. Owners listed in `enforcedOwners` get the strict grammar, and their legacy paths are rejected.
+- The strict grammar, DTO funnel, and pure-model rules apply to every owner.
 - Adding an owner or Shared unit is ordinary review. Checker and CI changes need explicit maintainer review.
 
 #### Commands
