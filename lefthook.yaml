@@ -1,10 +1,16 @@
 pre-commit:
+  piped: true
   commands:
     oxlint:
+      priority: 1
       glob: "*.{js,ts,jsx,tsx}"
       run: pnpm oxlint --fix {staged_files}
       stage_fixed: true
     oxfmt:
+      priority: 2
       glob: "*.{js,json,md,svelte,ts,yaml,yml,jsx,tsx}"
       run: pnpm oxfmt {staged_files}
       stage_fixed: true
+    architecture:
+      priority: 3
+      run: pnpm run lint && pnpm run lint:directives

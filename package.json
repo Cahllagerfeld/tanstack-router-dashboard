@@ -13,9 +13,12 @@
 		"dev": "vite",
 		"format": "oxfmt .",
 		"generate:types": "node scripts/types.js",
-		"lint": "oxlint --fix .",
+		"lint": "oxlint .",
+		"lint:directives": "node tools/architecture/directive-guard.js",
+		"lint:fix": "oxlint --fix .",
 		"machine-translate": "inlang machine translate --project project.inlang",
 		"preview": "vite preview",
+		"test:architecture": "vitest run --project server tools/architecture",
 		"test:browser": "vitest --project \"browser*\"",
 		"test:server": "vitest --project server",
 		"test:unit": "vitest"

@@ -1,0 +1,4 @@
+{
+	"jsPlugins": ["./throws.js"],
+	"rules": { "broken/rule": "error" }
+}
