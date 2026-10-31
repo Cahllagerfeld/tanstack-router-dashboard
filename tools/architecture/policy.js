@@ -21,6 +21,7 @@ const enforcedOwners = [
 	"pipelines",
 	"projects",
 	"runs",
+	"stacks",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
