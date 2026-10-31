@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import { fetchServerInfo } from "./info";
+import { fetchServerInfo } from "./requests";
 
 const baseKey = "server" as const;
 
@@ -10,7 +10,6 @@ export const serverKeys = {
 };
 
 export const serverQueries = {
-	infoKey: serverKeys.info(),
 	serverInfo: () =>
 		queryOptions({
 			queryKey: serverKeys.info(),

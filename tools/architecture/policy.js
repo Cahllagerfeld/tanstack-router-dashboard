@@ -11,12 +11,11 @@ const owners = [
 	"users",
 	// Temporary names, removed by #560.
 	"filters",
-	"login",
 	"root",
 ];
 
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
-const enforcedOwners = ["projects"];
+const enforcedOwners = ["projects", "server-activation", "session"];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
@@ -67,7 +66,6 @@ const legacyPaths = {
 		"src/types/components",
 	],
 	filters: ["src/features/filters/"],
-	login: ["src/features/login/"],
 	pipelines: [
 		"src/data/pipelines/",
 		"src/domain/pipelines",
@@ -75,18 +73,6 @@ const legacyPaths = {
 	],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
-	"server-activation": [
-		"src/data/server/",
-		"src/features/server-activation/password-step",
-		"src/features/server-activation/schema",
-		"src/features/server-activation/use-password-step",
-		"src/types/server",
-	],
-	session: [
-		"src/data/session/",
-		"src/data/user/fetch-current-user",
-		"src/types/session",
-	],
 	shared: [
 		"src/lib/constants/entity-icons",
 		"src/lib/constants/storage",
