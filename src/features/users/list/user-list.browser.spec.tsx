@@ -113,6 +113,25 @@ test("hides the actions menu from a non-admin", async () => {
 		.not.toBeInTheDocument();
 });
 
+test("offers the invite action to an admin", async () => {
+	const screen = await renderUserList({ isAdmin: true });
+
+	await expect
+		.element(screen.getByRole("button", { name: m.users_invite_trigger() }))
+		.toBeVisible();
+});
+
+test("hides the invite action from a non-admin", async () => {
+	const screen = await renderUserList({ isAdmin: false });
+
+	await expect
+		.element(screen.getByRole("cell", { name: /grace/ }))
+		.toBeVisible();
+	await expect
+		.element(screen.getByRole("button", { name: m.users_invite_trigger() }))
+		.not.toBeInTheDocument();
+});
+
 test("keeps the admin delete action as a placeholder", async () => {
 	const screen = await renderUserList({ isAdmin: true });
 	const menus = screen.getByRole("button", {

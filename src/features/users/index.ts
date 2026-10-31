@@ -1,2 +1,3 @@
 export { userQueries } from "./data/queries";
-export type { UserListInput } from "./model";
+export { activateUser } from "./data/requests";
+export type { ActivateUserInput, UserListInput } from "./model";
