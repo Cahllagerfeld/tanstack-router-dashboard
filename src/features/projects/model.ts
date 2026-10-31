@@ -8,14 +8,6 @@ export type Project = {
 
 export type ProjectListInput = ApiQuery<"/api/v1/projects">;
 
-export type ProjectPage = {
-	index: number;
-	max_size: number;
-	total: number;
-	total_pages: number;
-	items: Project[];
-};
-
 export type CreateProjectInput = {
 	name: string;
 	display_name: string;

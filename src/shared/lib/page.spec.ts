@@ -1,6 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import { getPageRange } from "./page-range";
+import { getPageRange, mapPage } from "./page";
+
+describe("mapPage", () => {
+	it("maps the items and keeps the pagination", () => {
+		const page = {
+			index: 2,
+			max_size: 20,
+			total: 22,
+			total_pages: 2,
+			items: [1, 2],
+		};
+
+		expect(mapPage(page, String)).toEqual({ ...page, items: ["1", "2"] });
+	});
+});
 
 describe("getPageRange", () => {
 	it("covers a full page", () => {

@@ -13,11 +13,3 @@ export type User = {
 };
 
 export type UserListInput = ApiQuery<"/api/v1/users">;
-
-export type UserPage = {
-	index: number;
-	max_size: number;
-	total: number;
-	total_pages: number;
-	items: User[];
-};

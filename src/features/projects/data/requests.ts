@@ -1,28 +1,21 @@
 import { apiClient } from "@/shared/api/client";
 import { expectData, expectOptionalData } from "@/shared/api/errors";
+import { mapPage } from "@/shared/lib/page";
 
 import type {
 	CreateProjectInput,
 	DeleteProjectInput,
 	ProjectListInput,
-	ProjectPage,
 } from "../model";
 import { projectFromApi } from "./map";
 
-export async function fetchProjectList(
-	params: ProjectListInput
-): Promise<ProjectPage> {
+export async function fetchProjectList(params: ProjectListInput) {
 	const response = await apiClient.GET("/api/v1/projects", {
 		params: {
 			query: params,
 		},
 	});
-	const data = expectData(response);
-
-	return {
-		...data,
-		items: data.items.map(projectFromApi),
-	};
+	return mapPage(expectData(response), projectFromApi);
 }
 
 export async function fetchProjectDetail(projectId: string) {

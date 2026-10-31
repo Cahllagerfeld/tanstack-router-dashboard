@@ -8,11 +8,3 @@ export type Stack = {
 };
 
 export type StackListInput = ApiQuery<"/api/v1/stacks">;
-
-export type StackPage = {
-	index: number;
-	max_size: number;
-	total: number;
-	total_pages: number;
-	items: Stack[];
-};
