@@ -84,16 +84,10 @@
 			}
 		}
 	],
-	"components_detail_basic_information": "Basic Information",
-	"components_detail_configuration": "Configuration",
-	"components_detail_environment_variables": "Environment Variables",
-	"components_detail_masked_in_configuration": "(masked in configuration)",
 	"components_detail_no_configuration": "No configuration available",
-	"components_detail_no_environment_variables": "No environment variables configured",
-	"components_detail_no_secrets": "No secrets configured",
-	"components_detail_secret_keys": "Secret Keys",
-	"components_detail_tab_general": "General",
+	"components_detail_tab_configuration": "Configuration",
 	"components_detail_tab_stacks": "Stacks",
+	"components_detail_tabs_label": "Component sections",
 	"components_filter_clear": "Clear filter",
 	"components_filter_select": "Select a type...",
 	"components_filter_type": "Type",

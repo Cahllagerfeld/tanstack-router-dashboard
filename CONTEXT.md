@@ -35,3 +35,7 @@ _Avoid_: Artifact (when you mean a specific version), output, blob
 **Table Toolbar**:
 The control area associated with a resource table, with flexible left and right groups for table-specific controls and preferences.
 _Avoid_: Table actions (when referring to the whole control area), table header
+
+**Detail Screen**:
+The page for one record: a header, a strip of facts, and tabs that are each a child route.
+_Avoid_: General tab, overview page, info page

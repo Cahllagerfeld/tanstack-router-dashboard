@@ -5,9 +5,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 export type GroupTab = {
 	label: string;
 	to: NonNullable<LinkProps["to"]>;
+	params?: LinkProps["params"];
+	count?: number;
 };
 
-/** The pages of a rail group. Detail pages below a tab bring their own header, so the row hides there. */
+/** The pages of a rail group or Detail Screen. Pages below every tab bring their own header, so the row hides there. */
 export function GroupTabs({
 	label,
 	tabs,
@@ -16,7 +18,9 @@ export function GroupTabs({
 	tabs: GroupTab[];
 }) {
 	const matchRoute = useMatchRoute();
-	const activeTab = tabs.find((tab) => matchRoute({ to: tab.to }));
+	const activeTab = tabs.find((tab) =>
+		matchRoute({ to: tab.to, params: tab.params })
+	);
 
 	if (!activeTab) return null;
 
@@ -33,7 +37,16 @@ export function GroupTabs({
 						nativeButton={false}
 						value={tab.to}
 						className="flex-none px-0 font-normal group-data-horizontal/tabs:after:-bottom-px data-active:font-semibold"
-						render={<Link to={tab.to}>{tab.label}</Link>}
+						render={
+							<Link to={tab.to} params={tab.params}>
+								{tab.label}
+								{tab.count !== undefined && (
+									<span className="text-xs font-normal text-muted-foreground tabular-nums">
+										{tab.count}
+									</span>
+								)}
+							</Link>
+						}
 					/>
 				))}
 			</TabsList>

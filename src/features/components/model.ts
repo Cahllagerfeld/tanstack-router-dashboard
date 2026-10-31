@@ -18,8 +18,7 @@ export type Component = {
 	flavor: Flavor | undefined;
 	creatorName: string | undefined;
 	configuration: Record<string, unknown> | undefined;
-	environment: Record<string, unknown> | undefined;
-	secrets: string[] | undefined;
+	labels: Record<string, unknown> | undefined;
 };
 
 export type ComponentListInput = ApiQuery<"/api/v1/components">;
