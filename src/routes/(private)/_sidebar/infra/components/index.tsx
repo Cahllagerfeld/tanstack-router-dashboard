@@ -1,10 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { componentQueries } from "@/features/components";
-import { useComponentColumns } from "@/features/components/ui";
-import { typeFilterSchema } from "@/features/filters";
-import { TypeFilter } from "@/features/filters/ui";
+import { componentQueries, typeFilterSchema } from "@/features/components";
+import { TypeFilter, useComponentColumns } from "@/features/components/ui";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/shared/components/tables/data-table";

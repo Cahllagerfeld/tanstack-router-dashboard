@@ -3,3 +3,4 @@ export { ComponentDetailSkeleton } from "./detail/component-detail-skeleton";
 export { ComponentHeader } from "./detail/component-header";
 export { ComponentNotFound } from "./detail/component-not-found";
 export { ComponentGeneralTab } from "./detail/general-tab";
+export { TypeFilter } from "./type/type-filter";

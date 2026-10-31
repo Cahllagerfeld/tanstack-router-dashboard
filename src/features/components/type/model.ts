@@ -1,3 +1,5 @@
+import { snakeCaseToTitleCase } from "@/shared/lib/strings";
+
 export const COMPONENT_TYPES = [
 	"alerter",
 	"annotator",
@@ -17,3 +19,7 @@ export const COMPONENT_TYPES = [
 ] as const;
 
 export type ComponentType = (typeof COMPONENT_TYPES)[number];
+
+export function getComponentTypeLabel(type: ComponentType) {
+	return snakeCaseToTitleCase(type);
+}

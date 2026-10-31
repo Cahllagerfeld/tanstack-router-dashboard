@@ -233,7 +233,7 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 		"src/routes/(private)/route.tsx",
 		"src/features/stacks/create/form.browser.spec.tsx",
 		"src/features/stacks/data/queries.ts",
-		"src/features/filters/type/index.ts",
+		"src/features/stacks/made-up/schema.ts",
 		"src/shared/ui/button.tsx",
 		"src/shared/api/generated.ts",
 		"src/shared/routing/loader-utils.spec.ts",

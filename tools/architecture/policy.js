@@ -10,7 +10,6 @@ const owners = [
 	"stacks",
 	"users",
 	// Temporary names, removed by #560.
-	"filters",
 	"login",
 	"root",
 ];
@@ -65,7 +64,6 @@ const legacyPaths = {
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
-	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
 	root: ["src/features/root/"],
 	"server-activation": [

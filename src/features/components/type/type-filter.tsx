@@ -5,9 +5,6 @@ import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { COMPONENT_TYPES } from "@/features/components";
-import type { ComponentType } from "@/features/components";
-import { getComponentTypeLabel } from "@/features/filters/components";
 import { m } from "@/paraglide/messages";
 import { Button } from "@/shared/ui/button";
 import { Field, FieldError } from "@/shared/ui/field";
@@ -20,6 +17,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/shared/ui/select";
+
+import {
+	COMPONENT_TYPES,
+	type ComponentType,
+	getComponentTypeLabel,
+} from "./model";
 
 type Props = {
 	filter?: ComponentType;
@@ -68,7 +71,7 @@ export function TypeFilter({ filter }: Props) {
 				}
 			>
 				<Filter />
-				{getComponentTypeLabel(filter)}
+				{filter ? getComponentTypeLabel(filter) : m.components_filter_type()}
 			</PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">

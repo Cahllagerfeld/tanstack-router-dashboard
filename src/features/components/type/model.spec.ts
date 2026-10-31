@@ -1,17 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import type { ComponentType } from "@/features/components";
-import { getComponentTypeLabel } from "@/features/filters/components";
+import { type ComponentType, getComponentTypeLabel } from "./model";
 
 describe("getComponentTypeLabel", () => {
-	afterEach(() => {
-		vi.restoreAllMocks();
-	});
-
-	it("returns 'Type' when no type is provided", () => {
-		expect(getComponentTypeLabel()).toBe("Type");
-	});
-
 	it("converts snake_case to Title Case for simple values", () => {
 		const input: ComponentType = "data_validator";
 		expect(getComponentTypeLabel(input)).toBe("Data Validator");
