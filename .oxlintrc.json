@@ -1,8 +1,31 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "react"],
+	"plugins": ["typescript", "unicorn", "oxc", "react", "import"],
 	"categories": {
 		"correctness": "error"
 	},
-	"rules": {}
+	"rules": {
+		"architecture/dependency-direction": "error",
+		"architecture/file-placement": "error",
+		"architecture/public-feature-imports": "error",
+		"import/no-cycle": [
+			"error",
+			{
+				"ignoreTypes": false
+			}
+		]
+	},
+	"jsPlugins": ["./tools/architecture/plugin.js"],
+	"ignorePatterns": ["tools/architecture/fixtures/**"],
+	"overrides": [
+		{
+			"files": [
+				"src/components/object-renderer/object-renderer.tsx",
+				"src/components/object-renderer/value-renderer.tsx"
+			],
+			"rules": {
+				"import/no-cycle": "off"
+			}
+		}
+	]
 }

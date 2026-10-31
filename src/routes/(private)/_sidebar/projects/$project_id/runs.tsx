@@ -8,8 +8,8 @@ import { TableToolbar } from "@/components/tables/table-toolbar";
 import { TableView } from "@/components/tables/table-view";
 import { useDataTable } from "@/components/tables/use-data-table";
 import { runQueries } from "@/data/runs";
-import { commonFilterSchema } from "@/features/filters/common-filter-schema";
-import { useRunColumns } from "@/features/runs/runs-list/columns";
+import { commonFilterSchema } from "@/features/filters";
+import { useRunColumns } from "@/features/runs/ui";
 import { m } from "@/paraglide/messages";
 import type { ProjectRunListQueryParams } from "@/types/runs";
 

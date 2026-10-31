@@ -8,7 +8,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { LoginForm } from "@/features/login/login-form";
+import { LoginForm } from "@/features/login/ui";
 import { m } from "@/paraglide/messages";
 
 const querySchema = z.object({

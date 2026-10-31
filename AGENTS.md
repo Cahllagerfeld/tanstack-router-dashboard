@@ -22,6 +22,56 @@ Canonical defaults: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-
 
 Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
+### Architecture
+
+Handwritten code has four areas: `src/app`, `src/routes`, `src/features`, and `src/shared`. `tools/architecture/policy.js` registers owners, Shared units, and the migration ratchet. #257 is the full specification, and ADR-0002 records why.
+
+Features share one shape: `index.ts` and `ui.ts` ports when a consumer needs them, `model.ts`, `data/{dto,requests,map,queries}.ts`, and behavior folders.
+
+#### Placement procedure
+
+1. Generated output and TanStack declarations keep their designated locations. Create a capability folder only when it has code.
+2. Choose the registered feature owner. Put DTO, HTTP, mapping, and query work in `data/{dto,requests,map,queries}.ts`. Generated imports enter only through `dto.ts`. Public inputs and pure rules go in `model.ts`. DTO aliases stay private.
+3. Name behavior folders in kebab-case, one level deep, such as `create`, `selection`, or `settings`. A behavior folder holds `model.ts`, `schema.ts`, `storage.ts`, `use-*.ts`, descriptive `.tsx` views, and colocated tests; `utils.ts`, `helpers.ts`, and `types.ts` are not allowed. A new behavior needs no registry edit. Add a named data subresource only when real size or responsibility justifies extending the grammar.
+4. Export through the ports described below.
+5. Neutral reusable code goes to Shared. Capability-aware code stays with its owner even when reused. Only a new top-level unit under `shared/components` or `shared/lib` needs a registry entry. `shared/ui` stays generator-owned.
+6. App is a closed list: `providers.tsx`, `query-client.ts`, `global-error-boundary.tsx`, `layouts`, `navigation`, and `workflows`. A workflow coordinates state or effects across owners and does not warehouse relation pages.
+7. Routes own declarations, input validation, guards, loaders and prefetching, metadata, and small composition adapters. They compose public screens through props and slots. Feature-owned screen, query, and form setup lives with its owner.
+
+#### Ports
+
+- `ui.ts` exports every hook, plus screens, dialogs, other views, and anything else defined in a `.tsx` file.
+- `index.ts` exports plain functions, types, query factories, and models, and stays free of UI.
+- External consumers import only `@/features/<owner>` or `@/features/<owner>/ui`.
+- Files inside a feature import implementations directly, never through their own ports.
+- Add a port or export when a consumer needs it.
+- Ports stay tree-shakable: `package.json` `sideEffects` treats source modules as pure. The production build silently drops a bare non-CSS import such as `import "./x"`, so add any module that needs an import-time effect to `sideEffects`.
+
+#### Relationship procedure
+
+Take the first step that fits:
+
+1. A navigation link uses a typed route string, with no import of the destination feature.
+2. An embedded API resource is a snapshot. Map it locally to the minimum the screen needs, as `authorName` does for Runs. It never justifies a peer edge or an extra query. Reuse canonical permission or lifecycle behavior only when that is what the screen needs.
+3. For an independently refreshed widget, compose public contracts in the route, passing ids and slots. The route prefetches each owner's query, and widget-local state stays with its owner. Relation tabs with their own loader or state normally fit here.
+4. A stateful operation coordinating several owners, with combined failure handling, belongs in `app/workflows`.
+5. A one-way peer import through public ports is allowed when cohesive. If it would close a cycle, compose in the route.
+
+#### Invariants
+
+- Shared imports only Shared. Features import features through ports and Shared, never App or routes.
+- Imports form no cycles, including type-only imports. The only exception is the `ObjectRenderer` and `ValueRenderer` recursion.
+- Fix an architecture finding at its cause. `src` adds no suppression directives; the two `react/set-state-in-effect` directives are the only exceptions.
+- Session owns `CurrentIdentity`, Users owns the administrative `User`, and consumers own their embedded summaries.
+- New work goes to target paths, even in an owner that still has legacy paths. Owners listed in `enforcedOwners` get the strict grammar, and their legacy paths are rejected.
+- Adding an owner or Shared unit is ordinary review. Checker and CI changes need explicit maintainer review.
+
+#### Commands
+
+- `pnpm lint`: non-fixing architecture and code lint, as in CI. `pnpm lint:fix` applies fixes.
+- `pnpm lint:directives`: reject suppression directives in handwritten `src`.
+- `pnpm test:architecture`: rule and CLI fixtures.
+
 ### Internationalization
 
 All application-owned user-facing strings must use Paraglide messages and have both English and German translations. Do not add hard-coded user-facing copy.

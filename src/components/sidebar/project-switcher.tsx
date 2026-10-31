@@ -13,8 +13,10 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Project } from "@/domain/projects";
-import { CreateProjectDialog } from "@/features/projects/create/dialog/create-project-dialog";
-import { DeleteProjectAlert } from "@/features/projects/delete/delete-project-alert";
+import {
+	CreateProjectDialog,
+	DeleteProjectAlert,
+} from "@/features/projects/ui";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { getIllustrationUrl } from "@/lib/images";
 import { getProjectLabel } from "@/lib/projects";

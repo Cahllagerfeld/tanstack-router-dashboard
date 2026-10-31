@@ -3,15 +3,22 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"sideEffects": [
+		"**/*.css",
+		"./src/main.tsx"
+	],
 	"scripts": {
 		"build": "vite build && tsc -b",
 		"check:types": "tsc --noEmit",
 		"dev": "vite",
 		"format": "oxfmt .",
 		"generate:types": "node scripts/types.js",
-		"lint": "oxlint --fix .",
+		"lint": "oxlint .",
+		"lint:directives": "node tools/architecture/directive-guard.js",
+		"lint:fix": "oxlint --fix .",
 		"machine-translate": "inlang machine translate --project project.inlang",
 		"preview": "vite preview",
+		"test:architecture": "vitest run --project server tools/architecture",
 		"test:browser": "vitest --project \"browser*\"",
 		"test:server": "vitest --project server",
 		"test:unit": "vitest"

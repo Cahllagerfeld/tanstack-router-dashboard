@@ -10,7 +10,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { serverQueries } from "@/data/server";
-import { PasswordStep } from "@/features/server-activation/password-step";
+import { PasswordStep } from "@/features/server-activation/ui";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute(

@@ -30,8 +30,14 @@ jobs:
       - name: "Run Build"
         run: pnpm run build
 
+      - name: Run Architecture Rule Tests
+        run: pnpm run test:architecture
+
       - name: Run Lint
         run: pnpm run lint
+
+      - name: Check Suppression Directives
+        run: pnpm run lint:directives
 
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
