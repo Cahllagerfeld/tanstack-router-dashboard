@@ -52,8 +52,9 @@ describe("componentFromApi", () => {
 				},
 				metadata: {
 					configuration: { path: "/tmp/artifacts" },
-					environment: { REGION: "local" },
-					secrets: ["access_token"],
+					environment: {},
+					secrets: [],
+					labels: { team: "platform" },
 				},
 				resources: {
 					flavor,
@@ -82,8 +83,7 @@ describe("componentFromApi", () => {
 			flavor: { id: "flavor-id", name: "local", logoUrl: undefined },
 			creatorName: "ada",
 			configuration: { path: "/tmp/artifacts" },
-			environment: { REGION: "local" },
-			secrets: ["access_token"],
+			labels: { team: "platform" },
 		});
 	});
 
@@ -104,8 +104,7 @@ describe("componentFromApi", () => {
 			flavor: undefined,
 			creatorName: undefined,
 			configuration: undefined,
-			environment: undefined,
-			secrets: undefined,
+			labels: undefined,
 		});
 	});
 

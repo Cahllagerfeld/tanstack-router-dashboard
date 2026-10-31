@@ -39,6 +39,19 @@ test("marks the tab of the current page", async () => {
 		.toHaveAttribute("href", "/infra/components");
 });
 
+test("shows a tab's count beside its label", async () => {
+	await render(
+		<GroupTabs
+			label="Infra sections"
+			tabs={[{ label: "Stacks", to: "/infra/stacks", count: 3 }]}
+		/>
+	);
+
+	await expect
+		.element(page.getByRole("tab", { name: "Stacks 3" }))
+		.toBeVisible();
+});
+
 test("hides on pages below a tab", async () => {
 	location.pathname = "/infra/components/component-id";
 	await render(<GroupTabs label="Infra sections" tabs={[...tabs]} />);
