@@ -120,11 +120,14 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 const generated = "@/shared/api/generated";
 const dtoLeak = (specifier: string, fix: string) =>
 	`"${specifier}" leaks API types. Fix: ${fix}.`;
-const toDto = (owner: string) =>
-	dtoLeak(
-		generated,
-		`add the alias to src/features/${owner}/data/dto.ts and import it from there`
-	);
+const toDto = dtoLeak(
+	generated,
+	"add the alias to src/features/projects/data/dto.ts and import it from there"
+);
+const toModel = dtoLeak(
+	generated,
+	"use a handwritten type from the owning feature's model.ts; generated aliases stay in its data/dto.ts"
+);
 const privateDto = (specifier: string) =>
 	dtoLeak(
 		specifier,
@@ -144,23 +147,19 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
 	invalid: [
 		...[
-			["src/features/projects/data/requests.ts", "projects"],
-			["src/features/projects/model.ts", "projects"],
-			["src/features/projects/create/form.tsx", "projects"],
-			["src/features/runs/list/view.tsx", "runs"],
-			["src/routes/route.tsx", "<owner>"],
-			["src/shared/lib/dates.ts", "<owner>"],
-		].map(([file, owner]) =>
-			invalid(
-				file,
-				`import type { components } from "${generated}";`,
-				toDto(owner)
-			)
+			["src/features/projects/data/requests.ts", toDto],
+			["src/features/projects/model.ts", toModel],
+			["src/features/projects/create/form.tsx", toModel],
+			["src/features/runs/list/view.tsx", toModel],
+			["src/routes/route.tsx", toModel],
+			["src/shared/lib/dates.ts", toModel],
+		].map(([file, message]) =>
+			invalid(file, `import type { components } from "${generated}";`, message)
 		),
 		invalid(
 			"src/features/projects/data/queries.ts",
 			`type A = import("${generated}").components;`,
-			toDto("projects")
+			toDto
 		),
 		invalid(
 			"src/features/projects/index.ts",

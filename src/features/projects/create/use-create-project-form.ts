@@ -11,7 +11,11 @@ import type { ApiClientError } from "@/types/api";
 
 import { projectKeys } from "../data/queries";
 import { createProject } from "../data/requests";
-import type { CreateProjectInput, Project } from "../model";
+import {
+	type CreateProjectInput,
+	getProjectLabel,
+	type Project,
+} from "../model";
 import { type CreateProjectForm, createProjectSchema } from "./schema";
 
 export function useCreateProjectForm(
@@ -34,7 +38,7 @@ export function useCreateProjectForm(
 			queryClient.invalidateQueries({ queryKey: projectKeys.all });
 			toast.success(
 				m.projects_notification_created({
-					displayName: project.displayName ?? project.name,
+					displayName: getProjectLabel(project),
 				})
 			);
 			navigate({

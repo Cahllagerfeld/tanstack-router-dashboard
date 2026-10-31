@@ -119,8 +119,9 @@ export function dtoFix(importer, target, policy) {
 	}
 	const legacy = legacyOwner(importer, policy);
 	if (legacy && !policy.enforcedOwners.includes(legacy)) return null;
-	const home = featureOf(importer)?.owner ?? "<owner>";
-	return `add the alias to src/features/${home}/data/dto.ts and import it from there`;
+	return /^src\/features\/[^/]+\/data\//.test(importer)
+		? `add the alias to ${path.posix.dirname(importer)}/dto.ts and import it from there`
+		: "use a handwritten type from the owning feature's model.ts; generated aliases stay in its data/dto.ts";
 }
 
 /** The fix for an impure import in an enforced model.ts, or null when it is allowed. */
