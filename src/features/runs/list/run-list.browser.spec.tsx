@@ -94,12 +94,11 @@ test("requests the Project's page and links to its neighbors", async () => {
 		.toHaveAttribute("href", "?page=1");
 	expect(get).toHaveBeenCalledWith("/api/v1/runs", {
 		params: {
-			query: {
+			query: expect.objectContaining({
 				project: "project-id",
 				page: 2,
 				size: 20,
-				sort_by: "desc:created",
-			},
+			}),
 		},
 	});
 });

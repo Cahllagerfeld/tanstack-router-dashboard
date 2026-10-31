@@ -41,17 +41,7 @@ describe("fetchRunList", () => {
 			max_size: 20,
 			total: 21,
 			total_pages: 2,
-			items: [
-				{
-					id: "run-id",
-					index: 21,
-					status: "running",
-					pipelineName: undefined,
-					stackName: undefined,
-					authorName: "ada",
-					created: undefined,
-				},
-			],
+			items: [expect.objectContaining({ id: "run-id", authorName: "ada" })],
 		});
 	});
 

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { RuleTester } from "oxlint/plugins-dev";
 import { describe, expect, it } from "vitest";
 
-import { placementFix } from "./classify.js";
+import { forbiddenEdge, placementFix } from "./classify.js";
 import plugin from "./plugin.js";
 import { policy } from "./policy.js";
 
@@ -300,9 +300,11 @@ describe("placement ratchet", () => {
 	});
 
 	it("keeps new work in unenforced owners on target paths", () => {
-		expect(placementFix("src/features/runs/a/b/c.tsx", policy)).toContain(
-			"features/runs/"
-		);
+		const unenforced = { ...policy, owners: [...policy.owners, "example"] };
+
+		expect(
+			placementFix("src/features/example/a/b/c.tsx", unenforced)
+		).toContain("features/example/");
 	});
 
 	it.each([
@@ -338,6 +340,17 @@ describe("placement ratchet", () => {
 		expect(placementFix("src/shared/misc/a.ts", units)).toContain("move it");
 		expect(placementFix("src/app/misc.ts", units)).toContain("move it");
 	});
+});
+
+it("treats a legacy path of a feature owner as feature code", () => {
+	const legacy = {
+		...policy,
+		legacyPaths: { ...policy.legacyPaths, example: ["src/data/example/"] },
+	};
+
+	expect(
+		forbiddenEdge("src/data/example/index", "src/app/providers", legacy)
+	).toBe("feature");
 });
 
 it("maps legacy paths only to known owners and existing files", () => {
