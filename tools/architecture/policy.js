@@ -15,7 +15,7 @@ const owners = [
 ];
 
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
-const enforcedOwners = ["projects", "session"];
+const enforcedOwners = ["projects", "server-activation", "session"];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
@@ -73,13 +73,6 @@ const legacyPaths = {
 	],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
-	"server-activation": [
-		"src/data/server/",
-		"src/features/server-activation/password-step",
-		"src/features/server-activation/schema",
-		"src/features/server-activation/use-password-step",
-		"src/types/server",
-	],
 	shared: [
 		"src/lib/constants/entity-icons",
 		"src/lib/constants/storage",

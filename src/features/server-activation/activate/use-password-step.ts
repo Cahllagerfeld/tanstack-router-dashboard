@@ -10,11 +10,11 @@ import {
 	uniqueNamesGenerator,
 } from "unique-names-generator";
 
-import { serverKeys } from "@/data/server";
-import { useServerActivation } from "@/data/server/activate-server";
 import { m } from "@/paraglide/messages";
 
+import { serverKeys } from "../data/queries";
 import { type PasswordForm, passwordStepSchema } from "./schema";
+import { useServerActivation } from "./use-server-activation";
 
 export function usePasswordStep() {
 	const queryClient = useQueryClient();

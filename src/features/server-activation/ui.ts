@@ -1,1 +1,1 @@
-export { PasswordStep } from "./password-step";
+export { PasswordStep } from "./activate/password-step";

@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { ServerActivation } from "@/types/server";
-
-import { activateAndLogin } from "./activate-server";
+import type { ServerActivationInput } from "../model";
+import { activateAndLogin } from "./use-server-activation";
 
 const { put, loginUserRequest } = vi.hoisted(() => ({
 	put: vi.fn(),
@@ -21,14 +20,13 @@ describe("activateAndLogin", () => {
 	});
 
 	it("logs in the default admin after activating the server", async () => {
-		const activation: ServerActivation = {
+		const activation: ServerActivationInput = {
 			admin_username: "admin",
 			admin_password: "password123",
 			server_name: "quiet-fox",
 		};
-		const activationResult = { id: "admin-id" };
 		put.mockResolvedValue({
-			data: activationResult,
+			data: { id: "admin-id" },
 			error: undefined,
 			response: new Response(),
 		});
@@ -37,7 +35,7 @@ describe("activateAndLogin", () => {
 			token_type: "bearer",
 		});
 
-		await expect(activateAndLogin(activation)).resolves.toBe(activationResult);
+		await activateAndLogin(activation);
 
 		expect(put).toHaveBeenCalledWith("/api/v1/activate", {
 			body: activation,
@@ -52,13 +50,12 @@ describe("activateAndLogin", () => {
 	});
 
 	it("waits for activation before logging in", async () => {
-		const activation: ServerActivation = {
+		const activation: ServerActivationInput = {
 			admin_username: "admin",
 			admin_password: "password123",
 		};
-		const activationResult = { id: "admin-id" };
 		let resolveActivation!: (value: {
-			data: typeof activationResult;
+			data: { id: string };
 			error: undefined;
 			response: Response;
 		}) => void;
@@ -73,12 +70,12 @@ describe("activateAndLogin", () => {
 
 		expect(loginUserRequest).not.toHaveBeenCalled();
 		resolveActivation({
-			data: activationResult,
+			data: { id: "admin-id" },
 			error: undefined,
 			response: new Response(),
 		});
 
-		await expect(activationRequest).resolves.toBe(activationResult);
+		await activationRequest;
 		expect(loginUserRequest).toHaveBeenCalledWith({
 			username: activation.admin_username,
 			password: activation.admin_password,
@@ -86,7 +83,7 @@ describe("activateAndLogin", () => {
 	});
 
 	it("does not log in when activation fails", async () => {
-		const activation: ServerActivation = {
+		const activation: ServerActivationInput = {
 			admin_username: "admin",
 			admin_password: "password123",
 		};
@@ -99,15 +96,32 @@ describe("activateAndLogin", () => {
 	});
 
 	it("does not log in when activation creates no default admin", async () => {
-		const activation: ServerActivation = { server_name: "quiet-fox" };
+		const activation: ServerActivationInput = { server_name: "quiet-fox" };
 		put.mockResolvedValue({
 			data: null,
 			error: undefined,
 			response: new Response(),
 		});
 
-		await expect(activateAndLogin(activation)).resolves.toBeNull();
+		await activateAndLogin(activation);
 
 		expect(loginUserRequest).not.toHaveBeenCalled();
+	});
+
+	it("rejects when the login after activation fails", async () => {
+		const loginError = new Error("login failed");
+		put.mockResolvedValue({
+			data: { id: "admin-id" },
+			error: undefined,
+			response: new Response(),
+		});
+		loginUserRequest.mockRejectedValue(loginError);
+
+		await expect(
+			activateAndLogin({
+				admin_username: "admin",
+				admin_password: "password123",
+			})
+		).rejects.toBe(loginError);
 	});
 });
