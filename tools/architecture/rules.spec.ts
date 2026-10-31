@@ -286,15 +286,19 @@ describe("placement ratchet", () => {
 	});
 
 	it("rejects the named legacy paths of enforced owners only", () => {
-		const legacy = "src/data/stacks/index.ts";
-		const unenforced = "src/data/example/index.ts";
-		const enforced = {
+		const legacy = "src/data/example/index.ts";
+		const unenforced = "src/data/other/index.ts";
+		const mapped = {
 			...policy,
-			enforcedOwners: ["stacks"],
-			legacyPaths: { ...policy.legacyPaths, example: ["src/data/example/"] },
+			legacyPaths: {
+				...policy.legacyPaths,
+				example: ["src/data/example/"],
+				other: ["src/data/other/"],
+			},
 		};
+		const enforced = { ...mapped, enforcedOwners: ["example"] };
 
-		expect(placementFix(legacy, policy)).toBeNull();
+		expect(placementFix(legacy, mapped)).toBeNull();
 		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
 		expect(placementFix(unenforced, enforced)).toBeNull();
 	});
