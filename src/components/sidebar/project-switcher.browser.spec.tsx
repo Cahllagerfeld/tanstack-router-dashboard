@@ -4,7 +4,7 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 
-import { projectQueries } from "@/data/projects";
+import { projectQueries } from "@/features/projects";
 import { m } from "@/paraglide/messages";
 
 import { RailProjectSwitcher } from "./project-switcher";

@@ -1,4 +1,4 @@
-import type { Project } from "@/domain/projects";
+import type { Project } from "@/features/projects";
 
 import { getLocalStorageKey } from "./localstorage";
 
@@ -20,10 +20,6 @@ export function findProject(projects: Project[], idOrName: string | null) {
 	return projects.find(
 		(project) => project.id === idOrName || project.name === idOrName
 	);
-}
-
-export function getProjectLabel(project: Project) {
-	return project.displayName ?? project.name;
 }
 
 /** The Project to open by default: the last opened one, otherwise the first listed. */

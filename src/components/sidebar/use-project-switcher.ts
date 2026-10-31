@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import type { Project } from "@/domain/projects";
+import type { Project } from "@/features/projects";
 import { useActiveProject } from "@/hooks/use-active-project";
 
 export function useProjectSwitcher() {

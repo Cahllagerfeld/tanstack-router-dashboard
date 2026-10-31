@@ -6,37 +6,27 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-import type { Project } from "@/domain/projects";
-import { projectFromApi } from "@/domain/projects";
+import {
+	type CreateProjectInput,
+	createProject,
+	type Project,
+	projectKeys,
+} from "@/features/projects";
 import { m } from "@/paraglide/messages";
-import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
 import type { ApiClientError } from "@/types/api";
-import type { ApiCreateProject } from "@/types/projects";
-
-import { projectKeys } from "..";
-
-export async function createProject(payload: ApiCreateProject) {
-	const project = await apiClient.POST("/api/v1/projects", {
-		method: "POST",
-		body: payload,
-	});
-
-	return projectFromApi(expectData(project));
-}
 
 export function useCreateProject(
 	options?: UseMutationOptions<
 		Project,
 		ApiClientError,
-		ApiCreateProject,
+		CreateProjectInput,
 		unknown
 	>
 ) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { onSuccess, ...rest } = options || {};
-	return useMutation<Project, ApiClientError, ApiCreateProject, unknown>({
+	return useMutation<Project, ApiClientError, CreateProjectInput, unknown>({
 		...rest,
 		mutationFn: createProject,
 		onSuccess: (data, variables, onMutateResult, context) => {

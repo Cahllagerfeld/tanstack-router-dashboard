@@ -2,7 +2,7 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { AppRail } from "@/app/navigation/app-rail";
 import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
-import { projectQueries } from "@/data/projects";
+import { projectQueries } from "@/features/projects";
 import { ScrollArea } from "@/shared/ui/scroll-area";
 
 export const Route = createFileRoute("/(private)/_sidebar")({

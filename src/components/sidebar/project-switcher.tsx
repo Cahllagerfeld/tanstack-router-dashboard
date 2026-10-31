@@ -6,14 +6,13 @@ import {
 	railAvatarTriggerClassName,
 } from "@/app/navigation/rail-avatar";
 import { RailTooltip } from "@/app/navigation/rail-tooltip";
-import type { Project } from "@/domain/projects";
+import { getProjectLabel, type Project } from "@/features/projects";
 import {
 	CreateProjectDialog,
 	DeleteProjectAlert,
 } from "@/features/projects/ui";
 import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { getIllustrationUrl } from "@/lib/images";
-import { getProjectLabel } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 import { Avatar, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";

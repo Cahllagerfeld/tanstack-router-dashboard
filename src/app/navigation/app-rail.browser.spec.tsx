@@ -4,8 +4,8 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 
-import { projectQueries } from "@/data/projects";
 import { userQueries } from "@/data/user";
+import { projectQueries } from "@/features/projects";
 import { m } from "@/paraglide/messages";
 
 import { AppRail } from "./app-rail";

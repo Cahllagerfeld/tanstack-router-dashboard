@@ -94,7 +94,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			["src/shared/lib/a.ts", "@/features/stacks"],
 			["src/shared/lib/a.ts", "../../app/providers"],
 			["src/lib/localstorage.ts", "@/routes/route"],
-			["src/lib/localstorage.ts", "@/data/projects"],
+			["src/lib/localstorage.ts", "@/data/stacks"],
 			["src/lib/localstorage.ts", "@/app"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, sharedRule(specifier))
@@ -126,7 +126,7 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 		"vite.config.ts",
 		"src/routes/(private)/route.tsx",
 		"src/features/stacks/create/form.browser.spec.tsx",
-		"src/data/projects/index.ts",
+		"src/data/stacks/index.ts",
 		"src/features/filters/type/index.ts",
 		"src/shared/ui/button.tsx",
 		"src/shared/api/generated.ts",
@@ -180,11 +180,12 @@ describe("placement ratchet", () => {
 	});
 
 	it("rejects the named legacy paths of enforced owners only", () => {
-		const legacy = "src/data/projects/index.ts";
+		const legacy = "src/data/stacks/index.ts";
+		const enforced = { ...policy, enforcedOwners: ["stacks"] };
 
 		expect(placementFix(legacy, policy)).toBeNull();
-		expect(placementFix(legacy, strict)).toContain("move this legacy path");
-		expect(placementFix("src/data/runs/index.ts", strict)).toBeNull();
+		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
+		expect(placementFix("src/data/runs/index.ts", enforced)).toBeNull();
 	});
 
 	it("keeps new work in unenforced owners on target paths", () => {

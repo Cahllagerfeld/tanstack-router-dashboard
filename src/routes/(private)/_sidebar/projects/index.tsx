@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
+import { projectQueries } from "@/features/projects";
 import { NoProjectsFallback } from "@/features/projects/ui";
 import { getProjectFromLocalStorage, resolveProject } from "@/lib/projects";
 import { m } from "@/paraglide/messages";

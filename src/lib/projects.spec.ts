@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { Project } from "@/domain/projects";
+import type { Project } from "@/features/projects";
 
 const { getItem, removeItem, setItem } = vi.hoisted(() => ({
 	getItem: vi.fn(),
@@ -12,7 +12,6 @@ vi.stubGlobal("localStorage", { getItem, removeItem, setItem });
 
 const {
 	getProjectFromLocalStorage,
-	getProjectLabel,
 	resolveProject,
 	resolveUnscopedProject,
 	setProjectToLocalStorage,
@@ -89,19 +88,5 @@ describe("resolveUnscopedProject", () => {
 
 	it("opens the first Project when nothing was opened yet", () => {
 		expect(resolveUnscopedProject(projects, null, false)).toBe(projects[0]);
-	});
-});
-
-describe("getProjectLabel", () => {
-	it("prefers the display name", () => {
-		expect(
-			getProjectLabel({ id: "id", name: "fraud", displayName: "Fraud" })
-		).toBe("Fraud");
-	});
-
-	it("falls back to the name", () => {
-		expect(
-			getProjectLabel({ id: "id", name: "fraud", displayName: undefined })
-		).toBe("fraud");
 	});
 });

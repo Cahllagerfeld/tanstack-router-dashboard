@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMatch } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
+import { projectQueries } from "@/features/projects";
 import {
 	getProjectFromLocalStorage,
 	resolveUnscopedProject,

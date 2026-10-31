@@ -1,9 +1,9 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-import { projectQueries } from "@/data/projects";
+import { getProjectLabel, projectQueries } from "@/features/projects";
 import { ProjectNotFound } from "@/features/projects/ui";
 import { getIllustrationUrl } from "@/lib/images";
-import { getProjectLabel, setProjectToLocalStorage } from "@/lib/projects";
+import { setProjectToLocalStorage } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
 import { ensureQueryDataOr404 } from "@/shared/routing/loader-utils";
 
