@@ -27,7 +27,7 @@ describe("pipelineFromApi", () => {
 		});
 	});
 
-	it("leaves out the optional fields a sparse response omits", () => {
+	it("maps the optional fields a sparse response omits to undefined", () => {
 		const apiPipeline = {
 			id: "pipeline-id",
 			name: "training-pipeline",

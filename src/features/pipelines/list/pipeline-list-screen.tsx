@@ -9,7 +9,7 @@ import type { PipelineListInput } from "../model";
 import { usePipelineList } from "./use-pipeline-list";
 
 export function PipelineListScreen({ params }: { params: PipelineListInput }) {
-	const { pipelines, table } = usePipelineList(params);
+	const { pipelinePage, table } = usePipelineList(params);
 
 	return (
 		<TableView title={m.pipelines_list_title()}>
@@ -19,7 +19,7 @@ export function PipelineListScreen({ params }: { params: PipelineListInput }) {
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />
-			<TableFooter page={pipelines} />
+			<TableFooter page={pipelinePage} />
 		</TableView>
 	);
 }

@@ -8,11 +8,11 @@ import { usePipelineColumns } from "./columns";
 
 export function usePipelineList(params: PipelineListInput) {
 	const columns = usePipelineColumns();
-	const { data: pipelines } = useSuspenseQuery(pipelineQueries.list(params));
+	const { data: pipelinePage } = useSuspenseQuery(pipelineQueries.list(params));
 	const table = useDataTable({
-		data: pipelines.items,
+		data: pipelinePage.items,
 		columns,
 	});
 
-	return { pipelines, table };
+	return { pipelinePage, table };
 }

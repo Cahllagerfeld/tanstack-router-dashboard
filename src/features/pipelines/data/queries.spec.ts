@@ -25,6 +25,17 @@ describe("pipelineQueries", () => {
 		]);
 	});
 
+	it("keeps page and size in the list query identity", () => {
+		expect(
+			pipelineQueries.list({ project: "project-id", page: 2, size: 10 })
+				.queryKey
+		).toEqual([
+			"pipelines",
+			"list",
+			{ sort_by: "desc:created", project: "project-id", page: 2, size: 10 },
+		]);
+	});
+
 	it("requests and maps the Project-scoped Pipeline list", async () => {
 		get.mockResolvedValue({
 			data: {
@@ -67,7 +78,7 @@ describe("pipelineQueries", () => {
 		});
 	});
 
-	it("rejects a failed request so the route shows its error page", async () => {
+	it("rejects a failed request", async () => {
 		get.mockResolvedValue({
 			data: undefined,
 			error: { detail: "Project not found" },
