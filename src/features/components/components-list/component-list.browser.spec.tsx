@@ -9,9 +9,15 @@ import { m } from "@/paraglide/messages";
 
 import { ComponentList } from "./component-list";
 
-const { getRequest } = vi.hoisted(() => ({ getRequest: vi.fn() }));
+const { getRequest, deleteRequest, navigate } = vi.hoisted(() => ({
+	getRequest: vi.fn(),
+	deleteRequest: vi.fn(),
+	navigate: vi.fn(),
+}));
 
-vi.mock("@/shared/api/client", () => ({ apiClient: { GET: getRequest } }));
+vi.mock("@/shared/api/client", () => ({
+	apiClient: { GET: getRequest, DELETE: deleteRequest },
+}));
 
 vi.mock("@tanstack/react-router", () => ({
 	Link: ({
@@ -29,7 +35,7 @@ vi.mock("@tanstack/react-router", () => ({
 			{...props}
 		/>
 	),
-	useNavigate: () => vi.fn(),
+	useNavigate: () => navigate,
 }));
 
 beforeEach(() => {
@@ -115,4 +121,69 @@ test("keeps optional values unavailable for a permission-denied Component", asyn
 	await expect
 		.element(page.getByText(m.common_status_not_available()).first())
 		.toBeVisible();
+});
+
+test("deletes the chosen row through its menu and returns to the Components list", async () => {
+	const first = {
+		id: "component-1",
+		name: "local-store",
+		permission_denied: false,
+	};
+	const second = {
+		id: "component-2",
+		name: "other-store",
+		permission_denied: false,
+	};
+	await renderList([first, second], 22);
+
+	const row = page.getByRole("row").filter({ hasText: "other-store" });
+	await row
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(m.components_delete_description({ name: "other-store" }))
+		)
+		.toBeVisible();
+	expect(deleteRequest).not.toHaveBeenCalled();
+
+	deleteRequest.mockResolvedValue({
+		data: undefined,
+		error: undefined,
+		response: new Response(null, { status: 204 }),
+	});
+	getRequest.mockResolvedValue({
+		data: { index: 2, max_size: 20, total: 21, total_pages: 2, items: [first] },
+		error: undefined,
+		response: new Response(),
+	});
+	await page
+		.getByRole("button", { name: m.common_action_delete(), exact: true })
+		.click();
+
+	await expect
+		.element(page.getByRole("link", { name: "other-store" }))
+		.not.toBeInTheDocument();
+	await expect
+		.element(page.getByRole("link", { name: "local-store" }))
+		.toBeVisible();
+	expect(deleteRequest).toHaveBeenCalledExactlyOnceWith(
+		"/api/v1/components/{component_id}",
+		{ params: { path: { component_id: "component-2" } } }
+	);
+	expect(getRequest).toHaveBeenLastCalledWith("/api/v1/components", {
+		params: {
+			query: {
+				type: "artifact_store",
+				page: 2,
+				size: 20,
+				sort_by: "desc:created",
+			},
+		},
+	});
+	await expect
+		.poll(() => navigate)
+		.toHaveBeenCalledWith({ to: "/infra/components" });
 });

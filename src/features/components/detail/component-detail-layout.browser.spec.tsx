@@ -84,8 +84,9 @@ test("offers deletion behind a confirmation naming the Component", async () => {
 	);
 
 	await page
-		.getByRole("button", { name: m.components_action_delete() })
+		.getByRole("button", { name: m.common_navigation_open_menu() })
 		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
 
 	await expect
 		.element(

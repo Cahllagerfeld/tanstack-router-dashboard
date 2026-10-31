@@ -146,7 +146,7 @@ test("asks an admin to confirm before deleting the chosen member", async () => {
 	await expect.element(menus.first()).toBeVisible();
 	await expect.poll(() => menus.elements().length).toBe(2);
 	await menus.last().click();
-	await page.getByRole("menuitem", { name: m.users_action_delete() }).click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
 
 	await expect
 		.element(page.getByText(m.users_delete_description({ name: "grace" })))

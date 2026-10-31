@@ -84,7 +84,6 @@
 			}
 		}
 	],
-	"components_action_delete": "Delete Component",
 	"components_delete_description": "This action cannot be undone. This will permanently delete {name}.",
 	"components_delete_failed": "Failed to delete component",
 	"components_delete_pending": "Deleting...",
@@ -178,7 +177,6 @@
 	"stacks_table_created_at": "Created at",
 	"stacks_table_created_by": "Created by",
 	"stacks_table_name": "Name",
-	"users_action_delete": "Delete User",
 	"users_activate_description": "Set a password to finish setting up your ZenML account.",
 	"users_activate_failed": "Failed to activate account",
 	"users_activate_full_name": "Full Name (optional)",

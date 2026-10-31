@@ -14,9 +14,12 @@ export function AdminActions({ user }: { user: User }) {
 	return (
 		<>
 			<BaseTableActions>
-				<DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-					<Trash2 className="text-muted-foreground" />
-					<span>{m.users_action_delete()}</span>
+				<DropdownMenuItem
+					variant="destructive"
+					onClick={() => setDeleteOpen(true)}
+				>
+					<Trash2 />
+					<span>{m.common_action_delete()}</span>
 				</DropdownMenuItem>
 			</BaseTableActions>
 			{deleteOpen && (
