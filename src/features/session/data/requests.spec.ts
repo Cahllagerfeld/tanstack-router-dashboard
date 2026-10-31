@@ -32,8 +32,11 @@ describe("loginUserRequest", () => {
 		expect(post).toHaveBeenCalledOnce();
 		const [path, options] = post.mock.calls[0]!;
 		expect(path).toBe("/api/v1/login");
-		expect(options.body).toBeInstanceOf(URLSearchParams);
 		expect(options.body.toString()).toBe("username=ada&password=correct+horse");
+		// Without this header the client serializes the body as JSON: `{}`.
+		expect(options.headers).toEqual({
+			"Content-Type": "application/x-www-form-urlencoded",
+		});
 	});
 
 	it("rejects an API result without a session", async () => {

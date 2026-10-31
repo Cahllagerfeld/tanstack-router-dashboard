@@ -7,6 +7,7 @@ import { currentIdentityFromApi } from "./map";
 export async function loginUserRequest(body: LoginInput) {
 	const response = await apiClient.POST("/api/v1/login", {
 		body: new URLSearchParams(body),
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 	});
 	return expectData(response);
 }
