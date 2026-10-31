@@ -1,11 +1,12 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { Stack } from "@/domain/stacks";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
 import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
 import { Checkbox } from "@/shared/ui/checkbox";
+
+import type { Stack } from "../model";
 
 export function createStackSelectColumn(): ColumnDef<DataTableFeatures, Stack> {
 	return {
@@ -46,12 +47,12 @@ export function createStackColumns(): ColumnDef<DataTableFeatures, Stack>[] {
 		{
 			id: "Created by",
 			header: m.stacks_table_created_by(),
-			accessorFn: (row) => row.user?.name,
+			accessorFn: (row) => row.creatorName,
 			enableHiding: true,
 			cell: ({ row }) => {
-				const userName = row.original.user?.name;
-				if (!userName) return <NotAvailableTag />;
-				return <p>{userName}</p>;
+				const creatorName = row.original.creatorName;
+				if (!creatorName) return <NotAvailableTag />;
+				return <p>{creatorName}</p>;
 			},
 		},
 		{

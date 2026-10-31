@@ -93,7 +93,6 @@ const legacyPaths = {
 		"src/lib/localstorage",
 		"src/types/api",
 	],
-	stacks: ["src/data/stacks/", "src/domain/stacks", "src/types/stacks"],
 	users: [
 		"src/data/user/",
 		"src/domain/mappers",

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { stackQueries } from "@/data/stacks";
 import { ComponentStacksTab } from "@/features/components/ui";
+import { stackQueries } from "@/features/stacks";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/infra/components/$component_id/stacks"

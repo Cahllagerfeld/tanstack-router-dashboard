@@ -4,7 +4,6 @@ import type { components as ApiComponents } from "@/shared/api/generated";
 
 import { componentFromApi } from "./components";
 import { flavorFromApi } from "./flavors";
-import { stackFromApi } from "./stacks";
 import { userFromApi } from "./users";
 
 const userResponse = {
@@ -82,28 +81,6 @@ describe("flavorFromApi", () => {
 			id: "flavor-id",
 			name: "kubernetes",
 			logoUrl: "https://example.test/kubernetes.svg",
-		});
-	});
-});
-
-describe("stackFromApi", () => {
-	it("maps the Stack creator and normalizes backend dates", () => {
-		expect(
-			stackFromApi({
-				id: "stack-id",
-				name: "production",
-				permission_denied: false,
-				body: {
-					created: "2026-08-20T10:00:00",
-					updated: "2026-08-21T10:00:00",
-				},
-				resources: { active: true, user: userResponse },
-			})
-		).toMatchObject({
-			id: "stack-id",
-			name: "production",
-			user: { id: "user-id", resolvedName: "Ada Lovelace" },
-			created: new Date("2026-08-20T10:00:00Z"),
 		});
 	});
 });

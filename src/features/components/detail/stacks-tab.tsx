@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { stackQueries } from "@/data/stacks";
+import { stackQueries } from "@/features/stacks";
 import { createStackColumns } from "@/features/stacks/ui";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/shared/components/tables/data-table";

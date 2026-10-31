@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { stackKeys, stackQueries } from "./index";
+import { stackKeys, stackQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
@@ -19,6 +19,47 @@ describe("stackQueries", () => {
 			"list",
 			{ name: "contains:prod", page: 2, sort_by: "desc:created" },
 		]);
+	});
+
+	it("keeps pagination and the Component filter in the request", async () => {
+		get.mockResolvedValue({
+			data: { index: 2, max_size: 20, total: 21, total_pages: 2, items: [] },
+			error: undefined,
+			response: new Response(),
+		});
+
+		const query = stackQueries.list({
+			component_id: "component-id",
+			page: 2,
+			size: 20,
+		});
+		expect(query.queryKey).toEqual([
+			"stacks",
+			"list",
+			{
+				component_id: "component-id",
+				page: 2,
+				size: 20,
+				sort_by: "desc:created",
+			},
+		]);
+		await expect(query.queryFn!({} as never)).resolves.toEqual({
+			index: 2,
+			max_size: 20,
+			total: 21,
+			total_pages: 2,
+			items: [],
+		});
+		expect(get).toHaveBeenCalledWith("/api/v1/stacks", {
+			params: {
+				query: {
+					component_id: "component-id",
+					page: 2,
+					size: 20,
+					sort_by: "desc:created",
+				},
+			},
+		});
 	});
 
 	it("requests and maps a Stack detail", async () => {

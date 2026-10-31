@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { stackQueries } from "@/data/stacks";
+import { stackQueries } from "@/features/stacks";
 import { useStackColumns } from "@/features/stacks/ui";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
