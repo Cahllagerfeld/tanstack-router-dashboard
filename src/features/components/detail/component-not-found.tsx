@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
-import { ContentInset } from "@/components/content-inset";
-import { Button } from "@/components/ui/button";
+import { getEntityIcon } from "@/lib/constants/entity-icons";
+import { m } from "@/paraglide/messages";
+import { ContentInset } from "@/shared/components/content-inset";
+import { Button } from "@/shared/ui/button";
 import {
 	Empty,
 	EmptyContent,
@@ -9,9 +11,7 @@ import {
 	EmptyHeader,
 	EmptyMedia,
 	EmptyTitle,
-} from "@/components/ui/empty";
-import { getEntityIcon } from "@/lib/constants/entity-icons";
-import { m } from "@/paraglide/messages";
+} from "@/shared/ui/empty";
 
 const ComponentIcon = getEntityIcon("component");
 

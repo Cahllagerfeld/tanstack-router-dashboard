@@ -19,7 +19,7 @@ const { getRequest, match } = vi.hoisted(() => ({
 	match: { current: undefined as ProjectMatch | undefined },
 }));
 
-vi.mock("@/data/api-client", () => ({ apiClient: { GET: getRequest } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { GET: getRequest } }));
 
 vi.mock("@tanstack/react-router", () => ({
 	Link: ({

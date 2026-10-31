@@ -1,8 +1,8 @@
-import { CopyButton } from "@/components/copy-button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { Component } from "@/domain/components";
-import { snakeCaseToTitleCase } from "@/lib/strings";
+import { CopyButton } from "@/shared/components/copy-button";
+import { snakeCaseToTitleCase } from "@/shared/lib/strings";
+import { Badge } from "@/shared/ui/badge";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 interface ComponentHeaderProps {
 	component: Component;

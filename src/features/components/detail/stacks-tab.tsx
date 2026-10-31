@@ -1,13 +1,13 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { DataTableViewOptions } from "@/components/tables/columns-visibility-toggle";
-import { DataTable } from "@/components/tables/data-table";
-import { TableToolbar } from "@/components/tables/table-toolbar";
-import { TableView } from "@/components/tables/table-view";
-import { useDataTable } from "@/components/tables/use-data-table";
 import { stackQueries } from "@/data/stacks";
 import { createStackColumns } from "@/features/stacks/ui";
+import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
+import { DataTable } from "@/shared/components/tables/data-table";
+import { TableToolbar } from "@/shared/components/tables/table-toolbar";
+import { TableView } from "@/shared/components/tables/table-view";
+import { useDataTable } from "@/shared/components/tables/use-data-table";
 
 interface ComponentStacksTabProps {
 	componentId: string;

@@ -1,9 +1,9 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
+import { AppRail } from "@/app/navigation/app-rail";
 import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
-import { AppRail } from "@/components/sidebar/app-rail";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { projectQueries } from "@/data/projects";
+import { ScrollArea } from "@/shared/ui/scroll-area";
 
 export const Route = createFileRoute("/(private)/_sidebar")({
 	loader: async ({ context: { queryClient } }) => {

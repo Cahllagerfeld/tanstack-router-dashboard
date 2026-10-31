@@ -8,13 +8,13 @@ import { toast } from "sonner";
 
 import type { Project } from "@/domain/projects";
 import { projectFromApi } from "@/domain/projects";
-import { expectData } from "@/lib/fetch-error";
 import { m } from "@/paraglide/messages";
+import { apiClient } from "@/shared/api/client";
+import { expectData } from "@/shared/api/errors";
 import type { ApiClientError } from "@/types/api";
 import type { ApiCreateProject } from "@/types/projects";
 
 import { projectKeys } from "..";
-import { apiClient } from "../../api-client";
 
 export async function createProject(payload: ApiCreateProject) {
 	const project = await apiClient.POST("/api/v1/projects", {

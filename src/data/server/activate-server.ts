@@ -1,13 +1,13 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
-import { expectData } from "@/lib/fetch-error";
+import { apiClient } from "@/shared/api/client";
+import { expectData } from "@/shared/api/errors";
 import type { ApiClientError } from "@/types/api";
 import type {
 	ApiServerActivationResult,
 	ServerActivation,
 } from "@/types/server";
 
-import { apiClient } from "../api-client";
 import { loginUserRequest } from "../session/login";
 
 async function activateServer(bodyData: ServerActivation) {

@@ -6,7 +6,7 @@ import { loginUserRequest } from "./login";
 
 const { post } = vi.hoisted(() => ({ post: vi.fn() }));
 
-vi.mock("../api-client", () => ({ apiClient: { POST: post } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { POST: post } }));
 
 describe("loginUserRequest", () => {
 	beforeEach(() => {

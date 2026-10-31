@@ -1,5 +1,5 @@
-import { ContentInset } from "@/components/content-inset";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ContentInset } from "@/shared/components/content-inset";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 export function UserListSkeleton() {
 	return (

@@ -20,8 +20,8 @@
 	"overrides": [
 		{
 			"files": [
-				"src/components/object-renderer/object-renderer.tsx",
-				"src/components/object-renderer/value-renderer.tsx"
+				"src/shared/components/object-renderer/object-renderer.tsx",
+				"src/shared/components/object-renderer/value-renderer.tsx"
 			],
 			"rules": {
 				"import/no-cycle": "off"

@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-import { GroupTabs } from "@/components/group-tabs";
 import { m } from "@/paraglide/messages";
+import { GroupTabs } from "@/shared/components/group-tabs";
 
 export const Route = createFileRoute("/(private)/_sidebar/infra")({
 	loader: () => ({ crumb: m.infra_navigation_label() }),

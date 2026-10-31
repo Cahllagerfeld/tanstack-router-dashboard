@@ -1,3 +1,7 @@
+import { useDeleteProject } from "@/data/projects/mutations/delete-project";
+import type { Project } from "@/domain/projects";
+import { getProjectLabel } from "@/lib/projects";
+import { m } from "@/paraglide/messages";
 import {
 	ResponsiveAlertDialog,
 	ResponsiveAlertDialogAction,
@@ -7,11 +11,7 @@ import {
 	ResponsiveAlertDialogFooter,
 	ResponsiveAlertDialogHeader,
 	ResponsiveAlertDialogTitle,
-} from "@/components/ui/responsive-alert-dialog";
-import { useDeleteProject } from "@/data/projects/mutations/delete-project";
-import type { Project } from "@/domain/projects";
-import { getProjectLabel } from "@/lib/projects";
-import { m } from "@/paraglide/messages";
+} from "@/shared/ui/responsive-alert-dialog";
 
 type Props = {
 	project: Project;

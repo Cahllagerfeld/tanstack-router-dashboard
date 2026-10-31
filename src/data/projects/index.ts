@@ -1,10 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import { type Project, projectFromApi } from "@/domain/projects";
-import { expectData } from "@/lib/fetch-error";
+import { apiClient } from "@/shared/api/client";
+import { expectData } from "@/shared/api/errors";
 import type { ProjectListQueries } from "@/types/projects";
-
-import { apiClient } from "../api-client";
 
 const baseKey = "projects" as const;
 

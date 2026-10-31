@@ -1,9 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContentInset } from "@/components/content-inset";
 import { componentQueries } from "@/data/components";
 import { ComponentGeneralTab } from "@/features/components/ui";
+import { ContentInset } from "@/shared/components/content-inset";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/infra/components/$component_id/"

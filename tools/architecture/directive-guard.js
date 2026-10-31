@@ -5,11 +5,11 @@ const root = process.argv[2] ?? "src";
 const TOKEN =
 	/(?:oxlint|eslint)-(?:disable|enable)|@ts-(?:ignore|nocheck|expect-error)/;
 const GENERATED =
-	/^(?:routeTree\.gen\.ts|paraglide\/.*|types\/core\.ts|shared\/api\/generated\.ts)$/;
+	/^(?:routeTree\.gen\.ts|paraglide\/.*|shared\/api\/generated\.ts)$/;
 const DIRECTIVE = "// oxlint-disable-next-line react/set-state-in-effect";
 const allowed = new Set([
-	`components/debounced-input.tsx:${DIRECTIVE}`,
-	`hooks/use-mobile.ts:${DIRECTIVE}`,
+	`shared/components/debounced-input.tsx:${DIRECTIVE}`,
+	`shared/hooks/use-mobile.ts:${DIRECTIVE}`,
 ]);
 
 const files = readdirSync(root, { recursive: true, withFileTypes: true })

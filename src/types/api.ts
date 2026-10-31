@@ -1,3 +1,3 @@
-import { FetchError } from "@/lib/fetch-error";
+import { FetchError } from "@/shared/api/errors";
 
 export type ApiClientError = FetchError | Error;

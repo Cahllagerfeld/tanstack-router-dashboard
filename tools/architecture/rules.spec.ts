@@ -86,16 +86,16 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 		["src/app/shell.tsx", "@/routes/route"],
 		["src/shared/lib/a.ts", "@/shared/lib/b"],
 		[peer, "@/features/stacks/ui"],
-		[peer, "@/lib/dates"],
-		["src/components/sidebar/a.tsx", "@/features/stacks/ui"],
+		[peer, "@/shared/lib/dates"],
+		["src/components/sidebar/project-switcher.tsx", "@/features/stacks/ui"],
 	].map(([file, specifier]) => valid(file, `import "${specifier}";`)),
 	invalid: [
 		...[
 			["src/shared/lib/a.ts", "@/features/stacks"],
 			["src/shared/lib/a.ts", "../../app/providers"],
-			["src/lib/a.ts", "@/routes/route"],
-			["src/lib/a.ts", "@/data/projects"],
-			["src/lib/a.ts", "@/app"],
+			["src/lib/localstorage.ts", "@/routes/route"],
+			["src/lib/localstorage.ts", "@/data/projects"],
+			["src/lib/localstorage.ts", "@/app"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, sharedRule(specifier))
 		),
@@ -103,13 +103,14 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/routes/route"],
 			[peer, "@/routeTree.gen"],
 			[peer, "@/main"],
-			[peer, "../../../components/sidebar/app-rail"],
+			[peer, "../../../app/navigation/app-rail"],
+			[peer, "../../../components/sidebar/project-switcher"],
 			["src/data/runs/index.ts", "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))
 		),
 		invalid(
-			"src/lib/a.ts",
+			"src/lib/localstorage.ts",
 			`type A = import("@/features/stacks").A;`,
 			sharedRule("@/features/stacks")
 		),
@@ -128,6 +129,13 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 		"src/data/projects/index.ts",
 		"src/features/filters/type/index.ts",
 		"src/shared/ui/button.tsx",
+		"src/shared/api/generated.ts",
+		"src/shared/routing/loader-utils.spec.ts",
+		"src/shared/filters/filter.ts",
+		"src/shared/components/tables/data-table.tsx",
+		"src/shared/components/copy-button.browser.spec.tsx",
+		"src/shared/lib/cn.ts",
+		"src/app/navigation/app-rail.tsx",
 		"src/app/workflows/attach-run/use-attach-run.ts",
 	].map((file) => valid(file, "")),
 	invalid: [
@@ -183,6 +191,20 @@ describe("placement ratchet", () => {
 		expect(placementFix("src/features/runs/a/b/c.tsx", policy)).toContain(
 			"features/runs/"
 		);
+	});
+
+	it.each([
+		"src/components/ui/button.tsx",
+		"src/components/copy-button.tsx",
+		"src/components/sidebar/app-rail.tsx",
+		"src/components/sidebar/new-item.tsx",
+		"src/data/api-client.ts",
+		"src/hooks/use-copy.ts",
+		"src/lib/dates.ts",
+		"src/lib/new-helper.ts",
+		"src/types/core.ts",
+	])("rejects the moved or new legacy-area path %s", (file) => {
+		expect(placementFix(file, policy)).toContain("move it to");
 	});
 
 	it("requires a registered Shared unit and a closed App area", () => {

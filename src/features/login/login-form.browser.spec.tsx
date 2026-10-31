@@ -13,7 +13,7 @@ const { get, navigate, post, toastError } = vi.hoisted(() => ({
 	toastError: vi.fn(),
 }));
 
-vi.mock("@/data/api-client", () => ({ apiClient: { GET: get, POST: post } }));
+vi.mock("@/shared/api/client", () => ({ apiClient: { GET: get, POST: post } }));
 vi.mock("@tanstack/react-router", () => ({
 	useRouter: () => ({ navigate }),
 	useSearch: () => ({ next: "/projects" }),

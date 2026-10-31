@@ -1,7 +1,7 @@
 import { Link, isMatch, useMatches } from "@tanstack/react-router";
 import { Fragment, type ReactNode } from "react";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/shared/ui/avatar";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -9,7 +9,7 @@ import {
 	BreadcrumbList,
 	BreadcrumbPage,
 	BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from "@/shared/ui/breadcrumb";
 
 export function BreadcrumbsContainer() {
 	const matches = useMatches();

@@ -1,14 +1,9 @@
 import { Controller } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
-import {
-	Field,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { m } from "@/paraglide/messages";
+import { Button } from "@/shared/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/shared/ui/field";
+import { Input } from "@/shared/ui/input";
 
 import { useLoginForm } from "./hooks/use-login-form";
 

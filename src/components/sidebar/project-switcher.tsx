@@ -1,17 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { Check, Plus, Trash2 } from "lucide-react";
 
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+	railAvatarClassName,
+	railAvatarTriggerClassName,
+} from "@/app/navigation/rail-avatar";
+import { RailTooltip } from "@/app/navigation/rail-tooltip";
 import type { Project } from "@/domain/projects";
 import {
 	CreateProjectDialog,
@@ -21,9 +15,18 @@ import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { getIllustrationUrl } from "@/lib/images";
 import { getProjectLabel } from "@/lib/projects";
 import { m } from "@/paraglide/messages";
+import { Avatar, AvatarImage } from "@/shared/ui/avatar";
+import { Button } from "@/shared/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
 
-import { railAvatarClassName, railAvatarTriggerClassName } from "./rail-avatar";
-import { RailTooltip } from "./rail-tooltip";
 import { useProjectSwitcher } from "./use-project-switcher";
 
 const ProjectIcon = getEntityIcon("project");

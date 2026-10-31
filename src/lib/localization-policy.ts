@@ -178,7 +178,7 @@ function isIgnoredSourcePath(path: string): boolean {
 		/(^|\/)generated\.[^/]+$/.test(normalizedPath) ||
 		/(?:\.spec|\.test)\.[^/]+$/.test(normalizedPath) ||
 		normalizedPath.endsWith("/routeTree.gen.ts") ||
-		normalizedPath.endsWith("/types/core.ts")
+		normalizedPath.endsWith("/shared/api/generated.ts")
 	);
 }
 

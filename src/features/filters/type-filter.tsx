@@ -5,8 +5,12 @@ import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldError } from "@/components/ui/field";
+import { getComponentTypeLabel } from "@/features/filters/components";
+import { COMPONENT_TYPES } from "@/lib/constants/component-types";
+import { m } from "@/paraglide/messages";
+import { Button } from "@/shared/ui/button";
+import { Field, FieldError } from "@/shared/ui/field";
+import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover";
 import {
 	Select,
 	SelectContent,
@@ -14,17 +18,8 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
-import { getComponentTypeLabel } from "@/features/filters/components";
-import { COMPONENT_TYPES } from "@/lib/constants/component-types";
-import { m } from "@/paraglide/messages";
+} from "@/shared/ui/select";
 import type { ComponentType } from "@/types/components";
-
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../components/ui/popover";
 
 type Props = {
 	filter?: ComponentType;
