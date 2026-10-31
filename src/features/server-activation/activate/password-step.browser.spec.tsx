@@ -7,7 +7,8 @@ import { m } from "@/paraglide/messages";
 import { serverQueries } from "../data/queries";
 import { PasswordStep } from "./password-step";
 
-const { navigate, post, put, toast } = vi.hoisted(() => ({
+const { get, navigate, post, put, toast } = vi.hoisted(() => ({
+	get: vi.fn(),
 	navigate: vi.fn(),
 	post: vi.fn(),
 	put: vi.fn(),
@@ -15,7 +16,7 @@ const { navigate, post, put, toast } = vi.hoisted(() => ({
 }));
 
 vi.mock("@/shared/api/client", () => ({
-	apiClient: { POST: post, PUT: put },
+	apiClient: { GET: get, POST: post, PUT: put },
 }));
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => navigate }));
 vi.mock("sonner", () => ({ toast }));
@@ -29,9 +30,10 @@ function renderPasswordStep() {
 	const queryClient = new QueryClient({
 		defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
 	});
-	queryClient.setQueryData(serverQueries.serverInfo().queryKey, {
-		active: false,
-	} as never);
+	const { queryKey, queryFn } = serverQueries.serverInfo();
+	// The form observes no query, so the cached entry needs its own fetcher.
+	queryClient.setQueryDefaults(queryKey, { queryFn });
+	queryClient.setQueryData(queryKey, { active: false } as never);
 	const screen = render(
 		<QueryClientProvider client={queryClient}>
 			<PasswordStep />
@@ -41,11 +43,11 @@ function renderPasswordStep() {
 		</QueryClientProvider>
 	);
 
-	return { queryClient, screen };
+	return screen;
 }
 
 async function submit(
-	{ screen }: ReturnType<typeof renderPasswordStep>,
+	screen: ReturnType<typeof renderPasswordStep>,
 	confirmPassword = "password123"
 ) {
 	const view = await screen;
@@ -73,15 +75,16 @@ test("activating logs in, refreshes server info, and continues home", async () =
 		error: undefined,
 		response: new Response(),
 	});
-	const view = renderPasswordStep();
-	const fetchInfo = vi.fn().mockResolvedValue({ active: true });
-	view.queryClient.setQueryDefaults(serverQueries.serverInfo().queryKey, {
-		queryFn: fetchInfo,
+	get.mockResolvedValue({
+		data: { active: true },
+		error: undefined,
+		response: new Response(),
 	});
 
-	await submit(view);
+	await submit(renderPasswordStep());
 
 	await expect.poll(() => navigate.mock.calls).toEqual([[{ to: "/" }]]);
+	expect(get).toHaveBeenCalledWith("/api/v1/info");
 	expect(put).toHaveBeenCalledWith("/api/v1/activate", {
 		body: expect.objectContaining({
 			admin_username: "admin",

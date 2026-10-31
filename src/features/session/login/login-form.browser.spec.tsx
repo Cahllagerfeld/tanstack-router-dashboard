@@ -56,6 +56,29 @@ test("a user can log in and continue to the requested page", async () => {
 	await screen.getByRole("button", { name: m.common_action_login() }).click();
 
 	await expect.poll(() => navigate.mock.calls).toEqual([[{ to: "/projects" }]]);
+	expect(get).toHaveBeenCalledWith("/api/v1/current-user");
+});
+
+test("stays on the login page when the identity cannot be loaded", async () => {
+	post.mockResolvedValue({
+		data: { access_token: "access-token", token_type: "bearer" },
+		error: undefined,
+		response: new Response(),
+	});
+	get.mockRejectedValue(new Error("Identity unavailable"));
+	const screen = await renderLoginForm();
+
+	await screen
+		.getByRole("textbox", { name: m.common_field_username() })
+		.fill("ada");
+	await screen.getByLabelText(m.common_field_password()).fill("correct horse");
+	await screen.getByRole("button", { name: m.common_action_login() }).click();
+
+	await expect.poll(() => get.mock.calls.length).toBe(1);
+	await expect
+		.poll(() => toastError.mock.calls)
+		.toEqual([["Identity unavailable"]]);
+	expect(navigate).not.toHaveBeenCalled();
 });
 
 test("a login failure is communicated without navigating", async () => {
