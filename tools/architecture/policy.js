@@ -16,7 +16,11 @@ const owners = [
 ];
 
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
-const enforcedOwners = ["projects"];
+const enforcedOwners = [
+	// One per line and alphabetical, so parallel migrations rebase cleanly.
+	"pipelines",
+	"projects",
+];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
@@ -68,11 +72,6 @@ const legacyPaths = {
 	],
 	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
-	pipelines: [
-		"src/data/pipelines/",
-		"src/domain/pipelines",
-		"src/types/pipelines",
-	],
 	root: ["src/features/root/"],
 	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
 	"server-activation": [
