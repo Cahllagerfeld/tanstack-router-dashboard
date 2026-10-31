@@ -3,7 +3,7 @@ import { beforeEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 
-import { BreadcrumbsContainer } from "./Breadcrumb";
+import { BreadcrumbsContainer } from "./breadcrumbs";
 
 const IMAGE =
 	"data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";

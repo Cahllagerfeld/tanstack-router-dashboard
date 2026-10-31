@@ -1,4 +1,4 @@
-import { getLocalStorageKey } from "@/lib/localstorage";
+import { getLocalStorageKey } from "@/shared/lib/localstorage";
 
 const activeProjectKey = getLocalStorageKey("SELECTED_PROJECT");
 

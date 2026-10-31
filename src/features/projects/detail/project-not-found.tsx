@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 
-import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
 import { ContentInset } from "@/shared/components/content-inset";
+import { getEntityIcon } from "@/shared/lib/entity-icons";
 import { Button } from "@/shared/ui/button";
 import {
 	Empty,

@@ -2,9 +2,10 @@ import { useLocation, useRouter } from "@tanstack/react-router";
 import { Settings } from "lucide-react";
 
 import { useActiveProject } from "@/features/projects/ui";
-import { getEntityIcon } from "@/lib/constants/entity-icons";
 import { m } from "@/paraglide/messages";
-import type { NavbarItem } from "@/types/navbar";
+import { getEntityIcon } from "@/shared/lib/entity-icons";
+
+import type { NavbarItem } from "./navbar";
 
 function getInfraItem(): NavbarItem {
 	return {

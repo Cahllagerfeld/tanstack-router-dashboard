@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import type { Project } from "../model";
 import {
@@ -6,10 +6,6 @@ import {
 	resolveProject,
 	resolveUnscopedProject,
 } from "./model";
-
-vi.mock("@/lib/constants/storage", () => ({
-	S3_BASE_URL: "https://example.test",
-}));
 
 describe("resolveProject", () => {
 	const projects = [
@@ -62,9 +58,9 @@ describe("resolveUnscopedProject", () => {
 
 describe("getIllustrationUrl", () => {
 	it("uses the configured S3_BASE_URL and correct path/extension", () => {
-		const url = getIllustrationUrl("alpha");
-		expect(url.startsWith("https://example.test/projects/")).toBe(true);
-		expect(url.endsWith(".jpg")).toBe(true);
+		expect(getIllustrationUrl("alpha")).toMatch(
+			/^https:\/\/public-flavor-logos\.s3\.eu-central-1\.amazonaws\.com\/projects\/\d+\.jpg$/
+		);
 	});
 
 	it("is deterministic for the same name and number is within 1..49", () => {

@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { AppRail } from "@/app/navigation/app-rail";
-import { BreadcrumbsContainer } from "@/components/breadcrumb/Breadcrumb";
+import { BreadcrumbsContainer } from "@/app/navigation/breadcrumbs";
 import { projectQueries } from "@/features/projects";
 import { ScrollArea } from "@/shared/ui/scroll-area";
 
