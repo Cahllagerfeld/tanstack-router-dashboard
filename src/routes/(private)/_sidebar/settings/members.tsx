@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { z } from "zod";
 
-import { userQueries } from "@/data/user";
+import { sessionQueries } from "@/features/session";
+import { type UserListInput, userQueries } from "@/features/users";
 import {
 	UserListSearchbar,
 	UserList,
@@ -14,7 +15,6 @@ import {
 	filterSchema,
 	getFilterValue,
 } from "@/shared/filters/filter";
-import type { UserListQueryParams } from "@/types/user";
 
 const querySchema = z.object({
 	name: filterSchema.optional().catch(undefined),
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/members")({
 	loader: async ({ context: { queryClient }, deps: { name, page } }) => {
 		await Promise.all([
 			queryClient.ensureQueryData(userQueries.list({ name, page })),
-			queryClient.ensureQueryData(userQueries.currentUser()),
+			queryClient.ensureQueryData(sessionQueries.currentIdentity()),
 		]);
 		return { crumb: m.settings_members_title() };
 	},
@@ -40,7 +40,7 @@ export const Route = createFileRoute("/(private)/_sidebar/settings/members")({
 function RouteComponent() {
 	const { name, page } = Route.useSearch();
 	const navigate = useNavigate({ from: "/settings/members" });
-	const queries: UserListQueryParams = {
+	const queries: UserListInput = {
 		name,
 		page,
 	};

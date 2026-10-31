@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import { serverQueries } from "@/data/server";
+import { serverQueries } from "@/features/server-activation";
 import { PasswordStep } from "@/features/server-activation/ui";
 import { m } from "@/paraglide/messages";
 import { Button } from "@/shared/ui/button";

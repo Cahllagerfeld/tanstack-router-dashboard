@@ -43,6 +43,7 @@ export default defineConfig({
 						"es-toolkit",
 						"es-toolkit/compat",
 						"sonner",
+						"unique-names-generator",
 						"vaul",
 					],
 				},

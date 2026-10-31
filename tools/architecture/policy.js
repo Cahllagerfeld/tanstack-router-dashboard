@@ -10,7 +10,6 @@ const owners = [
 	"stacks",
 	"users",
 	// Temporary names, removed by #560.
-	"login",
 	"root",
 ];
 
@@ -21,7 +20,10 @@ const enforcedOwners = [
 	"pipelines",
 	"projects",
 	"runs",
+	"server-activation",
+	"session",
 	"stacks",
+	"users",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
@@ -65,32 +67,13 @@ const legacyPaths = {
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
-	login: ["src/features/login/"],
 	root: ["src/features/root/"],
-	"server-activation": [
-		"src/data/server/",
-		"src/features/server-activation/password-step",
-		"src/features/server-activation/schema",
-		"src/features/server-activation/use-password-step",
-		"src/types/server",
-	],
-	session: [
-		"src/data/session/",
-		"src/data/user/fetch-current-user",
-		"src/types/session",
-	],
 	shared: [
 		"src/lib/constants/entity-icons",
 		"src/lib/constants/storage",
 		"src/lib/localization-policy",
 		"src/lib/localstorage",
 		"src/types/api",
-	],
-	users: [
-		"src/data/user/",
-		"src/domain/mappers",
-		"src/domain/users",
-		"src/types/user",
 	],
 };
 
