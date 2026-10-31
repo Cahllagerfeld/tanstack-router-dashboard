@@ -1,1 +1,1 @@
-export { usePipelineColumns } from "./pipelines-list/columns";
+export { usePipelineColumns } from "./list/columns";

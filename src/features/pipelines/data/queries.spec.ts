@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { m } from "@/paraglide/messages";
+
 import { pipelineKeys, pipelineQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
@@ -63,5 +65,18 @@ describe("pipelineQueries", () => {
 				query: { project: "project-id", sort_by: "desc:created" },
 			},
 		});
+	});
+
+	it("rejects a failed request so the route shows its error page", async () => {
+		get.mockResolvedValue({
+			data: undefined,
+			error: { detail: "Project not found" },
+			response: new Response(null, { status: 404 }),
+		});
+
+		const query = pipelineQueries.list({ project: "project-id" });
+		await expect(query.queryFn!({} as never)).rejects.toThrow(
+			m.common_error_unwrapping()
+		);
 	});
 });
