@@ -9,9 +9,14 @@ import { m } from "@/paraglide/messages";
 
 import { UserList } from "./user-list";
 
-const { get } = vi.hoisted(() => ({ get: vi.fn() }));
+const { deleteRequest, get } = vi.hoisted(() => ({
+	deleteRequest: vi.fn(),
+	get: vi.fn(),
+}));
 
-vi.mock("@/shared/api/client", () => ({ apiClient: { GET: get } }));
+vi.mock("@/shared/api/client", () => ({
+	apiClient: { DELETE: deleteRequest, GET: get },
+}));
 vi.mock("@tanstack/react-router", () => ({
 	Link: ({ children }: { children: ReactNode }) => <a href="/">{children}</a>,
 }));
@@ -132,7 +137,7 @@ test("hides the invite action from a non-admin", async () => {
 		.not.toBeInTheDocument();
 });
 
-test("keeps the admin delete action as a placeholder", async () => {
+test("asks an admin to confirm before deleting the chosen member", async () => {
 	const screen = await renderUserList({ isAdmin: true });
 	const menus = screen.getByRole("button", {
 		name: m.common_navigation_open_menu(),
@@ -140,8 +145,11 @@ test("keeps the admin delete action as a placeholder", async () => {
 
 	await expect.element(menus.first()).toBeVisible();
 	await expect.poll(() => menus.elements().length).toBe(2);
-	await menus.first().click();
+	await menus.last().click();
 	await page.getByRole("menuitem", { name: m.users_action_delete() }).click();
 
-	expect(get).toHaveBeenCalledTimes(2);
+	await expect
+		.element(page.getByText(m.users_delete_description({ name: "grace" })))
+		.toBeVisible();
+	expect(deleteRequest).not.toHaveBeenCalled();
 });

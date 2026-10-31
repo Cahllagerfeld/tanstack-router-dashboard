@@ -93,8 +93,8 @@ const adminColumns: ColumnDef<DataTableFeatures, User>[] = [
 		minSize: 80,
 		maxSize: 120,
 		enableHiding: false,
-		cell: () => {
-			return <AdminActions />;
+		cell: ({ row }) => {
+			return <AdminActions user={row.original} />;
 		},
 	},
 ];
