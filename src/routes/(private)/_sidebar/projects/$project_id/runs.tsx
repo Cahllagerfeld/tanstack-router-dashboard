@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { runQueries } from "@/data/runs";
+import { type ProjectRunListInput, runQueries } from "@/features/runs";
 import { useRunColumns } from "@/features/runs/ui";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
@@ -11,7 +11,6 @@ import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
 import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
-import type { ProjectRunListQueryParams } from "@/types/runs";
 
 export const Route = createFileRoute(
 	"/(private)/_sidebar/projects/$project_id/runs"
@@ -27,7 +26,7 @@ export const Route = createFileRoute(
 			project: project_id,
 			page,
 			size,
-		} satisfies ProjectRunListQueryParams;
+		} satisfies ProjectRunListInput;
 
 		await queryClient.ensureQueryData(runQueries.list(queryParams));
 		return {

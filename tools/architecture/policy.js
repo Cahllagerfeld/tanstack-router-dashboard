@@ -73,7 +73,6 @@ const legacyPaths = {
 	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
 	root: ["src/features/root/"],
-	runs: ["src/data/runs/", "src/domain/runs", "src/types/runs"],
 	"server-activation": [
 		"src/data/server/",
 		"src/features/server-activation/password-step",

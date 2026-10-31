@@ -105,7 +105,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			[peer, "@/main"],
 			[peer, "../../../app/navigation/app-rail"],
 			[peer, "../../../components/sidebar/use-navbar-items"],
-			["src/data/runs/index.ts", "@/app/providers"],
+			[peer, "@/app/providers"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, featureRule(specifier))
 		),
@@ -139,7 +139,6 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 		["src/features/projects/data/dto.ts", generated],
 		["src/features/runs/data/dto.ts", generated],
 		["src/shared/api/client.ts", "./generated"],
-		["src/domain/runs.ts", generated],
 		["src/domain/mappers.spec.ts", generated],
 		["src/features/projects/data/map.ts", "./dto"],
 		["src/features/projects/data/map.spec.ts", "./dto"],
@@ -151,6 +150,7 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 			["src/features/projects/model.ts", toModel],
 			["src/features/projects/create/form.tsx", toModel],
 			["src/features/runs/list/view.tsx", toModel],
+			["src/domain/runs.ts", toModel],
 			["src/routes/route.tsx", toModel],
 			["src/shared/lib/dates.ts", toModel],
 		].map(([file, message]) =>
@@ -287,11 +287,16 @@ describe("placement ratchet", () => {
 
 	it("rejects the named legacy paths of enforced owners only", () => {
 		const legacy = "src/data/stacks/index.ts";
-		const enforced = { ...policy, enforcedOwners: ["stacks"] };
+		const unenforced = "src/data/example/index.ts";
+		const enforced = {
+			...policy,
+			enforcedOwners: ["stacks"],
+			legacyPaths: { ...policy.legacyPaths, example: ["src/data/example/"] },
+		};
 
 		expect(placementFix(legacy, policy)).toBeNull();
 		expect(placementFix(legacy, enforced)).toContain("move this legacy path");
-		expect(placementFix("src/data/runs/index.ts", enforced)).toBeNull();
+		expect(placementFix(unenforced, enforced)).toBeNull();
 	});
 
 	it("keeps new work in unenforced owners on target paths", () => {
@@ -306,10 +311,13 @@ describe("placement ratchet", () => {
 		"src/components/sidebar/app-rail.tsx",
 		"src/components/sidebar/new-item.tsx",
 		"src/data/api-client.ts",
+		"src/data/runs/index.ts",
+		"src/domain/runs.ts",
 		"src/hooks/use-copy.ts",
 		"src/lib/dates.ts",
 		"src/lib/new-helper.ts",
 		"src/types/core.ts",
+		"src/types/runs.ts",
 	])("rejects the moved or new legacy-area path %s", (file) => {
 		expect(placementFix(file, policy)).toContain("move it to");
 	});

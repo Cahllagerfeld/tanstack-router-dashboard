@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { runQueries } from "./index";
+import { runQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
