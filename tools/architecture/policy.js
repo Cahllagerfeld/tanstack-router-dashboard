@@ -35,7 +35,7 @@ const sharedUnits = {
 		"entity-icons",
 		"localization-policy",
 		"localstorage",
-		"page-range",
+		"page",
 		"strings",
 		"type-guards",
 	],

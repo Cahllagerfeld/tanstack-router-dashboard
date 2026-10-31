@@ -16,14 +16,6 @@ export type ProjectRunListInput = ApiQuery<"/api/v1/runs"> & {
 	project: string;
 };
 
-export type RunPage = {
-	index: number;
-	max_size: number;
-	total: number;
-	total_pages: number;
-	items: Run[];
-};
-
 export function formatRunIndex(index: number): string {
 	return `#${String(index).padStart(4, "0")}`;
 }

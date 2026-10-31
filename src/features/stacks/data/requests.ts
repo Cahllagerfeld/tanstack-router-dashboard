@@ -1,23 +1,17 @@
 import { apiClient } from "@/shared/api/client";
 import { expectData } from "@/shared/api/errors";
+import { mapPage } from "@/shared/lib/page";
 
-import type { StackListInput, StackPage } from "../model";
+import type { StackListInput } from "../model";
 import { stackFromApi } from "./map";
 
-export async function fetchStackList(
-	params: StackListInput
-): Promise<StackPage> {
+export async function fetchStackList(params: StackListInput) {
 	const response = await apiClient.GET("/api/v1/stacks", {
 		params: {
 			query: params,
 		},
 	});
-	const data = expectData(response);
-
-	return {
-		...data,
-		items: data.items.map(stackFromApi),
-	};
+	return mapPage(expectData(response), stackFromApi);
 }
 
 export async function fetchStackDetail(stackId: string) {

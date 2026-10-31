@@ -1,23 +1,17 @@
 import { apiClient } from "@/shared/api/client";
 import { expectData } from "@/shared/api/errors";
+import { mapPage } from "@/shared/lib/page";
 
-import type { ComponentListInput, ComponentPage } from "../model";
+import type { ComponentListInput } from "../model";
 import { componentFromApi } from "./map";
 
-export async function fetchComponentList(
-	params: ComponentListInput
-): Promise<ComponentPage> {
+export async function fetchComponentList(params: ComponentListInput) {
 	const response = await apiClient.GET("/api/v1/components", {
 		params: {
 			query: params,
 		},
 	});
-	const data = expectData(response);
-
-	return {
-		...data,
-		items: data.items.map(componentFromApi),
-	};
+	return mapPage(expectData(response), componentFromApi);
 }
 
 export async function fetchComponentDetail(componentId: string) {

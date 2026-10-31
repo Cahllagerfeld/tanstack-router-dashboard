@@ -23,11 +23,3 @@ export type Component = {
 };
 
 export type ComponentListInput = ApiQuery<"/api/v1/components">;
-
-export type ComponentPage = {
-	index: number;
-	max_size: number;
-	total: number;
-	total_pages: number;
-	items: Component[];
-};
