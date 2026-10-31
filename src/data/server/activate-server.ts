@@ -1,5 +1,6 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
+import { loginUserRequest } from "@/features/session";
 import { apiClient } from "@/shared/api/client";
 import { expectData } from "@/shared/api/errors";
 import type { ApiClientError } from "@/types/api";
@@ -7,8 +8,6 @@ import type {
 	ApiServerActivationResult,
 	ServerActivation,
 } from "@/types/server";
-
-import { loginUserRequest } from "../session/login";
 
 async function activateServer(bodyData: ServerActivation) {
 	const response = await apiClient.PUT("/api/v1/activate", {

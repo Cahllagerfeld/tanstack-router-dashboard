@@ -2,7 +2,6 @@ import { queryOptions } from "@tanstack/react-query";
 
 import type { UserListQueryParams } from "@/types/user";
 
-import { fetchCurrentUser } from "./fetch-current-user";
 import { fetchUserList } from "./fetch-list";
 
 const baseKey = "users" as const;
@@ -13,7 +12,6 @@ export const userKeys = {
 	list: (params: UserListQueryParams) => [...userKeys.lists(), params] as const,
 	details: () => [...userKeys.all, "detail"] as const,
 	detail: (userId: string) => [...userKeys.details(), userId] as const,
-	current: () => [...userKeys.all, "current"] as const,
 };
 
 export const userQueries = {
@@ -29,9 +27,4 @@ export const userQueries = {
 			queryFn: () => fetchUserList(mergedParams),
 		});
 	},
-	currentUser: () =>
-		queryOptions({
-			queryKey: userKeys.current(),
-			queryFn: fetchCurrentUser,
-		}),
 };

@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
 import { userQueries } from "@/data/user";
+import { sessionQueries } from "@/features/session";
 import { useUserListColumns } from "@/features/users/list/columns";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
@@ -19,8 +20,8 @@ type Props = {
 
 export function UserList({ queries, toolbarStart }: Props) {
 	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
-	const { data: currentUser } = useSuspenseQuery(userQueries.currentUser());
-	const columns = useUserListColumns(!!currentUser.isAdmin);
+	const { data: identity } = useSuspenseQuery(sessionQueries.currentIdentity());
+	const columns = useUserListColumns(!!identity.isAdmin);
 	const table = useDataTable({
 		data: userList.items,
 		columns,

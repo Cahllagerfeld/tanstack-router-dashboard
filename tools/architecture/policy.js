@@ -10,7 +10,6 @@ const owners = [
 	"stacks",
 	"users",
 	// Temporary names, removed by #560.
-	"login",
 	"root",
 ];
 
@@ -21,6 +20,7 @@ const enforcedOwners = [
 	"pipelines",
 	"projects",
 	"runs",
+	"session",
 	"stacks",
 ];
 
@@ -65,7 +65,6 @@ const legacyPaths = {
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
-	login: ["src/features/login/"],
 	root: ["src/features/root/"],
 	"server-activation": [
 		"src/data/server/",
@@ -73,11 +72,6 @@ const legacyPaths = {
 		"src/features/server-activation/schema",
 		"src/features/server-activation/use-password-step",
 		"src/types/server",
-	],
-	session: [
-		"src/data/session/",
-		"src/data/user/fetch-current-user",
-		"src/types/session",
 	],
 	shared: [
 		"src/lib/constants/entity-icons",

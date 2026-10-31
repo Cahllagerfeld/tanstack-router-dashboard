@@ -13,7 +13,7 @@ vi.mock("@/shared/api/client", () => ({
 	apiClient: { PUT: put },
 }));
 
-vi.mock("../session/login", () => ({ loginUserRequest }));
+vi.mock("@/features/session", () => ({ loginUserRequest }));
 
 describe("activateAndLogin", () => {
 	beforeEach(() => {
