@@ -1,6 +1,3 @@
-import type { ComponentType } from "@/types/components";
-
-// generate an array with all possible values from ComponentType
 export const COMPONENT_TYPES = [
 	"alerter",
 	"annotator",
@@ -17,4 +14,6 @@ export const COMPONENT_TYPES = [
 	"deployer",
 	"log_store",
 	"sandbox",
-] as const satisfies ComponentType[];
+] as const;
+
+export type ComponentType = (typeof COMPONENT_TYPES)[number];

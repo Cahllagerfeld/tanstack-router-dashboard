@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import type { ComponentType } from "@/features/components";
 import { getComponentTypeLabel } from "@/features/filters/components";
-import type { ComponentType } from "@/types/components";
 
 describe("getComponentTypeLabel", () => {
 	afterEach(() => {

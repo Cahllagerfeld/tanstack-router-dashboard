@@ -65,13 +65,6 @@ const legacyPaths = {
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
-	components: [
-		"src/data/components/",
-		"src/domain/components",
-		"src/domain/flavors",
-		"src/lib/constants/component-types",
-		"src/types/components",
-	],
 	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
 	root: ["src/features/root/"],

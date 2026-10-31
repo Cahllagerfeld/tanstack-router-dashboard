@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { componentQueries } from "@/data/components";
+import { componentQueries } from "@/features/components";
 import { useComponentColumns } from "@/features/components/ui";
 import { typeFilterSchema } from "@/features/filters";
 import { TypeFilter } from "@/features/filters/ui";

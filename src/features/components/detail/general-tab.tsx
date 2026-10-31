@@ -1,4 +1,3 @@
-import type { Component } from "@/domain/components";
 import { m } from "@/paraglide/messages";
 import { CopyButton } from "@/shared/components/copy-button";
 import DisplayDate from "@/shared/components/display-date";
@@ -12,6 +11,8 @@ import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import { Badge } from "@/shared/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 
+import type { Component } from "../model";
+
 interface ComponentGeneralTabProps {
 	component: Component;
 }
@@ -22,7 +23,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		flavor,
 		created,
 		updated,
-		user,
+		creatorName,
 		configuration,
 		environment,
 		secrets,
@@ -82,7 +83,7 @@ export function ComponentGeneralTab({ component }: ComponentGeneralTabProps) {
 		{
 			key: "user",
 			label: m.common_label_created_by(),
-			value: user?.name || <NotAvailableTag />,
+			value: creatorName || <NotAvailableTag />,
 		},
 	];
 

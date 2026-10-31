@@ -5,8 +5,9 @@ import { type ComponentPropsWithoutRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { COMPONENT_TYPES } from "@/features/components";
+import type { ComponentType } from "@/features/components";
 import { getComponentTypeLabel } from "@/features/filters/components";
-import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { m } from "@/paraglide/messages";
 import { Button } from "@/shared/ui/button";
 import { Field, FieldError } from "@/shared/ui/field";
@@ -19,7 +20,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/shared/ui/select";
-import type { ComponentType } from "@/types/components";
 
 type Props = {
 	filter?: ComponentType;
