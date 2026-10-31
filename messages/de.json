@@ -84,6 +84,12 @@
 			}
 		}
 	],
+	"components_action_delete": "Komponente löschen",
+	"components_delete_description": "Diese Aktion kann nicht rückgängig gemacht werden. {name} wird dauerhaft gelöscht.",
+	"components_delete_failed": "Komponente konnte nicht gelöscht werden",
+	"components_delete_pending": "Wird gelöscht...",
+	"components_delete_success": "Komponente gelöscht",
+	"components_delete_title": "Sind Sie absolut sicher?",
 	"components_detail_no_configuration": "Keine Konfiguration verfügbar",
 	"components_detail_tab_configuration": "Konfiguration",
 	"components_detail_tab_stacks": "Stacks",

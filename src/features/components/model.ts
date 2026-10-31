@@ -22,3 +22,7 @@ export type Component = {
 };
 
 export type ComponentListInput = ApiQuery<"/api/v1/components">;
+
+export type DeleteComponentInput = {
+	componentId: string;
+};

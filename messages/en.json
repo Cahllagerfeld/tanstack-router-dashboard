@@ -84,6 +84,12 @@
 			}
 		}
 	],
+	"components_action_delete": "Delete Component",
+	"components_delete_description": "This action cannot be undone. This will permanently delete {name}.",
+	"components_delete_failed": "Failed to delete component",
+	"components_delete_pending": "Deleting...",
+	"components_delete_success": "Component deleted",
+	"components_delete_title": "Are you absolutely sure?",
 	"components_detail_no_configuration": "No configuration available",
 	"components_detail_tab_configuration": "Configuration",
 	"components_detail_tab_stacks": "Stacks",

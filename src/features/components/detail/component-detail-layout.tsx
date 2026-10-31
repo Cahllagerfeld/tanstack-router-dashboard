@@ -6,6 +6,7 @@ import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 
+import { DeleteComponentAction } from "../delete/delete-component-action";
 import type { Component } from "../model";
 import { getLabelTags } from "./model";
 
@@ -32,6 +33,7 @@ export function ComponentDetailLayout({
 					<img src={flavor.logoUrl} alt="" className="size-7 shrink-0" />
 				)
 			}
+			actions={<DeleteComponentAction component={component} />}
 			tags={getLabelTags(labels)}
 			facts={[
 				{
