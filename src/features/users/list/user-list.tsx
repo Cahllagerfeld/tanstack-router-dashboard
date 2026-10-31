@@ -11,6 +11,7 @@ import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
 
 import { userQueries } from "../data/queries";
+import { InviteMemberDialog } from "../invite/invite-member-dialog";
 import type { UserListInput } from "../model";
 import { useUserListColumns } from "./columns";
 
@@ -36,6 +37,7 @@ export function UserList({ queries, toolbarStart }: Props) {
 				) : null}
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
+					{identity.isAdmin ? <InviteMemberDialog /> : null}
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable table={table} />

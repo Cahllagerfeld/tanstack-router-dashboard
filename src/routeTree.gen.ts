@@ -15,6 +15,7 @@ import { Route as privateSidebarRouteRouteImport } from './routes/(private)/_sid
 import { Route as publicGridLayoutRouteRouteImport } from './routes/(public)/_grid-layout/route'
 import { Route as privateSidebarInfraRouteRouteImport } from './routes/(private)/_sidebar/infra/route'
 import { Route as privateSidebarSettingsRouteRouteImport } from './routes/(private)/_sidebar/settings/route'
+import { Route as publicGridLayoutActivateUserRouteImport } from './routes/(public)/_grid-layout/activate-user'
 import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_grid-layout/login'
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as privateSidebarInfraIndexRouteImport } from './routes/(private)/_sidebar/infra/index'
@@ -62,6 +63,12 @@ const privateSidebarSettingsRouteRoute =
     id: '/settings',
     path: '/settings',
     getParentRoute: () => privateSidebarRouteRoute,
+  } as any)
+const publicGridLayoutActivateUserRoute =
+  publicGridLayoutActivateUserRouteImport.update({
+    id: '/activate-user',
+    path: '/activate-user',
+    getParentRoute: () => publicGridLayoutRouteRoute,
   } as any)
 const publicGridLayoutLoginRoute = publicGridLayoutLoginRouteImport.update({
   id: '/login',
@@ -175,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/': typeof privateIndexRoute
   '/infra': typeof privateSidebarInfraRouteRouteWithChildren
   '/settings': typeof privateSidebarSettingsRouteRouteWithChildren
+  '/activate-user': typeof publicGridLayoutActivateUserRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/infra/components': typeof privateSidebarInfraComponentsRouteRouteWithChildren
@@ -196,6 +204,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof privateIndexRoute
+  '/activate-user': typeof publicGridLayoutActivateUserRoute
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
@@ -219,6 +228,7 @@ export interface FileRoutesById {
   '/(private)/': typeof privateIndexRoute
   '/(private)/_sidebar/infra': typeof privateSidebarInfraRouteRouteWithChildren
   '/(private)/_sidebar/settings': typeof privateSidebarSettingsRouteRouteWithChildren
+  '/(public)/_grid-layout/activate-user': typeof publicGridLayoutActivateUserRoute
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
   '/(private)/_sidebar/infra/components': typeof privateSidebarInfraComponentsRouteRouteWithChildren
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/'
     | '/infra'
     | '/settings'
+    | '/activate-user'
     | '/login'
     | '/server-activation'
     | '/infra/components'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/activate-user'
     | '/login'
     | '/server-activation'
     | '/settings/general'
@@ -287,6 +299,7 @@ export interface FileRouteTypes {
     | '/(private)/'
     | '/(private)/_sidebar/infra'
     | '/(private)/_sidebar/settings'
+    | '/(public)/_grid-layout/activate-user'
     | '/(public)/_grid-layout/login'
     | '/(public)/_grid-layout/server-activation'
     | '/(private)/_sidebar/infra/components'
@@ -355,6 +368,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof privateSidebarSettingsRouteRouteImport
       parentRoute: typeof privateSidebarRouteRoute
+    }
+    '/(public)/_grid-layout/activate-user': {
+      id: '/(public)/_grid-layout/activate-user'
+      path: '/activate-user'
+      fullPath: '/activate-user'
+      preLoaderRoute: typeof publicGridLayoutActivateUserRouteImport
+      parentRoute: typeof publicGridLayoutRouteRoute
     }
     '/(public)/_grid-layout/login': {
       id: '/(public)/_grid-layout/login'
@@ -628,11 +648,13 @@ const privateRouteRouteWithChildren = privateRouteRoute._addFileChildren(
 )
 
 interface publicGridLayoutRouteRouteChildren {
+  publicGridLayoutActivateUserRoute: typeof publicGridLayoutActivateUserRoute
   publicGridLayoutLoginRoute: typeof publicGridLayoutLoginRoute
   publicGridLayoutServerActivationRoute: typeof publicGridLayoutServerActivationRoute
 }
 
 const publicGridLayoutRouteRouteChildren: publicGridLayoutRouteRouteChildren = {
+  publicGridLayoutActivateUserRoute: publicGridLayoutActivateUserRoute,
   publicGridLayoutLoginRoute: publicGridLayoutLoginRoute,
   publicGridLayoutServerActivationRoute: publicGridLayoutServerActivationRoute,
 }
