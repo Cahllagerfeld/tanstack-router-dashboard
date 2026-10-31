@@ -1,19 +1,20 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { stackQueries } from "@/features/stacks";
-import { createStackColumns } from "@/features/stacks/ui";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/shared/components/tables/data-table";
 import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
 
-interface ComponentStacksTabProps {
+import { stackQueries } from "../data/queries";
+import { createStackColumns } from "./columns";
+
+interface RelatedStackListProps {
 	componentId: string;
 }
 
-export function ComponentStacksTab({ componentId }: ComponentStacksTabProps) {
+export function RelatedStackList({ componentId }: RelatedStackListProps) {
 	const { data } = useSuspenseQuery(
 		stackQueries.list({ component_id: componentId })
 	);
