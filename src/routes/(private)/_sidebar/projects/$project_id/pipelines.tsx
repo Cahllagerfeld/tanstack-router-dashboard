@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { pipelineQueries } from "@/data/pipelines";
+import { pipelineQueries } from "@/features/pipelines";
 import { usePipelineColumns } from "@/features/pipelines/ui";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
@@ -11,7 +11,6 @@ import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
 import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
-import { type PipelineListQueryParams } from "@/types/pipelines";
 
 const querySchema = commonFilterSchema;
 
@@ -29,7 +28,7 @@ export const Route = createFileRoute(
 			project: project_id,
 			page,
 			size,
-		} satisfies PipelineListQueryParams;
+		};
 
 		await queryClient.ensureQueryData(pipelineQueries.list(queryParams));
 		return {

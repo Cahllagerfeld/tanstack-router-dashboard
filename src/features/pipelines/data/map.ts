@@ -1,16 +1,9 @@
-import { type components } from "@/shared/api/generated";
 import { parseBackendDate } from "@/shared/lib/dates";
 
-export type Pipeline = {
-	id: string;
-	name: string;
-	description?: string;
-	created: Date | undefined;
-};
+import type { Pipeline } from "../model";
+import type { PipelineDto } from "./dto";
 
-export function pipelineFromApi(
-	apiPipeline: components["schemas"]["PipelineResponse"]
-): Pipeline {
+export function pipelineFromApi(apiPipeline: PipelineDto): Pipeline {
 	return {
 		id: apiPipeline.id,
 		name: apiPipeline.name,

@@ -1,10 +1,11 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { Pipeline } from "@/domain/pipelines";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
 import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+
+import type { Pipeline } from "../model";
 
 export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 	return [

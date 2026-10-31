@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { pipelineKeys, pipelineQueries } from "./index";
+import { pipelineKeys, pipelineQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
