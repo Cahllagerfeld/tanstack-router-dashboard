@@ -10,7 +10,6 @@ const owners = [
 	"stacks",
 	"users",
 	// Temporary names, removed by #560.
-	"filters",
 	"login",
 	"root",
 ];
@@ -18,9 +17,11 @@ const owners = [
 /** Owners that have migrated: strict grammar, and their legacy paths are rejected. */
 const enforcedOwners = [
 	// One per line and alphabetical, so parallel migrations rebase cleanly.
+	"components",
 	"pipelines",
 	"projects",
 	"runs",
+	"stacks",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
@@ -64,14 +65,6 @@ const legacyPaths = {
 		"src/lib/query-client",
 		"src/types/navbar",
 	],
-	components: [
-		"src/data/components/",
-		"src/domain/components",
-		"src/domain/flavors",
-		"src/lib/constants/component-types",
-		"src/types/components",
-	],
-	filters: ["src/features/filters/"],
 	login: ["src/features/login/"],
 	root: ["src/features/root/"],
 	"server-activation": [
@@ -93,7 +86,6 @@ const legacyPaths = {
 		"src/lib/localstorage",
 		"src/types/api",
 	],
-	stacks: ["src/data/stacks/", "src/domain/stacks", "src/types/stacks"],
 	users: [
 		"src/data/user/",
 		"src/domain/mappers",

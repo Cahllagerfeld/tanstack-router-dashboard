@@ -1,8 +1,9 @@
-import type { Component } from "@/domain/components";
 import { CopyButton } from "@/shared/components/copy-button";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import { Badge } from "@/shared/ui/badge";
 import { Skeleton } from "@/shared/ui/skeleton";
+
+import type { Component } from "../model";
 
 interface ComponentHeaderProps {
 	component: Component;

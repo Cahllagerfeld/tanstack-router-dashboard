@@ -94,7 +94,7 @@ tester.run("dependency-direction", plugin.rules["dependency-direction"], {
 			["src/shared/lib/a.ts", "@/features/stacks"],
 			["src/shared/lib/a.ts", "../../app/providers"],
 			["src/lib/localstorage.ts", "@/routes/route"],
-			["src/lib/localstorage.ts", "@/data/stacks"],
+			["src/lib/localstorage.ts", "@/features/made-up"],
 			["src/lib/localstorage.ts", "@/app"],
 		].map(([file, specifier]) =>
 			invalid(file, `import "${specifier}";`, sharedRule(specifier))
@@ -232,8 +232,8 @@ tester.run("file-placement", plugin.rules["file-placement"], {
 		"vite.config.ts",
 		"src/routes/(private)/route.tsx",
 		"src/features/stacks/create/form.browser.spec.tsx",
-		"src/data/stacks/index.ts",
-		"src/features/filters/type/index.ts",
+		"src/features/stacks/data/queries.ts",
+		"src/features/stacks/made-up/schema.ts",
 		"src/shared/ui/button.tsx",
 		"src/shared/api/generated.ts",
 		"src/shared/routing/loader-utils.spec.ts",

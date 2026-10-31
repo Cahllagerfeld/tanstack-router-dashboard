@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { componentKeys, componentQueries } from "./index";
+import { componentKeys, componentQueries } from "./queries";
 
 const { get } = vi.hoisted(() => ({ get: vi.fn() }));
 
@@ -26,6 +26,35 @@ describe("componentQueries", () => {
 				sort_by: "desc:created",
 			},
 		]);
+	});
+
+	it("keeps the type filter and pagination in the request", async () => {
+		get.mockResolvedValue({
+			data: { index: 2, max_size: 20, total: 21, total_pages: 2, items: [] },
+			error: undefined,
+			response: new Response(),
+		});
+
+		await expect(
+			componentQueries.list({ type: "orchestrator", page: 2, size: 20 })
+				.queryFn!({} as never)
+		).resolves.toEqual({
+			index: 2,
+			max_size: 20,
+			total: 21,
+			total_pages: 2,
+			items: [],
+		});
+		expect(get).toHaveBeenCalledWith("/api/v1/components", {
+			params: {
+				query: {
+					type: "orchestrator",
+					page: 2,
+					size: 20,
+					sort_by: "desc:created",
+				},
+			},
+		});
 	});
 
 	it("requests and maps a Component detail", async () => {

@@ -1,12 +1,7 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
 import { Filter, Trash2 } from "lucide-react";
-import { type ComponentPropsWithoutRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import type { ComponentPropsWithoutRef } from "react";
+import { Controller } from "react-hook-form";
 
-import { getComponentTypeLabel } from "@/features/filters/components";
-import { COMPONENT_TYPES } from "@/lib/constants/component-types";
 import { m } from "@/paraglide/messages";
 import { Button } from "@/shared/ui/button";
 import { Field, FieldError } from "@/shared/ui/field";
@@ -19,42 +14,22 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/shared/ui/select";
-import type { ComponentType } from "@/types/components";
+
+import {
+	COMPONENT_TYPES,
+	type ComponentType,
+	getComponentTypeLabel,
+} from "./model";
+import { useTypeFilter } from "./use-type-filter";
 
 type Props = {
 	filter?: ComponentType;
 	queryName: string;
 };
 
-const filterFormSchema = z.object({
-	type: z.enum(COMPONENT_TYPES).optional(),
-});
-
-type FilterForm = z.infer<typeof filterFormSchema>;
-
 export function TypeFilter({ filter }: Props) {
-	const [open, setOpen] = useState(false);
-	const navigate = useNavigate();
-	const form = useForm<FilterForm>({
-		resolver: zodResolver(filterFormSchema),
-		defaultValues: {
-			type: filter,
-		},
-	});
-
-	function handleApplyFilter({ type }: FilterForm) {
-		setOpen(false);
-		navigate({
-			replace: true,
-			to: ".",
-			search: (prev) => ({ ...prev, type }),
-		});
-	}
-
-	function handleClearFilter() {
-		form.reset({ type: undefined }, { keepDefaultValues: false });
-		handleApplyFilter({ type: undefined });
-	}
+	const { form, open, setOpen, handleApplyFilter, handleClearFilter } =
+		useTypeFilter(filter);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -68,7 +43,7 @@ export function TypeFilter({ filter }: Props) {
 				}
 			>
 				<Filter />
-				{getComponentTypeLabel(filter)}
+				{filter ? getComponentTypeLabel(filter) : m.components_filter_type()}
 			</PopoverTrigger>
 			<PopoverContent align="start" className="space-y-2">
 				<div className="flex items-center justify-between">

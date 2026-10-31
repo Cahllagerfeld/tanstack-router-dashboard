@@ -6,7 +6,7 @@ import {
 	useMatchRoute,
 } from "@tanstack/react-router";
 
-import { componentQueries } from "@/data/components";
+import { componentQueries } from "@/features/components";
 import {
 	ComponentDetailSkeleton,
 	ComponentHeader,

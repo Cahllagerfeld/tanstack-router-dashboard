@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { typeFilterSchema } from "./index";
+import { typeFilterSchema } from "./schema";
 
 describe("typeFilterSchema", () => {
 	it("accepts a known Component type or no filter", () => {

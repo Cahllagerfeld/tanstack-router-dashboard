@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { Component } from "@/domain/components";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
 import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import { Checkbox } from "@/shared/ui/checkbox";
+
+import type { Component } from "../model";
 
 export function useComponentColumns(): ColumnDef<
 	DataTableFeatures,
