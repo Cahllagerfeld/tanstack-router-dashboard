@@ -1,20 +1,9 @@
-import type { components } from "@/shared/api/generated";
 import { parseBackendDate } from "@/shared/lib/dates";
 
-export type User = {
-	id: string;
-	name: string;
-	resolvedName: string;
-	fullName: string | undefined;
-	isAdmin: boolean | undefined;
-	isActive: boolean | undefined;
-	created: Date | undefined;
-	email: string | undefined;
-};
+import type { User } from "../model";
+import type { UserDto } from "./dto";
 
-export function userFromApi(
-	apiUser: components["schemas"]["UserResponse"]
-): User {
+export function userFromApi(apiUser: UserDto): User {
 	return {
 		id: apiUser.id,
 		name: apiUser.name,

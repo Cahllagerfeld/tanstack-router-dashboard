@@ -1,26 +1,25 @@
 import { queryOptions } from "@tanstack/react-query";
 
-import type { UserListQueryParams } from "@/types/user";
-
-import { fetchUserList } from "./fetch-list";
+import type { UserListInput } from "../model";
+import { fetchUserList } from "./requests";
 
 const baseKey = "users" as const;
 
 export const userKeys = {
 	all: [baseKey] as const,
 	lists: () => [...userKeys.all, "list"] as const,
-	list: (params: UserListQueryParams) => [...userKeys.lists(), params] as const,
+	list: (params: UserListInput) => [...userKeys.lists(), params] as const,
 	details: () => [...userKeys.all, "detail"] as const,
 	detail: (userId: string) => [...userKeys.details(), userId] as const,
 };
 
 export const userQueries = {
 	baseKey: userKeys.all,
-	list: (params?: UserListQueryParams) => {
+	list: (params?: UserListInput) => {
 		const mergedParams = {
 			sort_by: "desc:created",
 			...params,
-		} satisfies UserListQueryParams;
+		} satisfies UserListInput;
 
 		return queryOptions({
 			queryKey: userKeys.list(mergedParams),

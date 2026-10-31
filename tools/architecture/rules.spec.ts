@@ -139,7 +139,7 @@ tester.run("dto-funnel", plugin.rules["dto-funnel"], {
 		["src/features/projects/data/dto.ts", generated],
 		["src/features/runs/data/dto.ts", generated],
 		["src/shared/api/client.ts", "./generated"],
-		["src/domain/mappers.spec.ts", generated],
+		["src/types/api-example.ts", generated],
 		["src/features/projects/data/map.ts", "./dto"],
 		["src/features/projects/data/map.spec.ts", "./dto"],
 		["src/features/projects/create/form.tsx", "@/shared/api/client"],

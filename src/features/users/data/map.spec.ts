@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { components as ApiComponents } from "@/shared/api/generated";
-
-import { userFromApi } from "./users";
+import type { UserDto } from "./dto";
+import { userFromApi } from "./map";
 
 const userResponse = {
 	id: "user-id",
@@ -21,7 +20,7 @@ const userResponse = {
 		user_metadata: {},
 		oidc_claims: {},
 	},
-} satisfies ApiComponents["schemas"]["UserResponse"];
+} satisfies UserDto;
 
 describe("userFromApi", () => {
 	it("maps identity, permissions, contact details, and dates", () => {

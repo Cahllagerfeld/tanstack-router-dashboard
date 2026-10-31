@@ -23,6 +23,7 @@ const enforcedOwners = [
 	"server-activation",
 	"session",
 	"stacks",
+	"users",
 ];
 
 /** Top-level units allowed under src/shared/{components,lib}. */
@@ -73,12 +74,6 @@ const legacyPaths = {
 		"src/lib/localization-policy",
 		"src/lib/localstorage",
 		"src/types/api",
-	],
-	users: [
-		"src/data/user/",
-		"src/domain/mappers",
-		"src/domain/users",
-		"src/types/user",
 	],
 };
 

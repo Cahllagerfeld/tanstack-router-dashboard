@@ -1,6 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { User } from "@/domain/users";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
@@ -8,6 +7,7 @@ import type { DataTableFeatures } from "@/shared/components/tables/data-table-fe
 import { Badge } from "@/shared/ui/badge";
 import { Checkbox } from "@/shared/ui/checkbox";
 
+import type { User } from "../model";
 import { AdminActions } from "./admin-actions";
 import { IsActiveBadge } from "./is-active-badge";
 
