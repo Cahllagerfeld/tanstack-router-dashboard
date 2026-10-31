@@ -18,9 +18,7 @@ export function useDeleteComponent({ onDeleted }: Options) {
 	return useMutation({
 		mutationFn: deleteComponent,
 		onSuccess: async (_data, { componentId }) => {
-			// Removed rather than invalidated: the list loader's `ensureQueryData`
-			// would serve a stale list that still holds the deleted row.
-			queryClient.removeQueries({ queryKey: componentKeys.lists() });
+			await queryClient.invalidateQueries({ queryKey: componentKeys.lists() });
 			toast.success(m.components_delete_success());
 			await navigate({ to: "/infra/components" });
 			// This screen observes the detail query until it has left, and a refetch

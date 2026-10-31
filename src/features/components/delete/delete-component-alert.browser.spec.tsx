@@ -105,7 +105,7 @@ test("cancelling closes the alert without deleting the Component", async () => {
 	expect(navigate).not.toHaveBeenCalled();
 });
 
-test("confirming deletes the Component, drops its caches and returns to the list", async () => {
+test("confirming deletes the Component, invalidates lists and returns to the list", async () => {
 	deleteRequest.mockResolvedValue(deleted);
 	const { queryClient, screen } = await renderDeleteAlert();
 
@@ -118,8 +118,11 @@ test("confirming deletes the Component, drops its caches and returns to the list
 	expect(toastSuccess).toHaveBeenCalledWith(m.components_delete_success());
 	expect(navigate).toHaveBeenCalledWith({ to: "/infra/components" });
 	expect(
-		queryClient.getQueryState(componentKeys.list(listParams))
-	).toBeUndefined();
+		queryClient.getQueryState(componentKeys.list(listParams))?.isInvalidated
+	).toBe(true);
+	expect(queryClient.getQueryData(componentKeys.list(listParams))).toEqual({
+		items: [component],
+	});
 	expect(
 		queryClient.getQueryState(componentKeys.detail(component.id))
 	).toBeUndefined();
@@ -139,8 +142,8 @@ test("the deleted record is not refetched while its screen is still mounted", as
 
 	await expect.poll(() => navigate).toHaveBeenCalledOnce();
 	expect(
-		queryClient.getQueryState(componentKeys.list(listParams))
-	).toBeUndefined();
+		queryClient.getQueryState(componentKeys.list(listParams))?.isInvalidated
+	).toBe(true);
 	expect(
 		queryClient.getQueryData(componentKeys.detail(component.id))
 	).toBeDefined();
@@ -202,6 +205,9 @@ test("a rejected deletion keeps the alert usable and shows the API error", async
 	expect(
 		queryClient.getQueryData(componentKeys.list(listParams))
 	).toBeDefined();
+	expect(
+		queryClient.getQueryState(componentKeys.list(listParams))?.isInvalidated
+	).toBe(false);
 	expect(
 		queryClient.getQueryData(componentKeys.detail(component.id))
 	).toBeDefined();
