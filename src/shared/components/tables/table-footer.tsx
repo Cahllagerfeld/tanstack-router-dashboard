@@ -3,14 +3,10 @@ import { ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 
 import { m } from "@/paraglide/messages";
 import { getLocale } from "@/paraglide/runtime";
-import { getPageRange, type PageRangeInput } from "@/shared/lib/page-range";
+import { getPageRange, type Page } from "@/shared/lib/page";
 import { Button, buttonVariants } from "@/shared/ui/button";
 
-type Page = PageRangeInput & {
-	total_pages: number;
-};
-
-export function TableFooter({ page }: { page: Page }) {
+export function TableFooter({ page }: { page: Omit<Page<unknown>, "items"> }) {
 	if (page.total === 0) return null;
 
 	const { start, end } = getPageRange(page);

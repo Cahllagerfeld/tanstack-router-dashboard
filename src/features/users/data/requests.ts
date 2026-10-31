@@ -1,19 +1,15 @@
 import { apiClient } from "@/shared/api/client";
 import { expectData } from "@/shared/api/errors";
+import { mapPage } from "@/shared/lib/page";
 
-import type { UserListInput, UserPage } from "../model";
+import type { UserListInput } from "../model";
 import { userFromApi } from "./map";
 
-export async function fetchUserList(params: UserListInput): Promise<UserPage> {
+export async function fetchUserList(params: UserListInput) {
 	const response = await apiClient.GET("/api/v1/users", {
 		params: {
 			query: params,
 		},
 	});
-	const data = expectData(response);
-
-	return {
-		...data,
-		items: data.items.map(userFromApi),
-	};
+	return mapPage(expectData(response), userFromApi);
 }

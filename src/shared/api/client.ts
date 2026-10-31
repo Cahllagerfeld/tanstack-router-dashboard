@@ -9,6 +9,23 @@ const defaultHeaders = {
 	"Source-Context": "kitaru-ui",
 };
 
+/** The query a GET endpoint accepts, read from the API spec. */
+export type ApiQuery<Path extends keyof paths> = paths[Path] extends {
+	get: { parameters: { query?: infer Query } };
+}
+	? NonNullable<Query>
+	: never;
+
+/** The JSON body an endpoint accepts, read from the API spec. */
+export type ApiBody<
+	Path extends keyof paths,
+	Method extends keyof paths[Path],
+> = paths[Path][Method] extends {
+	requestBody: { content: { "application/json": infer Body } };
+}
+	? Body
+	: never;
+
 export const apiClient = createClient<paths>({
 	credentials: "include",
 	headers: defaultHeaders,
