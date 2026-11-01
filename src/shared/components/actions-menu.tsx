@@ -9,7 +9,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 
-export function BaseTableActions({ children }: PropsWithChildren) {
+/** The "..." menu of actions for one record, in a table row or a Detail Screen header. */
+export function ActionsMenu({ children }: PropsWithChildren) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger

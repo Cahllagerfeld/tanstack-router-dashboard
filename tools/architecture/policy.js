@@ -15,10 +15,11 @@ const owners = [
 /** Top-level units allowed under src/shared/{components,lib}. */
 const sharedUnits = {
 	components: [
-		"base-table-actions",
+		"actions-menu",
 		"content-inset",
 		"copy-button",
 		"debounced-input",
+		"delete-alert",
 		"detail-layout",
 		"display-date",
 		"exclusive-hotkey-scope",

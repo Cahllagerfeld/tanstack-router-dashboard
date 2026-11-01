@@ -14,6 +14,7 @@ type DetailLayoutProps = {
 	title: string;
 	id: string;
 	media?: ReactNode;
+	actions?: ReactNode;
 	tags?: string[];
 	facts: DetailFact[];
 	tabsLabel: string;
@@ -26,6 +27,7 @@ export function DetailLayout({
 	title,
 	id,
 	media,
+	actions,
 	tags = [],
 	facts,
 	tabsLabel,
@@ -44,6 +46,7 @@ export function DetailLayout({
 							<CopyButton value={id} />
 						</div>
 					</div>
+					{actions}
 				</div>
 				{tags.length > 0 && (
 					<ul className="flex flex-wrap gap-1">

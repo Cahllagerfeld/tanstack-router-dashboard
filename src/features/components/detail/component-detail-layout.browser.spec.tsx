@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
@@ -7,6 +8,11 @@ import { m } from "@/paraglide/messages";
 
 import type { Component } from "../model";
 import { ComponentDetailLayout } from "./component-detail-layout";
+
+const { deleteRequest, navigate } = vi.hoisted(() => ({
+	deleteRequest: vi.fn(),
+	navigate: vi.fn(),
+}));
 
 vi.mock("@tanstack/react-router", () => ({
 	Link: ({
@@ -27,7 +33,12 @@ vi.mock("@tanstack/react-router", () => ({
 		() =>
 		({ to }: { to: string }) =>
 			to === "/infra/components/$component_id",
+	useNavigate: () => navigate,
 }));
+vi.mock("@/shared/api/client", () => ({
+	apiClient: { DELETE: deleteRequest },
+}));
+vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
 
 const component: Component = {
 	id: "component-id",
@@ -70,6 +81,31 @@ test("shows the identity, facts, labels and stack count", async () => {
 		)
 		.toBeVisible();
 	await expect.element(page.getByText("tab body")).toBeVisible();
+});
+
+test("deleting from the header returns to the Component list", async () => {
+	deleteRequest.mockResolvedValue({
+		data: null,
+		error: undefined,
+		response: new Response(),
+	});
+	await render(
+		<QueryClientProvider client={new QueryClient()}>
+			<ComponentDetailLayout component={component} stackCount={0}>
+				<p>tab body</p>
+			</ComponentDetailLayout>
+		</QueryClientProvider>
+	);
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+	await page.getByRole("button", { name: m.common_action_delete() }).click();
+
+	await expect
+		.poll(() => navigate.mock.calls)
+		.toEqual([[{ to: "/infra/components" }]]);
 });
 
 test("marks absent facts as unavailable", async () => {

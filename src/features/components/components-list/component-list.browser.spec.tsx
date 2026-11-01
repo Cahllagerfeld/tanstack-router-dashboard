@@ -103,6 +103,23 @@ test("lists the filtered page of Components with links and pagination", async ()
 	});
 });
 
+test("offers deleting a Component from its row actions", async () => {
+	await renderList([
+		{ id: "component-1", name: "local-store", permission_denied: false },
+	]);
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(m.components_delete_description({ name: "local-store" }))
+		)
+		.toBeVisible();
+});
+
 test("keeps optional values unavailable for a permission-denied Component", async () => {
 	await renderList(
 		[{ id: "component-1", name: "local-store", permission_denied: true }],
