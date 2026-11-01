@@ -211,12 +211,14 @@ function ResponsiveAlertDialogAction({
 type ResponsiveAlertDialogCancelProps = {
 	children?: React.ReactNode;
 	className?: string;
+	disabled?: boolean;
 	variant?: "outline" | "ghost" | "secondary";
 };
 
 function ResponsiveAlertDialogCancel({
 	children,
 	className,
+	disabled,
 	variant = "outline",
 }: ResponsiveAlertDialogCancelProps) {
 	const { isMobile, onOpenChange } = useResponsiveAlertDialog();
@@ -227,6 +229,7 @@ function ResponsiveAlertDialogCancel({
 			<Button
 				variant={variant}
 				className={cn("w-full", className)}
+				disabled={disabled}
 				onClick={() => onOpenChange?.(false)}
 			>
 				{children}
@@ -235,7 +238,11 @@ function ResponsiveAlertDialogCancel({
 	}
 
 	return (
-		<AlertDialogCancel variant={variant} className={className}>
+		<AlertDialogCancel
+			variant={variant}
+			className={className}
+			disabled={disabled}
+		>
 			{children}
 		</AlertDialogCancel>
 	);

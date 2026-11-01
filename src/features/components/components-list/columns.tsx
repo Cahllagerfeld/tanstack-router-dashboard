@@ -8,6 +8,7 @@ import type { DataTableFeatures } from "@/shared/components/tables/data-table-fe
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import { Checkbox } from "@/shared/ui/checkbox";
 
+import { ComponentActions } from "../delete/component-actions";
 import type { Component } from "../model";
 
 export function useComponentColumns(): ColumnDef<
@@ -116,6 +117,15 @@ export function useComponentColumns(): ColumnDef<
 					</p>
 				);
 			},
+		},
+		{
+			id: "actions",
+			enableResizing: false,
+			size: 80,
+			minSize: 80,
+			maxSize: 120,
+			enableHiding: false,
+			cell: ({ row }) => <ComponentActions component={row.original} />,
 		},
 	];
 }

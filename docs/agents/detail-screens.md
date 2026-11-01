@@ -6,7 +6,7 @@ A **Detail Screen** presents one record through `DetailLayout` in `src/shared/co
 
 From top to bottom:
 
-1. **Header**: name, copyable ID, and optional media and tags.
+1. **Header**: name, copyable ID, and optional media, actions, and tags.
 2. **Fact strip**: up to six scalar facts about the record.
 3. **Tabs**: sticky, and each one is a child route.
 4. **Tab body**: full width, with each tab setting its own padding.
@@ -29,7 +29,7 @@ The screen is done when every tab has a URL, a reload keeps the tab, an empty re
 - Show counts only on tabs holding a list, and only when the count is cheap to load.
 - Tables run edge to edge. Other tab bodies use `ContentInset`, with no cards.
 - Render environment variable keys verbatim. `ObjectRenderer` title-cases keys, so it suits configuration only.
-- `DetailLayout` takes slots and stays free of entity knowledge. Each new slot, such as actions, status, or description, arrives with the first screen that needs it.
+- `DetailLayout` takes slots and stays free of entity knowledge. Each new slot, such as status or description, arrives with the first screen that needs it.
 
 ## Open question
 

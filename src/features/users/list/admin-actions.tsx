@@ -2,7 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { m } from "@/paraglide/messages";
-import { BaseTableActions } from "@/shared/components/base-table-actions";
+import { ActionsMenu } from "@/shared/components/actions-menu";
 import { DropdownMenuItem } from "@/shared/ui/dropdown-menu";
 
 import { DeleteUserAlert } from "../delete/delete-user-alert";
@@ -13,12 +13,12 @@ export function AdminActions({ user }: { user: User }) {
 
 	return (
 		<>
-			<BaseTableActions>
+			<ActionsMenu>
 				<DropdownMenuItem onClick={() => setDeleteOpen(true)}>
 					<Trash2 className="text-muted-foreground" />
 					<span>{m.users_action_delete()}</span>
 				</DropdownMenuItem>
-			</BaseTableActions>
+			</ActionsMenu>
 			{deleteOpen && (
 				<DeleteUserAlert user={user} onClose={() => setDeleteOpen(false)} />
 			)}

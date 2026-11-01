@@ -1,8 +1,8 @@
 import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
+import { expectData, expectOptionalData } from "@/shared/api/errors";
 import { mapPage } from "@/shared/lib/page";
 
-import type { ComponentListInput } from "../model";
+import type { ComponentListInput, DeleteComponentInput } from "../model";
 import { componentFromApi } from "./map";
 
 export async function fetchComponentList(params: ComponentListInput) {
@@ -23,4 +23,11 @@ export async function fetchComponentDetail(componentId: string) {
 		},
 	});
 	return componentFromApi(expectData(response));
+}
+
+export async function deleteComponent({ componentId }: DeleteComponentInput) {
+	const response = await apiClient.DELETE("/api/v1/components/{component_id}", {
+		params: { path: { component_id: componentId } },
+	});
+	expectOptionalData(response);
 }

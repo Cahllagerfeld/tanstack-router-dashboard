@@ -106,7 +106,7 @@ function expectDeleteTarget(name: string) {
 	return expect
 		.element(
 			page
-				.getByRole("dialog", { name: m.projects_delete_title() })
+				.getByRole("dialog", { name: m.common_delete_title() })
 				.getByText(m.projects_delete_description({ name }))
 		)
 		.toBeInTheDocument();
