@@ -24,7 +24,7 @@ The screen is done when every tab has a URL, a reload keeps the tab, an empty re
 
 ## Rules
 
-- Tabs are fixed per entity type, so they hold their position between records. An empty tab renders an empty state.
+- Tabs are fixed per entity type, so they hold their position between records. An empty tab renders an empty state: a table passes `TableEmpty` through the `empty` prop of `DataTable`, and only a user filter earns `TableNoMatches`.
 - A fact never repeats the header or a tab count.
 - Show counts only on tabs holding a list, and only when the count is cheap to load.
 - Tables run edge to edge. Other tab bodies use `ContentInset`, with no cards.

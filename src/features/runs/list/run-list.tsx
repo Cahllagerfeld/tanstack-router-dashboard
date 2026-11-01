@@ -3,10 +3,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/shared/components/tables/data-table";
+import { TableEmpty } from "@/shared/components/tables/table-empty";
 import { TableFooter } from "@/shared/components/tables/table-footer";
 import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
+import { getEntityIcon } from "@/shared/lib/entity-icons";
 
 import { runQueries } from "../data/queries";
 import type { ProjectRunListInput } from "../model";
@@ -32,7 +34,16 @@ export function RunList({ queries }: Props) {
 					<DataTableViewOptions table={table} />
 				</TableToolbar.End>
 			</TableToolbar>
-			<DataTable table={table} />
+			<DataTable
+				table={table}
+				empty={
+					<TableEmpty
+						icon={getEntityIcon("run")}
+						title={m.runs_empty_title()}
+						description={m.runs_empty_description()}
+					/>
+				}
+			/>
 			<TableFooter page={runs} />
 		</TableView>
 	);

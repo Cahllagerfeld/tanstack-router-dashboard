@@ -46,7 +46,7 @@ test("a user can apply a Component type", async () => {
 	expect(appliedSearch()).toEqual({
 		replace: true,
 		to: ".",
-		search: { page: 3, type: "artifact_store" },
+		search: { type: "artifact_store" },
 	});
 });
 
@@ -62,6 +62,19 @@ test("a user can clear the active Component type", async () => {
 	expect(appliedSearch()).toEqual({
 		replace: true,
 		to: ".",
-		search: { page: 3, type: undefined },
+		search: { type: undefined },
 	});
+});
+
+test("the form follows a filter cleared from outside it", async () => {
+	const screen = await render(
+		<TypeFilter queryName="type" filter="orchestrator" />
+	);
+
+	await screen.rerender(<TypeFilter queryName="type" />);
+	await page.getByRole("button", { name: m.components_filter_type() }).click();
+
+	await expect
+		.element(page.getByText(m.components_filter_select()))
+		.toBeVisible();
 });

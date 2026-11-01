@@ -43,8 +43,12 @@ const members = {
 	],
 };
 
-function respond(path: string, identityIsAdmin: boolean) {
-	if (path === "/api/v1/users") return members;
+function respond(
+	path: string,
+	identityIsAdmin: boolean,
+	memberPage: object = members
+) {
+	if (path === "/api/v1/users") return memberPage;
 	return {
 		id: "ada-id",
 		name: "ada",
@@ -55,13 +59,17 @@ function respond(path: string, identityIsAdmin: boolean) {
 
 function renderUserList({
 	isAdmin,
+	memberPage,
 	name,
+	onClearSearch = vi.fn(),
 }: {
 	isAdmin: boolean;
+	memberPage?: object;
 	name?: string;
+	onClearSearch?: () => void;
 }) {
 	get.mockImplementation(async (path: string) => ({
-		data: respond(path, isAdmin),
+		data: respond(path, isAdmin, memberPage),
 		error: undefined,
 		response: new Response(),
 	}));
@@ -72,7 +80,7 @@ function renderUserList({
 	return render(
 		<QueryClientProvider client={queryClient}>
 			<Suspense fallback={null}>
-				<UserList queries={{ name }} />
+				<UserList queries={{ name }} onClearSearch={onClearSearch} />
 			</Suspense>
 		</QueryClientProvider>
 	);
@@ -103,6 +111,22 @@ test("requests the filtered list newest first", async () => {
 	expect(get).toHaveBeenCalledWith("/api/v1/users", {
 		params: { query: { name: "contains:ada", sort_by: "desc:created" } },
 	});
+});
+
+test("a search with no matches offers clearing it", async () => {
+	const onClearSearch = vi.fn();
+	const screen = await renderUserList({
+		isAdmin: false,
+		memberPage: { ...members, total: 0, items: [] },
+		name: "contains:nobody",
+		onClearSearch,
+	});
+
+	await screen
+		.getByRole("button", { name: m.common_table_clear_filters() })
+		.click();
+
+	expect(onClearSearch).toHaveBeenCalledOnce();
 });
 
 test("hides the actions menu from a non-admin", async () => {

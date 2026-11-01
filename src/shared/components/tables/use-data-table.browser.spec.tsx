@@ -51,7 +51,7 @@ function Fixture({
 	return (
 		<>
 			<DataTableViewOptions table={table} />
-			<DataTable table={table} />
+			<DataTable table={table} empty={null} />
 		</>
 	);
 }

@@ -39,6 +39,17 @@ function renderList(items: unknown[]) {
 	);
 }
 
+test("a Component in no Stack shows the relation empty state with no filter to clear", async () => {
+	await renderList([]);
+
+	await expect
+		.element(page.getByText(m.stacks_related_empty_title()))
+		.toBeVisible();
+	await expect
+		.element(page.getByRole("button", { name: m.common_table_clear_filters() }))
+		.not.toBeInTheDocument();
+});
+
 test("lists the Stacks filtered by the Component with their creators", async () => {
 	await renderList([
 		{

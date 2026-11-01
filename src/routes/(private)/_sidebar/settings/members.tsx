@@ -59,6 +59,7 @@ function RouteComponent() {
 		<Suspense fallback={<UserListSkeleton />}>
 			<UserList
 				queries={queries}
+				onClearSearch={() => setSearchValue("")}
 				toolbarStart={
 					<UserListSearchbar
 						searchValue={getFilterValue(name ?? "")}

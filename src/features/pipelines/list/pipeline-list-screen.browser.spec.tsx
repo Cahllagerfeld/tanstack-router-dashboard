@@ -118,13 +118,13 @@ test("marks a missing description and creation date as not available", async () 
 		.toBeInTheDocument();
 });
 
-test("an empty Project shows the empty row and no pagination", async () => {
+test("an empty Project shows the empty state and no pagination", async () => {
 	respondWith({ items: [] });
 
 	await renderLoaded();
 
 	await expect
-		.element(page.getByText(m.common_table_no_results()))
+		.element(page.getByText(m.pipelines_empty_title()))
 		.toBeInTheDocument();
 	await expect
 		.element(page.getByLabelText(m.common_pagination_next_label()))

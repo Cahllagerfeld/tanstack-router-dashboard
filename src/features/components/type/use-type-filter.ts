@@ -6,23 +6,36 @@ import { useForm } from "react-hook-form";
 import type { ComponentType } from "./model";
 import { type TypeFilterForm, typeFilterFormSchema } from "./schema";
 
+/** Pagination restarts because the API rejects a page past the filtered total. */
+function useApplyType() {
+	const navigate = useNavigate();
+
+	return (type: ComponentType | undefined) =>
+		navigate({
+			replace: true,
+			to: ".",
+			search: (prev) => ({ ...prev, type, page: undefined }),
+		});
+}
+
+export function useClearTypeFilter() {
+	const applyType = useApplyType();
+
+	return () => applyType(undefined);
+}
+
 export function useTypeFilter(filter: ComponentType | undefined) {
 	const [open, setOpen] = useState(false);
-	const navigate = useNavigate();
+	const applyType = useApplyType();
 	const form = useForm<TypeFilterForm>({
 		resolver: zodResolver(typeFilterFormSchema),
-		defaultValues: {
-			type: filter,
-		},
+		// The filter can also change outside this form, from the empty state.
+		values: { type: filter },
 	});
 
 	function handleApplyFilter({ type }: TypeFilterForm) {
 		setOpen(false);
-		navigate({
-			replace: true,
-			to: ".",
-			search: (prev) => ({ ...prev, type }),
-		});
+		applyType(type);
 	}
 
 	function handleClearFilter() {
