@@ -24,7 +24,6 @@ const sharedUnits = {
 		"display-date",
 		"exclusive-hotkey-scope",
 		"group-tabs",
-		"no-item-fallback",
 		"not-available-tag",
 		"object-renderer",
 		"rail",

@@ -5,6 +5,7 @@ import { sessionQueries } from "@/features/session";
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
 import { DataTable } from "@/shared/components/tables/data-table";
+import { TableNoMatches } from "@/shared/components/tables/table-empty";
 import { TableFooter } from "@/shared/components/tables/table-footer";
 import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
@@ -18,9 +19,11 @@ import { useUserListColumns } from "./columns";
 type Props = {
 	queries: UserListInput;
 	toolbarStart?: ReactNode;
+	/** The current user is always listed, so only a search can empty this list. */
+	onClearSearch: () => void;
 };
 
-export function UserList({ queries, toolbarStart }: Props) {
+export function UserList({ queries, toolbarStart, onClearSearch }: Props) {
 	const { data: userList } = useSuspenseQuery(userQueries.list(queries));
 	const { data: identity } = useSuspenseQuery(sessionQueries.currentIdentity());
 	const columns = useUserListColumns(!!identity.isAdmin);
@@ -40,7 +43,10 @@ export function UserList({ queries, toolbarStart }: Props) {
 					{identity.isAdmin ? <InviteMemberDialog /> : null}
 				</TableToolbar.End>
 			</TableToolbar>
-			<DataTable table={table} />
+			<DataTable
+				table={table}
+				empty={<TableNoMatches onClear={onClearSearch} />}
+			/>
 			<TableFooter page={userList} />
 		</TableView>
 	);

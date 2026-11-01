@@ -1,6 +1,6 @@
 import type { ReactTable, RowData } from "@tanstack/react-table";
+import type { ReactNode } from "react";
 
-import { m } from "@/paraglide/messages";
 import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
 import { cn } from "@/shared/lib/cn";
 import {
@@ -14,12 +14,18 @@ import {
 
 export type DataTableProps<TData extends RowData> = {
 	table: ReactTable<DataTableFeatures, TData>;
+	/** Replaces the whole table when there are no rows. */
+	empty: ReactNode;
 };
 
 export function DataTable<TData extends RowData>({
 	table,
+	empty,
 }: DataTableProps<TData>) {
 	"use no memo";
+
+	const rows = table.getRowModel().rows;
+	if (rows.length === 0) return empty;
 
 	return (
 		<Table className="w-full min-w-[800px] table-fixed">
@@ -58,37 +64,26 @@ export function DataTable<TData extends RowData>({
 				))}
 			</TableHeader>
 			<TableBody>
-				{table.getRowModel().rows?.length ? (
-					table.getRowModel().rows.map((row) => (
-						<TableRow
-							key={row.id}
-							className="h-12 border-muted"
-							data-state={row.getIsSelected() ? "selected" : undefined}
-						>
-							{row.getVisibleCells().map((cell) => (
-								<TableCell
-									className={cn(
-										"truncate first:pl-4 last:pr-4",
-										cell.column.columnDef.meta?.className
-									)}
-									key={cell.id}
-									style={{ width: `${cell.column.getSize()}px` }}
-								>
-									<table.FlexRender cell={cell} />
-								</TableCell>
-							))}
-						</TableRow>
-					))
-				) : (
-					<TableRow>
-						<TableCell
-							colSpan={table.getAllColumns().length}
-							className="h-24 text-center"
-						>
-							{m.common_table_no_results()}
-						</TableCell>
+				{rows.map((row) => (
+					<TableRow
+						key={row.id}
+						className="h-12 border-muted"
+						data-state={row.getIsSelected() ? "selected" : undefined}
+					>
+						{row.getVisibleCells().map((cell) => (
+							<TableCell
+								className={cn(
+									"truncate first:pl-4 last:pr-4",
+									cell.column.columnDef.meta?.className
+								)}
+								key={cell.id}
+								style={{ width: `${cell.column.getSize()}px` }}
+							>
+								<table.FlexRender cell={cell} />
+							</TableCell>
+						))}
 					</TableRow>
-				)}
+				))}
 			</TableBody>
 		</Table>
 	);

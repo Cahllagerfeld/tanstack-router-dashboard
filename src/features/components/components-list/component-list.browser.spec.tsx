@@ -9,7 +9,10 @@ import { m } from "@/paraglide/messages";
 
 import { ComponentList } from "./component-list";
 
-const { getRequest } = vi.hoisted(() => ({ getRequest: vi.fn() }));
+const { getRequest, navigate } = vi.hoisted(() => ({
+	getRequest: vi.fn(),
+	navigate: vi.fn(),
+}));
 
 vi.mock("@/shared/api/client", () => ({ apiClient: { GET: getRequest } }));
 
@@ -29,7 +32,7 @@ vi.mock("@tanstack/react-router", () => ({
 			{...props}
 		/>
 	),
-	useNavigate: () => vi.fn(),
+	useNavigate: () => navigate,
 }));
 
 beforeEach(() => {
@@ -37,7 +40,13 @@ beforeEach(() => {
 	localStorage.clear();
 });
 
-function renderList(items: unknown[], total = items.length) {
+function renderList(
+	items: unknown[],
+	total = items.length,
+	filter: Pick<ComponentProps<typeof ComponentList>, "type"> = {
+		type: "artifact_store",
+	}
+) {
 	getRequest.mockResolvedValue({
 		data: { index: 2, max_size: 20, total, total_pages: 2, items },
 		error: undefined,
@@ -47,7 +56,7 @@ function renderList(items: unknown[], total = items.length) {
 	return render(
 		<QueryClientProvider client={new QueryClient()}>
 			<Suspense>
-				<ComponentList page={2} size={20} type="artifact_store" />
+				<ComponentList page={2} size={20} type={filter.type} />
 			</Suspense>
 		</QueryClientProvider>
 	);
@@ -101,6 +110,40 @@ test("lists the filtered page of Components with links and pagination", async ()
 			},
 		},
 	});
+});
+
+test("a type filter with no matches keeps the toolbar and offers clearing it", async () => {
+	await renderList([], 0);
+
+	await expect
+		.element(page.getByText(m.common_table_no_matches_title()))
+		.toBeVisible();
+	await expect
+		.element(page.getByRole("button", { name: "Artifact Store" }))
+		.toBeVisible();
+	await expect.element(page.getByRole("table")).not.toBeInTheDocument();
+
+	await page
+		.getByRole("button", { name: m.common_table_clear_filters() })
+		.click();
+
+	const [{ search }] = navigate.mock.lastCall as [
+		{ search: (previous: object) => unknown },
+	];
+	expect(search({ page: 3, size: 20, type: "artifact_store" })).toEqual({
+		size: 20,
+	});
+});
+
+test("an unfiltered empty list explains itself without offering to clear", async () => {
+	await renderList([], 0, { type: undefined });
+
+	await expect
+		.element(page.getByText(m.components_empty_title()))
+		.toBeVisible();
+	await expect
+		.element(page.getByRole("button", { name: m.common_table_clear_filters() }))
+		.not.toBeInTheDocument();
 });
 
 test("offers deleting a Component from its row actions", async () => {
