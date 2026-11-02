@@ -91,6 +91,8 @@ All application-owned user-facing strings must use Paraglide messages and have b
 
 If a shadcn primitive exists for the UI element needed, always use the shadcn one. Do not build a custom equivalent when a shadcn component already covers it. If not installed, install it.
 
+Secondary navigation that never collapses, such as the Settings nav, is a plain `<nav>` composed from shadcn controls (`Input`, `buttonVariants`, `Select`), not the shadcn `Sidebar`. Its provider, collapse state, keyboard toggle, and mobile sheet add behavior such a nav does not use.
+
 ### Forms
 
 Always handle forms with Zod schemas, React Hook Form (`useForm` + `zodResolver`), and the shadcn `Field` primitives (`Field`, `FieldLabel`, `FieldError`, `FieldGroup`, etc.) wired via `Controller`. Do not roll custom form state or validation when this stack covers it.
