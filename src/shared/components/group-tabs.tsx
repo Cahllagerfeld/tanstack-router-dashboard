@@ -1,5 +1,7 @@
 import { Link, type LinkProps, useMatchRoute } from "@tanstack/react-router";
+import { useId } from "react";
 
+import { ActiveIndicator } from "@/shared/components/active-indicator";
 import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 
 export type GroupTab = {
@@ -18,6 +20,8 @@ export function GroupTabs({
 	tabs: GroupTab[];
 }) {
 	const matchRoute = useMatchRoute();
+	// One indicator per tab row, so rows on screen together never trade it.
+	const indicatorId = useId();
 	const activeTab = tabs.find((tab) =>
 		matchRoute({ to: tab.to, params: tab.params })
 	);
@@ -36,9 +40,15 @@ export function GroupTabs({
 						key={tab.to}
 						nativeButton={false}
 						value={tab.to}
-						className="flex-none px-0 font-normal group-data-horizontal/tabs:after:-bottom-px data-active:font-semibold"
+						className="flex-none px-0 font-normal after:hidden data-active:font-semibold"
 						render={
 							<Link to={tab.to} params={tab.params}>
+								{tab.to === activeTab.to && (
+									<ActiveIndicator
+										layoutId={indicatorId}
+										className="inset-x-0 -bottom-px h-0.5 bg-foreground"
+									/>
+								)}
 								{tab.label}
 								{tab.count !== undefined && (
 									<span className="text-xs font-normal text-muted-foreground tabular-nums">

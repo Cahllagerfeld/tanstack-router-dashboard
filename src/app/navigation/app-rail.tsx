@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import * as motion from "motion/react-m";
 
 import { useKeyboardShortcutsEnabled } from "@/features/keyboard-shortcuts/ui";
 import { RailProjectSwitcher } from "@/features/projects/ui";
 import { m } from "@/paraglide/messages";
+import { ActiveIndicator } from "@/shared/components/active-indicator";
 import { RailTooltip } from "@/shared/components/rail/rail-tooltip";
 import { cn } from "@/shared/lib/cn";
 import { buttonVariants } from "@/shared/ui/button";
@@ -91,11 +91,9 @@ function RailNavLink({
 					)}
 				>
 					{item.isActive && (
-						<motion.span
+						<ActiveIndicator
 							layoutId="rail-active-indicator"
-							aria-hidden="true"
-							transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
-							className="absolute inset-0 -z-10 rounded-[inherit] bg-background shadow-xs"
+							className="inset-0 -z-10 rounded-[inherit] bg-background shadow-xs"
 						/>
 					)}
 					<item.icon aria-hidden="true" />

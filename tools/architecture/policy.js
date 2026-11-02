@@ -16,6 +16,7 @@ const owners = [
 const sharedUnits = {
 	components: [
 		"actions-menu",
+		"active-indicator",
 		"content-inset",
 		"copy-button",
 		"debounced-input",
