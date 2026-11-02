@@ -93,6 +93,16 @@ If a shadcn primitive exists for the UI element needed, always use the shadcn on
 
 Secondary navigation that never collapses, such as the Settings nav, is a plain `<nav>` composed from shadcn controls (`Input`, `buttonVariants`, `Select`), not the shadcn `Sidebar`. Its provider, collapse state, keyboard toggle, and mobile sheet add behavior such a nav does not use.
 
+### Motion
+
+Motion is for subtle microinteractions: short springs of about 0.35s or less with little bounce, mostly opacity and position. Page and route transitions are out of scope for now.
+
+- Reach for the Shared pieces first: `ActiveIndicator` slides a navigation's active state, and `IconSwap` crossfades a toggled icon. Rows that can be on screen together need distinct `layoutId`s, as `GroupTabs` gets from `useId`.
+- Import components as `import * as motion from "motion/react-m"`. `providers.tsx` runs `LazyMotion` in strict mode, so the full `motion` component throws, and the alias keeps clear of Paraglide's `m`.
+- Animation features load lazily from `shared/lib/motion`, which keeps the main bundle flat. Import `domMax` or `domAnimation` only there.
+- `MotionConfig reducedMotion="user"` already honors reduced motion app-wide.
+- Dialogs, popovers, menus, tooltips, and toasts keep their `tw-animate-css` and Sonner animations.
+
 ### Forms
 
 Always handle forms with Zod schemas, React Hook Form (`useForm` + `zodResolver`), and the shadcn `Field` primitives (`Field`, `FieldLabel`, `FieldError`, `FieldGroup`, etc.) wired via `Controller`. Do not roll custom form state or validation when this stack covers it.
