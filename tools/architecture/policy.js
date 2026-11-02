@@ -6,6 +6,7 @@ const owners = [
 	"pipelines",
 	"projects",
 	"runs",
+	"secrets",
 	"server-activation",
 	"session",
 	"stacks",

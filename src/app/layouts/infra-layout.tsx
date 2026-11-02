@@ -11,6 +11,7 @@ export function InfraLayout() {
 				tabs={[
 					{ label: m.stacks_navigation_label(), to: "/infra/stacks" },
 					{ label: m.components_navigation_label(), to: "/infra/components" },
+					{ label: m.secrets_navigation_label(), to: "/infra/secrets" },
 				]}
 			/>
 			<Outlet />
