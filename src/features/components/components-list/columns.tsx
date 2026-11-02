@@ -113,7 +113,7 @@ export function useComponentColumns(): ColumnDef<
 				if (!created) return <NotAvailableTag />;
 				return (
 					<p>
-						<DisplayDate short date={created} />
+						<DisplayDate date={created} />
 					</p>
 				);
 			},

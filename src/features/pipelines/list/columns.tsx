@@ -39,7 +39,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 			cell: ({ row }) => {
 				const created = row.original.created;
 				if (!created) return <NotAvailableTag />;
-				return <DisplayDate short date={created} />;
+				return <DisplayDate date={created} />;
 			},
 			meta: {
 				className: "w-[20%]",
