@@ -6,6 +6,11 @@ export type Project = {
 	displayName: string | undefined;
 };
 
+/** A Project as its detail endpoint returns it, with the hydrated description. */
+export type ProjectDetail = Project & {
+	description: string | undefined;
+};
+
 export type ProjectListInput = ApiQuery<"/api/v1/projects">;
 
 export type CreateProjectInput = {

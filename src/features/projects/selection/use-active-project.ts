@@ -6,8 +6,9 @@ import { resolveUnscopedProject } from "./model";
 import { getProjectFromLocalStorage } from "./storage";
 
 /**
- * The Project validated by the current Project route, otherwise the one the app
- * would open by default. A Project route never falls back to another Project.
+ * The Project validated by the current Project route or Project settings route,
+ * otherwise the one the app would open by default. A Project-scoped route never
+ * falls back to another Project.
  */
 export function useActiveProject() {
 	const { data, isError, isFetching } = useSuspenseQuery(
@@ -17,14 +18,19 @@ export function useActiveProject() {
 		from: "/(private)/_sidebar/projects/$project_id",
 		shouldThrow: false,
 	});
+	const settingsMatch = useMatch({
+		from: "/(private)/_sidebar/settings/projects/$project_id",
+		shouldThrow: false,
+	});
+	const scopedMatch = projectMatch ?? settingsMatch;
 	const routeProject =
-		projectMatch?.status === "success"
-			? projectMatch.loaderData?.project
+		scopedMatch?.status === "success"
+			? scopedMatch.loaderData?.project
 			: undefined;
 
 	return {
 		projects: data.items,
-		activeProject: projectMatch
+		activeProject: scopedMatch
 			? routeProject
 			: resolveUnscopedProject(
 					data.items,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { projectFromApi } from "./map";
+import { projectDetailFromApi, projectFromApi } from "./map";
 
 describe("projectFromApi", () => {
 	it("uses the display name supplied by the API", () => {
@@ -30,5 +30,44 @@ describe("projectFromApi", () => {
 				permission_denied: true,
 			})
 		).toMatchObject({ displayName: "fraud-detection" });
+	});
+});
+
+describe("projectDetailFromApi", () => {
+	it("adds the hydrated description", () => {
+		expect(
+			projectDetailFromApi({
+				id: "project-id",
+				name: "fraud-detection",
+				permission_denied: false,
+				metadata: {
+					description: "Detect suspicious transactions",
+					project_metadata: {},
+				},
+			})
+		).toEqual({
+			id: "project-id",
+			name: "fraud-detection",
+			displayName: "fraud-detection",
+			description: "Detect suspicious transactions",
+		});
+	});
+
+	it("treats an empty or unhydrated description as absent", () => {
+		const project = {
+			id: "project-id",
+			name: "fraud-detection",
+			permission_denied: false,
+		};
+
+		expect(
+			projectDetailFromApi({
+				...project,
+				metadata: { description: "", project_metadata: {} },
+			})
+		).toMatchObject({ description: undefined });
+		expect(projectDetailFromApi(project)).toMatchObject({
+			description: undefined,
+		});
 	});
 });

@@ -27,7 +27,7 @@ function RouteComponent() {
 						<BreadcrumbsContainer />
 					</header>
 					<ScrollArea className="min-h-0 flex-1">
-						<div className="flex flex-1 flex-col">
+						<div className="flex min-h-full flex-1 flex-col">
 							<Outlet />
 						</div>
 					</ScrollArea>

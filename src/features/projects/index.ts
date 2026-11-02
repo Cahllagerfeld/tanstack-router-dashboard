@@ -1,5 +1,5 @@
 export { projectQueries } from "./data/queries";
-export { getProjectLabel } from "./model";
+export { getProjectLabel, type Project, type ProjectDetail } from "./model";
 export { getIllustrationUrl, resolveProject } from "./selection/model";
 export {
 	getProjectFromLocalStorage,
