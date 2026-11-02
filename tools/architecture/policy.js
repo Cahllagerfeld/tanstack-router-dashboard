@@ -16,6 +16,7 @@ const owners = [
 const sharedUnits = {
 	components: [
 		"actions-menu",
+		"active-indicator",
 		"content-inset",
 		"copy-button",
 		"debounced-input",
@@ -24,6 +25,7 @@ const sharedUnits = {
 		"display-date",
 		"exclusive-hotkey-scope",
 		"group-tabs",
+		"icon-swap",
 		"not-available-tag",
 		"object-renderer",
 		"rail",
@@ -38,6 +40,7 @@ const sharedUnits = {
 		"entity-icons",
 		"localization-policy",
 		"localstorage",
+		"motion",
 		"page",
 		"strings",
 		"type-guards",
