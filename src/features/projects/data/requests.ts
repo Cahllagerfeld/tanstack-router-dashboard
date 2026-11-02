@@ -7,7 +7,7 @@ import type {
 	DeleteProjectInput,
 	ProjectListInput,
 } from "../model";
-import { projectFromApi } from "./map";
+import { projectDetailFromApi, projectFromApi } from "./map";
 
 export async function fetchProjectList(params: ProjectListInput) {
 	const response = await apiClient.GET("/api/v1/projects", {
@@ -29,7 +29,7 @@ export async function fetchProjectDetail(projectId: string) {
 			},
 		}
 	);
-	return projectFromApi(expectData(response));
+	return projectDetailFromApi(expectData(response));
 }
 
 export async function createProject(payload: CreateProjectInput) {

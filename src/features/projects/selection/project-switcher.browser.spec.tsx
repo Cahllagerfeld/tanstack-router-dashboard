@@ -14,9 +14,10 @@ type ProjectMatch = {
 	loaderData?: { project: (typeof projects)[number] };
 };
 
-const { getRequest, match } = vi.hoisted(() => ({
+const { getRequest, match, settingsMatch } = vi.hoisted(() => ({
 	getRequest: vi.fn(),
 	match: { current: undefined as ProjectMatch | undefined },
+	settingsMatch: { current: undefined as ProjectMatch | undefined },
 }));
 
 vi.mock("@/shared/api/client", () => ({ apiClient: { GET: getRequest } }));
@@ -40,7 +41,8 @@ vi.mock("@tanstack/react-router", () => ({
 			{...props}
 		/>
 	),
-	useMatch: () => match.current,
+	useMatch: ({ from }: { from: string }) =>
+		from.includes("/settings/") ? settingsMatch.current : match.current,
 	useNavigate: () => vi.fn(),
 }));
 
@@ -53,6 +55,7 @@ beforeEach(() => {
 	vi.clearAllMocks();
 	localStorage.clear();
 	match.current = routeMatch(projects[0]!);
+	settingsMatch.current = undefined;
 });
 
 function routeMatch(project: (typeof projects)[number]) {
@@ -100,6 +103,28 @@ test("shows the last opened Project outside of a Project route", async () => {
 	await renderSwitcher().screen;
 
 	await expect.element(switcherTrigger("Churn Model")).toBeInTheDocument();
+});
+
+test("shows the Project of a Project settings route", async () => {
+	match.current = undefined;
+	settingsMatch.current = routeMatch(projects[1]!);
+	localStorage.setItem("zenml.projects.selected", "id-1");
+
+	await renderSwitcher().screen;
+
+	await expect.element(switcherTrigger("Churn Model")).toBeInTheDocument();
+});
+
+test("falls back to no Project while a Project settings route loads", async () => {
+	match.current = undefined;
+	settingsMatch.current = { status: "pending" };
+	localStorage.setItem("zenml.projects.selected", "id-1");
+
+	await renderSwitcher().screen;
+
+	await expect
+		.element(page.getByRole("button", { name: m.projects_switcher_select() }))
+		.toBeInTheDocument();
 });
 
 function expectDeleteTarget(name: string) {
