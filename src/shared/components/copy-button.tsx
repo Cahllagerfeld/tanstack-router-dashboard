@@ -1,6 +1,7 @@
 import { Check, Copy } from "lucide-react";
 
 import { m } from "@/paraglide/messages";
+import { IconSwap } from "@/shared/components/icon-swap";
 import { useCopy } from "@/shared/hooks/use-copy";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
@@ -23,11 +24,13 @@ export function CopyButton({ value, className }: CopyButtonProps) {
 				copied ? m.common_action_copy_success() : m.common_action_copy()
 			}
 		>
-			{copied ? (
-				<Check className="size-3.5 text-green-500" />
-			) : (
-				<Copy className="size-3.5" />
-			)}
+			<IconSwap swapKey={copied ? "copied" : "copy"}>
+				{copied ? (
+					<Check className="size-3.5 text-green-500" />
+				) : (
+					<Copy className="size-3.5" />
+				)}
+			</IconSwap>
 		</Button>
 	);
 }

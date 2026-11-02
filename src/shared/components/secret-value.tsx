@@ -2,6 +2,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 import { m } from "@/paraglide/messages";
+import { IconSwap } from "@/shared/components/icon-swap";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
 
@@ -32,11 +33,13 @@ export function SecretValue({
 					revealed ? m.common_action_hide_value() : m.common_action_show_value()
 				}
 			>
-				{revealed ? (
-					<EyeOff className="size-3.5" />
-				) : (
-					<Eye className="size-3.5" />
-				)}
+				<IconSwap swapKey={revealed ? "hide" : "show"}>
+					{revealed ? (
+						<EyeOff className="size-3.5" />
+					) : (
+						<Eye className="size-3.5" />
+					)}
+				</IconSwap>
 			</Button>
 		</div>
 	);

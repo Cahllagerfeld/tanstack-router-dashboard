@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import * as motion from "motion/react-m";
 
 import { useKeyboardShortcutsEnabled } from "@/features/keyboard-shortcuts/ui";
 import { RailProjectSwitcher } from "@/features/projects/ui";
@@ -14,7 +15,7 @@ import { useRailHotkeys } from "./use-rail-hotkeys";
 
 const railLinkClassName = cn(
 	buttonVariants({ variant: "ghost", size: "icon-lg" }),
-	"[&_svg:not([class*='size-'])]:size-5"
+	"relative isolate [&_svg:not([class*='size-'])]:size-5"
 );
 
 export function AppRail() {
@@ -85,10 +86,18 @@ function RailNavLink({
 					className={cn(
 						railLinkClassName,
 						item.isActive
-							? "bg-background text-foreground shadow-xs hover:bg-background dark:hover:bg-background"
+							? "text-foreground hover:bg-transparent dark:hover:bg-transparent"
 							: "hover:bg-foreground/10 dark:hover:bg-foreground/10"
 					)}
 				>
+					{item.isActive && (
+						<motion.span
+							layoutId="rail-active-indicator"
+							aria-hidden="true"
+							transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
+							className="absolute inset-0 -z-10 rounded-[inherit] bg-background shadow-xs"
+						/>
+					)}
 					<item.icon aria-hidden="true" />
 				</Link>
 			}
