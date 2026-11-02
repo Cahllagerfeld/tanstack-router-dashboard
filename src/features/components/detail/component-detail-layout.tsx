@@ -57,19 +57,11 @@ export function ComponentDetailLayout({
 				},
 				{
 					label: m.common_label_created(),
-					value: created ? (
-						<DisplayDate date={created} short />
-					) : (
-						<NotAvailableTag />
-					),
+					value: created ? <DisplayDate date={created} /> : <NotAvailableTag />,
 				},
 				{
 					label: m.common_label_updated(),
-					value: updated ? (
-						<DisplayDate date={updated} short />
-					) : (
-						<NotAvailableTag />
-					),
+					value: updated ? <DisplayDate date={updated} /> : <NotAvailableTag />,
 				},
 			]}
 			tabsLabel={m.components_detail_tabs_label()}

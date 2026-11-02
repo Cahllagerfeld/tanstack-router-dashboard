@@ -20,6 +20,7 @@ import { Route as publicGridLayoutLoginRouteImport } from './routes/(public)/_gr
 import { Route as publicGridLayoutServerActivationRouteImport } from './routes/(public)/_grid-layout/server-activation'
 import { Route as privateSidebarInfraIndexRouteImport } from './routes/(private)/_sidebar/infra/index'
 import { Route as privateSidebarInfraComponentsRouteRouteImport } from './routes/(private)/_sidebar/infra/components/route'
+import { Route as privateSidebarInfraSecretsRouteRouteImport } from './routes/(private)/_sidebar/infra/secrets/route'
 import { Route as privateSidebarInfraStacksRouteRouteImport } from './routes/(private)/_sidebar/infra/stacks/route'
 import { Route as privateSidebarProjectsIndexRouteImport } from './routes/(private)/_sidebar/projects/index'
 import { Route as privateSidebarProjectsProject_idRouteRouteImport } from './routes/(private)/_sidebar/projects/$project_id/route'
@@ -28,6 +29,7 @@ import { Route as privateSidebarSettingsGeneralRouteImport } from './routes/(pri
 import { Route as privateSidebarSettingsMembersRouteImport } from './routes/(private)/_sidebar/settings/members'
 import { Route as privateSidebarInfraComponentsIndexRouteImport } from './routes/(private)/_sidebar/infra/components/index'
 import { Route as privateSidebarInfraComponentsComponent_idRouteRouteImport } from './routes/(private)/_sidebar/infra/components/$component_id/route'
+import { Route as privateSidebarInfraSecretsIndexRouteImport } from './routes/(private)/_sidebar/infra/secrets/index'
 import { Route as privateSidebarInfraStacksIndexRouteImport } from './routes/(private)/_sidebar/infra/stacks/index'
 import { Route as privateSidebarProjectsProject_idIndexRouteImport } from './routes/(private)/_sidebar/projects/$project_id/index'
 import { Route as privateSidebarProjectsProject_idPipelinesRouteImport } from './routes/(private)/_sidebar/projects/$project_id/pipelines'
@@ -97,6 +99,12 @@ const privateSidebarInfraComponentsRouteRoute =
     path: '/components',
     getParentRoute: () => privateSidebarInfraRouteRoute,
   } as any)
+const privateSidebarInfraSecretsRouteRoute =
+  privateSidebarInfraSecretsRouteRouteImport.update({
+    id: '/secrets',
+    path: '/secrets',
+    getParentRoute: () => privateSidebarInfraRouteRoute,
+  } as any)
 const privateSidebarInfraStacksRouteRoute =
   privateSidebarInfraStacksRouteRouteImport.update({
     id: '/stacks',
@@ -144,6 +152,12 @@ const privateSidebarInfraComponentsComponent_idRouteRoute =
     id: '/$component_id',
     path: '/$component_id',
     getParentRoute: () => privateSidebarInfraComponentsRouteRoute,
+  } as any)
+const privateSidebarInfraSecretsIndexRoute =
+  privateSidebarInfraSecretsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => privateSidebarInfraSecretsRouteRoute,
   } as any)
 const privateSidebarInfraStacksIndexRoute =
   privateSidebarInfraStacksIndexRouteImport.update({
@@ -214,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof publicGridLayoutLoginRoute
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/infra/components': typeof privateSidebarInfraComponentsRouteRouteWithChildren
+  '/infra/secrets': typeof privateSidebarInfraSecretsRouteRouteWithChildren
   '/infra/stacks': typeof privateSidebarInfraStacksRouteRouteWithChildren
   '/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
@@ -226,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/infra/components/': typeof privateSidebarInfraComponentsIndexRoute
+  '/infra/secrets/': typeof privateSidebarInfraSecretsIndexRoute
   '/infra/stacks/': typeof privateSidebarInfraStacksIndexRoute
   '/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
   '/settings/projects/': typeof privateSidebarSettingsProjectsIndexRoute
@@ -247,6 +263,7 @@ export interface FileRoutesByTo {
   '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/infra/components': typeof privateSidebarInfraComponentsIndexRoute
+  '/infra/secrets': typeof privateSidebarInfraSecretsIndexRoute
   '/infra/stacks': typeof privateSidebarInfraStacksIndexRoute
   '/projects/$project_id': typeof privateSidebarProjectsProject_idIndexRoute
   '/settings/projects': typeof privateSidebarSettingsProjectsIndexRoute
@@ -267,6 +284,7 @@ export interface FileRoutesById {
   '/(public)/_grid-layout/login': typeof publicGridLayoutLoginRoute
   '/(public)/_grid-layout/server-activation': typeof publicGridLayoutServerActivationRoute
   '/(private)/_sidebar/infra/components': typeof privateSidebarInfraComponentsRouteRouteWithChildren
+  '/(private)/_sidebar/infra/secrets': typeof privateSidebarInfraSecretsRouteRouteWithChildren
   '/(private)/_sidebar/infra/stacks': typeof privateSidebarInfraStacksRouteRouteWithChildren
   '/(private)/_sidebar/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/(private)/_sidebar/settings/general': typeof privateSidebarSettingsGeneralRoute
@@ -279,6 +297,7 @@ export interface FileRoutesById {
   '/(private)/_sidebar/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/(private)/_sidebar/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/(private)/_sidebar/infra/components/': typeof privateSidebarInfraComponentsIndexRoute
+  '/(private)/_sidebar/infra/secrets/': typeof privateSidebarInfraSecretsIndexRoute
   '/(private)/_sidebar/infra/stacks/': typeof privateSidebarInfraStacksIndexRoute
   '/(private)/_sidebar/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
   '/(private)/_sidebar/settings/projects/': typeof privateSidebarSettingsProjectsIndexRoute
@@ -297,6 +316,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/server-activation'
     | '/infra/components'
+    | '/infra/secrets'
     | '/infra/stacks'
     | '/projects/$project_id'
     | '/settings/general'
@@ -309,6 +329,7 @@ export interface FileRouteTypes {
     | '/projects/$project_id/pipelines'
     | '/projects/$project_id/runs'
     | '/infra/components/'
+    | '/infra/secrets/'
     | '/infra/stacks/'
     | '/projects/$project_id/'
     | '/settings/projects/'
@@ -330,6 +351,7 @@ export interface FileRouteTypes {
     | '/projects/$project_id/pipelines'
     | '/projects/$project_id/runs'
     | '/infra/components'
+    | '/infra/secrets'
     | '/infra/stacks'
     | '/projects/$project_id'
     | '/settings/projects'
@@ -349,6 +371,7 @@ export interface FileRouteTypes {
     | '/(public)/_grid-layout/login'
     | '/(public)/_grid-layout/server-activation'
     | '/(private)/_sidebar/infra/components'
+    | '/(private)/_sidebar/infra/secrets'
     | '/(private)/_sidebar/infra/stacks'
     | '/(private)/_sidebar/projects/$project_id'
     | '/(private)/_sidebar/settings/general'
@@ -361,6 +384,7 @@ export interface FileRouteTypes {
     | '/(private)/_sidebar/projects/$project_id/pipelines'
     | '/(private)/_sidebar/projects/$project_id/runs'
     | '/(private)/_sidebar/infra/components/'
+    | '/(private)/_sidebar/infra/secrets/'
     | '/(private)/_sidebar/infra/stacks/'
     | '/(private)/_sidebar/projects/$project_id/'
     | '/(private)/_sidebar/settings/projects/'
@@ -454,6 +478,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarInfraComponentsRouteRouteImport
       parentRoute: typeof privateSidebarInfraRouteRoute
     }
+    '/(private)/_sidebar/infra/secrets': {
+      id: '/(private)/_sidebar/infra/secrets'
+      path: '/secrets'
+      fullPath: '/infra/secrets'
+      preLoaderRoute: typeof privateSidebarInfraSecretsRouteRouteImport
+      parentRoute: typeof privateSidebarInfraRouteRoute
+    }
     '/(private)/_sidebar/infra/stacks': {
       id: '/(private)/_sidebar/infra/stacks'
       path: '/stacks'
@@ -509,6 +540,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/infra/components/$component_id'
       preLoaderRoute: typeof privateSidebarInfraComponentsComponent_idRouteRouteImport
       parentRoute: typeof privateSidebarInfraComponentsRouteRoute
+    }
+    '/(private)/_sidebar/infra/secrets/': {
+      id: '/(private)/_sidebar/infra/secrets/'
+      path: '/'
+      fullPath: '/infra/secrets/'
+      preLoaderRoute: typeof privateSidebarInfraSecretsIndexRouteImport
+      parentRoute: typeof privateSidebarInfraSecretsRouteRoute
     }
     '/(private)/_sidebar/infra/stacks/': {
       id: '/(private)/_sidebar/infra/stacks/'
@@ -619,6 +657,20 @@ const privateSidebarInfraComponentsRouteRouteWithChildren =
     privateSidebarInfraComponentsRouteRouteChildren,
   )
 
+interface privateSidebarInfraSecretsRouteRouteChildren {
+  privateSidebarInfraSecretsIndexRoute: typeof privateSidebarInfraSecretsIndexRoute
+}
+
+const privateSidebarInfraSecretsRouteRouteChildren: privateSidebarInfraSecretsRouteRouteChildren =
+  {
+    privateSidebarInfraSecretsIndexRoute: privateSidebarInfraSecretsIndexRoute,
+  }
+
+const privateSidebarInfraSecretsRouteRouteWithChildren =
+  privateSidebarInfraSecretsRouteRoute._addFileChildren(
+    privateSidebarInfraSecretsRouteRouteChildren,
+  )
+
 interface privateSidebarInfraStacksRouteRouteChildren {
   privateSidebarInfraStacksIndexRoute: typeof privateSidebarInfraStacksIndexRoute
 }
@@ -635,6 +687,7 @@ const privateSidebarInfraStacksRouteRouteWithChildren =
 
 interface privateSidebarInfraRouteRouteChildren {
   privateSidebarInfraComponentsRouteRoute: typeof privateSidebarInfraComponentsRouteRouteWithChildren
+  privateSidebarInfraSecretsRouteRoute: typeof privateSidebarInfraSecretsRouteRouteWithChildren
   privateSidebarInfraStacksRouteRoute: typeof privateSidebarInfraStacksRouteRouteWithChildren
   privateSidebarInfraIndexRoute: typeof privateSidebarInfraIndexRoute
 }
@@ -643,6 +696,8 @@ const privateSidebarInfraRouteRouteChildren: privateSidebarInfraRouteRouteChildr
   {
     privateSidebarInfraComponentsRouteRoute:
       privateSidebarInfraComponentsRouteRouteWithChildren,
+    privateSidebarInfraSecretsRouteRoute:
+      privateSidebarInfraSecretsRouteRouteWithChildren,
     privateSidebarInfraStacksRouteRoute:
       privateSidebarInfraStacksRouteRouteWithChildren,
     privateSidebarInfraIndexRoute: privateSidebarInfraIndexRoute,

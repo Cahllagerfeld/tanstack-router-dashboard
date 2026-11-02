@@ -4,6 +4,7 @@ import {
 	Cpu,
 	FileBox,
 	FolderKanban,
+	KeyRound,
 	Layers,
 	type LucideIcon,
 	Rocket,
@@ -18,7 +19,8 @@ export type EntityKind =
 	| "run"
 	| "model"
 	| "artifact"
-	| "deployment";
+	| "deployment"
+	| "secret";
 
 const ENTITY_ICONS = {
 	project: FolderKanban,
@@ -29,6 +31,7 @@ const ENTITY_ICONS = {
 	model: Cpu,
 	artifact: FileBox,
 	deployment: Rocket,
+	secret: KeyRound,
 } as const satisfies Record<EntityKind, LucideIcon>;
 
 export function getEntityIcon(kind: EntityKind): LucideIcon {
