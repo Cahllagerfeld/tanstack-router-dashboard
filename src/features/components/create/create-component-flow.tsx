@@ -1,12 +1,15 @@
-import { Link } from "@tanstack/react-router";
 import { Suspense, lazy, useEffect } from "react";
 
 import { m } from "@/paraglide/messages";
-import { buttonVariants } from "@/shared/ui/button";
 import { Skeleton } from "@/shared/ui/skeleton";
 
-import type { ComponentType } from "../type/model";
-import { BackLink, CreateLayout } from "./create-layout";
+import { type ComponentType, getComponentTypeLabel } from "../type/model";
+import {
+	BackLink,
+	CancelLink,
+	CreateLayout,
+	NextButton,
+} from "./create-layout";
 import { FlavorStep } from "./flavor-step";
 import { createStepFor } from "./model";
 import { TypeStep } from "./type-step";
@@ -43,32 +46,50 @@ export function CreateComponentFlow({
 			</Suspense>
 		);
 
+	if (type)
+		return (
+			<CreateLayout
+				step="flavor"
+				type={type}
+				title={m.components_create_flavor_heading({
+					type: getComponentTypeLabel(type).toLowerCase(),
+				})}
+				footer={
+					<>
+						<BackLink search={{}} />
+						<NextButton />
+					</>
+				}
+			>
+				<FlavorStep type={type} />
+			</CreateLayout>
+		);
+
 	return (
 		<CreateLayout
-			step={step}
+			step="type"
+			title={m.components_create_type_heading()}
 			footer={
-				type ? (
-					<BackLink search={{}} />
-				) : (
-					<Link
-						to="/infra/components"
-						className={buttonVariants({ variant: "outline" })}
-					>
-						{m.common_action_cancel()}
-					</Link>
-				)
+				<>
+					<CancelLink />
+					<NextButton />
+				</>
 			}
 		>
-			{type ? <FlavorStep type={type} /> : <TypeStep />}
+			<TypeStep />
 		</CreateLayout>
 	);
 }
 
 function ConfigureStepSkeleton({ type }: { type: ComponentType }) {
 	return (
-		<CreateLayout step="configure" footer={<BackLink search={{ type }} />}>
+		<CreateLayout
+			step="configure"
+			type={type}
+			title={m.components_create_step_configure()}
+			footer={<BackLink search={{ type }} />}
+		>
 			<div className="flex flex-col gap-4">
-				<Skeleton className="h-16 w-full" />
 				<Skeleton className="h-9 w-full" />
 				<Skeleton className="h-9 w-full" />
 				<Skeleton className="h-9 w-2/3" />

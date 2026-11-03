@@ -16,6 +16,7 @@ import {
 
 import { ComponentConfigureForm } from "../configure/component-configure-form";
 import { ComponentFlowLayout } from "../configure/component-flow-layout";
+import { FlavorDocsLink } from "../configure/flavor-docs-link";
 import { componentQueries } from "../data/queries";
 import type { Component } from "../model";
 import { useEditComponentForm } from "./use-edit-component-form";
@@ -51,7 +52,9 @@ function EditComponentForm({ component }: { component: ComponentWithFlavor }) {
 
 	return (
 		<ComponentFlowLayout
+			width="configure"
 			title={m.components_edit_title({ name: component.name })}
+			titleAside={<FlavorDocsLink href={flavor.docsUrl} />}
 			footer={
 				<>
 					<CancelLink componentId={component.id} />
@@ -76,6 +79,7 @@ function EditComponentForm({ component }: { component: ComponentWithFlavor }) {
 function MissingFlavor({ component }: { component: Component }) {
 	return (
 		<ComponentFlowLayout
+			width="configure"
 			title={m.components_edit_title({ name: component.name })}
 			footer={<CancelLink componentId={component.id} />}
 		>
@@ -99,7 +103,10 @@ function CancelLink({ componentId }: { componentId: string }) {
 		<Link
 			to="/infra/components/$component_id"
 			params={{ component_id: componentId }}
-			className={buttonVariants({ variant: "outline" })}
+			className={buttonVariants({
+				variant: "ghost",
+				className: "-ml-3 px-3",
+			})}
 		>
 			{m.common_action_cancel()}
 		</Link>

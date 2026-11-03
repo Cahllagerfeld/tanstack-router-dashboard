@@ -1,90 +1,81 @@
-import { Check } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { m } from "@/paraglide/messages";
 import { cn } from "@/shared/lib/cn";
 
-export type FlowStep = {
-	label: string;
-	state: "done" | "current" | "upcoming";
-};
+/** Content column width per kind of step: tiles want room, a form reads best narrow. */
+const FLOW_WIDTHS = {
+	type: "max-w-3xl",
+	flavor: "max-w-[53.75rem]",
+	configure: "max-w-[40rem]",
+} as const;
+
+export type FlowWidth = keyof typeof FLOW_WIDTHS;
 
 type ComponentFlowLayoutProps = {
 	title: string;
-	/** Step indicator, as in the prototype's Type → Flavor → Configure. Omit for a single-step flow such as edit. */
-	steps?: FlowStep[];
-	children: ReactNode;
-	/** Sticky action row: Back/Cancel on the left, the primary action on the right. */
+	/** Beside the title, such as a docs link. */
+	titleAside?: ReactNode;
+	/** Compact position such as "Step 2 of 3 · Flavor", shown only where the sidebar is hidden. */
+	progress?: string;
+	/** Steps sidebar on the left. Omit for a single-step flow such as edit. */
+	sidebar?: ReactNode;
+	width: FlowWidth;
+	/** Action row pinned below the content: Back or Cancel first, the primary action last. */
 	footer: ReactNode;
+	children: ReactNode;
 };
 
-/** Full-page flow shell shared by creating and editing a Component: a centered column with a footer action row. */
+/**
+ * Full-height flow shell shared by creating and editing a Component: an optional steps sidebar, then a centered
+ * content column whose footer stays pinned to the bottom of the workspace.
+ */
 export function ComponentFlowLayout({
 	title,
-	steps,
-	children,
+	titleAside,
+	progress,
+	sidebar,
+	width,
 	footer,
+	children,
 }: ComponentFlowLayoutProps) {
-	return (
-		<div className="flex flex-1 flex-col">
-			<div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-6">
-				<header className="flex flex-col gap-4">
-					<h1 className="text-lg font-semibold">{title}</h1>
-					{steps && steps.length > 0 ? <FlowSteps steps={steps} /> : null}
-				</header>
-				{children}
-			</div>
-			<footer className="sticky bottom-0 z-10 border-t bg-background">
-				<div className="mx-auto flex w-full max-w-2xl items-center justify-between gap-2 px-4 py-3">
-					{footer}
-				</div>
-			</footer>
-		</div>
-	);
-}
+	const widthClass = FLOW_WIDTHS[width];
 
-function FlowSteps({ steps }: { steps: FlowStep[] }) {
 	return (
-		<nav aria-label={m.components_flow_steps_label()}>
-			<ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-				{steps.map((step, index) => (
-					<li
-						key={step.label}
-						aria-current={step.state === "current" ? "step" : undefined}
+		<div className="flex min-w-0 flex-1">
+			{sidebar}
+			<div className="flex min-w-0 flex-1 flex-col">
+				<div className="flex-1 px-4 pt-6 pb-6 sm:px-8">
+					<div className={cn("mx-auto flex w-full flex-col gap-6", widthClass)}>
+						<header className="flex flex-col gap-1">
+							{progress ? (
+								<p
+									className={cn(
+										"text-xs text-muted-foreground",
+										sidebar && "md:hidden"
+									)}
+								>
+									{progress}
+								</p>
+							) : null}
+							<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+								<h1 className="text-xl font-medium tracking-tight">{title}</h1>
+								{titleAside}
+							</div>
+						</header>
+						{children}
+					</div>
+				</div>
+				<footer className="sticky bottom-0 z-10 border-t bg-background px-4 py-3 sm:px-8">
+					<div
 						className={cn(
-							"flex items-center gap-2",
-							step.state === "upcoming"
-								? "text-muted-foreground"
-								: "text-foreground",
-							step.state === "current" && "font-medium"
+							"mx-auto flex w-full items-center justify-between gap-2",
+							widthClass
 						)}
 					>
-						{index > 0 ? (
-							<span aria-hidden className="h-px w-6 bg-border" />
-						) : null}
-						<span
-							aria-hidden
-							className={cn(
-								"flex size-5 shrink-0 items-center justify-center rounded-full border text-xs tabular-nums",
-								step.state === "current" &&
-									"border-primary bg-primary text-primary-foreground",
-								step.state === "done" && "border-primary text-primary"
-							)}
-						>
-							{step.state === "done" ? <Check className="size-3" /> : index + 1}
-						</span>
-						<span>
-							{step.label}
-							{step.state === "done" ? (
-								<span className="sr-only">
-									{" "}
-									{m.components_flow_step_done()}
-								</span>
-							) : null}
-						</span>
-					</li>
-				))}
-			</ol>
-		</nav>
+						{footer}
+					</div>
+				</footer>
+			</div>
+		</div>
 	);
 }

@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import {
 	Bell,
 	Boxes,
-	ChevronRight,
 	CloudUpload,
 	Container,
 	FlaskConical,
@@ -18,15 +17,11 @@ import {
 	Table2,
 	Tag,
 } from "lucide-react";
-import { useId } from "react";
 
 import { m } from "@/paraglide/messages";
 
-import {
-	COMPONENT_TYPES,
-	type ComponentType,
-	getComponentTypeLabel,
-} from "../type/model";
+import { type ComponentType, getComponentTypeLabel } from "../type/model";
+import { TYPE_DISPLAY_ORDER } from "./model";
 
 const TYPE_ICONS = {
 	alerter: Bell,
@@ -46,40 +41,53 @@ const TYPE_ICONS = {
 	sandbox: Boxes,
 } as const satisfies Record<ComponentType, LucideIcon>;
 
-/** Step 1: every Component type as a link to its Flavors. */
-export function TypeStep() {
-	const headingId = useId();
+const TYPE_BLURBS = {
+	alerter: m.components_create_type_blurb_alerter,
+	annotator: m.components_create_type_blurb_annotator,
+	artifact_store: m.components_create_type_blurb_artifact_store,
+	container_registry: m.components_create_type_blurb_container_registry,
+	data_validator: m.components_create_type_blurb_data_validator,
+	experiment_tracker: m.components_create_type_blurb_experiment_tracker,
+	feature_store: m.components_create_type_blurb_feature_store,
+	image_builder: m.components_create_type_blurb_image_builder,
+	model_deployer: m.components_create_type_blurb_model_deployer,
+	model_registry: m.components_create_type_blurb_model_registry,
+	orchestrator: m.components_create_type_blurb_orchestrator,
+	step_operator: m.components_create_type_blurb_step_operator,
+	deployer: m.components_create_type_blurb_deployer,
+	log_store: m.components_create_type_blurb_log_store,
+	sandbox: m.components_create_type_blurb_sandbox,
+} as const satisfies Record<ComponentType, () => string>;
 
+/** Step 1: every Component type as a card linking to its Flavors. */
+export function TypeStep() {
 	return (
-		<section className="flex flex-col gap-3" aria-labelledby={headingId}>
-			<h2 id={headingId} className="text-base font-medium">
-				{m.components_create_type_heading()}
-			</h2>
-			<ul className="flex flex-col divide-y rounded-lg border">
-				{COMPONENT_TYPES.map((type) => {
-					const Icon = TYPE_ICONS[type];
-					return (
-						<li key={type}>
-							<Link
-								to="/infra/components/create"
-								search={{ type }}
-								className="flex items-center gap-3 px-3 py-3 transition-colors outline-none hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring/50"
-							>
-								<span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-									<Icon aria-hidden className="size-4" />
-								</span>
-								<span className="flex-1 text-sm font-medium">
+		<ul className="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3">
+			{TYPE_DISPLAY_ORDER.map((type) => {
+				const Icon = TYPE_ICONS[type];
+				return (
+					<li key={type} className="flex">
+						<Link
+							to="/infra/components/create"
+							search={{ type }}
+							className="flex min-h-17 flex-1 items-start gap-3 rounded-lg border bg-card px-4 py-3 text-left transition-colors outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50"
+						>
+							<Icon
+								aria-hidden
+								className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+							/>
+							<span className="flex min-w-0 flex-col gap-0.5">
+								<span className="text-sm font-medium">
 									{getComponentTypeLabel(type)}
 								</span>
-								<ChevronRight
-									aria-hidden
-									className="size-4 text-muted-foreground"
-								/>
-							</Link>
-						</li>
-					);
-				})}
-			</ul>
-		</section>
+								<span className="text-xs text-muted-foreground">
+									{TYPE_BLURBS[type]()}
+								</span>
+							</span>
+						</Link>
+					</li>
+				);
+			})}
+		</ul>
 	);
 }

@@ -104,7 +104,7 @@ function renderFlow(stored: Component = component) {
 }
 
 const nameField = () =>
-	page.getByRole("textbox", { name: m.common_label_name() });
+	page.getByRole("textbox", { name: m.components_configure_name() });
 const pathField = () => page.getByRole("textbox", { name: /Path/ });
 const saveButton = () =>
 	page.getByRole("button", { name: m.components_edit_save() });
@@ -126,7 +126,12 @@ test("prefills the stored name and configuration", async () => {
 		.toHaveValue("eu-central-1");
 	await expect.element(saveButton()).toBeDisabled();
 	await expect
-		.element(page.getByRole("button", { name: m.common_action_change() }))
+		.element(page.getByRole("link", { name: m.common_action_cancel() }))
+		.toHaveAttribute("href", "/infra/components/$component_id");
+	await expect
+		.element(
+			page.getByRole("navigation", { name: m.components_flow_steps_label() })
+		)
 		.not.toBeInTheDocument();
 });
 

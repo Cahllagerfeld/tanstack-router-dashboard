@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
+import { COMPONENT_TYPES } from "../type/model";
 import {
+	TYPE_DISPLAY_ORDER,
 	createStepFor,
 	createStepStates,
 	filterFlavors,
@@ -31,6 +33,12 @@ describe("createStepStates", () => {
 			{ step: "flavor", state: "current" },
 			{ step: "configure", state: "upcoming" },
 		]);
+	});
+});
+
+describe("TYPE_DISPLAY_ORDER", () => {
+	it("lists every Component type exactly once", () => {
+		expect([...TYPE_DISPLAY_ORDER].sort()).toEqual([...COMPONENT_TYPES].sort());
 	});
 });
 
