@@ -27,6 +27,7 @@ import { Route as privateSidebarProjectsProject_idRouteRouteImport } from './rou
 import { Route as privateSidebarSettingsIndexRouteImport } from './routes/(private)/_sidebar/settings/index'
 import { Route as privateSidebarSettingsGeneralRouteImport } from './routes/(private)/_sidebar/settings/general'
 import { Route as privateSidebarSettingsMembersRouteImport } from './routes/(private)/_sidebar/settings/members'
+import { Route as privateSidebarSettingsProfileRouteImport } from './routes/(private)/_sidebar/settings/profile'
 import { Route as privateSidebarInfraComponentsIndexRouteImport } from './routes/(private)/_sidebar/infra/components/index'
 import { Route as privateSidebarInfraComponentsComponent_idRouteRouteImport } from './routes/(private)/_sidebar/infra/components/$component_id/route'
 import { Route as privateSidebarInfraSecretsIndexRouteImport } from './routes/(private)/_sidebar/infra/secrets/index'
@@ -141,6 +142,12 @@ const privateSidebarSettingsMembersRoute =
     path: '/members',
     getParentRoute: () => privateSidebarSettingsRouteRoute,
   } as any)
+const privateSidebarSettingsProfileRoute =
+  privateSidebarSettingsProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => privateSidebarSettingsRouteRoute,
+  } as any)
 const privateSidebarInfraComponentsIndexRoute =
   privateSidebarInfraComponentsIndexRouteImport.update({
     id: '/',
@@ -233,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/settings/profile': typeof privateSidebarSettingsProfileRoute
   '/infra/': typeof privateSidebarInfraIndexRoute
   '/projects/': typeof privateSidebarProjectsIndexRoute
   '/settings/': typeof privateSidebarSettingsIndexRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/server-activation': typeof publicGridLayoutServerActivationRoute
   '/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/settings/profile': typeof privateSidebarSettingsProfileRoute
   '/infra': typeof privateSidebarInfraIndexRoute
   '/projects': typeof privateSidebarProjectsIndexRoute
   '/settings': typeof privateSidebarSettingsIndexRoute
@@ -289,6 +298,7 @@ export interface FileRoutesById {
   '/(private)/_sidebar/projects/$project_id': typeof privateSidebarProjectsProject_idRouteRouteWithChildren
   '/(private)/_sidebar/settings/general': typeof privateSidebarSettingsGeneralRoute
   '/(private)/_sidebar/settings/members': typeof privateSidebarSettingsMembersRoute
+  '/(private)/_sidebar/settings/profile': typeof privateSidebarSettingsProfileRoute
   '/(private)/_sidebar/infra/': typeof privateSidebarInfraIndexRoute
   '/(private)/_sidebar/projects/': typeof privateSidebarProjectsIndexRoute
   '/(private)/_sidebar/settings/': typeof privateSidebarSettingsIndexRoute
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/projects/$project_id'
     | '/settings/general'
     | '/settings/members'
+    | '/settings/profile'
     | '/infra/'
     | '/projects/'
     | '/settings/'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/server-activation'
     | '/settings/general'
     | '/settings/members'
+    | '/settings/profile'
     | '/infra'
     | '/projects'
     | '/settings'
@@ -376,6 +388,7 @@ export interface FileRouteTypes {
     | '/(private)/_sidebar/projects/$project_id'
     | '/(private)/_sidebar/settings/general'
     | '/(private)/_sidebar/settings/members'
+    | '/(private)/_sidebar/settings/profile'
     | '/(private)/_sidebar/infra/'
     | '/(private)/_sidebar/projects/'
     | '/(private)/_sidebar/settings/'
@@ -525,6 +538,13 @@ declare module '@tanstack/react-router' {
       path: '/members'
       fullPath: '/settings/members'
       preLoaderRoute: typeof privateSidebarSettingsMembersRouteImport
+      parentRoute: typeof privateSidebarSettingsRouteRoute
+    }
+    '/(private)/_sidebar/settings/profile': {
+      id: '/(private)/_sidebar/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof privateSidebarSettingsProfileRouteImport
       parentRoute: typeof privateSidebarSettingsRouteRoute
     }
     '/(private)/_sidebar/infra/components/': {
@@ -729,6 +749,7 @@ const privateSidebarSettingsProjectsProject_idRouteRouteWithChildren =
 interface privateSidebarSettingsRouteRouteChildren {
   privateSidebarSettingsGeneralRoute: typeof privateSidebarSettingsGeneralRoute
   privateSidebarSettingsMembersRoute: typeof privateSidebarSettingsMembersRoute
+  privateSidebarSettingsProfileRoute: typeof privateSidebarSettingsProfileRoute
   privateSidebarSettingsIndexRoute: typeof privateSidebarSettingsIndexRoute
   privateSidebarSettingsProjectsProject_idRouteRoute: typeof privateSidebarSettingsProjectsProject_idRouteRouteWithChildren
   privateSidebarSettingsProjectsIndexRoute: typeof privateSidebarSettingsProjectsIndexRoute
@@ -738,6 +759,7 @@ const privateSidebarSettingsRouteRouteChildren: privateSidebarSettingsRouteRoute
   {
     privateSidebarSettingsGeneralRoute: privateSidebarSettingsGeneralRoute,
     privateSidebarSettingsMembersRoute: privateSidebarSettingsMembersRoute,
+    privateSidebarSettingsProfileRoute: privateSidebarSettingsProfileRoute,
     privateSidebarSettingsIndexRoute: privateSidebarSettingsIndexRoute,
     privateSidebarSettingsProjectsProject_idRouteRoute:
       privateSidebarSettingsProjectsProject_idRouteRouteWithChildren,

@@ -17,10 +17,10 @@ export type SettingsNavItem = {
 };
 
 type Section = SettingsNavSection<SettingsNavItem> & {
-	id: "server" | "project";
+	id: "account" | "server" | "project";
 };
 
-/** The settings navigation: Server pages, then pages of the selected Project. */
+/** The settings navigation: Server pages, pages of the selected Project, then Account pages. */
 export function useSettingsNav() {
 	const [filter, setFilter] = useState("");
 	const { projects, activeProject } = useActiveProject();
@@ -55,6 +55,13 @@ export function useSettingsNav() {
 						},
 					]
 				: [],
+		},
+		{
+			id: "account",
+			label: m.settings_nav_account(),
+			items: [
+				{ label: m.settings_nav_account_profile(), to: "/settings/profile" },
+			],
 		},
 	];
 

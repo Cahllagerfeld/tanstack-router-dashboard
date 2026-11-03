@@ -25,6 +25,8 @@ async function renderLogout() {
 	const { queryKey } = sessionQueries.currentIdentity();
 	queryClient.setQueryData(queryKey, {
 		id: "user-id",
+		name: "ada",
+		fullName: "Ada",
 		resolvedName: "Ada",
 		email: undefined,
 		isAdmin: false,
