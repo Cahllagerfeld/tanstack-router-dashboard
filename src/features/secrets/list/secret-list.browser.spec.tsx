@@ -104,3 +104,20 @@ test("an empty list explains itself", async () => {
 
 	await expect.element(page.getByText(m.secrets_empty_title())).toBeVisible();
 });
+
+test("offers deleting a Secret from its row actions", async () => {
+	await renderList([
+		{ id: "secret-1", name: "aws-credentials", permission_denied: true },
+	]);
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(m.secrets_delete_description({ name: "aws-credentials" }))
+		)
+		.toBeVisible();
+});

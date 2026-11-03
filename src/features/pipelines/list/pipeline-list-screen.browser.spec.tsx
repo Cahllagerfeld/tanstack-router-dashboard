@@ -150,3 +150,22 @@ test("hides and restores a Pipeline column", async () => {
 	await toggle.click();
 	await expect.element(description).toBeInTheDocument();
 });
+
+test("offers deleting a Pipeline from its row actions", async () => {
+	respondWith({ total: 1, items: [pipeline] });
+
+	await renderLoaded();
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(
+				m.pipelines_delete_description({ name: "training-pipeline" })
+			)
+		)
+		.toBeVisible();
+});

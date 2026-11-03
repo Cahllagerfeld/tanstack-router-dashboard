@@ -115,3 +115,22 @@ test("marks each unavailable value on a restricted Run", async () => {
 		.toBeInTheDocument();
 	expect(page.getByText(m.common_status_not_available()).all()).toHaveLength(6);
 });
+
+test("offers deleting a Run from its row actions", async () => {
+	get.mockResolvedValue(
+		runPage([{ id: "run-id", name: "training-run", permission_denied: true }])
+	);
+
+	await renderRunList();
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(m.runs_delete_description({ name: "training-run" }))
+		)
+		.toBeVisible();
+});

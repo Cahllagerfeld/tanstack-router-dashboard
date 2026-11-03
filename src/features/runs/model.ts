@@ -3,6 +3,7 @@ import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 
 export type Run = {
 	id: string;
+	name: string;
 	index: number | undefined;
 	status: string | undefined;
 	pipelineName: string | undefined;
@@ -23,3 +24,7 @@ export function formatRunIndex(index: number): string {
 export function formatRunStatus(status: string): string {
 	return snakeCaseToTitleCase(status);
 }
+
+export type DeleteRunInput = {
+	runId: string;
+};

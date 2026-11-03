@@ -7,8 +7,10 @@ import {
 	columnSize,
 	type DataTableFeatures,
 } from "@/shared/components/tables/data-table-features";
+import { actionsColumn } from "@/shared/components/tables/edge-columns";
 import { Badge } from "@/shared/ui/badge";
 
+import { RunActions } from "../delete/run-actions";
 import { formatRunIndex, formatRunStatus, type Run } from "../model";
 
 export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
@@ -67,5 +69,6 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 				return <DisplayDate date={created} />;
 			},
 		},
+		actionsColumn((run) => <RunActions run={run} />),
 	];
 }

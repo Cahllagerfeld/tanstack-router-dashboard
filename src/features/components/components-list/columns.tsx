@@ -8,8 +8,11 @@ import {
 	columnSize,
 	type DataTableFeatures,
 } from "@/shared/components/tables/data-table-features";
+import {
+	actionsColumn,
+	selectColumn,
+} from "@/shared/components/tables/edge-columns";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
-import { Checkbox } from "@/shared/ui/checkbox";
 
 import { ComponentActions } from "../delete/component-actions";
 import type { Component } from "../model";
@@ -19,32 +22,7 @@ export function useComponentColumns(): ColumnDef<
 	Component
 >[] {
 	return [
-		{
-			id: "select",
-			enableResizing: false,
-			...columnSize.select,
-			header: ({ table }) => (
-				<Checkbox
-					checked={table.getIsAllPageRowsSelected()}
-					indeterminate={
-						!table.getIsAllPageRowsSelected() &&
-						table.getIsSomePageRowsSelected()
-					}
-					onCheckedChange={(checked) =>
-						table.toggleAllPageRowsSelected(checked)
-					}
-					aria-label={m.common_table_select_all()}
-				/>
-			),
-			cell: ({ row }) => (
-				<Checkbox
-					checked={row.getIsSelected()}
-					onCheckedChange={(checked) => row.toggleSelected(checked)}
-					aria-label={m.common_table_select_row()}
-				/>
-			),
-			enableHiding: false,
-		},
+		selectColumn(),
 		{
 			header: m.components_table_name(),
 			accessorKey: "name",
@@ -111,12 +89,6 @@ export function useComponentColumns(): ColumnDef<
 				);
 			},
 		},
-		{
-			id: "actions",
-			enableResizing: false,
-			...columnSize.actions,
-			enableHiding: false,
-			cell: ({ row }) => <ComponentActions component={row.original} />,
-		},
+		actionsColumn((component) => <ComponentActions component={component} />),
 	];
 }

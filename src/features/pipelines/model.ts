@@ -11,3 +11,7 @@ export type Pipeline = {
 export type PipelineListInput = ApiQuery<"/api/v1/pipelines"> & {
 	project: string;
 };
+
+export type DeletePipelineInput = {
+	pipelineId: string;
+};

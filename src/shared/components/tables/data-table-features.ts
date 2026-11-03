@@ -18,7 +18,7 @@ export interface DataTableColumnMeta {
  * sizes set proportions; a column without one gets the default size.
  */
 export const columnSize = {
-	select: { size: 32, minSize: 32, maxSize: 32 },
+	select: { size: 48, minSize: 48, maxSize: 48 },
 	/** The record's name, which usually needs the most room. */
 	name: { size: 320 },
 	actions: { size: 80, minSize: 80, maxSize: 80 },

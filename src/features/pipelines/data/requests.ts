@@ -1,8 +1,8 @@
 import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
+import { expectData, expectOptionalData } from "@/shared/api/errors";
 import { mapPage } from "@/shared/lib/page";
 
-import type { PipelineListInput } from "../model";
+import type { DeletePipelineInput, PipelineListInput } from "../model";
 import { pipelineFromApi } from "./map";
 
 export async function fetchPipelineList(params: PipelineListInput) {
@@ -12,4 +12,11 @@ export async function fetchPipelineList(params: PipelineListInput) {
 		},
 	});
 	return mapPage(expectData(response), pipelineFromApi);
+}
+
+export async function deletePipeline({ pipelineId }: DeletePipelineInput) {
+	const response = await apiClient.DELETE("/api/v1/pipelines/{pipeline_id}", {
+		params: { path: { pipeline_id: pipelineId } },
+	});
+	expectOptionalData(response);
 }

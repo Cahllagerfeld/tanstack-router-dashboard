@@ -63,3 +63,36 @@ test("lists the requested page of Stacks with pagination", async () => {
 		params: { query: { page: 2, size: 20, sort_by: "desc:created" } },
 	});
 });
+
+test("offers deleting a Stack from its row actions", async () => {
+	getRequest.mockResolvedValue({
+		data: {
+			index: 1,
+			max_size: 20,
+			total: 1,
+			total_pages: 1,
+			items: [{ id: "stack-1", name: "production", permission_denied: true }],
+		},
+		error: undefined,
+		response: new Response(),
+	});
+
+	await render(
+		<QueryClientProvider client={new QueryClient()}>
+			<Suspense>
+				<StackList page={1} size={20} />
+			</Suspense>
+		</QueryClientProvider>
+	);
+
+	await page
+		.getByRole("button", { name: m.common_navigation_open_menu() })
+		.click();
+	await page.getByRole("menuitem", { name: m.common_action_delete() }).click();
+
+	await expect
+		.element(
+			page.getByText(m.stacks_delete_description({ name: "production" }))
+		)
+		.toBeVisible();
+});

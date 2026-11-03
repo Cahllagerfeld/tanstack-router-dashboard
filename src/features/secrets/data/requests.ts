@@ -1,8 +1,8 @@
 import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
+import { expectData, expectOptionalData } from "@/shared/api/errors";
 import { mapPage } from "@/shared/lib/page";
 
-import type { SecretListInput } from "../model";
+import type { DeleteSecretInput, SecretListInput } from "../model";
 import { secretFromApi } from "./map";
 
 export async function fetchSecretList(params: SecretListInput) {
@@ -12,4 +12,11 @@ export async function fetchSecretList(params: SecretListInput) {
 		},
 	});
 	return mapPage(expectData(response), secretFromApi);
+}
+
+export async function deleteSecret({ secretId }: DeleteSecretInput) {
+	const response = await apiClient.DELETE("/api/v1/secrets/{secret_id}", {
+		params: { path: { secret_id: secretId } },
+	});
+	expectOptionalData(response);
 }

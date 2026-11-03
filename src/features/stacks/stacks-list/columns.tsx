@@ -7,35 +7,13 @@ import {
 	columnSize,
 	type DataTableFeatures,
 } from "@/shared/components/tables/data-table-features";
-import { Checkbox } from "@/shared/ui/checkbox";
+import {
+	actionsColumn,
+	selectColumn,
+} from "@/shared/components/tables/edge-columns";
 
+import { StackActions } from "../delete/stack-actions";
 import type { Stack } from "../model";
-
-function createStackSelectColumn(): ColumnDef<DataTableFeatures, Stack> {
-	return {
-		id: "select",
-		enableResizing: false,
-		...columnSize.select,
-		header: ({ table }) => (
-			<Checkbox
-				checked={table.getIsAllPageRowsSelected()}
-				indeterminate={
-					!table.getIsAllPageRowsSelected() && table.getIsSomePageRowsSelected()
-				}
-				onCheckedChange={(checked) => table.toggleAllPageRowsSelected(checked)}
-				aria-label={m.common_table_select_all()}
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(checked) => row.toggleSelected(checked)}
-				aria-label={m.common_table_select_row()}
-			/>
-		),
-		enableHiding: false,
-	};
-}
 
 export function createStackColumns(): ColumnDef<DataTableFeatures, Stack>[] {
 	return [
@@ -70,10 +48,11 @@ export function createStackColumns(): ColumnDef<DataTableFeatures, Stack>[] {
 				return <DisplayDate date={date} />;
 			},
 		},
+		actionsColumn((stack) => <StackActions stack={stack} />),
 	];
 }
 
 // Pre-composed columns for the main stacks list page.
 export function useStackColumns(): ColumnDef<DataTableFeatures, Stack>[] {
-	return [createStackSelectColumn(), ...createStackColumns()];
+	return [selectColumn(), ...createStackColumns()];
 }

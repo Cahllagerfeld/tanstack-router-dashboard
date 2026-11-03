@@ -10,3 +10,7 @@ export type Secret = {
 };
 
 export type SecretListInput = ApiQuery<"/api/v1/secrets">;
+
+export type DeleteSecretInput = {
+	secretId: string;
+};
