@@ -1,9 +1,6 @@
-import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
-import { m } from "@/paraglide/messages";
-import { ActionsMenu } from "@/shared/components/actions-menu";
-import { DropdownMenuItem } from "@/shared/ui/dropdown-menu";
+import { ActionsMenu, DeleteMenuItem } from "@/shared/components/actions-menu";
 
 import type { Component } from "../model";
 import { DeleteComponentAlert } from "./delete-component-alert";
@@ -19,13 +16,7 @@ export function ComponentActions({ component, onDeleted }: Props) {
 	return (
 		<>
 			<ActionsMenu>
-				<DropdownMenuItem
-					variant="destructive"
-					onClick={() => setDeleteOpen(true)}
-				>
-					<Trash2 />
-					<span>{m.common_action_delete()}</span>
-				</DropdownMenuItem>
+				<DeleteMenuItem onClick={() => setDeleteOpen(true)} />
 			</ActionsMenu>
 			{deleteOpen && (
 				<DeleteComponentAlert

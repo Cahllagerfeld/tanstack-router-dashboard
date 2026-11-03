@@ -1,8 +1,8 @@
 import { apiClient } from "@/shared/api/client";
-import { expectData } from "@/shared/api/errors";
+import { expectData, expectOptionalData } from "@/shared/api/errors";
 import { mapPage } from "@/shared/lib/page";
 
-import type { StackListInput } from "../model";
+import type { DeleteStackInput, StackListInput } from "../model";
 import { stackFromApi } from "./map";
 
 export async function fetchStackList(params: StackListInput) {
@@ -23,4 +23,11 @@ export async function fetchStackDetail(stackId: string) {
 		},
 	});
 	return stackFromApi(expectData(response));
+}
+
+export async function deleteStack({ stackId }: DeleteStackInput) {
+	const response = await apiClient.DELETE("/api/v1/stacks/{stack_id}", {
+		params: { path: { stack_id: stackId } },
+	});
+	expectOptionalData(response);
 }

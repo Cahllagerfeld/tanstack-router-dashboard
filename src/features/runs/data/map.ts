@@ -6,6 +6,7 @@ import type { RunDto } from "./dto";
 export function runFromApi(apiRun: RunDto): Run {
 	return {
 		id: apiRun.id,
+		name: apiRun.name,
 		index: apiRun.body?.index,
 		status: apiRun.body?.status,
 		pipelineName: apiRun.resources?.pipeline?.name ?? undefined,

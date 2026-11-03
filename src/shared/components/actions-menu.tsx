@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import type { PropsWithChildren } from "react";
 
 import { m } from "@/paraglide/messages";
@@ -6,6 +6,7 @@ import { Button } from "@/shared/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 
@@ -25,5 +26,15 @@ export function ActionsMenu({ children }: PropsWithChildren) {
 				{children}
 			</DropdownMenuContent>
 		</DropdownMenu>
+	);
+}
+
+/** The destructive item that opens a record's delete confirmation. */
+export function DeleteMenuItem({ onClick }: { onClick: () => void }) {
+	return (
+		<DropdownMenuItem variant="destructive" onClick={onClick}>
+			<Trash2 />
+			<span>{m.common_action_delete()}</span>
+		</DropdownMenuItem>
 	);
 }

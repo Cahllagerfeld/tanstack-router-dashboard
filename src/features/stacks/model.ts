@@ -8,3 +8,7 @@ export type Stack = {
 };
 
 export type StackListInput = ApiQuery<"/api/v1/stacks">;
+
+export type DeleteStackInput = {
+	stackId: string;
+};

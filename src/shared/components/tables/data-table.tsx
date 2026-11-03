@@ -1,7 +1,8 @@
 import type { ReactTable, RowData } from "@tanstack/react-table";
-import type { ReactNode } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 
 import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import { fitColumnWidths } from "@/shared/components/tables/fit-column-widths";
 import { cn } from "@/shared/lib/cn";
 import {
 	Table,
@@ -24,11 +25,24 @@ export function DataTable<TData extends RowData>({
 }: DataTableProps<TData>) {
 	"use no memo";
 
+	const [tableWidth, measureTable] = useElementWidth();
 	const rows = table.getRowModel().rows;
 	if (rows.length === 0) return empty;
 
+	const columns = table.getVisibleLeafColumns();
+	const fitted = fitColumnWidths(
+		columns.map((column) => ({
+			size: column.getSize(),
+			fixed: !column.getCanResize(),
+		})),
+		tableWidth
+	);
+	const widths = new Map(
+		columns.map((column, index) => [column.id, `${fitted[index]}px`])
+	);
+
 	return (
-		<Table className="w-full min-w-[800px] table-fixed">
+		<Table ref={measureTable} className="w-full min-w-[800px] table-fixed">
 			<TableHeader>
 				{table.getHeaderGroups().map((headerGroup) => (
 					<TableRow key={headerGroup.id} className="bg-secondary">
@@ -40,7 +54,7 @@ export function DataTable<TData extends RowData>({
 									header.column.columnDef.meta?.className,
 									header.column.getCanResize() && "relative pr-3"
 								)}
-								style={{ width: `${header.getSize()}px` }}
+								style={{ width: widths.get(header.column.id) }}
 							>
 								{header.isPlaceholder ? null : (
 									<table.FlexRender header={header} />
@@ -77,7 +91,7 @@ export function DataTable<TData extends RowData>({
 									cell.column.columnDef.meta?.className
 								)}
 								key={cell.id}
-								style={{ width: `${cell.column.getSize()}px` }}
+								style={{ width: widths.get(cell.column.id) }}
 							>
 								<table.FlexRender cell={cell} />
 							</TableCell>
@@ -87,4 +101,19 @@ export function DataTable<TData extends RowData>({
 			</TableBody>
 		</Table>
 	);
+}
+
+/** Tracks an element's width. The table mounts only once it has rows. */
+function useElementWidth() {
+	const [width, setWidth] = useState(0);
+	const measure = useCallback((element: HTMLElement | null) => {
+		if (!element) return;
+		const observer = new ResizeObserver(([entry]) => {
+			if (entry) setWidth(entry.borderBoxSize[0]?.inlineSize ?? 0);
+		});
+		observer.observe(element);
+		return () => observer.disconnect();
+	}, []);
+
+	return [width, measure] as const;
 }

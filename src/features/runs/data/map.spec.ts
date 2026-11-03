@@ -40,6 +40,7 @@ describe("runFromApi", () => {
 
 		expect(runFromApi(apiRun)).toEqual({
 			id: "run-id",
+			name: "training-run",
 			index: 7,
 			status: "completed",
 			pipelineName: "training-pipeline",
@@ -58,6 +59,7 @@ describe("runFromApi", () => {
 			})
 		).toEqual({
 			id: "restricted-run",
+			name: "restricted",
 			index: undefined,
 			status: undefined,
 			pipelineName: undefined,

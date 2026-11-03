@@ -7,7 +7,9 @@ import {
 	columnSize,
 	type DataTableFeatures,
 } from "@/shared/components/tables/data-table-features";
+import { actionsColumn } from "@/shared/components/tables/edge-columns";
 
+import { PipelineActions } from "../delete/pipeline-actions";
 import type { Pipeline } from "../model";
 
 export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
@@ -42,5 +44,6 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 			},
 			...columnSize.date,
 		},
+		actionsColumn((pipeline) => <PipelineActions pipeline={pipeline} />),
 	];
 }
