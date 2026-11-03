@@ -24,7 +24,6 @@ export function RunList({ queries }: Props) {
 	const table = useDataTable({
 		data: runs.items,
 		columns,
-		defaultColumn: { size: 160, minSize: 120, maxSize: 320 },
 	});
 
 	return (

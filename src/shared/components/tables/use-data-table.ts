@@ -8,7 +8,7 @@ import {
 const sharedDefaultColumn = {
 	enableHiding: false,
 	size: 200,
-	minSize: 150,
+	minSize: 80,
 	maxSize: 400,
 };
 
