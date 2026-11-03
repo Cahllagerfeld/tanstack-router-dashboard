@@ -5,7 +5,7 @@ import { componentQueries } from "@/features/components";
 import { ComponentConfigurationTab } from "@/features/components/ui";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/infra/components/$component_id/"
+	"/(private)/_sidebar/infra/components/$component_id/_detail/"
 )({
 	component: RouteComponent,
 });

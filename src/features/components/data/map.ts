@@ -1,6 +1,6 @@
 import { parseBackendDate } from "@/shared/lib/dates";
 
-import type { Component, Flavor } from "../model";
+import type { Component, Flavor, FlavorDetail, FlavorSummary } from "../model";
 import type { ComponentDto, FlavorDto } from "./dto";
 
 export function flavorFromApi(apiFlavor: FlavorDto): Flavor {
@@ -8,6 +8,24 @@ export function flavorFromApi(apiFlavor: FlavorDto): Flavor {
 		id: apiFlavor.id,
 		name: apiFlavor.name,
 		logoUrl: apiFlavor.body?.logo_url ?? undefined,
+	};
+}
+
+export function flavorSummaryFromApi(apiFlavor: FlavorDto): FlavorSummary {
+	return {
+		...flavorFromApi(apiFlavor),
+		type: apiFlavor.body?.type,
+		displayName: apiFlavor.body?.display_name || apiFlavor.name,
+		integration: apiFlavor.body?.integration ?? undefined,
+		isCustom: apiFlavor.body?.is_custom ?? false,
+	};
+}
+
+export function flavorDetailFromApi(apiFlavor: FlavorDto): FlavorDetail {
+	return {
+		...flavorSummaryFromApi(apiFlavor),
+		configSchema: apiFlavor.metadata?.config_schema ?? {},
+		docsUrl: apiFlavor.metadata?.docs_url ?? undefined,
 	};
 }
 

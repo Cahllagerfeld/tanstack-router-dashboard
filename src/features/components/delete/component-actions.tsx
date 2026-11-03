@@ -1,6 +1,11 @@
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
-import { ActionsMenu, DeleteMenuItem } from "@/shared/components/actions-menu";
+import {
+	ActionsMenu,
+	DeleteMenuItem,
+	EditMenuItem,
+} from "@/shared/components/actions-menu";
 
 import type { Component } from "../model";
 import { DeleteComponentAlert } from "./delete-component-alert";
@@ -16,6 +21,14 @@ export function ComponentActions({ component, onDeleted }: Props) {
 	return (
 		<>
 			<ActionsMenu>
+				<EditMenuItem
+					render={
+						<Link
+							to="/infra/components/$component_id/edit"
+							params={{ component_id: component.id }}
+						/>
+					}
+				/>
 				<DeleteMenuItem onClick={() => setDeleteOpen(true)} />
 			</ActionsMenu>
 			{deleteOpen && (

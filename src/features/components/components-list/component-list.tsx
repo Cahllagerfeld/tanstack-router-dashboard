@@ -1,4 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 
 import { m } from "@/paraglide/messages";
 import { DataTableViewOptions } from "@/shared/components/tables/columns-visibility-toggle";
@@ -12,6 +14,7 @@ import { TableToolbar } from "@/shared/components/tables/table-toolbar";
 import { TableView } from "@/shared/components/tables/table-view";
 import { useDataTable } from "@/shared/components/tables/use-data-table";
 import { getEntityIcon } from "@/shared/lib/entity-icons";
+import { buttonVariants } from "@/shared/ui/button";
 
 import { componentQueries } from "../data/queries";
 import type { ComponentType } from "../type/model";
@@ -46,6 +49,7 @@ export function ComponentList({ page, size, type }: ComponentListProps) {
 				</TableToolbar.Start>
 				<TableToolbar.End>
 					<DataTableViewOptions table={table} />
+					<NewComponentLink />
 				</TableToolbar.End>
 			</TableToolbar>
 			<DataTable
@@ -58,11 +62,21 @@ export function ComponentList({ page, size, type }: ComponentListProps) {
 							icon={getEntityIcon("component")}
 							title={m.components_empty_title()}
 							description={m.components_empty_description()}
+							action={<NewComponentLink />}
 						/>
 					)
 				}
 			/>
 			<TableFooter page={data} />
 		</TableView>
+	);
+}
+
+function NewComponentLink() {
+	return (
+		<Link to="/infra/components/create" className={buttonVariants()}>
+			<Plus aria-hidden />
+			{m.components_create_action()}
+		</Link>
 	);
 }

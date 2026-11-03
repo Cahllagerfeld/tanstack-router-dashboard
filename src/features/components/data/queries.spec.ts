@@ -78,4 +78,33 @@ describe("componentQueries", () => {
 			params: { path: { component_id: "component-id" } },
 		});
 	});
+
+	it("lists every Flavor of a type by display name", async () => {
+		get.mockResolvedValue({
+			data: { index: 1, max_size: 1000, total: 0, total_pages: 0, items: [] },
+			error: undefined,
+			response: new Response(),
+		});
+
+		const query = componentQueries.flavorList({ type: "orchestrator" });
+		const params = {
+			type: "orchestrator",
+			sort_by: "asc:display_name",
+			size: 1000,
+		};
+		expect(query.queryKey).toEqual(["components", "flavors", "list", params]);
+		await query.queryFn!({} as never);
+		expect(get).toHaveBeenCalledWith("/api/v1/flavors", {
+			params: { query: params },
+		});
+	});
+
+	it("keys a Flavor detail by its id", () => {
+		expect(componentQueries.flavorDetail("flavor-id").queryKey).toEqual([
+			"components",
+			"flavors",
+			"detail",
+			"flavor-id",
+		]);
+	});
 });

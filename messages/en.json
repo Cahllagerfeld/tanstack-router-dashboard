@@ -6,11 +6,14 @@
 	"auth_validation_password_required": "Password is required",
 	"auth_validation_username_required": "Username is required",
 	"common_action_apply": "Apply",
+	"common_action_back": "Back",
+	"common_action_change": "Change",
 	"common_action_cancel": "Cancel",
 	"common_action_close": "Close",
 	"common_action_copy": "Copy to clipboard",
 	"common_action_copy_success": "Copied",
 	"common_action_delete": "Delete",
+	"common_action_edit": "Edit",
 	"common_action_hide_value": "Hide value",
 	"common_action_login": "Login",
 	"common_action_logout": "Log out",
@@ -86,6 +89,30 @@
 			}
 		}
 	],
+	"components_configure_name_max": "Name must be 255 characters or fewer",
+	"components_configure_name_required": "Name is required",
+	"components_configure_configuration": "Configuration",
+	"components_configure_docs": "Flavor documentation",
+	"components_configure_name_placeholder": "my-component",
+	"components_configure_submit_error": "The component could not be saved",
+	"components_configure_summary": "{type} · {flavor}",
+	"components_create_action": "New component",
+	"components_create_failed": "Failed to create component",
+	"components_create_flavor_empty_description": "Install a ZenML integration that provides a {type} flavor, then come back.",
+	"components_create_flavor_empty_title": "No flavors for this type",
+	"components_create_flavor_heading": "{type} flavors",
+	"components_create_flavor_no_matches": "No flavors match your search.",
+	"components_create_flavor_search": "Search flavors",
+	"components_create_pending": "Creating…",
+	"components_create_step_configure": "Configure",
+	"components_create_step_flavor": "Flavor",
+	"components_create_step_type": "Type",
+	"components_create_submit": "Create component",
+	"components_create_success": "Created {name}",
+	"components_create_title": "New component",
+	"components_create_type_heading": "Choose what the component does",
+	"components_flow_step_done": "(completed)",
+	"components_flow_steps_label": "Steps",
 	"components_delete_description": "This action cannot be undone. This will permanently delete {name}.",
 	"components_delete_failed": "Failed to delete component",
 	"components_delete_success": "Component deleted",
@@ -93,6 +120,14 @@
 	"components_detail_tab_configuration": "Configuration",
 	"components_detail_tab_stacks": "Stacks",
 	"components_detail_tabs_label": "Component sections",
+	"components_edit_crumb": "Edit",
+	"components_edit_failed": "Failed to update component",
+	"components_edit_flavor_missing_description": "This component's flavor is missing or you don't have access to it, so its configuration can't be edited.",
+	"components_edit_flavor_missing_title": "Configuration unavailable",
+	"components_edit_route_title": "Edit component {name}",
+	"components_edit_save": "Save changes",
+	"components_edit_success": "{name} updated",
+	"components_edit_title": "Edit {name}",
 	"components_empty_description": "Stack components registered with ZenML appear here.",
 	"components_empty_title": "No components yet",
 	"components_filter_clear": "Clear filter",
@@ -149,6 +184,142 @@
 	"runs_delete_description": "This action cannot be undone. This will permanently delete {name}.",
 	"runs_delete_failed": "Failed to delete run",
 	"runs_delete_success": "Run deleted",
+	"schema_form_add_item": "Add item",
+	"schema_form_invalid_json": "Invalid JSON",
+	"schema_form_optional_settings": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Optional setting ({formattedCount})",
+				"countPlural=other": "Optional settings ({formattedCount})"
+			}
+		}
+	],
+	"schema_form_remove_item": "Remove item",
+	"schema_form_select_placeholder": "Select an option",
+	"schema_form_select_unset": "Not set",
+	"schema_form_validation_additional_property": "This property is not allowed",
+	"schema_form_validation_enum": "Must be one of the allowed values",
+	"schema_form_validation_exclusive_maximum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Must be less than {formattedLimit}"
+			}
+		}
+	],
+	"schema_form_validation_exclusive_minimum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Must be greater than {formattedLimit}"
+			}
+		}
+	],
+	"schema_form_validation_format": "Must match the format {format}",
+	"schema_form_validation_invalid": "Invalid value",
+	"schema_form_validation_max_items": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Must contain at most {formattedCount} item",
+				"countPlural=other": "Must contain at most {formattedCount} items"
+			}
+		}
+	],
+	"schema_form_validation_max_length": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Must be at most {formattedCount} character long",
+				"countPlural=other": "Must be at most {formattedCount} characters long"
+			}
+		}
+	],
+	"schema_form_validation_maximum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Must be at most {formattedLimit}"
+			}
+		}
+	],
+	"schema_form_validation_min_items": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Must contain at least {formattedCount} item",
+				"countPlural=other": "Must contain at least {formattedCount} items"
+			}
+		}
+	],
+	"schema_form_validation_min_length": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Must be at least {formattedCount} character long",
+				"countPlural=other": "Must be at least {formattedCount} characters long"
+			}
+		}
+	],
+	"schema_form_validation_minimum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Must be at least {formattedLimit}"
+			}
+		}
+	],
+	"schema_form_validation_multiple_of": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Must be a multiple of {formattedLimit}"
+			}
+		}
+	],
+	"schema_form_validation_pattern": "Must match the pattern {pattern}",
+	"schema_form_validation_required": "This field is required",
+	"schema_form_validation_schema_invalid": "The configuration schema could not be checked",
+	"schema_form_validation_type": "Has the wrong type",
+	"schema_form_validation_type_array": "Must be a list",
+	"schema_form_validation_type_boolean": "Must be true or false",
+	"schema_form_validation_type_integer": "Must be a whole number",
+	"schema_form_validation_type_null": "Must be empty",
+	"schema_form_validation_type_number": "Must be a number",
+	"schema_form_validation_type_object": "Must be an object",
+	"schema_form_validation_type_string": "Must be text",
+	"schema_form_validation_union": "Does not match any of the allowed types",
 	"secrets_empty_description": "Secrets registered with ZenML appear here.",
 	"secrets_empty_title": "No secrets yet",
 	"secrets_list_title": "Secrets",

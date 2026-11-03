@@ -1,5 +1,5 @@
-import { MoreHorizontal, Trash2 } from "lucide-react";
-import type { PropsWithChildren } from "react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import type { ComponentProps, PropsWithChildren } from "react";
 
 import { m } from "@/paraglide/messages";
 import { Button } from "@/shared/ui/button";
@@ -26,6 +26,20 @@ export function ActionsMenu({ children }: PropsWithChildren) {
 				{children}
 			</DropdownMenuContent>
 		</DropdownMenu>
+	);
+}
+
+/** The item that opens a record's edit page; `render` is the link to it. */
+export function EditMenuItem({
+	render,
+}: {
+	render: ComponentProps<typeof DropdownMenuItem>["render"];
+}) {
+	return (
+		<DropdownMenuItem render={render}>
+			<Pencil />
+			<span>{m.common_action_edit()}</span>
+		</DropdownMenuItem>
 	);
 }
 
