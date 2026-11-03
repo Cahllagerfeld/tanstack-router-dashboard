@@ -2,11 +2,7 @@ import { z } from "zod";
 
 import { m } from "@/paraglide/messages";
 
-function isWebUrl(value: string) {
-	if (!URL.canParse(value)) return false;
-	const { protocol } = new URL(value);
-	return protocol === "http:" || protocol === "https:";
-}
+import { isWebUrl } from "../model";
 
 export const serverSettingsSchema = z.object({
 	name: z

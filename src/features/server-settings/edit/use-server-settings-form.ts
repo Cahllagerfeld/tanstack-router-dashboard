@@ -4,7 +4,7 @@ import {
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { m } from "@/paraglide/messages";
@@ -13,7 +13,11 @@ import type { ApiClientError } from "@/shared/api/errors";
 import { serverSettingsKeys, serverSettingsQueries } from "../data/queries";
 import { updateServerSettings } from "../data/requests";
 import type { ServerSettings, ServerSettingsUpdateInput } from "../model";
-import { buildServerSettingsUpdate, serverSettingsFormValues } from "./model";
+import {
+	buildServerSettingsUpdate,
+	logoPreview,
+	serverSettingsFormValues,
+} from "./model";
 import { type ServerSettingsValues, serverSettingsSchema } from "./schema";
 
 export function useServerSettingsForm() {
@@ -23,6 +27,10 @@ export function useServerSettingsForm() {
 	const form = useForm<ServerSettingsValues>({
 		resolver: zodResolver(serverSettingsSchema),
 		defaultValues: savedValues,
+	});
+	const [name, logoUrl] = useWatch({
+		control: form.control,
+		name: ["name", "logoUrl"],
 	});
 
 	const queryClient = useQueryClient();
@@ -52,5 +60,10 @@ export function useServerSettingsForm() {
 		mutate(update);
 	}
 
-	return { form, handleSave, isPending };
+	return {
+		form,
+		handleSave,
+		isPending,
+		logo: logoPreview(name, logoUrl),
+	};
 }

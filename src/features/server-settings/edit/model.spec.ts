@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { buildServerSettingsUpdate } from "./model";
+import { buildServerSettingsUpdate, logoPreview } from "./model";
 import type { ServerSettingsValues } from "./schema";
 
 const saved: ServerSettingsValues = {
@@ -40,5 +40,24 @@ describe("buildServerSettingsUpdate", () => {
 		expect(buildServerSettingsUpdate(saved, { ...saved, logoUrl: "" })).toEqual(
 			{ logo_url: null }
 		);
+	});
+});
+
+describe("logoPreview", () => {
+	it("previews a valid web URL with the name's initial as fallback", () => {
+		expect(
+			logoPreview("brave-blue-otter", " https://example.test/logo.png ")
+		).toEqual({ src: "https://example.test/logo.png", initial: "B" });
+	});
+
+	it.each(["", "not a url", "javascript:alert(1)"])(
+		"loads nothing for %j",
+		(logoUrl) => {
+			expect(logoPreview("otter", logoUrl).src).toBeUndefined();
+		}
+	);
+
+	it("has no initial without a name", () => {
+		expect(logoPreview("   ", "").initial).toBeUndefined();
 	});
 });

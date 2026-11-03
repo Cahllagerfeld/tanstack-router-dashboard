@@ -141,3 +141,13 @@ test("a rejected save keeps the edits and reports the error", async () => {
 		.toEqual([["Only admins can update server settings"]]);
 	await expect.element(name).toHaveValue("renamed");
 });
+
+test("the logo preview falls back to the server name's initial", async () => {
+	const screen = await renderForm(true);
+
+	await expect.element(screen.getByText("B", { exact: true })).toBeVisible();
+	await screen
+		.getByRole("textbox", { name: m.server_settings_name() })
+		.fill("otter");
+	await expect.element(screen.getByText("O", { exact: true })).toBeVisible();
+});

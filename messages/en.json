@@ -197,6 +197,7 @@
 	"server_settings_name": "Server name",
 	"server_settings_logo_url": "Logo URL",
 	"server_settings_logo_url_description": "Link to an image to use as the server logo.",
+	"server_settings_logo_preview": "Server logo preview",
 	"server_settings_analytics_label": "Usage analytics",
 	"server_settings_analytics_description": "Share anonymous usage statistics to help improve the product.",
 	"server_settings_announcements_label": "Announcements",

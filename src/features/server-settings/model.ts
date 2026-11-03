@@ -11,3 +11,10 @@ export type ServerSettings = {
 };
 
 export type ServerSettingsUpdateInput = ApiBody<"/api/v1/settings", "put">;
+
+/** Whether a logo URL is an absolute http or https URL. */
+export function isWebUrl(value: string) {
+	if (!URL.canParse(value)) return false;
+	const { protocol } = new URL(value);
+	return protocol === "http:" || protocol === "https:";
+}

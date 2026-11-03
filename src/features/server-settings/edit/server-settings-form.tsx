@@ -1,7 +1,9 @@
+import { ImageIcon } from "lucide-react";
 import { useId } from "react";
 import { Controller } from "react-hook-form";
 
 import { m } from "@/paraglide/messages";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 import {
 	Field,
@@ -23,7 +25,7 @@ type ToggleName = "enableAnalytics" | "displayAnnouncements" | "displayUpdates";
 /** Edits the server-wide settings; read-only for everyone but admins. */
 export function ServerSettingsForm({ canEdit }: { canEdit: boolean }) {
 	const id = useId();
-	const { form, handleSave, isPending } = useServerSettingsForm();
+	const { form, handleSave, isPending, logo } = useServerSettingsForm();
 	const disabled = !canEdit;
 
 	const toggles: { name: ToggleName; label: string; description: string }[] = [
@@ -85,12 +87,23 @@ export function ServerSettingsForm({ canEdit }: { canEdit: boolean }) {
 								<FieldLabel htmlFor={`${id}-logo-url`}>
 									{m.server_settings_logo_url()}
 								</FieldLabel>
-								<Input
-									{...field}
-									id={`${id}-logo-url`}
-									inputMode="url"
-									aria-invalid={fieldState.invalid}
-								/>
+								<div className="flex items-center gap-3">
+									<Avatar size="lg" className="rounded-lg">
+										<AvatarImage
+											src={logo.src}
+											alt={m.server_settings_logo_preview()}
+										/>
+										<AvatarFallback>
+											{logo.initial ?? <ImageIcon aria-hidden />}
+										</AvatarFallback>
+									</Avatar>
+									<Input
+										{...field}
+										id={`${id}-logo-url`}
+										inputMode="url"
+										aria-invalid={fieldState.invalid}
+									/>
+								</div>
 								<FieldDescription>
 									{m.server_settings_logo_url_description()}
 								</FieldDescription>

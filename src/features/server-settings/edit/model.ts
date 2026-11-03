@@ -1,5 +1,25 @@
-import type { ServerSettings, ServerSettingsUpdateInput } from "../model";
+import {
+	isWebUrl,
+	type ServerSettings,
+	type ServerSettingsUpdateInput,
+} from "../model";
 import type { ServerSettingsValues } from "./schema";
+
+export type LogoPreview = {
+	/** Only a valid web URL is loaded; anything else shows the fallback. */
+	src: string | undefined;
+	/** The server name's first letter, or undefined when there is no name. */
+	initial: string | undefined;
+};
+
+export function logoPreview(name: string, logoUrl: string): LogoPreview {
+	const url = logoUrl.trim();
+	const initial = name.trim().at(0)?.toLocaleUpperCase();
+	return {
+		src: isWebUrl(url) ? url : undefined,
+		initial: initial || undefined,
+	};
+}
 
 export function serverSettingsFormValues(
 	settings: ServerSettings
