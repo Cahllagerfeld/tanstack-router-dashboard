@@ -6,11 +6,18 @@ import {
 	fetchCurrentIdentity,
 	loginUserRequest,
 	logoutUserRequest,
+	updateCurrentUser,
 } from "./requests";
 
-const { get, post } = vi.hoisted(() => ({ get: vi.fn(), post: vi.fn() }));
+const { get, post, put } = vi.hoisted(() => ({
+	get: vi.fn(),
+	post: vi.fn(),
+	put: vi.fn(),
+}));
 
-vi.mock("@/shared/api/client", () => ({ apiClient: { GET: get, POST: post } }));
+vi.mock("@/shared/api/client", () => ({
+	apiClient: { GET: get, POST: post, PUT: put },
+}));
 
 describe("loginUserRequest", () => {
 	beforeEach(() => {
@@ -99,5 +106,49 @@ describe("fetchCurrentIdentity", () => {
 			resolvedName: "ada",
 		});
 		expect(get).toHaveBeenCalledWith("/api/v1/current-user");
+	});
+});
+
+describe("updateCurrentUser", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
+	it("updates the signed-in account and maps the result", async () => {
+		put.mockResolvedValue({
+			data: {
+				id: "user-id",
+				name: "ada",
+				permission_denied: false,
+				body: {
+					created: "2026-08-20T10:00:00",
+					updated: "2026-08-21T10:00:00",
+					active: true,
+					full_name: "Ada King",
+					is_service_account: false,
+				},
+			},
+			error: undefined,
+			response: new Response(),
+		});
+
+		await expect(
+			updateCurrentUser({ full_name: "Ada King" })
+		).resolves.toMatchObject({ name: "ada", fullName: "Ada King" });
+		expect(put).toHaveBeenCalledWith("/api/v1/current-user", {
+			body: { full_name: "Ada King" },
+		});
+	});
+
+	it("rejects a response without the updated account", async () => {
+		put.mockResolvedValue({
+			data: undefined,
+			error: { detail: "Incorrect current password" },
+			response: new Response(null, { status: 403 }),
+		});
+
+		await expect(
+			updateCurrentUser({ old_password: "wrong", password: "new-password" })
+		).rejects.toThrow(m.common_error_unwrapping());
 	});
 });

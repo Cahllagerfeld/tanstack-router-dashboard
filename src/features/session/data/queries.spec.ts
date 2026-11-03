@@ -13,6 +13,8 @@ vi.mock("./requests", () => ({ fetchCurrentIdentity }));
 
 const identity = {
 	id: "user-id",
+	name: "ada",
+	fullName: "Ada",
 	resolvedName: "Ada",
 	email: undefined,
 	isAdmin: true,

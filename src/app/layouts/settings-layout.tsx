@@ -12,7 +12,7 @@ import { Input } from "@/shared/ui/input";
 
 import { type SettingsNavItem, useSettingsNav } from "./use-settings-nav";
 
-/** Settings pages beside a secondary nav: Server settings, then Project settings. */
+/** Settings pages beside a secondary nav: Server, Project, then Account settings. */
 export function SettingsLayout() {
 	return (
 		<div className="flex min-h-0 flex-1 flex-col lg:flex-row">

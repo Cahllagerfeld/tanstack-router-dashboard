@@ -25,6 +25,8 @@ describe("currentIdentityFromApi", () => {
 			})
 		).toEqual({
 			id: "user-id",
+			name: "ada",
+			fullName: "Ada Lovelace",
 			resolvedName: "Ada Lovelace",
 			email: "ada@example.test",
 			isAdmin: true,
@@ -40,6 +42,8 @@ describe("currentIdentityFromApi", () => {
 			})
 		).toEqual({
 			id: "service-id",
+			name: "automation",
+			fullName: undefined,
 			resolvedName: "automation",
 			email: undefined,
 			isAdmin: undefined,
