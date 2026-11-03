@@ -4,7 +4,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
-import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import {
+	columnSize,
+	type DataTableFeatures,
+} from "@/shared/components/tables/data-table-features";
 import { snakeCaseToTitleCase } from "@/shared/lib/strings";
 import { Checkbox } from "@/shared/ui/checkbox";
 
@@ -19,9 +22,7 @@ export function useComponentColumns(): ColumnDef<
 		{
 			id: "select",
 			enableResizing: false,
-			size: 32,
-			minSize: 32,
-			maxSize: 32,
+			...columnSize.select,
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
@@ -48,6 +49,7 @@ export function useComponentColumns(): ColumnDef<
 			header: m.components_table_name(),
 			accessorKey: "name",
 			enableHiding: true,
+			...columnSize.name,
 			cell: ({ row }) => (
 				<Link
 					to="/infra/components/$component_id"
@@ -57,26 +59,22 @@ export function useComponentColumns(): ColumnDef<
 					{row.original.name}
 				</Link>
 			),
-			meta: {
-				className: "w-1/2",
-			},
 		},
 		{
 			header: m.components_table_type(),
 			enableHiding: true,
 			accessorFn: (row) => row.type,
+			size: 160,
 			cell: ({ row }) => {
 				const type = row.original.type;
 				if (!type) return <NotAvailableTag />;
 				return <p>{snakeCaseToTitleCase(type)}</p>;
 			},
-			meta: {
-				className: "w-[17.5%]",
-			},
 		},
 		{
 			header: m.components_table_flavor(),
 			accessorFn: (row) => row.flavor?.name,
+			size: 180,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const logoUrl = row.original.flavor?.logoUrl;
@@ -97,17 +95,12 @@ export function useComponentColumns(): ColumnDef<
 					</div>
 				);
 			},
-			meta: {
-				className: "w-[17.5%]",
-			},
 		},
 		{
 			header: m.components_table_created_at(),
 			enableHiding: true,
 			accessorFn: (row) => row.created,
-			meta: {
-				className: "w-[15%]",
-			},
+			...columnSize.date,
 			cell: ({ row }) => {
 				const created = row.original.created;
 				if (!created) return <NotAvailableTag />;
@@ -121,9 +114,7 @@ export function useComponentColumns(): ColumnDef<
 		{
 			id: "actions",
 			enableResizing: false,
-			size: 80,
-			minSize: 80,
-			maxSize: 120,
+			...columnSize.actions,
 			enableHiding: false,
 			cell: ({ row }) => <ComponentActions component={row.original} />,
 		},

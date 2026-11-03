@@ -3,7 +3,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
-import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import {
+	columnSize,
+	type DataTableFeatures,
+} from "@/shared/components/tables/data-table-features";
 import { Badge } from "@/shared/ui/badge";
 import { Checkbox } from "@/shared/ui/checkbox";
 
@@ -14,9 +17,7 @@ export function useSecretColumns(): ColumnDef<DataTableFeatures, Secret>[] {
 		{
 			id: "select",
 			enableResizing: false,
-			size: 32,
-			minSize: 32,
-			maxSize: 32,
+			...columnSize.select,
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
@@ -42,6 +43,7 @@ export function useSecretColumns(): ColumnDef<DataTableFeatures, Secret>[] {
 		{
 			header: m.secrets_table_name(),
 			accessorKey: "name",
+			...columnSize.name,
 			enableHiding: true,
 			cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
 		},
@@ -49,6 +51,7 @@ export function useSecretColumns(): ColumnDef<DataTableFeatures, Secret>[] {
 			id: "Visibility",
 			header: m.secrets_table_visibility(),
 			accessorFn: (row) => row.isPrivate,
+			...columnSize.badge,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const isPrivate = row.original.isPrivate;
@@ -66,6 +69,7 @@ export function useSecretColumns(): ColumnDef<DataTableFeatures, Secret>[] {
 			id: "Created by",
 			header: m.secrets_table_created_by(),
 			accessorFn: (row) => row.creatorName,
+			...columnSize.person,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const creatorName = row.original.creatorName;
@@ -77,6 +81,7 @@ export function useSecretColumns(): ColumnDef<DataTableFeatures, Secret>[] {
 			id: "Created at",
 			header: m.secrets_table_created_at(),
 			accessorFn: (row) => row.created,
+			...columnSize.date,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const date = row.original.created;

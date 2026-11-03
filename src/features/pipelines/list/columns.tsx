@@ -3,7 +3,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
-import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import {
+	columnSize,
+	type DataTableFeatures,
+} from "@/shared/components/tables/data-table-features";
 
 import type { Pipeline } from "../model";
 
@@ -14,9 +17,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 			accessorKey: "name",
 			enableHiding: true,
 			cell: ({ row }) => <p className="font-medium">{row.original.name}</p>,
-			meta: {
-				className: "w-[35%]",
-			},
+			...columnSize.name,
 		},
 		{
 			header: m.pipelines_table_description(),
@@ -27,9 +28,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 				if (!description) return <NotAvailableTag />;
 				return <p>{description}</p>;
 			},
-			meta: {
-				className: "w-[45%]",
-			},
+			size: 400,
 		},
 		{
 			id: "created",
@@ -41,9 +40,7 @@ export function usePipelineColumns(): ColumnDef<DataTableFeatures, Pipeline>[] {
 				if (!created) return <NotAvailableTag />;
 				return <DisplayDate date={created} />;
 			},
-			meta: {
-				className: "w-[20%]",
-			},
+			...columnSize.date,
 		},
 	];
 }

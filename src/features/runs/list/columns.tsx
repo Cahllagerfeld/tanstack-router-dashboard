@@ -3,7 +3,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
-import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import {
+	columnSize,
+	type DataTableFeatures,
+} from "@/shared/components/tables/data-table-features";
 import { Badge } from "@/shared/ui/badge";
 
 import { formatRunIndex, formatRunStatus, type Run } from "../model";
@@ -13,6 +16,7 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 		{
 			header: m.runs_table_index(),
 			accessorKey: "index",
+			size: 110,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const index = row.original.index;
@@ -23,12 +27,14 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 		{
 			header: m.runs_table_pipeline(),
 			accessorKey: "pipelineName",
+			...columnSize.name,
 			enableHiding: true,
 			cell: ({ row }) => row.original.pipelineName || <NotAvailableTag />,
 		},
 		{
 			header: m.runs_table_status(),
 			accessorKey: "status",
+			size: 140,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const status = row.original.status;
@@ -39,18 +45,21 @@ export function useRunColumns(): ColumnDef<DataTableFeatures, Run>[] {
 		{
 			header: m.runs_table_stack(),
 			accessorKey: "stackName",
+			size: 200,
 			enableHiding: true,
 			cell: ({ row }) => row.original.stackName || <NotAvailableTag />,
 		},
 		{
 			header: m.runs_table_author(),
 			accessorKey: "authorName",
+			...columnSize.person,
 			enableHiding: true,
 			cell: ({ row }) => row.original.authorName || <NotAvailableTag />,
 		},
 		{
 			header: m.runs_table_created_at(),
 			accessorKey: "created",
+			...columnSize.date,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const created = row.original.created;

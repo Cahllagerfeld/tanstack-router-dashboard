@@ -3,7 +3,10 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { m } from "@/paraglide/messages";
 import DisplayDate from "@/shared/components/display-date";
 import { NotAvailableTag } from "@/shared/components/not-available-tag";
-import type { DataTableFeatures } from "@/shared/components/tables/data-table-features";
+import {
+	columnSize,
+	type DataTableFeatures,
+} from "@/shared/components/tables/data-table-features";
 import { Badge } from "@/shared/ui/badge";
 import { Checkbox } from "@/shared/ui/checkbox";
 
@@ -18,9 +21,7 @@ export function useUserListColumns(
 		{
 			id: "select",
 			enableResizing: false,
-			size: 32,
-			minSize: 32,
-			maxSize: 32,
+			...columnSize.select,
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
@@ -46,6 +47,7 @@ export function useUserListColumns(
 		{
 			header: m.users_table_name(),
 			accessorKey: "name",
+			...columnSize.name,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const username = row.original.name;
@@ -64,6 +66,7 @@ export function useUserListColumns(
 			id: "status",
 			header: m.users_table_status(),
 			accessorFn: (row) => row.isActive,
+			...columnSize.badge,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const isActive = !!row.original.isActive;
@@ -74,6 +77,7 @@ export function useUserListColumns(
 			id: "created",
 			header: m.users_table_created(),
 			accessorFn: (row) => row.created,
+			...columnSize.date,
 			enableHiding: true,
 			cell: ({ row }) => {
 				const date = row.original.created;
@@ -89,9 +93,7 @@ const adminColumns: ColumnDef<DataTableFeatures, User>[] = [
 	{
 		id: "actions",
 		enableResizing: false,
-		size: 80,
-		minSize: 80,
-		maxSize: 120,
+		...columnSize.actions,
 		enableHiding: false,
 		cell: ({ row }) => {
 			return <AdminActions user={row.original} />;
