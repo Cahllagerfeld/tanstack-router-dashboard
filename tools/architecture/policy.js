@@ -8,6 +8,7 @@ const owners = [
 	"runs",
 	"secrets",
 	"server-activation",
+	"server-settings",
 	"session",
 	"stacks",
 	"users",
