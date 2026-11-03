@@ -6,14 +6,17 @@
 	"auth_validation_password_required": "Passwort ist erforderlich",
 	"auth_validation_username_required": "Benutzername ist erforderlich",
 	"common_action_apply": "Anwenden",
+	"common_action_back": "Zurück",
 	"common_action_cancel": "Abbrechen",
 	"common_action_close": "Schließen",
 	"common_action_copy": "In die Zwischenablage kopieren",
 	"common_action_copy_success": "Kopiert",
 	"common_action_delete": "Löschen",
+	"common_action_edit": "Bearbeiten",
 	"common_action_hide_value": "Wert ausblenden",
 	"common_action_login": "Anmelden",
 	"common_action_logout": "Abmelden",
+	"common_action_next": "Weiter",
 	"common_action_show_value": "Wert anzeigen",
 	"common_action_try_again": "Erneut versuchen",
 	"common_app_title": "Dashboard",
@@ -34,7 +37,6 @@
 	"common_label_created_by": "Erstellt von",
 	"common_label_flavor": "Flavor",
 	"common_label_id": "ID",
-	"common_label_name": "Name",
 	"common_label_type": "Typ",
 	"common_label_updated": "Aktualisiert",
 	"common_navigation_more": "Mehr",
@@ -86,6 +88,47 @@
 			}
 		}
 	],
+	"components_configure_name_max": "Der Name darf höchstens 255 Zeichen lang sein",
+	"components_configure_name_required": "Name ist erforderlich",
+	"components_configure_name": "Komponentenname",
+	"components_configure_settings": "Einstellungen",
+	"components_configure_docs": "Flavor-Dokumentation",
+	"components_configure_name_placeholder": "meine-komponente",
+	"components_configure_submit_error": "Die Komponente konnte nicht gespeichert werden",
+	"components_create_action": "Neue Komponente",
+	"components_create_configure_heading": "{flavor} {type} konfigurieren",
+	"components_create_failed": "Komponente konnte nicht erstellt werden",
+	"components_create_flavor_empty_description": "Installiere eine ZenML-Integration, die einen {type}-Flavor bereitstellt, und kehre dann hierher zurück.",
+	"components_create_flavor_empty_title": "Keine Flavors für diesen Typ",
+	"components_create_flavor_heading": "Neue Komponente: {type}",
+	"components_create_flavor_no_matches": "Keine Flavors entsprechen deiner Suche.",
+	"components_create_flavor_search": "Flavors durchsuchen",
+	"components_create_pending": "Wird erstellt…",
+	"components_create_step_configure": "Konfigurieren",
+	"components_create_step_flavor": "Flavor",
+	"components_create_step_type": "Typ",
+	"components_create_submit": "{type} erstellen",
+	"components_create_success": "{name} erstellt",
+	"components_create_title": "Neue Komponente",
+	"components_create_type_heading": "Welche Art von Komponente?",
+	"components_create_type_blurb_orchestrator": "Führt jeden Pipeline-Schritt aus",
+	"components_create_type_blurb_artifact_store": "Speichert Artefakte und Logs",
+	"components_create_type_blurb_container_registry": "Speichert Pipeline-Images",
+	"components_create_type_blurb_experiment_tracker": "Protokolliert Parameter und Metriken",
+	"components_create_type_blurb_step_operator": "Führt einzelne Schritte anderswo aus",
+	"components_create_type_blurb_image_builder": "Baut Pipeline-Images",
+	"components_create_type_blurb_deployer": "Stellt Pipelines über HTTP bereit",
+	"components_create_type_blurb_model_deployer": "Stellt Modelle online bereit",
+	"components_create_type_blurb_alerter": "Postet bei Ereignissen in den Chat",
+	"components_create_type_blurb_annotator": "Annotiert Daten",
+	"components_create_type_blurb_data_validator": "Profiliert und prüft Daten",
+	"components_create_type_blurb_feature_store": "Stellt Features bereit",
+	"components_create_type_blurb_model_registry": "Verwaltet Modellversionen",
+	"components_create_type_blurb_log_store": "Speichert Run-Logs",
+	"components_create_type_blurb_sandbox": "Führt Code isoliert aus",
+	"components_flow_step_done": "(abgeschlossen)",
+	"components_flow_step_progress": "Schritt {current} von {total} · {step}",
+	"components_flow_steps_label": "Schritte",
 	"components_delete_description": "Diese Aktion kann nicht rückgängig gemacht werden. {name} wird dauerhaft gelöscht.",
 	"components_delete_failed": "Komponente konnte nicht gelöscht werden",
 	"components_delete_success": "Komponente gelöscht",
@@ -93,6 +136,14 @@
 	"components_detail_tab_configuration": "Konfiguration",
 	"components_detail_tab_stacks": "Stacks",
 	"components_detail_tabs_label": "Komponentenbereiche",
+	"components_edit_crumb": "Bearbeiten",
+	"components_edit_failed": "Komponente konnte nicht aktualisiert werden",
+	"components_edit_flavor_missing_description": "Der Flavor dieser Komponente fehlt oder Sie haben keinen Zugriff darauf, daher kann ihre Konfiguration nicht bearbeitet werden.",
+	"components_edit_flavor_missing_title": "Konfiguration nicht verfügbar",
+	"components_edit_route_title": "Komponente {name} bearbeiten",
+	"components_edit_save": "Änderungen speichern",
+	"components_edit_success": "{name} aktualisiert",
+	"components_edit_title": "{name} bearbeiten",
 	"components_empty_description": "Bei ZenML registrierte Stack-Komponenten werden hier angezeigt.",
 	"components_empty_title": "Noch keine Komponenten",
 	"components_filter_clear": "Filter löschen",
@@ -149,6 +200,142 @@
 	"runs_delete_description": "Diese Aktion kann nicht rückgängig gemacht werden. {name} wird dauerhaft gelöscht.",
 	"runs_delete_failed": "Run konnte nicht gelöscht werden",
 	"runs_delete_success": "Run gelöscht",
+	"schema_form_add_item": "Eintrag hinzufügen",
+	"schema_form_invalid_json": "Ungültiges JSON",
+	"schema_form_optional_settings": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Optionale Einstellung ({formattedCount})",
+				"countPlural=other": "Optionale Einstellungen ({formattedCount})"
+			}
+		}
+	],
+	"schema_form_remove_item": "Eintrag entfernen",
+	"schema_form_select_placeholder": "Option auswählen",
+	"schema_form_select_unset": "Nicht festgelegt",
+	"schema_form_validation_additional_property": "Diese Eigenschaft ist nicht zulässig",
+	"schema_form_validation_enum": "Muss einer der zulässigen Werte sein",
+	"schema_form_validation_exclusive_maximum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Muss kleiner als {formattedLimit} sein"
+			}
+		}
+	],
+	"schema_form_validation_exclusive_minimum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Muss größer als {formattedLimit} sein"
+			}
+		}
+	],
+	"schema_form_validation_format": "Muss dem Format {format} entsprechen",
+	"schema_form_validation_invalid": "Ungültiger Wert",
+	"schema_form_validation_max_items": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Darf höchstens {formattedCount} Eintrag enthalten",
+				"countPlural=other": "Darf höchstens {formattedCount} Einträge enthalten"
+			}
+		}
+	],
+	"schema_form_validation_max_length": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Darf höchstens {formattedCount} Zeichen lang sein",
+				"countPlural=other": "Darf höchstens {formattedCount} Zeichen lang sein"
+			}
+		}
+	],
+	"schema_form_validation_maximum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Darf höchstens {formattedLimit} sein"
+			}
+		}
+	],
+	"schema_form_validation_min_items": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Muss mindestens {formattedCount} Eintrag enthalten",
+				"countPlural=other": "Muss mindestens {formattedCount} Einträge enthalten"
+			}
+		}
+	],
+	"schema_form_validation_min_length": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural",
+				"local formattedCount = count: number"
+			],
+			"selectors": ["countPlural"],
+			"match": {
+				"countPlural=one": "Muss mindestens {formattedCount} Zeichen lang sein",
+				"countPlural=other": "Muss mindestens {formattedCount} Zeichen lang sein"
+			}
+		}
+	],
+	"schema_form_validation_minimum": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Muss mindestens {formattedLimit} sein"
+			}
+		}
+	],
+	"schema_form_validation_multiple_of": [
+		{
+			"declarations": ["input limit", "local formattedLimit = limit: number"],
+			"selectors": [],
+			"match": {
+				"*": "Muss ein Vielfaches von {formattedLimit} sein"
+			}
+		}
+	],
+	"schema_form_validation_pattern": "Muss dem Muster {pattern} entsprechen",
+	"schema_form_validation_required": "Dieses Feld ist erforderlich",
+	"schema_form_validation_schema_invalid": "Das Konfigurationsschema konnte nicht geprüft werden",
+	"schema_form_validation_type": "Hat den falschen Typ",
+	"schema_form_validation_type_array": "Muss eine Liste sein",
+	"schema_form_validation_type_boolean": "Muss wahr oder falsch sein",
+	"schema_form_validation_type_integer": "Muss eine ganze Zahl sein",
+	"schema_form_validation_type_null": "Muss leer sein",
+	"schema_form_validation_type_number": "Muss eine Zahl sein",
+	"schema_form_validation_type_object": "Muss ein Objekt sein",
+	"schema_form_validation_type_string": "Muss ein Text sein",
+	"schema_form_validation_union": "Entspricht keinem der zulässigen Typen",
 	"secrets_empty_description": "Bei ZenML registrierte Secrets werden hier angezeigt.",
 	"secrets_empty_title": "Noch keine Secrets",
 	"secrets_list_title": "Secrets",

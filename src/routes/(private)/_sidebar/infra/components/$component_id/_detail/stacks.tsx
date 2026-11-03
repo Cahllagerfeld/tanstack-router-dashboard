@@ -4,7 +4,7 @@ import { stackQueries } from "@/features/stacks";
 import { RelatedStackList } from "@/features/stacks/ui";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/infra/components/$component_id/stacks"
+	"/(private)/_sidebar/infra/components/$component_id/_detail/stacks"
 )({
 	loader: ({ context: { queryClient }, params: { component_id } }) => {
 		return queryClient.ensureQueryData(stackQueries.list({ component_id }));

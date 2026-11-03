@@ -16,9 +16,12 @@ From top to bottom:
 1. Choose the tabs. The record's main content comes first and is the `index` route, then relations. One tab per distinct view or relation. Name a tab after its content. When several small settings groups exist, such as configuration, environment, and labels, they share one **Settings** tab where empty groups shrink to a line.
 2. Choose up to six facts: the ones people use to recognize the record.
 3. Add `<Owner>DetailLayout` in the owner's behavior folder, passing facts and tabs to `DetailLayout`. Export it from `ui.ts`.
-4. In `$<owner>_id/route.tsx`, load the record with `ensureQueryDataOr404`, prefetch any counted relation, and render `<Owner>DetailLayout` around `<Outlet />`. Pass counts as plain numbers, which keeps the owner free of a peer edge.
-5. Give each tab its own child route that owns its loader. A relation tab composes the peer's public list, as `stacks.tsx` does with `RelatedStackList`.
-6. Add `pendingComponent` built on `DetailLayoutSkeleton`, and `notFoundComponent`.
+4. In `$<owner>_id/route.tsx`, load the record with `ensureQueryDataOr404`, return its name as the crumb, and render `<Outlet />`.
+5. In the pathless `$<owner>_id/_detail/route.tsx`, prefetch any counted relation and render `<Owner>DetailLayout` around `<Outlet />`. Pass counts as plain numbers, which keeps the owner free of a peer edge.
+6. Give each tab its own child route under `_detail/` that owns its loader. A relation tab composes the peer's public list, as `stacks.tsx` does with `RelatedStackList`.
+7. Add `pendingComponent` built on `DetailLayoutSkeleton`, and `notFoundComponent`, to `$<owner>_id/route.tsx`.
+
+A page that acts on the record without its tabs, such as an edit page, is a sibling of `_detail/`, as `$component_id/edit.tsx` is. It keeps the record's crumb and adds its own.
 
 The screen is done when every tab has a URL, a reload keeps the tab, an empty record still shows every tab, and `docs/agents/detail-screens.md` still describes what you built.
 
