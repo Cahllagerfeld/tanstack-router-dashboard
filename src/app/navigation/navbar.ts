@@ -6,8 +6,8 @@ export type NavbarItem = {
 	url: string;
 	icon: LucideIcon;
 	disabled?: boolean;
-	/** When set, item is active if pathname starts with this prefix (e.g. `/settings`). */
-	activePathPrefix?: string;
+	/** When set, item is active if pathname starts with any of these prefixes (e.g. `/settings`). */
+	activePathPrefixes?: string[];
 	isActive?: boolean;
 	hotkey?: AppHotkey<string, HotkeySequence>;
 };

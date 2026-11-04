@@ -33,12 +33,14 @@ import { Route as privateSidebarInfraComponentsComponent_idRouteRouteImport } fr
 import { Route as privateSidebarInfraSecretsIndexRouteImport } from './routes/(private)/_sidebar/infra/secrets/index'
 import { Route as privateSidebarInfraStacksIndexRouteImport } from './routes/(private)/_sidebar/infra/stacks/index'
 import { Route as privateSidebarProjectsProject_idIndexRouteImport } from './routes/(private)/_sidebar/projects/$project_id/index'
-import { Route as privateSidebarProjectsProject_idPipelinesRouteImport } from './routes/(private)/_sidebar/projects/$project_id/pipelines'
+import { Route as privateSidebarProjectsProject_idPipelinesRouteRouteImport } from './routes/(private)/_sidebar/projects/$project_id/_pipelines/route'
 import { Route as privateSidebarProjectsProject_idRunsRouteImport } from './routes/(private)/_sidebar/projects/$project_id/runs'
 import { Route as privateSidebarSettingsProjectsIndexRouteImport } from './routes/(private)/_sidebar/settings/projects/index'
 import { Route as privateSidebarSettingsProjectsProject_idRouteRouteImport } from './routes/(private)/_sidebar/settings/projects/$project_id/route'
 import { Route as privateSidebarInfraComponentsComponent_idIndexRouteImport } from './routes/(private)/_sidebar/infra/components/$component_id/index'
 import { Route as privateSidebarInfraComponentsComponent_idStacksRouteImport } from './routes/(private)/_sidebar/infra/components/$component_id/stacks'
+import { Route as privateSidebarProjectsProject_idPipelinesPipelinesRouteImport } from './routes/(private)/_sidebar/projects/$project_id/_pipelines/pipelines'
+import { Route as privateSidebarProjectsProject_idPipelinesSnapshotsRouteImport } from './routes/(private)/_sidebar/projects/$project_id/_pipelines/snapshots'
 import { Route as privateSidebarSettingsProjectsProject_idIndexRouteImport } from './routes/(private)/_sidebar/settings/projects/$project_id/index'
 import { Route as privateSidebarSettingsProjectsProject_idGeneralRouteImport } from './routes/(private)/_sidebar/settings/projects/$project_id/general'
 
@@ -178,10 +180,9 @@ const privateSidebarProjectsProject_idIndexRoute =
     path: '/',
     getParentRoute: () => privateSidebarProjectsProject_idRouteRoute,
   } as any)
-const privateSidebarProjectsProject_idPipelinesRoute =
-  privateSidebarProjectsProject_idPipelinesRouteImport.update({
-    id: '/pipelines',
-    path: '/pipelines',
+const privateSidebarProjectsProject_idPipelinesRouteRoute =
+  privateSidebarProjectsProject_idPipelinesRouteRouteImport.update({
+    id: '/_pipelines',
     getParentRoute: () => privateSidebarProjectsProject_idRouteRoute,
   } as any)
 const privateSidebarProjectsProject_idRunsRoute =
@@ -213,6 +214,18 @@ const privateSidebarInfraComponentsComponent_idStacksRoute =
     id: '/stacks',
     path: '/stacks',
     getParentRoute: () => privateSidebarInfraComponentsComponent_idRouteRoute,
+  } as any)
+const privateSidebarProjectsProject_idPipelinesPipelinesRoute =
+  privateSidebarProjectsProject_idPipelinesPipelinesRouteImport.update({
+    id: '/pipelines',
+    path: '/pipelines',
+    getParentRoute: () => privateSidebarProjectsProject_idPipelinesRouteRoute,
+  } as any)
+const privateSidebarProjectsProject_idPipelinesSnapshotsRoute =
+  privateSidebarProjectsProject_idPipelinesSnapshotsRouteImport.update({
+    id: '/snapshots',
+    path: '/snapshots',
+    getParentRoute: () => privateSidebarProjectsProject_idPipelinesRouteRoute,
   } as any)
 const privateSidebarSettingsProjectsProject_idIndexRoute =
   privateSidebarSettingsProjectsProject_idIndexRouteImport.update({
@@ -246,7 +259,6 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof privateSidebarSettingsIndexRoute
   '/infra/components/$component_id': typeof privateSidebarInfraComponentsComponent_idRouteRouteWithChildren
   '/settings/projects/$project_id': typeof privateSidebarSettingsProjectsProject_idRouteRouteWithChildren
-  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/infra/components/': typeof privateSidebarInfraComponentsIndexRoute
   '/infra/secrets/': typeof privateSidebarInfraSecretsIndexRoute
@@ -254,6 +266,8 @@ export interface FileRoutesByFullPath {
   '/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
   '/settings/projects/': typeof privateSidebarSettingsProjectsIndexRoute
   '/infra/components/$component_id/stacks': typeof privateSidebarInfraComponentsComponent_idStacksRoute
+  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesPipelinesRoute
+  '/projects/$project_id/snapshots': typeof privateSidebarProjectsProject_idPipelinesSnapshotsRoute
   '/settings/projects/$project_id/general': typeof privateSidebarSettingsProjectsProject_idGeneralRoute
   '/infra/components/$component_id/': typeof privateSidebarInfraComponentsComponent_idIndexRoute
   '/settings/projects/$project_id/': typeof privateSidebarSettingsProjectsProject_idIndexRoute
@@ -269,14 +283,15 @@ export interface FileRoutesByTo {
   '/infra': typeof privateSidebarInfraIndexRoute
   '/projects': typeof privateSidebarProjectsIndexRoute
   '/settings': typeof privateSidebarSettingsIndexRoute
-  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
+  '/projects/$project_id': typeof privateSidebarProjectsProject_idIndexRoute
   '/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/infra/components': typeof privateSidebarInfraComponentsIndexRoute
   '/infra/secrets': typeof privateSidebarInfraSecretsIndexRoute
   '/infra/stacks': typeof privateSidebarInfraStacksIndexRoute
-  '/projects/$project_id': typeof privateSidebarProjectsProject_idIndexRoute
   '/settings/projects': typeof privateSidebarSettingsProjectsIndexRoute
   '/infra/components/$component_id/stacks': typeof privateSidebarInfraComponentsComponent_idStacksRoute
+  '/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesPipelinesRoute
+  '/projects/$project_id/snapshots': typeof privateSidebarProjectsProject_idPipelinesSnapshotsRoute
   '/settings/projects/$project_id/general': typeof privateSidebarSettingsProjectsProject_idGeneralRoute
   '/infra/components/$component_id': typeof privateSidebarInfraComponentsComponent_idIndexRoute
   '/settings/projects/$project_id': typeof privateSidebarSettingsProjectsProject_idIndexRoute
@@ -303,8 +318,8 @@ export interface FileRoutesById {
   '/(private)/_sidebar/projects/': typeof privateSidebarProjectsIndexRoute
   '/(private)/_sidebar/settings/': typeof privateSidebarSettingsIndexRoute
   '/(private)/_sidebar/infra/components/$component_id': typeof privateSidebarInfraComponentsComponent_idRouteRouteWithChildren
+  '/(private)/_sidebar/projects/$project_id/_pipelines': typeof privateSidebarProjectsProject_idPipelinesRouteRouteWithChildren
   '/(private)/_sidebar/settings/projects/$project_id': typeof privateSidebarSettingsProjectsProject_idRouteRouteWithChildren
-  '/(private)/_sidebar/projects/$project_id/pipelines': typeof privateSidebarProjectsProject_idPipelinesRoute
   '/(private)/_sidebar/projects/$project_id/runs': typeof privateSidebarProjectsProject_idRunsRoute
   '/(private)/_sidebar/infra/components/': typeof privateSidebarInfraComponentsIndexRoute
   '/(private)/_sidebar/infra/secrets/': typeof privateSidebarInfraSecretsIndexRoute
@@ -312,6 +327,8 @@ export interface FileRoutesById {
   '/(private)/_sidebar/projects/$project_id/': typeof privateSidebarProjectsProject_idIndexRoute
   '/(private)/_sidebar/settings/projects/': typeof privateSidebarSettingsProjectsIndexRoute
   '/(private)/_sidebar/infra/components/$component_id/stacks': typeof privateSidebarInfraComponentsComponent_idStacksRoute
+  '/(private)/_sidebar/projects/$project_id/_pipelines/pipelines': typeof privateSidebarProjectsProject_idPipelinesPipelinesRoute
+  '/(private)/_sidebar/projects/$project_id/_pipelines/snapshots': typeof privateSidebarProjectsProject_idPipelinesSnapshotsRoute
   '/(private)/_sidebar/settings/projects/$project_id/general': typeof privateSidebarSettingsProjectsProject_idGeneralRoute
   '/(private)/_sidebar/infra/components/$component_id/': typeof privateSidebarInfraComponentsComponent_idIndexRoute
   '/(private)/_sidebar/settings/projects/$project_id/': typeof privateSidebarSettingsProjectsProject_idIndexRoute
@@ -337,7 +354,6 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/infra/components/$component_id'
     | '/settings/projects/$project_id'
-    | '/projects/$project_id/pipelines'
     | '/projects/$project_id/runs'
     | '/infra/components/'
     | '/infra/secrets/'
@@ -345,6 +361,8 @@ export interface FileRouteTypes {
     | '/projects/$project_id/'
     | '/settings/projects/'
     | '/infra/components/$component_id/stacks'
+    | '/projects/$project_id/pipelines'
+    | '/projects/$project_id/snapshots'
     | '/settings/projects/$project_id/general'
     | '/infra/components/$component_id/'
     | '/settings/projects/$project_id/'
@@ -360,14 +378,15 @@ export interface FileRouteTypes {
     | '/infra'
     | '/projects'
     | '/settings'
-    | '/projects/$project_id/pipelines'
+    | '/projects/$project_id'
     | '/projects/$project_id/runs'
     | '/infra/components'
     | '/infra/secrets'
     | '/infra/stacks'
-    | '/projects/$project_id'
     | '/settings/projects'
     | '/infra/components/$component_id/stacks'
+    | '/projects/$project_id/pipelines'
+    | '/projects/$project_id/snapshots'
     | '/settings/projects/$project_id/general'
     | '/infra/components/$component_id'
     | '/settings/projects/$project_id'
@@ -393,8 +412,8 @@ export interface FileRouteTypes {
     | '/(private)/_sidebar/projects/'
     | '/(private)/_sidebar/settings/'
     | '/(private)/_sidebar/infra/components/$component_id'
+    | '/(private)/_sidebar/projects/$project_id/_pipelines'
     | '/(private)/_sidebar/settings/projects/$project_id'
-    | '/(private)/_sidebar/projects/$project_id/pipelines'
     | '/(private)/_sidebar/projects/$project_id/runs'
     | '/(private)/_sidebar/infra/components/'
     | '/(private)/_sidebar/infra/secrets/'
@@ -402,6 +421,8 @@ export interface FileRouteTypes {
     | '/(private)/_sidebar/projects/$project_id/'
     | '/(private)/_sidebar/settings/projects/'
     | '/(private)/_sidebar/infra/components/$component_id/stacks'
+    | '/(private)/_sidebar/projects/$project_id/_pipelines/pipelines'
+    | '/(private)/_sidebar/projects/$project_id/_pipelines/snapshots'
     | '/(private)/_sidebar/settings/projects/$project_id/general'
     | '/(private)/_sidebar/infra/components/$component_id/'
     | '/(private)/_sidebar/settings/projects/$project_id/'
@@ -582,11 +603,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof privateSidebarProjectsProject_idIndexRouteImport
       parentRoute: typeof privateSidebarProjectsProject_idRouteRoute
     }
-    '/(private)/_sidebar/projects/$project_id/pipelines': {
-      id: '/(private)/_sidebar/projects/$project_id/pipelines'
-      path: '/pipelines'
-      fullPath: '/projects/$project_id/pipelines'
-      preLoaderRoute: typeof privateSidebarProjectsProject_idPipelinesRouteImport
+    '/(private)/_sidebar/projects/$project_id/_pipelines': {
+      id: '/(private)/_sidebar/projects/$project_id/_pipelines'
+      path: ''
+      fullPath: '/projects/$project_id'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idPipelinesRouteRouteImport
       parentRoute: typeof privateSidebarProjectsProject_idRouteRoute
     }
     '/(private)/_sidebar/projects/$project_id/runs': {
@@ -623,6 +644,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/infra/components/$component_id/stacks'
       preLoaderRoute: typeof privateSidebarInfraComponentsComponent_idStacksRouteImport
       parentRoute: typeof privateSidebarInfraComponentsComponent_idRouteRoute
+    }
+    '/(private)/_sidebar/projects/$project_id/_pipelines/pipelines': {
+      id: '/(private)/_sidebar/projects/$project_id/_pipelines/pipelines'
+      path: '/pipelines'
+      fullPath: '/projects/$project_id/pipelines'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idPipelinesPipelinesRouteImport
+      parentRoute: typeof privateSidebarProjectsProject_idPipelinesRouteRoute
+    }
+    '/(private)/_sidebar/projects/$project_id/_pipelines/snapshots': {
+      id: '/(private)/_sidebar/projects/$project_id/_pipelines/snapshots'
+      path: '/snapshots'
+      fullPath: '/projects/$project_id/snapshots'
+      preLoaderRoute: typeof privateSidebarProjectsProject_idPipelinesSnapshotsRouteImport
+      parentRoute: typeof privateSidebarProjectsProject_idPipelinesRouteRoute
     }
     '/(private)/_sidebar/settings/projects/$project_id/': {
       id: '/(private)/_sidebar/settings/projects/$project_id/'
@@ -772,16 +807,34 @@ const privateSidebarSettingsRouteRouteWithChildren =
     privateSidebarSettingsRouteRouteChildren,
   )
 
+interface privateSidebarProjectsProject_idPipelinesRouteRouteChildren {
+  privateSidebarProjectsProject_idPipelinesPipelinesRoute: typeof privateSidebarProjectsProject_idPipelinesPipelinesRoute
+  privateSidebarProjectsProject_idPipelinesSnapshotsRoute: typeof privateSidebarProjectsProject_idPipelinesSnapshotsRoute
+}
+
+const privateSidebarProjectsProject_idPipelinesRouteRouteChildren: privateSidebarProjectsProject_idPipelinesRouteRouteChildren =
+  {
+    privateSidebarProjectsProject_idPipelinesPipelinesRoute:
+      privateSidebarProjectsProject_idPipelinesPipelinesRoute,
+    privateSidebarProjectsProject_idPipelinesSnapshotsRoute:
+      privateSidebarProjectsProject_idPipelinesSnapshotsRoute,
+  }
+
+const privateSidebarProjectsProject_idPipelinesRouteRouteWithChildren =
+  privateSidebarProjectsProject_idPipelinesRouteRoute._addFileChildren(
+    privateSidebarProjectsProject_idPipelinesRouteRouteChildren,
+  )
+
 interface privateSidebarProjectsProject_idRouteRouteChildren {
-  privateSidebarProjectsProject_idPipelinesRoute: typeof privateSidebarProjectsProject_idPipelinesRoute
+  privateSidebarProjectsProject_idPipelinesRouteRoute: typeof privateSidebarProjectsProject_idPipelinesRouteRouteWithChildren
   privateSidebarProjectsProject_idRunsRoute: typeof privateSidebarProjectsProject_idRunsRoute
   privateSidebarProjectsProject_idIndexRoute: typeof privateSidebarProjectsProject_idIndexRoute
 }
 
 const privateSidebarProjectsProject_idRouteRouteChildren: privateSidebarProjectsProject_idRouteRouteChildren =
   {
-    privateSidebarProjectsProject_idPipelinesRoute:
-      privateSidebarProjectsProject_idPipelinesRoute,
+    privateSidebarProjectsProject_idPipelinesRouteRoute:
+      privateSidebarProjectsProject_idPipelinesRouteRouteWithChildren,
     privateSidebarProjectsProject_idRunsRoute:
       privateSidebarProjectsProject_idRunsRoute,
     privateSidebarProjectsProject_idIndexRoute:

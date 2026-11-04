@@ -10,6 +10,7 @@ const owners = [
 	"server-activation",
 	"server-settings",
 	"session",
+	"snapshots",
 	"stacks",
 	"users",
 ];
