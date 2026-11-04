@@ -13,26 +13,26 @@ export function useRippleShader() {
 		if (!canvas) return;
 
 		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-		let stop: (() => void) | null = null;
+		const shader: { stop: (() => void) | null } = { stop: null };
 
 		function markStopped() {
-			stop = null;
+			shader.stop = null;
 			canvas?.removeAttribute(RUNNING_ATTRIBUTE);
 		}
 
 		function sync() {
-			stop?.();
+			shader.stop?.();
 			markStopped();
 			if (reducedMotion.matches || !canvas) return;
-			stop = startRippleShader(canvas, markStopped);
-			if (stop) canvas.setAttribute(RUNNING_ATTRIBUTE, "");
+			shader.stop = startRippleShader(canvas, markStopped);
+			if (shader.stop) canvas.setAttribute(RUNNING_ATTRIBUTE, "");
 		}
 
 		sync();
 		reducedMotion.addEventListener("change", sync);
 		return () => {
 			reducedMotion.removeEventListener("change", sync);
-			stop?.();
+			shader.stop?.();
 		};
 	}, []);
 
