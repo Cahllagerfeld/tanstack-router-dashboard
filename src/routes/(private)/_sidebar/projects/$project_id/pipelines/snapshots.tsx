@@ -1,16 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { pipelineQueries } from "@/features/pipelines";
-import { PipelineListScreen } from "@/features/pipelines/ui";
+import { type SnapshotListInput, snapshotQueries } from "@/features/snapshots";
+import { SnapshotListScreen } from "@/features/snapshots/ui";
 import { m } from "@/paraglide/messages";
 import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
 
-const querySchema = commonFilterSchema;
-
 export const Route = createFileRoute(
-	"/(private)/_sidebar/projects/$project_id/pipelines"
+	"/(private)/_sidebar/projects/$project_id/pipelines/snapshots"
 )({
-	validateSearch: querySchema,
+	validateSearch: commonFilterSchema,
 	loaderDeps: ({ search: { page, size } }) => ({ page, size }),
 	loader: async ({
 		context: { queryClient },
@@ -21,19 +19,22 @@ export const Route = createFileRoute(
 			project: project_id,
 			page,
 			size,
-		};
+		} satisfies SnapshotListInput;
 
-		await queryClient.ensureQueryData(pipelineQueries.list(queryParams));
+		await queryClient.ensureQueryData(snapshotQueries.list(queryParams));
 		return {
 			queryParams,
-			crumb: m.pipelines_navigation_label(),
+			crumb: m.snapshots_navigation_label(),
 		};
 	},
+	head: () => ({
+		meta: [{ title: m.snapshots_list_title() }],
+	}),
 	component: RouteComponent,
 });
 
 function RouteComponent() {
 	const { queryParams } = Route.useLoaderData();
 
-	return <PipelineListScreen params={queryParams} />;
+	return <SnapshotListScreen params={queryParams} />;
 }
