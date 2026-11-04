@@ -18,7 +18,7 @@ export function PipelinesLayout({ projectId }: { projectId: string }) {
 					},
 					{
 						label: m.snapshots_navigation_label(),
-						to: "/projects/$project_id/pipelines/snapshots",
+						to: "/projects/$project_id/snapshots",
 						params,
 					},
 				]}

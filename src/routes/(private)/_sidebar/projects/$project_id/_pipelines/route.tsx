@@ -1,12 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { PipelinesLayout } from "@/app/layouts/pipelines-layout";
-import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/projects/$project_id/pipelines"
+	"/(private)/_sidebar/projects/$project_id/_pipelines"
 )({
-	loader: () => ({ crumb: m.pipelines_navigation_label() }),
 	component: RouteComponent,
 });
 

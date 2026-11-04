@@ -16,7 +16,6 @@ export const snapshotQueries = {
 	list: (params: SnapshotListInput) => {
 		const mergedParams = {
 			sort_by: "desc:created",
-			hydrate: true,
 			named_only: true,
 			...params,
 		} satisfies SnapshotListInput;

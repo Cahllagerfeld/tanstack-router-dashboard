@@ -6,7 +6,7 @@ import { m } from "@/paraglide/messages";
 import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/projects/$project_id/pipelines/snapshots"
+	"/(private)/_sidebar/projects/$project_id/_pipelines/snapshots"
 )({
 	validateSearch: commonFilterSchema,
 	loaderDeps: ({ search: { page, size } }) => ({ page, size }),

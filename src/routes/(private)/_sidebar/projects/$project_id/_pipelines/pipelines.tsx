@@ -2,12 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { pipelineQueries } from "@/features/pipelines";
 import { PipelineListScreen } from "@/features/pipelines/ui";
+import { m } from "@/paraglide/messages";
 import { commonFilterSchema } from "@/shared/filters/common-filter-schema";
 
 const querySchema = commonFilterSchema;
 
 export const Route = createFileRoute(
-	"/(private)/_sidebar/projects/$project_id/pipelines/"
+	"/(private)/_sidebar/projects/$project_id/_pipelines/pipelines"
 )({
 	validateSearch: querySchema,
 	loaderDeps: ({ search: { page, size } }) => ({ page, size }),
@@ -23,7 +24,7 @@ export const Route = createFileRoute(
 		};
 
 		await queryClient.ensureQueryData(pipelineQueries.list(queryParams));
-		return { queryParams };
+		return { queryParams, crumb: m.pipelines_navigation_label() };
 	},
 	component: RouteComponent,
 });

@@ -13,7 +13,7 @@ function getInfraItem(): NavbarItem {
 		title: m.infra_navigation_label(),
 		url: "/infra/stacks",
 		icon: getEntityIcon("stack"),
-		activePathPrefix: "/infra",
+		activePathPrefixes: ["/infra"],
 		hotkey: appHotkeys["navigation.infra"],
 	};
 }
@@ -24,7 +24,7 @@ function getFooterItems(): NavbarItem[] {
 			title: m.settings_navigation_label(),
 			url: "/settings/general",
 			icon: Settings,
-			activePathPrefix: "/settings",
+			activePathPrefixes: ["/settings"],
 			hotkey: appHotkeys["navigation.settings"],
 		},
 	];
@@ -41,6 +41,10 @@ function useProjectItems(): NavbarItem[] {
 		to: "/projects/$project_id/pipelines",
 		params,
 	}).pathname;
+	const snapshotsUrl = buildLocation({
+		to: "/projects/$project_id/snapshots",
+		params,
+	}).pathname;
 	const runsUrl = buildLocation({
 		to: "/projects/$project_id/runs",
 		params,
@@ -51,14 +55,14 @@ function useProjectItems(): NavbarItem[] {
 			title: m.common_navigation_pipelines(),
 			url: pipelinesUrl,
 			icon: getEntityIcon("pipeline"),
-			activePathPrefix: pipelinesUrl,
+			activePathPrefixes: [pipelinesUrl, snapshotsUrl],
 			hotkey: appHotkeys["navigation.pipelines"],
 		},
 		{
 			title: m.common_navigation_runs(),
 			url: runsUrl,
 			icon: getEntityIcon("run"),
-			activePathPrefix: runsUrl,
+			activePathPrefixes: [runsUrl],
 			hotkey: appHotkeys["navigation.runs"],
 		},
 		{
@@ -85,8 +89,8 @@ function useProjectItems(): NavbarItem[] {
 function withActiveState(items: NavbarItem[], pathname: string) {
 	return items.map((item) => ({
 		...item,
-		isActive: item.activePathPrefix
-			? pathname.startsWith(item.activePathPrefix)
+		isActive: item.activePathPrefixes
+			? item.activePathPrefixes.some((prefix) => pathname.startsWith(prefix))
 			: item.url === pathname,
 	}));
 }

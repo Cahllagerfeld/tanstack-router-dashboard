@@ -105,6 +105,22 @@ test("marks the project entry for the current page", async () => {
 		.not.toHaveAttribute("aria-current");
 });
 
+test("marks Pipelines current on its sibling Snapshots page", async () => {
+	match.current = { status: "success", loaderData: { project: projects[0]! } };
+	location.pathname = "/projects/fraud/snapshots";
+	await renderRail();
+
+	await expect
+		.element(railLink(m.common_navigation_pipelines()))
+		.toHaveAttribute("aria-current", "page");
+	await expect
+		.element(railLink(m.common_navigation_pipelines()))
+		.toHaveAttribute("href", "/projects/fraud/pipelines");
+	await expect
+		.element(railLink(m.common_navigation_runs()))
+		.not.toHaveAttribute("aria-current");
+});
+
 test("targets the Project in the URL when the list does not contain it", async () => {
 	match.current = {
 		status: "success",
