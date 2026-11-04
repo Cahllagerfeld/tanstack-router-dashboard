@@ -137,7 +137,7 @@
 	"snapshots_navigation_label": "Snapshots",
 	"snapshots_list_title": "Snapshots",
 	"snapshots_empty_title": "No snapshots yet",
-	"snapshots_empty_description": "Snapshots of this project's pipelines appear here.",
+	"snapshots_empty_description": "Named snapshots of this project's pipelines appear here.",
 	"snapshots_table_name": "Name",
 	"snapshots_table_pipeline": "Pipeline",
 	"snapshots_table_stack": "Stack",

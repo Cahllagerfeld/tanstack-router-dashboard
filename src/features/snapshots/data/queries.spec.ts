@@ -27,6 +27,7 @@ describe("snapshotQueries", () => {
 			{
 				sort_by: "desc:created",
 				hydrate: true,
+				named_only: true,
 				project: "project-id",
 				page: 2,
 				size: 10,
@@ -34,7 +35,7 @@ describe("snapshotQueries", () => {
 		]);
 	});
 
-	it("requests the hydrated, newest-first Project snapshot list and maps it", async () => {
+	it("requests the hydrated, newest-first list of named Project snapshots and maps it", async () => {
 		get.mockResolvedValue({
 			data: {
 				index: 1,
@@ -59,6 +60,7 @@ describe("snapshotQueries", () => {
 					project: "project-id",
 					page: 3,
 					hydrate: true,
+					named_only: true,
 					sort_by: "desc:created",
 				},
 			},
