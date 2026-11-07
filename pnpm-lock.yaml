@@ -162,8 +162,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-476w4z6xkBtw22LmWzcV7dpk2rT3bdOyqYpzL8kLmdE=
-
 importers:
 
   .:
@@ -239,8 +237,8 @@ importers:
         version: 4.6.7
     devDependencies:
       '@inlang/cli':
-        specifier: 3.5.1
-        version: 3.5.1
+        specifier: 3.6.0
+        version: 3.6.0
       '@inlang/paraglide-js':
         specifier: 3.0.0
         version: 3.0.0(typescript@7.0.2)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))
@@ -279,7 +277,7 @@ importers:
         version: 2.2.2
       openapi-typescript:
         specifier: 7.13.0
-        version: 7.13.0
+        version: 7.13.0(typescript@7.0.2)
       oxfmt:
         specifier: 0.76.0
         version: 0.76.0
@@ -588,8 +586,8 @@ packages:
       zod:
         optional: true
 
-  '@inlang/cli@3.5.1':
-    resolution: {integrity: sha512-Pm67cn/Cp0P5e5qCaSVaoSvRnynRO97pMxxtyYKVi5bHAkc6XVSrJ9sVYKkD9xRVueI1hABY8myxGQOsgJbHOg==}
+  '@inlang/cli@3.6.0':
+    resolution: {integrity: sha512-IQdki7NAXkA//RMEndIWu2bybQl1rAmtY1O+RPI26KJdRolDPauBfCPnmn39S1pQWBFJ68+oyLaj1mqqSswxuQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -610,6 +608,10 @@ packages:
 
   '@inlang/sdk@4.1.2':
     resolution: {integrity: sha512-Cy1z1JdlJibu0UDW3jBfc3YzJnFuEHkhouyNaAAi0VCM9xreQ5vgBZP2/JkuNpN2mN2taLN035TAgRl3xwROwA==}
+    engines: {node: '>=20.0.0'}
+
+  '@inlang/sdk@4.2.0':
+    resolution: {integrity: sha512-Cmaqvn34wsxiF27318Zw2rg+017HHNJWV5MH8rfyVKVANZNpzlztxzRbFienE/gASMLD8oluYHHolIb/p6Egrw==}
     engines: {node: '>=20.0.0'}
 
   '@internationalized/number@3.6.9':
@@ -2295,6 +2297,8 @@ packages:
   openapi-typescript@7.13.0:
     resolution: {integrity: sha512-EFP392gcqXS7ntPvbhBzbF8TyBA+baIYEm791Hy5YkjDYKTnk/Tn5OQeKm5BIZvJihpp8Zzr4hzx0Irde1LNGQ==}
     hasBin: true
+    peerDependencies:
+      typescript: ^5.x
 
   oxc-minify@0.136.0:
     resolution: {integrity: sha512-u9UvPFTYVwQ/i1kpp/c20S/SbvLaLV0Ngzyhgi0YV4B1SlxM7RgnnePl4vY9N3Z9sTRcozL1MRStI3PlUN9RFA==}
@@ -2553,11 +2557,6 @@ packages:
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
-
-  typescript@5.9.3:
-    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
 
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
@@ -3031,9 +3030,9 @@ snapshots:
       valibot: 1.5.0(typescript@7.0.2)
       zod: 4.6.7
 
-  '@inlang/cli@3.5.1':
+  '@inlang/cli@3.6.0':
     dependencies:
-      '@inlang/sdk': 4.1.2
+      '@inlang/sdk': 4.2.0
       esbuild-wasm: 0.19.12
 
   '@inlang/paraglide-js@3.0.0(typescript@7.0.2)(vite@8.3.5(@types/node@26.6.6)(jiti@2.7.0))':
@@ -3058,6 +3057,13 @@ snapshots:
       comment-json: 4.6.2
 
   '@inlang/sdk@4.1.2':
+    dependencies:
+      '@lix-js/sdk': 0.20.1
+      '@sinclair/typebox': 0.31.30
+      kysely: 0.28.19
+      uuid: 14.0.3
+
+  '@inlang/sdk@4.2.0':
     dependencies:
       '@lix-js/sdk': 0.20.1
       '@sinclair/typebox': 0.31.30
@@ -4327,14 +4333,14 @@ snapshots:
 
   openapi-typescript-helpers@0.1.0: {}
 
-  openapi-typescript@7.13.0:
+  openapi-typescript@7.13.0(typescript@7.0.2):
     dependencies:
       '@redocly/openapi-core': 1.34.23(supports-color@10.2.2)
       ansi-colors: 4.1.3
       change-case: 5.4.4
       parse-json: 8.3.0
       supports-color: 10.2.2
-      typescript: 5.9.3
+      typescript: 7.0.2
       yargs-parser: 21.1.1
 
   oxc-minify@0.136.0:
@@ -4590,8 +4596,6 @@ snapshots:
   tw-animate-css@1.4.0: {}
 
   type-fest@4.41.0: {}
-
-  typescript@5.9.3: {}
 
   typescript@7.0.2:
     optionalDependencies:
