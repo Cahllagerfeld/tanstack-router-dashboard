@@ -63,7 +63,7 @@
 		"babel-plugin-react-compiler": "1.0.0",
 		"lefthook": "2.2.2",
 		"openapi-typescript": "7.13.0",
-		"oxfmt": "0.77.0",
+		"oxfmt": "0.78.0",
 		"oxlint": "1.92.0",
 		"playwright": "1.65.0",
 		"tailwindcss": "4.3.5",
